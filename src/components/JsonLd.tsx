@@ -4,9 +4,9 @@ export default function JsonLd() {
     '@type': 'LocalBusiness',
     name: 'Casa in Ordine',
     description: 'Servizio professionale di decluttering e home organizing a Roma',
-    url: 'https://casainordine.it',
-    telephone: '+39 06 1234567',
-    email: 'info@casainordine.it',
+    url: 'https://casainordine.com',
+    telephone: '+393483445856895',
+    email: 'info@casainordine.com',
     address: {
       '@type': 'PostalAddress',
       addressLocality: 'Roma',
