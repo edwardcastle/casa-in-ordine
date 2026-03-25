@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 
-const baseUrl = 'https://casainordine.it';
+const baseUrl = 'https://casainordine.com';
 const locales = ['it', 'en', 'es'];
 const pages = ['', '/about', '/services', '/gallery', '/blog', '/contact'];
 

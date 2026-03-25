@@ -32,7 +32,7 @@ export async function generateMetadata({
       template: `%s | Casa in Ordine`,
     },
     description: messages.metadata.description,
-    metadataBase: new URL('https://casainordine.it'),
+    metadataBase: new URL('https://casainordine.com'),
     icons: {
       icon: [
         { url: '/favicon_32x32.png', sizes: '32x32', type: 'image/png' },
@@ -53,7 +53,7 @@ export async function generateMetadata({
     openGraph: {
       title: messages.metadata.title,
       description: messages.metadata.description,
-      url: `https://casainordine.it/${locale}`,
+      url: `https://casainordine.com/${locale}`,
       siteName: 'Casa in Ordine',
       locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
       type: 'website',

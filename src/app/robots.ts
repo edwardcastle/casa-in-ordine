@@ -6,6 +6,6 @@ export default function robots(): MetadataRoute.Robots {
       userAgent: '*',
       allow: '/',
     },
-    sitemap: 'https://casainordine.it/sitemap.xml',
+    sitemap: 'https://casainordine.com/sitemap.xml',
   };
 }
