@@ -28,10 +28,10 @@ export default function Header() {
             <Image
               src="/images/logo/logo_800x300.png"
               alt="Casa in Ordine"
-              width={240}
-              height={90}
+              width={200}
+              height={75}
               priority
-              className="h-16 md:h-20 w-auto"
+              className="h-10 md:h-14 w-auto"
             />
           </Link>
 
