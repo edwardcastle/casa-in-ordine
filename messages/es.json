@@ -1,0 +1,264 @@
+{
+  "metadata": {
+    "title": "Casa in Ordine – Decluttering y Home Organizing en Roma",
+    "description": "Servicio profesional de decluttering y organización del hogar en Roma, Italia. Transformamos tus espacios en ambientes ordenados y funcionales."
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Nosotros",
+    "services": "Servicios",
+    "gallery": "Galería",
+    "blog": "Blog",
+    "contact": "Contacto"
+  },
+  "hero": {
+    "title": "Damos vida a tus espacios",
+    "subtitle": "Transformamos el caos en armonía y bienestar",
+    "cta": "Descubre nuestros servicios",
+    "contactCta": "Contáctanos"
+  },
+  "home": {
+    "whatWeDo": {
+      "title": "Qué Hacemos",
+      "description": "Casa in Ordine es tu compañero para crear ambientes ordenados, funcionales y armoniosos. Con un enfoque personalizado, te ayudamos a liberar tus espacios de lo superfluo y a organizar cada rincón de tu hogar.",
+      "learnMore": "Descubre más"
+    },
+    "servicesPreview": {
+      "title": "Nuestros Servicios",
+      "decluttering": {
+        "title": "Decluttering",
+        "description": "Libera tus espacios de lo superfluo y redescubre el placer de vivir en un ambiente ligero y ordenado."
+      },
+      "organizing": {
+        "title": "Home Organizing",
+        "description": "Organizamos cada ambiente de tu hogar con soluciones prácticas y personalizadas."
+      },
+      "consulting": {
+        "title": "Consultoría",
+        "description": "Sesiones personalizadas para guiarte en el proceso de reorganización de tus espacios."
+      }
+    },
+    "galleryPreview": {
+      "title": "Nuestros Trabajos",
+      "viewAll": "Ver toda la galería"
+    },
+    "testimonials": {
+      "title": "Lo Que Dicen Nuestros Clientes",
+      "items": [
+        {
+          "text": "Casa in Ordine transformó completamente mi hogar. ¡No puedo creer cuánto espacio tenía escondido bajo todo ese desorden!",
+          "author": "María R.",
+          "location": "Roma, Prati"
+        },
+        {
+          "text": "Profesionales, amables e increíblemente eficientes. Mi armario nunca estuvo tan organizado. ¡Muy recomendados!",
+          "author": "Lucía T.",
+          "location": "Roma, Trastevere"
+        },
+        {
+          "text": "Gracias al servicio de consultoría aprendí a mantener el orden por mi cuenta. Una inversión que vale cada centavo.",
+          "author": "Francesca M.",
+          "location": "Roma, EUR"
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "¿Listo para transformar tus espacios?",
+      "description": "Contáctanos hoy para una consulta gratuita y descubre cómo podemos ayudarte a vivir mejor.",
+      "cta": "Solicita una consulta"
+    }
+  },
+  "about": {
+    "title": "Nosotros",
+    "metaDescription": "Descubre la historia y la misión de Casa in Ordine, el servicio profesional de decluttering y home organizing en Roma.",
+    "heroTitle": "Nuestra Historia",
+    "heroSubtitle": "Pasión por el orden, amor por los espacios",
+    "story": {
+      "title": "Nuestra Historia",
+      "p1": "Casa in Ordine nace de la pasión por los espacios bien organizados y la convicción de que un ambiente ordenado puede mejorar significativamente la calidad de vida.",
+      "p2": "Con años de experiencia en el sector del decluttering y el home organizing, ayudamos a familias y profesionales en Roma a transformar sus hogares en lugares de paz y funcionalidad.",
+      "p3": "Nuestro enfoque es personalizado: escuchamos las necesidades de cada cliente y creamos soluciones a medida que reflejen su estilo de vida."
+    },
+    "mission": {
+      "title": "Nuestra Misión",
+      "values": [
+        {
+          "title": "Armonía",
+          "description": "Creamos espacios que promueven el bienestar y la serenidad, donde cada objeto tiene su lugar."
+        },
+        {
+          "title": "Sostenibilidad",
+          "description": "Promovemos un enfoque consciente del consumo, favoreciendo la reutilización y la donación."
+        },
+        {
+          "title": "Personalización",
+          "description": "Cada hogar es único. Creamos soluciones a medida para cada espacio y cada necesidad."
+        }
+      ]
+    },
+    "methodology": {
+      "title": "Nuestro Método",
+      "steps": [
+        {
+          "title": "Escuchar",
+          "description": "Comprendemos tus necesidades y evaluamos el estado actual de tus espacios."
+        },
+        {
+          "title": "Planificar",
+          "description": "Creamos un plan de acción personalizado con objetivos claros y alcanzables."
+        },
+        {
+          "title": "Actuar",
+          "description": "Trabajamos juntos para despejar, organizar y optimizar cada ambiente."
+        },
+        {
+          "title": "Mantener",
+          "description": "Te proporcionamos las herramientas y estrategias para mantener el orden en el tiempo."
+        }
+      ]
+    }
+  },
+  "services": {
+    "title": "Nuestros Servicios",
+    "metaDescription": "Descubre los servicios profesionales de decluttering, home organizing y consultoría ofrecidos por Casa in Ordine en Roma.",
+    "heroTitle": "Servicios Profesionales",
+    "heroSubtitle": "Soluciones a medida para cada necesidad",
+    "items": [
+      {
+        "title": "Decluttering",
+        "description": "El decluttering es el primer paso hacia un hogar organizado. Te ayudamos a liberar tus espacios de los objetos que ya no usas, creando un ambiente más ligero y respirable.",
+        "features": [
+          "Selección y categorización de objetos",
+          "Apoyo emocional en el proceso de separación",
+          "Donación y eliminación responsable",
+          "Resultados visibles en pocas horas"
+        ]
+      },
+      {
+        "title": "Home Organizing",
+        "description": "Organizamos cada ambiente de tu hogar con sistemas prácticos y funcionales. De la cocina al armario, creamos soluciones que simplifican la vida cotidiana.",
+        "features": [
+          "Organización de armarios y guardarropas",
+          "Optimización de cocina y despensa",
+          "Organización de habitaciones infantiles",
+          "Sistemas de archivo de documentos"
+        ]
+      },
+      {
+        "title": "Consultoría Personalizada",
+        "description": "Sesiones individuales de consultoría para guiarte en el proceso de reorganización. Aprenderás técnicas y estrategias para mantener el orden de forma autónoma.",
+        "features": [
+          "Sesiones individuales o grupales",
+          "Plan de acción personalizado",
+          "Técnicas de organización avanzadas",
+          "Soporte continuo por email"
+        ]
+      },
+      {
+        "title": "Mantenimiento",
+        "description": "Un servicio continuo para mantener el orden alcanzado. Visitas periódicas para verificar el sistema organizativo y realizar posibles mejoras.",
+        "features": [
+          "Visitas periódicas programadas",
+          "Actualización de sistemas organizativos",
+          "Soporte para cambios de temporada",
+          "Consulta telefónica ilimitada"
+        ]
+      }
+    ],
+    "cta": {
+      "title": "Comienza tu camino hacia el orden",
+      "description": "Contáctanos para un presupuesto gratuito y personalizado.",
+      "button": "Solicita un presupuesto"
+    }
+  },
+  "gallery": {
+    "title": "Galería",
+    "metaDescription": "Mira nuestros trabajos de decluttering y home organizing en Roma. Antes y después de las transformaciones de espacios.",
+    "heroTitle": "Nuestros Trabajos",
+    "heroSubtitle": "Transformaciones que hablan por sí solas",
+    "filters": {
+      "all": "Todos",
+      "kitchen": "Cocina",
+      "closet": "Armario",
+      "living": "Salón",
+      "bathroom": "Baño",
+      "office": "Oficina"
+    },
+    "noImages": "No se encontraron imágenes para esta categoría."
+  },
+  "blog": {
+    "title": "Blog",
+    "metaDescription": "Consejos, guías e inspiración para organizar tu hogar. El blog de Casa in Ordine.",
+    "heroTitle": "Nuestro Blog",
+    "heroSubtitle": "Consejos e inspiración para vivir mejor",
+    "comingSoon": "¡Nuevos artículos próximamente!",
+    "comingSoonDescription": "Estamos preparando contenido interesante para ayudarte a organizar tu hogar. ¡Vuelve pronto!",
+    "posts": [
+      {
+        "title": "5 Consejos para Empezar el Decluttering",
+        "excerpt": "Descubre nuestros consejos prácticos para iniciar el proceso de decluttering en tu hogar, comenzando por lo básico.",
+        "date": "Próximamente",
+        "category": "Decluttering"
+      },
+      {
+        "title": "Cómo Organizar el Armario Perfecto",
+        "excerpt": "Guía completa para organizar tu armario de forma funcional y mantener el orden en el tiempo.",
+        "date": "Próximamente",
+        "category": "Organización"
+      },
+      {
+        "title": "La Cocina Organizada: Guía Práctica",
+        "excerpt": "Transforma tu cocina en un espacio eficiente con nuestros consejos de organización profesional.",
+        "date": "Próximamente",
+        "category": "Organización"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contacto",
+    "metaDescription": "Contacta Casa in Ordine para una consulta gratuita de decluttering y home organizing en Roma.",
+    "heroTitle": "Contáctanos",
+    "heroSubtitle": "Estamos aquí para ayudarte",
+    "form": {
+      "name": "Nombre Completo",
+      "email": "Correo Electrónico",
+      "phone": "Teléfono",
+      "service": "Servicio de Interés",
+      "serviceOptions": {
+        "placeholder": "Selecciona un servicio",
+        "decluttering": "Decluttering",
+        "organizing": "Home Organizing",
+        "consulting": "Consultoría",
+        "maintenance": "Mantenimiento",
+        "other": "Otro"
+      },
+      "message": "Mensaje",
+      "submit": "Enviar Mensaje",
+      "sending": "Enviando...",
+      "success": "¡Mensaje enviado con éxito! Te responderemos lo antes posible.",
+      "error": "Ocurrió un error. Inténtalo de nuevo más tarde."
+    },
+    "info": {
+      "title": "Información",
+      "location": "Roma, Italia",
+      "email": "info@casainordine.it",
+      "phone": "+39 06 1234567",
+      "hours": "Lun - Vie: 9:00 - 18:00",
+      "social": "Síguenos en Instagram"
+    }
+  },
+  "footer": {
+    "description": "Servicio profesional de decluttering y organización del hogar en Roma. Transformamos tus espacios en ambientes ordenados y funcionales.",
+    "quickLinks": "Enlaces Rápidos",
+    "contactInfo": "Contacto",
+    "followUs": "Síguenos",
+    "rights": "Todos los derechos reservados.",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos y Condiciones"
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "description": "La página que buscas no existe o ha sido movida.",
+    "backHome": "Volver al inicio"
+  }
+}

@@ -1,0 +1,264 @@
+{
+  "metadata": {
+    "title": "Casa in Ordine – Decluttering & Home Organizing in Rome",
+    "description": "Professional decluttering and home organizing service in Rome, Italy. We transform your spaces into tidy and functional environments."
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "services": "Services",
+    "gallery": "Gallery",
+    "blog": "Blog",
+    "contact": "Contact"
+  },
+  "hero": {
+    "title": "We bring your spaces to life",
+    "subtitle": "Transforming chaos into harmony and well-being",
+    "cta": "Discover our services",
+    "contactCta": "Contact us"
+  },
+  "home": {
+    "whatWeDo": {
+      "title": "What We Do",
+      "description": "Casa in Ordine is your partner in creating tidy, functional, and harmonious spaces. With a personalized approach, we help you free your spaces from clutter and organize every corner of your home.",
+      "learnMore": "Learn more"
+    },
+    "servicesPreview": {
+      "title": "Our Services",
+      "decluttering": {
+        "title": "Decluttering",
+        "description": "Free your spaces from excess and rediscover the joy of living in a light and tidy environment."
+      },
+      "organizing": {
+        "title": "Home Organizing",
+        "description": "We organize every room in your home with practical and personalized solutions."
+      },
+      "consulting": {
+        "title": "Consulting",
+        "description": "Personalized sessions to guide you through the process of reorganizing your spaces."
+      }
+    },
+    "galleryPreview": {
+      "title": "Our Work",
+      "viewAll": "View all gallery"
+    },
+    "testimonials": {
+      "title": "What Our Clients Say",
+      "items": [
+        {
+          "text": "Casa in Ordine completely transformed my home. I can't believe how much space I had hidden under all that clutter!",
+          "author": "Maria R.",
+          "location": "Rome, Prati"
+        },
+        {
+          "text": "Professional, kind, and incredibly efficient. My closet has never been this organized. Highly recommended!",
+          "author": "Lucia T.",
+          "location": "Rome, Trastevere"
+        },
+        {
+          "text": "Thanks to the consulting service, I learned how to maintain order on my own. An investment worth every penny.",
+          "author": "Francesca M.",
+          "location": "Rome, EUR"
+        }
+      ]
+    },
+    "finalCta": {
+      "title": "Ready to transform your spaces?",
+      "description": "Contact us today for a free consultation and discover how we can help you live better.",
+      "cta": "Request a consultation"
+    }
+  },
+  "about": {
+    "title": "About Us",
+    "metaDescription": "Discover the story and mission of Casa in Ordine, the professional decluttering and home organizing service in Rome.",
+    "heroTitle": "Our Story",
+    "heroSubtitle": "Passion for order, love for spaces",
+    "story": {
+      "title": "Our Story",
+      "p1": "Casa in Ordine was born from a passion for well-organized spaces and the belief that a tidy environment can significantly improve quality of life.",
+      "p2": "With years of experience in decluttering and home organizing, we help families and professionals in Rome transform their homes into places of peace and functionality.",
+      "p3": "Our approach is personalized: we listen to each client's needs and create tailored solutions that reflect their lifestyle."
+    },
+    "mission": {
+      "title": "Our Mission",
+      "values": [
+        {
+          "title": "Harmony",
+          "description": "We create spaces that promote well-being and serenity, where every object has its place."
+        },
+        {
+          "title": "Sustainability",
+          "description": "We promote a conscious approach to consumption, encouraging reuse and donation."
+        },
+        {
+          "title": "Personalization",
+          "description": "Every home is unique. We create tailored solutions for every space and every need."
+        }
+      ]
+    },
+    "methodology": {
+      "title": "Our Method",
+      "steps": [
+        {
+          "title": "Listen",
+          "description": "We understand your needs and assess the current state of your spaces."
+        },
+        {
+          "title": "Plan",
+          "description": "We create a personalized action plan with clear and achievable goals."
+        },
+        {
+          "title": "Act",
+          "description": "We work together to declutter, organize, and optimize every room."
+        },
+        {
+          "title": "Maintain",
+          "description": "We provide you with tools and strategies to maintain order over time."
+        }
+      ]
+    }
+  },
+  "services": {
+    "title": "Our Services",
+    "metaDescription": "Discover the professional decluttering, home organizing, and consulting services offered by Casa in Ordine in Rome.",
+    "heroTitle": "Professional Services",
+    "heroSubtitle": "Tailored solutions for every need",
+    "items": [
+      {
+        "title": "Decluttering",
+        "description": "Decluttering is the first step toward an organized home. We help you free your spaces from items you no longer use, creating a lighter and more breathable environment.",
+        "features": [
+          "Selection and categorization of items",
+          "Emotional support during the separation process",
+          "Responsible donation and disposal",
+          "Visible results in just a few hours"
+        ]
+      },
+      {
+        "title": "Home Organizing",
+        "description": "We organize every room in your home with practical and functional systems. From the kitchen to the closet, we create solutions that simplify daily life.",
+        "features": [
+          "Closet and wardrobe organization",
+          "Kitchen and pantry optimization",
+          "Children's room organization",
+          "Document filing systems"
+        ]
+      },
+      {
+        "title": "Personalized Consulting",
+        "description": "Individual consulting sessions to guide you through the reorganization process. You'll learn techniques and strategies to maintain order independently.",
+        "features": [
+          "Individual or group sessions",
+          "Personalized action plan",
+          "Advanced organizing techniques",
+          "Ongoing email support"
+        ]
+      },
+      {
+        "title": "Maintenance",
+        "description": "An ongoing service to maintain the order achieved. Periodic visits to check the organizational system and make any improvements.",
+        "features": [
+          "Scheduled periodic visits",
+          "Organizational system updates",
+          "Seasonal change support",
+          "Unlimited phone consultation"
+        ]
+      }
+    ],
+    "cta": {
+      "title": "Start your journey to order",
+      "description": "Contact us for a free, personalized quote.",
+      "button": "Request a quote"
+    }
+  },
+  "gallery": {
+    "title": "Gallery",
+    "metaDescription": "See our decluttering and home organizing work in Rome. Before and after space transformations.",
+    "heroTitle": "Our Work",
+    "heroSubtitle": "Transformations that speak for themselves",
+    "filters": {
+      "all": "All",
+      "kitchen": "Kitchen",
+      "closet": "Closet",
+      "living": "Living Room",
+      "bathroom": "Bathroom",
+      "office": "Office"
+    },
+    "noImages": "No images found for this category."
+  },
+  "blog": {
+    "title": "Blog",
+    "metaDescription": "Tips, guides, and inspiration for organizing your home. The Casa in Ordine blog.",
+    "heroTitle": "Our Blog",
+    "heroSubtitle": "Tips and inspiration for better living",
+    "comingSoon": "New articles coming soon!",
+    "comingSoonDescription": "We're preparing interesting content to help you organize your home. Come back soon!",
+    "posts": [
+      {
+        "title": "5 Tips to Start Decluttering",
+        "excerpt": "Discover our practical tips for starting the decluttering journey in your home, starting from the basics.",
+        "date": "Coming soon",
+        "category": "Decluttering"
+      },
+      {
+        "title": "How to Organize the Perfect Closet",
+        "excerpt": "Complete guide to organizing your closet functionally and maintaining order over time.",
+        "date": "Coming soon",
+        "category": "Organizing"
+      },
+      {
+        "title": "The Organized Kitchen: A Practical Guide",
+        "excerpt": "Transform your kitchen into an efficient space with our professional organizing tips.",
+        "date": "Coming soon",
+        "category": "Organizing"
+      }
+    ]
+  },
+  "contact": {
+    "title": "Contact",
+    "metaDescription": "Contact Casa in Ordine for a free decluttering and home organizing consultation in Rome.",
+    "heroTitle": "Contact Us",
+    "heroSubtitle": "We're here to help",
+    "form": {
+      "name": "Full Name",
+      "email": "Email",
+      "phone": "Phone",
+      "service": "Service of Interest",
+      "serviceOptions": {
+        "placeholder": "Select a service",
+        "decluttering": "Decluttering",
+        "organizing": "Home Organizing",
+        "consulting": "Consulting",
+        "maintenance": "Maintenance",
+        "other": "Other"
+      },
+      "message": "Message",
+      "submit": "Send Message",
+      "sending": "Sending...",
+      "success": "Message sent successfully! We'll get back to you soon.",
+      "error": "An error occurred. Please try again later."
+    },
+    "info": {
+      "title": "Information",
+      "location": "Rome, Italy",
+      "email": "info@casainordine.it",
+      "phone": "+39 06 1234567",
+      "hours": "Mon - Fri: 9:00 AM - 6:00 PM",
+      "social": "Follow us on Instagram"
+    }
+  },
+  "footer": {
+    "description": "Professional decluttering and home organizing service in Rome. We transform your spaces into tidy and functional environments.",
+    "quickLinks": "Quick Links",
+    "contactInfo": "Contact",
+    "followUs": "Follow Us",
+    "rights": "All rights reserved.",
+    "privacy": "Privacy Policy",
+    "terms": "Terms & Conditions"
+  },
+  "notFound": {
+    "title": "Page not found",
+    "description": "The page you're looking for doesn't exist or has been moved.",
+    "backHome": "Back to home"
+  }
+}
