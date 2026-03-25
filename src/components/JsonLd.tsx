@@ -18,7 +18,7 @@ export default function JsonLd() {
     },
     serviceType: ['Decluttering', 'Home Organizing', 'Professional Organizing'],
     openingHours: 'Mo-Fr 09:00-18:00',
-    sameAs: ['https://instagram.com/casainordine'],
+    sameAs: ['https://www.instagram.com/casainordine_it/'],
   };
 
   return (

@@ -26,7 +26,7 @@ export default function ContactPage() {
 
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12">
+          <div className="grid md:grid-cols-2 gap-12 items-start">
             {/* Contact Form */}
             <div>
               <h2 className="text-2xl font-bold text-gray-900 mb-6">{t('heroTitle')}</h2>
@@ -99,7 +99,7 @@ export default function ContactPage() {
                   </div>
                   <div>
                     <a
-                      href="https://instagram.com/casainordine"
+                      href="https://www.instagram.com/casainordine_it/"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="font-medium text-primary hover:text-primary-dark transition-colors"
@@ -107,16 +107,6 @@ export default function ContactPage() {
                       {t('info.social')}
                     </a>
                   </div>
-                </div>
-              </div>
-
-              {/* Map placeholder */}
-              <div className="mt-8 bg-secondary rounded-xl h-64 flex items-center justify-center">
-                <div className="text-center">
-                  <svg className="w-12 h-12 text-primary/30 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
-                  </svg>
-                  <p className="text-sm text-accent">Roma, Italia</p>
                 </div>
               </div>
             </div>

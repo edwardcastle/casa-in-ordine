@@ -64,7 +64,7 @@ export default function Footer() {
             <div className="mt-4">
               <h4 className="text-sm font-semibold mb-2">{t('footer.followUs')}</h4>
               <a
-                href="https://instagram.com/casainordine"
+                href="https://www.instagram.com/casainordine_it/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-2 text-sm text-white/80 hover:text-white transition-colors"
