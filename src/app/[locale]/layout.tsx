@@ -1,0 +1,99 @@
+import type { Metadata } from 'next';
+import { Montserrat } from 'next/font/google';
+import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { getMessages } from 'next-intl/server';
+import { notFound } from 'next/navigation';
+import { routing } from '@/i18n/routing';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import JsonLd from '@/components/JsonLd';
+
+const montserrat = Montserrat({
+  subsets: ['latin'],
+  variable: '--font-montserrat',
+  display: 'swap',
+});
+
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const messages = (await import(`../../../messages/${locale}.json`)).default;
+
+  return {
+    title: {
+      default: messages.metadata.title,
+      template: `%s | Casa in Ordine`,
+    },
+    description: messages.metadata.description,
+    metadataBase: new URL('https://casainordine.it'),
+    icons: {
+      icon: [
+        { url: '/favicon_32x32.png', sizes: '32x32', type: 'image/png' },
+        { url: '/favicon_192x192.png', sizes: '192x192', type: 'image/png' },
+      ],
+      apple: [
+        { url: '/favicon_180x180.png', sizes: '180x180', type: 'image/png' },
+      ],
+    },
+    alternates: {
+      canonical: `/${locale}`,
+      languages: {
+        it: '/it',
+        en: '/en',
+        es: '/es',
+      },
+    },
+    openGraph: {
+      title: messages.metadata.title,
+      description: messages.metadata.description,
+      url: `https://casainordine.it/${locale}`,
+      siteName: 'Casa in Ordine',
+      locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
+      type: 'website',
+      images: [
+        {
+          url: '/images/logo/logo_1200x630.png',
+          width: 1200,
+          height: 630,
+          alt: 'Casa in Ordine',
+        },
+      ],
+    },
+  };
+}
+
+export default async function LocaleLayout({
+  children,
+  params,
+}: {
+  children: React.ReactNode;
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
+  const messages = await getMessages();
+
+  return (
+    <html lang={locale}>
+      <body className={`${montserrat.variable} font-sans antialiased`}>
+        <JsonLd />
+        <NextIntlClientProvider messages={messages}>
+          <Header />
+          <main className="min-h-screen">{children}</main>
+          <Footer />
+        </NextIntlClientProvider>
+      </body>
+    </html>
+  );
+}
