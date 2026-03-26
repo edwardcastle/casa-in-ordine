@@ -32,6 +32,13 @@ export async function generateMetadata({
       template: `%s | Casa in Ordine`,
     },
     description: messages.metadata.description,
+    keywords: [
+      'decluttering', 'home organizing', 'organizzazione casa', 'Roma',
+      'professional organizer', 'riordino', 'casa in ordine',
+      'organizzatore professionale', 'consulenza decluttering',
+    ],
+    authors: [{ name: 'Casa in Ordine' }],
+    creator: 'Casa in Ordine',
     metadataBase: new URL('https://casainordine.com'),
     icons: {
       icon: [
@@ -48,6 +55,7 @@ export async function generateMetadata({
         it: '/it',
         en: '/en',
         es: '/es',
+        'x-default': '/it',
       },
     },
     openGraph: {
@@ -62,9 +70,26 @@ export async function generateMetadata({
           url: '/images/logo/logo_1200x630.png',
           width: 1200,
           height: 630,
-          alt: 'Casa in Ordine',
+          alt: 'Casa in Ordine - Decluttering e Home Organizing a Roma',
         },
       ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: messages.metadata.title,
+      description: messages.metadata.description,
+      images: ['/images/logo/logo_1200x630.png'],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        'max-video-preview': -1,
+        'max-image-preview': 'large',
+        'max-snippet': -1,
+      },
     },
   };
 }
