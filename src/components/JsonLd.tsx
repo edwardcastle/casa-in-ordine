@@ -5,7 +5,7 @@ export default function JsonLd() {
     name: 'Casa in Ordine',
     description: 'Servizio professionale di decluttering e home organizing a Roma',
     url: 'https://casainordine.com',
-    telephone: '+393483445856895',
+    telephone: '+393445856895',
     email: 'info@casainordine.com',
     address: {
       '@type': 'PostalAddress',
