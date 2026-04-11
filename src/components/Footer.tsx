@@ -34,7 +34,7 @@ export default function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">{t('footer.quickLinks')}</h4>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.quickLinks')}</h3>
             <nav className="flex flex-col gap-2">
               {navLinks.map((link) => (
                 <Link
@@ -50,7 +50,7 @@ export default function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-4">{t('footer.contactInfo')}</h4>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.contactInfo')}</h3>
             <div className="flex flex-col gap-2 text-sm text-white/80">
               <p>{t('contact.info.location')}</p>
               <a href={`mailto:${t('contact.info.email')}`} className="hover:text-white transition-colors">
@@ -62,7 +62,7 @@ export default function Footer() {
               <p>{t('contact.info.hours')}</p>
             </div>
             <div className="mt-4">
-              <h4 className="text-sm font-semibold mb-2">{t('footer.followUs')}</h4>
+              <h3 className="text-sm font-semibold mb-2">{t('footer.followUs')}</h3>
               <a
                 href="https://www.instagram.com/casainordine_it/"
                 target="_blank"
@@ -79,11 +79,11 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 pt-8 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-white/60">
+        <div className="mt-8 pt-8 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-white/80">
           <p>&copy; {new Date().getFullYear()} Casa in Ordine. {t('footer.rights')}</p>
           <div className="flex gap-4">
-            <Link href={`/${locale}`} className="hover:text-white transition-colors">{t('footer.privacy')}</Link>
-            <Link href={`/${locale}`} className="hover:text-white transition-colors">{t('footer.terms')}</Link>
+            <Link href={`/${locale}`} className="text-white/80 hover:text-white transition-colors">{t('footer.privacy')}</Link>
+            <Link href={`/${locale}`} className="text-white/80 hover:text-white transition-colors">{t('footer.terms')}</Link>
           </div>
         </div>
       </div>
