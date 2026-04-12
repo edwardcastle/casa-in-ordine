@@ -219,6 +219,8 @@
     "metaDescription": "Contact Casa in Ordine for a free decluttering and home organizing consultation in Rome.",
     "heroTitle": "Contact Us",
     "heroSubtitle": "We're here to help",
+    "quoteTitle": "Digital Survey",
+    "quoteSubtitle": "Three questions to get to know each other, then we define your perfect space.",
     "form": {
       "name": "Full Name",
       "email": "Email",
@@ -255,6 +257,88 @@
     "rights": "All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms & Conditions"
+  },
+  "quote": {
+    "title": "Digital Survey",
+    "subtitle": "Three questions to get to know each other, then we define your perfect space.",
+    "quizBadge": "CLUTTER TEST",
+    "quiz": {
+      "q1": {
+        "question": "1. How much time do you spend looking for lost items every day?",
+        "options": ["Less than 5 minutes", "10 to 20 minutes", "Too much! I can never find anything"]
+      },
+      "q2": {
+        "question": "2. What is your predominant feeling when you see the mess?",
+        "options": ["Indifference", "Slight frustration", "Anxiety and overwhelm"]
+      },
+      "q3": {
+        "question": "3. Would you avoid inviting someone home because of the clutter?",
+        "options": ["Never", "Sometimes", "Often, I feel embarrassed"]
+      }
+    },
+    "categoryTitle": "Which area would you like to transform?",
+    "categorySubtitle": "Now that we understand the need, let's define the area of intervention",
+    "categories": {
+      "armadio": "Closet",
+      "cucina": "Kitchen",
+      "ufficio": "Office",
+      "bagno": "Bathroom",
+      "garage": "Garage",
+      "trasloco": "Moving"
+    },
+    "detailsTitle": "Space Analysis",
+    "detailsSubtitle": "Let's define the size of the project",
+    "fields": {
+      "armadio": {
+        "doors": "Number of Doors",
+        "drawers": "Internal Drawers",
+        "height": "Mezzanine Height (meters)"
+      },
+      "cucina": {
+        "modules": "Number of Modules/Cabinets",
+        "pantry": "Separate Pantry (Yes=1, No=0)",
+        "counters": "Countertops/Islands"
+      },
+      "ufficio": {
+        "desks": "Desk Stations",
+        "documents": "Linear Meters of Documents"
+      },
+      "bagno": {
+        "cabinets": "Cabinets/Under-sink",
+        "shelves": "Open Shelves"
+      },
+      "garage": {
+        "racks": "Shelf Bays",
+        "tools": "Tools/Workshop Area (1-5)"
+      },
+      "trasloco": {
+        "boxes": "Estimated Number of Boxes",
+        "rooms": "Rooms to Set Up"
+      }
+    },
+    "complexityTitle": "Challenge Level",
+    "complexitySubtitle": "How deep is the clutter in this area?",
+    "complexity": {
+      "light": { "title": "Light", "description": "Just needs a new method" },
+      "moderate": { "title": "Moderate", "description": "Obvious accumulation of items" },
+      "critical": { "title": "Critical", "description": "Difficulty accessing or using the space" }
+    },
+    "extrasTitle": "Additional Services",
+    "extras": {
+      "materials": "Organizer Kit",
+      "materialsDesc": "We bring organizers and dividers",
+      "dump": "Disposal",
+      "dumpDesc": "We handle waste disposal and donations"
+    },
+    "estimateLabel": "Your estimated investment",
+    "disclaimerTitle": "Please Note",
+    "disclaimerText": "The quote above is purely indicative. Our team will prepare a fair and detailed quote within 24 hours.",
+    "whatsappButton": "Send Details & Book",
+    "whatsappIntro": "Hello! I completed the digital survey on your website.",
+    "estimate": "Estimate",
+    "back": "Back",
+    "next": "Next",
+    "restart": "Start over"
   },
   "notFound": {
     "title": "Page not found",

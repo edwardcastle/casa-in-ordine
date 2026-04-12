@@ -219,6 +219,8 @@
     "metaDescription": "Contatta Casa in Ordine per una consulenza gratuita di decluttering e home organizing a Roma.",
     "heroTitle": "Contattaci",
     "heroSubtitle": "Siamo qui per aiutarti",
+    "quoteTitle": "Sopralluogo Digitale",
+    "quoteSubtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto.",
     "form": {
       "name": "Nome e Cognome",
       "email": "Email",
@@ -255,6 +257,88 @@
     "rights": "Tutti i diritti riservati.",
     "privacy": "Privacy Policy",
     "terms": "Termini e Condizioni"
+  },
+  "quote": {
+    "title": "Sopralluogo Digitale",
+    "subtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto.",
+    "quizBadge": "TEST DEL DISORDINE",
+    "quiz": {
+      "q1": {
+        "question": "1. Quanto tempo passi a cercare oggetti smarriti ogni giorno?",
+        "options": ["Meno di 5 minuti", "Dai 10 ai 20 minuti", "Troppo! Non trovo mai nulla"]
+      },
+      "q2": {
+        "question": "2. Qual è la tua sensazione predominante nel vedere il disordine?",
+        "options": ["Indifferenza", "Leggera frustrazione", "Ansia e sopraffazione"]
+      },
+      "q3": {
+        "question": "3. Rinunceresti a invitare qualcuno a casa per colpa del caos?",
+        "options": ["Mai", "Qualche volta", "Spesso, mi vergogno"]
+      }
+    },
+    "categoryTitle": "Quale zona desideri far rifiorire?",
+    "categorySubtitle": "Ora che abbiamo capito il bisogno, definiamo l'area di intervento",
+    "categories": {
+      "armadio": "Armadio",
+      "cucina": "Cucina",
+      "ufficio": "Ufficio",
+      "bagno": "Bagno",
+      "garage": "Garage",
+      "trasloco": "Trasloco"
+    },
+    "detailsTitle": "Analisi degli spazi",
+    "detailsSubtitle": "Definiamo la grandezza del progetto",
+    "fields": {
+      "armadio": {
+        "doors": "Numero Ante",
+        "drawers": "Cassetti Interni",
+        "height": "Altezza Soppalco (metri)"
+      },
+      "cucina": {
+        "modules": "Numero Moduli/Pensili",
+        "pantry": "Dispensa Separata (Sì=1, No=0)",
+        "counters": "Piani Lavoro/Isole"
+      },
+      "ufficio": {
+        "desks": "Postazioni Scrivania",
+        "documents": "Metri Lineari Documenti"
+      },
+      "bagno": {
+        "cabinets": "Mobiletti/Sottolavabo",
+        "shelves": "Scaffali a Vista"
+      },
+      "garage": {
+        "racks": "Campate Scaffali",
+        "tools": "Area Attrezzi/Workshop (1-5)"
+      },
+      "trasloco": {
+        "boxes": "Stima Numero Scatoloni",
+        "rooms": "Numero Stanze da Allestire"
+      }
+    },
+    "complexityTitle": "Livello di sfida",
+    "complexitySubtitle": "Quanto è profondo il disordine in quest'area?",
+    "complexity": {
+      "light": { "title": "Lieve", "description": "Serve solo un nuovo metodo" },
+      "moderate": { "title": "Moderato", "description": "Accumulo evidente di oggetti" },
+      "critical": { "title": "Critico", "description": "Difficoltà di accesso o uso" }
+    },
+    "extrasTitle": "Servizi Aggiuntivi",
+    "extras": {
+      "materials": "Fornitura Kit",
+      "materialsDesc": "Portiamo noi organizer e divisori",
+      "dump": "Smaltimento",
+      "dumpDesc": "Gestiamo noi il conferimento rifiuti/donazioni"
+    },
+    "estimateLabel": "Il tuo investimento stimato",
+    "disclaimerTitle": "Nota Bene",
+    "disclaimerText": "Il preventivo sopra indicato è puramente indicativo. Il nostro team elaborerà entro 24 ore un preventivo equo e studiato.",
+    "whatsappButton": "Invia Dettagli & Prenota",
+    "whatsappIntro": "Ciao! Ho completato il sopralluogo digitale sul vostro sito.",
+    "estimate": "Stima",
+    "back": "Indietro",
+    "next": "Avanti",
+    "restart": "Ricomincia da capo"
   },
   "notFound": {
     "title": "Pagina non trovata",

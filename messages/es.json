@@ -219,6 +219,8 @@
     "metaDescription": "Contacta Casa in Ordine para una consulta gratuita de decluttering y home organizing en Roma.",
     "heroTitle": "Contáctanos",
     "heroSubtitle": "Estamos aquí para ayudarte",
+    "quoteTitle": "Inspección Digital",
+    "quoteSubtitle": "Tres preguntas para conocernos, luego definimos tu espacio perfecto.",
     "form": {
       "name": "Nombre Completo",
       "email": "Correo Electrónico",
@@ -255,6 +257,88 @@
     "rights": "Todos los derechos reservados.",
     "privacy": "Política de Privacidad",
     "terms": "Términos y Condiciones"
+  },
+  "quote": {
+    "title": "Inspección Digital",
+    "subtitle": "Tres preguntas para conocernos, luego definimos tu espacio perfecto.",
+    "quizBadge": "TEST DEL DESORDEN",
+    "quiz": {
+      "q1": {
+        "question": "1. ¿Cuánto tiempo pasas buscando objetos perdidos cada día?",
+        "options": ["Menos de 5 minutos", "De 10 a 20 minutos", "¡Demasiado! Nunca encuentro nada"]
+      },
+      "q2": {
+        "question": "2. ¿Cuál es tu sensación predominante al ver el desorden?",
+        "options": ["Indiferencia", "Ligera frustración", "Ansiedad y agobio"]
+      },
+      "q3": {
+        "question": "3. ¿Evitarías invitar a alguien a casa por culpa del caos?",
+        "options": ["Nunca", "A veces", "A menudo, me da vergüenza"]
+      }
+    },
+    "categoryTitle": "¿Qué zona quieres transformar?",
+    "categorySubtitle": "Ahora que entendemos la necesidad, definamos el área de intervención",
+    "categories": {
+      "armadio": "Armario",
+      "cucina": "Cocina",
+      "ufficio": "Oficina",
+      "bagno": "Baño",
+      "garage": "Garaje",
+      "trasloco": "Mudanza"
+    },
+    "detailsTitle": "Análisis de espacios",
+    "detailsSubtitle": "Definamos el tamaño del proyecto",
+    "fields": {
+      "armadio": {
+        "doors": "Número de puertas",
+        "drawers": "Cajones internos",
+        "height": "Altura del altillo (metros)"
+      },
+      "cucina": {
+        "modules": "Número de módulos/armarios",
+        "pantry": "Despensa separada (Sí=1, No=0)",
+        "counters": "Encimeras/Islas"
+      },
+      "ufficio": {
+        "desks": "Puestos de escritorio",
+        "documents": "Metros lineales de documentos"
+      },
+      "bagno": {
+        "cabinets": "Muebles/Bajo lavabo",
+        "shelves": "Estantes a la vista"
+      },
+      "garage": {
+        "racks": "Tramos de estanterías",
+        "tools": "Área de herramientas/taller (1-5)"
+      },
+      "trasloco": {
+        "boxes": "Número estimado de cajas",
+        "rooms": "Habitaciones a montar"
+      }
+    },
+    "complexityTitle": "Nivel de desafío",
+    "complexitySubtitle": "¿Qué tan profundo es el desorden en esta área?",
+    "complexity": {
+      "light": { "title": "Leve", "description": "Solo necesita un nuevo método" },
+      "moderate": { "title": "Moderado", "description": "Acumulación evidente de objetos" },
+      "critical": { "title": "Crítico", "description": "Dificultad de acceso o uso" }
+    },
+    "extrasTitle": "Servicios Adicionales",
+    "extras": {
+      "materials": "Kit de Organización",
+      "materialsDesc": "Traemos organizadores y divisores",
+      "dump": "Eliminación",
+      "dumpDesc": "Gestionamos la eliminación de residuos y donaciones"
+    },
+    "estimateLabel": "Tu inversión estimada",
+    "disclaimerTitle": "Nota",
+    "disclaimerText": "El presupuesto indicado es puramente orientativo. Nuestro equipo elaborará un presupuesto justo y detallado en 24 horas.",
+    "whatsappButton": "Enviar Detalles y Reservar",
+    "whatsappIntro": "¡Hola! He completado la inspección digital en su sitio web.",
+    "estimate": "Estimación",
+    "back": "Atrás",
+    "next": "Siguiente",
+    "restart": "Empezar de nuevo"
   },
   "notFound": {
     "title": "Página no encontrada",

@@ -121,7 +121,7 @@ export default function HomePage() {
       </section>
 
       {/* Final CTA */}
-      <section className="py-16 md:py-24 bg-primary">
+      <section className="py-16 md:py-24 bg-foreground">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
             {t('home.finalCta.title')}
@@ -131,7 +131,7 @@ export default function HomePage() {
           </p>
           <Link
             href={`/${locale}/contact`}
-            className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-secondary-light transition-colors duration-200 shadow-lg"
+            className="inline-flex items-center justify-center px-8 py-3 bg-primary text-white font-semibold rounded-lg hover:bg-primary-dark transition-colors duration-200 shadow-lg"
           >
             {t('home.finalCta.cta')}
           </Link>
