@@ -331,6 +331,10 @@
       "dumpDesc": "Gestiamo noi il conferimento rifiuti/donazioni"
     },
     "estimateLabel": "Il tuo investimento stimato",
+    "breakdownProject": "Intervento",
+    "breakdownExtras": "Servizi aggiuntivi",
+    "breakdownUrgency": "Adeguamento complessità",
+    "breakdownTotal": "Totale stimato",
     "disclaimerTitle": "Nota Bene",
     "disclaimerText": "Il preventivo sopra indicato è puramente indicativo. Il nostro team elaborerà entro 24 ore un preventivo equo e studiato.",
     "whatsappButton": "Invia Dettagli & Prenota",

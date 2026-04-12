@@ -6,56 +6,90 @@ import { useTranslations } from 'next-intl';
 type Category = 'armadio' | 'cucina' | 'ufficio' | 'bagno' | 'garage' | 'trasloco';
 type Complexity = { value: number; label: string };
 
+// --- Effort-based pricing model ---
+// Grounded in Rome professional organizing market research (APOI, Cronoshare,
+// Italian P.O. published packages — Silva Bucci, Margherita Pecoraro, etc.)
+//
+// Rome market rate: €55-65/h effective, but clients see flat per-project prices.
+// This model uses flat base prices per room type (bakes in minimum effort),
+// plus incremental cost per size unit, scaled by complexity tier.
+//
+// Formula:
+//   projectCost = (basePrice + Σ(fieldValue × costPerUnit)) × complexityMultiplier
+//   extrasCost  = flat fee + % of projectCost (scales with project size)
+//   urgency     = quiz severity adds 0–10% (more chaos = more sorting decisions)
+//   total       = projectCost + extrasCost + urgency
+
 interface CategoryConfig {
-  base: number;
-  fields: { id: string; multiplier: number }[];
+  basePrice: number; // flat minimum for the category (consultation + basic scope)
+  fields: { id: string; costPerUnit: number }[]; // each unit adds flat €
 }
 
 const categoryConfigs: Record<Category, CategoryConfig> = {
   armadio: {
-    base: 150,
+    // Standard wardrobe: €150 base (2-door, light). Market range: €120-450
+    basePrice: 150,
     fields: [
-      { id: 'doors', multiplier: 30 },
-      { id: 'drawers', multiplier: 15 },
-      { id: 'height', multiplier: 40 },
+      { id: 'doors', costPerUnit: 40 },     // each additional door section: ~€40 effort
+      { id: 'drawers', costPerUnit: 18 },    // each internal drawer: ~€18
+      { id: 'height', costPerUnit: 55 },     // mezzanine/high shelves require ladder work
     ],
   },
   cucina: {
-    base: 200,
+    // Standard kitchen: €250 base (6-8 modules, light). Market range: €180-750
+    basePrice: 250,
     fields: [
-      { id: 'modules', multiplier: 25 },
-      { id: 'pantry', multiplier: 80 },
-      { id: 'counters', multiplier: 40 },
+      { id: 'modules', costPerUnit: 28 },    // each cabinet/wall unit: ~€28
+      { id: 'pantry', costPerUnit: 120 },     // separate pantry is a sub-project: ~€120
+      { id: 'counters', costPerUnit: 45 },    // each counter/island surface: ~€45
     ],
   },
   ufficio: {
-    base: 120,
+    // Standard office: €150 base (1 desk, light). Market range: €120-600
+    basePrice: 150,
     fields: [
-      { id: 'desks', multiplier: 50 },
-      { id: 'documents', multiplier: 30 },
+      { id: 'desks', costPerUnit: 60 },      // each workstation: ~€60
+      { id: 'documents', costPerUnit: 45 },   // per linear meter of documents: ~€45
     ],
   },
   bagno: {
-    base: 80,
+    // Standard bathroom: €100 base. Market range: €90-350
+    basePrice: 100,
     fields: [
-      { id: 'cabinets', multiplier: 40 },
-      { id: 'shelves', multiplier: 20 },
+      { id: 'cabinets', costPerUnit: 45 },    // each cabinet/under-sink: ~€45
+      { id: 'shelves', costPerUnit: 22 },      // each open shelf: ~€22
     ],
   },
   garage: {
-    base: 250,
+    // Standard garage/storage: €300 base. Market range: €250-1000
+    basePrice: 300,
     fields: [
-      { id: 'racks', multiplier: 45 },
-      { id: 'tools', multiplier: 60 },
+      { id: 'racks', costPerUnit: 55 },       // each shelf bay: ~€55
+      { id: 'tools', costPerUnit: 85 },        // workshop area intensity (1-5): ~€85/level
     ],
   },
   trasloco: {
-    base: 500,
+    // Small move/unpack: €400 base. Market range: €350-1500+
+    basePrice: 400,
     fields: [
-      { id: 'boxes', multiplier: 10 },
-      { id: 'rooms', multiplier: 100 },
+      { id: 'boxes', costPerUnit: 12 },       // each box to unpack & organize: ~€12
+      { id: 'rooms', costPerUnit: 150 },       // each room to set up from scratch: ~€150
     ],
   },
+};
+
+// Complexity tiers — based on Italian market data
+// Light = standard effort, Moderate = +50%, Critical = double
+const complexityMultipliers: Record<number, number> = {
+  1: 1.0,    // light: space mostly organized, needs optimization
+  1.5: 1.5,  // moderate: cluttered, significant sorting needed (+50%)
+  2: 2.0,    // critical: heavily cluttered, deep intervention (2×)
+};
+
+// Extras — flat base + percentage of project cost (scales naturally)
+const extrasConfig = {
+  materials: { baseCost: 40, percent: 0.08 },  // organizer kit: €40 + 8% of project
+  dump: { baseCost: 60, percent: 0.10 },         // disposal/donation: €60 + 10% of project
 };
 
 const categoryIcons: Record<Category, string> = {
@@ -79,17 +113,53 @@ export default function QuoteWizard() {
   const totalSteps = 7;
   const progress = ((step + 1) / totalSteps) * 100;
 
-  function calculatePrice(): number {
-    if (!category || !complexity) return 0;
+  function calculatePrice(): { total: number; breakdown: { project: number; extras: number; urgency: number } } {
+    if (!category || !complexity) return { total: 0, breakdown: { project: 0, extras: 0, urgency: 0 } };
+
     const config = categoryConfigs[category];
-    let price = config.base;
+
+    // 1. Base project cost = flat base + size increments
+    let projectBase = config.basePrice;
     config.fields.forEach((field) => {
-      price += (details[field.id] || 0) * field.multiplier;
+      projectBase += (details[field.id] || 0) * field.costPerUnit;
     });
-    price *= complexity.value;
-    if (extras.materials) price += 50;
-    if (extras.dump) price += 80;
-    return Math.round(price);
+
+    // 2. Apply complexity multiplier (1.0× / 1.5× / 2.0×)
+    const compMultiplier = complexityMultipliers[complexity.value] ?? 1;
+    const projectCost = projectBase * compMultiplier;
+
+    // 3. Extras (flat base + % of project cost — scales naturally with size)
+    let extrasCost = 0;
+    if (extras.materials) {
+      extrasCost += extrasConfig.materials.baseCost + projectCost * extrasConfig.materials.percent;
+    }
+    if (extras.dump) {
+      extrasCost += extrasConfig.dump.baseCost + projectCost * extrasConfig.dump.percent;
+    }
+
+    // 4. Quiz urgency factor (0–10%)
+    //    Higher reported chaos = more sorting/decision effort required
+    const quizScore = quiz.reduce((score, answer, qIdx) => {
+      if (!answer) return score;
+      const optIdx = [0, 1, 2].find((i) => {
+        try { return answer === t(`quiz.q${qIdx + 1}.options.${i}`); } catch { return false; }
+      }) ?? 0;
+      return score + optIdx;
+    }, 0);
+    // Max quiz score = 6 (3 questions × option index 2), maps to 0–10%
+    const urgencyPercent = (quizScore / 6) * 0.10;
+    const urgencyAmount = (projectCost + extrasCost) * urgencyPercent;
+
+    const total = Math.round(projectCost + extrasCost + urgencyAmount);
+
+    return {
+      total,
+      breakdown: {
+        project: Math.round(projectCost),
+        extras: Math.round(extrasCost),
+        urgency: Math.round(urgencyAmount),
+      },
+    };
   }
 
   function canProceed(): boolean {
@@ -106,11 +176,11 @@ export default function QuoteWizard() {
   }
 
   function handleWhatsApp() {
-    const price = calculatePrice();
+    const { total } = calculatePrice();
     const msg = encodeURIComponent(
       `${t('whatsappIntro')}\n\n` +
       `${t('categories.' + category)}: ${complexity?.label}\n` +
-      `${t('estimate')}: €${price}\n\n` +
+      `${t('estimate')}: €${total}\n\n` +
       (extras.materials ? `+ ${t('extras.materials')}\n` : '') +
       (extras.dump ? `+ ${t('extras.dump')}\n` : '')
     );
@@ -220,7 +290,7 @@ export default function QuoteWizard() {
     const levels = [
       { value: 1, key: 'light' },
       { value: 1.5, key: 'moderate' },
-      { value: 2.2, key: 'critical' },
+      { value: 2, key: 'critical' },
     ];
     return (
       <div className="text-center">
@@ -252,7 +322,7 @@ export default function QuoteWizard() {
   }
 
   function renderExtrasAndResult() {
-    const price = calculatePrice();
+    const { total, breakdown } = calculatePrice();
     return (
       <div className="text-center">
         {/* Extras */}
@@ -303,12 +373,36 @@ export default function QuoteWizard() {
 
           <p className="text-sm text-foreground/60 mb-2">{t('estimateLabel')}</p>
           <div className="text-5xl font-bold text-foreground mb-6">
-            <span className="text-xl align-middle mr-1">€</span>{price}
+            <span className="text-xl align-middle mr-1">€</span>{total}
+          </div>
+
+          {/* Breakdown */}
+          <div className="bg-secondary rounded-xl p-4 mb-6 text-left space-y-2">
+            <div className="flex justify-between text-sm">
+              <span className="text-foreground/70">{t('breakdownProject')}</span>
+              <span className="font-semibold">€{breakdown.project}</span>
+            </div>
+            {breakdown.extras > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-foreground/70">{t('breakdownExtras')}</span>
+                <span className="font-semibold">€{breakdown.extras}</span>
+              </div>
+            )}
+            {breakdown.urgency > 0 && (
+              <div className="flex justify-between text-sm">
+                <span className="text-foreground/70">{t('breakdownUrgency')}</span>
+                <span className="font-semibold">€{breakdown.urgency}</span>
+              </div>
+            )}
+            <div className="flex justify-between text-sm font-bold pt-2 border-t border-secondary-dark">
+              <span>{t('breakdownTotal')}</span>
+              <span>€{total}</span>
+            </div>
           </div>
 
           <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 mb-6 text-left">
             <p className="text-xs text-foreground/70">
-              <span className="font-bold">ℹ️ {t('disclaimerTitle')}:</span> {t('disclaimerText')}
+              <span className="font-bold">{t('disclaimerTitle')}:</span> {t('disclaimerText')}
             </p>
           </div>
 

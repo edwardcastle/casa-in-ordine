@@ -331,6 +331,10 @@
       "dumpDesc": "Gestionamos la eliminación de residuos y donaciones"
     },
     "estimateLabel": "Tu inversión estimada",
+    "breakdownProject": "Servicio",
+    "breakdownExtras": "Servicios adicionales",
+    "breakdownUrgency": "Ajuste por complejidad",
+    "breakdownTotal": "Total estimado",
     "disclaimerTitle": "Nota",
     "disclaimerText": "El presupuesto indicado es puramente orientativo. Nuestro equipo elaborará un presupuesto justo y detallado en 24 horas.",
     "whatsappButton": "Enviar Detalles y Reservar",

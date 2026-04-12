@@ -331,6 +331,10 @@
       "dumpDesc": "We handle waste disposal and donations"
     },
     "estimateLabel": "Your estimated investment",
+    "breakdownProject": "Service",
+    "breakdownExtras": "Additional services",
+    "breakdownUrgency": "Complexity adjustment",
+    "breakdownTotal": "Estimated total",
     "disclaimerTitle": "Please Note",
     "disclaimerText": "The quote above is purely indicative. Our team will prepare a fair and detailed quote within 24 hours.",
     "whatsappButton": "Send Details & Book",
