@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "Casa in Ordine – Decluttering & Home Organizing in Rome",
-    "description": "Professional decluttering and home organizing service in Rome, Italy. We transform your spaces into tidy and functional environments."
+    "description": "We transform your chaos into a haven of peace. Professional decluttering and home organizing service."
   },
   "nav": {
     "home": "Home",
@@ -12,9 +12,9 @@
     "contact": "Contact"
   },
   "hero": {
-    "title": "We bring your spaces to life",
-    "subtitle": "Transforming chaos into harmony and well-being",
-    "cta": "Discover our services",
+    "title": "Casa in Ordine",
+    "subtitle": "We combine methodical efficiency with the warmth of a home that truly welcomes.",
+    "cta": "Book now",
     "contactCta": "Contact us"
   },
   "home": {
@@ -62,10 +62,58 @@
         }
       ]
     },
+    "beforeAfter": {
+      "title": "We transform your <span class=\"text-accent\">chaos</span> into a haven of <span class=\"text-primary\">peace</span>"
+    },
+    "reflection": {
+      "title": "Clutter isn't just physical, it's <span class=\"text-accent\">mental</span>.",
+      "description": "In Italy, the home is the center of life. But between work, family, and moves, your space can become a source of stress. We don't just sort boxes: we reorganize your habits to give you more time for what you love.",
+      "benefit1Title": "Save Time",
+      "benefit1Desc": "Less time searching, more time living",
+      "benefit2Title": "Less Stress",
+      "benefit2Desc": "An organized space, a peaceful mind",
+      "chart": {
+        "mentalPeace": "Mental peace",
+        "freeTime": "Free time",
+        "productivity": "Productivity",
+        "sociality": "Sociality",
+        "wellbeing": "Well-being",
+        "before": "Before",
+        "after": "After Casa in Ordine"
+      },
+      "chartCaption": "Visualization of mental balance after our intervention."
+    },
+    "services": {
+      "title": "How can we <span class=\"text-accent\">help you</span>?",
+      "subtitle": "Once we understand your <b class=\"text-primary font-semibold\">need</b>, we define the area of <b class=\"text-primary font-semibold\">intervention</b>.",
+      "categories": {
+        "armadio": "Closet",
+        "cucina": "Kitchen",
+        "ufficio": "Office",
+        "bagno": "Bathroom",
+        "garage": "Garage",
+        "trasloco": "Moving"
+      }
+    },
+    "whyUs": {
+      "title": "Why choose <span class=\"text-accent uppercase\">Us</span>.",
+      "description": "We come from a culture where hospitality is sacred. In Italy we found our home, but we carry a secret: order doesn't have to be cold or rigid. It must be alive.",
+      "point1Title": "Empathetic Approach",
+      "point1Desc": "We listen without ever judging the state of your home.",
+      "point2Title": "Creative Solutions",
+      "point2Desc": "We find space where you thought there was none.",
+      "point3Title": "Sensory Signature",
+      "point3Desc": "Every reorganization ends with a special touch for your senses.",
+      "quote": "Order is the foundation of joy, and joy is the soul of the home.",
+      "quoteAuthor": "The Founders",
+      "chartTitle": "Our Balance",
+      "chartTechnique": "Technique",
+      "chartWarmth": "Warmth"
+    },
     "finalCta": {
-      "title": "Ready to transform your spaces?",
-      "description": "Contact us today for a free consultation and discover how we can help you live better.",
-      "cta": "Request a consultation"
+      "title": "Ready to live <br class=\"hidden md:block\" />in a home <span class=\"text-accent\">in order</span>?",
+      "description": "Book your free 15-minute introductory consultation today. Let's start designing your new space together.",
+      "cta": "Book Free Consultation"
     }
   },
   "about": {
@@ -250,7 +298,8 @@
     }
   },
   "footer": {
-    "description": "Professional decluttering and home organizing service in Rome. We transform your spaces into tidy and functional environments.",
+    "description": "We transform your chaos into a haven of peace. Professional decluttering and home organizing service.",
+    "createdBy": "Crafted with care by two young Cuban women in Italy.",
     "quickLinks": "Quick Links",
     "contactInfo": "Contact",
     "followUs": "Follow Us",
@@ -337,8 +386,16 @@
     "breakdownTotal": "Estimated total",
     "disclaimerTitle": "Please Note",
     "disclaimerText": "The quote above is purely indicative. Our team will prepare a fair and detailed quote within 24 hours.",
-    "whatsappButton": "Send Details & Book",
-    "whatsappIntro": "Hello! I completed the digital survey on your website.",
+    "submitButton": "Send Request",
+    "submitting": "Sending...",
+    "successTitle": "Request sent!",
+    "successMessage": "Thanks {name}! We received your request and will reply within 24 hours with a detailed quote.",
+    "submitError": "Something went wrong. Please try again or contact us by email.",
+    "contactStepTitle": "One last step",
+    "contactStepSubtitle": "Leave your contact details to receive the detailed quote",
+    "fullName": "Full Name",
+    "emailField": "Email",
+    "phoneField": "Phone (optional)",
     "estimate": "Estimate",
     "back": "Back",
     "next": "Next",

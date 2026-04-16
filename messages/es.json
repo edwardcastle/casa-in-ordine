@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "Casa in Ordine – Decluttering y Home Organizing en Roma",
-    "description": "Servicio profesional de decluttering y organización del hogar en Roma, Italia. Transformamos tus espacios en ambientes ordenados y funcionales."
+    "description": "Transformamos tu caos en un refugio de paz. Servicio profesional de decluttering y home organizing."
   },
   "nav": {
     "home": "Inicio",
@@ -12,9 +12,9 @@
     "contact": "Contacto"
   },
   "hero": {
-    "title": "Damos vida a tus espacios",
-    "subtitle": "Transformamos el caos en armonía y bienestar",
-    "cta": "Descubre nuestros servicios",
+    "title": "Casa in Ordine",
+    "subtitle": "Unimos la eficiencia metódica con la calidez de un hogar que realmente acoge.",
+    "cta": "Reserva ahora",
     "contactCta": "Contáctanos"
   },
   "home": {
@@ -62,10 +62,58 @@
         }
       ]
     },
+    "beforeAfter": {
+      "title": "Transformamos tu <span class=\"text-accent\">caos</span> en un refugio de <span class=\"text-primary\">paz</span>"
+    },
+    "reflection": {
+      "title": "El desorden no es solo físico, es <span class=\"text-accent\">mental</span>.",
+      "description": "En Italia, el hogar es el centro de la vida. Pero entre el trabajo, la familia y las mudanzas, el espacio puede convertirse en una fuente de estrés. No solo ordenamos cajas: reorganizamos tus hábitos para darte más tiempo para lo que amas.",
+      "benefit1Title": "Ahorra Tiempo",
+      "benefit1Desc": "Menos tiempo buscando, más tiempo viviendo",
+      "benefit2Title": "Menos Estrés",
+      "benefit2Desc": "Un espacio ordenado, una mente serena",
+      "chart": {
+        "mentalPeace": "Paz mental",
+        "freeTime": "Tiempo libre",
+        "productivity": "Productividad",
+        "sociality": "Socialidad",
+        "wellbeing": "Bienestar",
+        "before": "Antes",
+        "after": "Después de Casa in Ordine"
+      },
+      "chartCaption": "Visualización del equilibrio mental después de nuestra intervención."
+    },
+    "services": {
+      "title": "¿Cómo podemos <span class=\"text-accent\">ayudarte</span>?",
+      "subtitle": "Cuando entendemos tu <b class=\"text-primary font-semibold\">necesidad</b>, definimos el área de <b class=\"text-primary font-semibold\">intervención</b>.",
+      "categories": {
+        "armadio": "Armario",
+        "cucina": "Cocina",
+        "ufficio": "Oficina",
+        "bagno": "Baño",
+        "garage": "Garaje",
+        "trasloco": "Mudanza"
+      }
+    },
+    "whyUs": {
+      "title": "Por qué elegir<span class=\"text-accent uppercase\">nos</span>.",
+      "description": "Venimos de una cultura donde la hospitalidad es sagrada. En Italia encontramos nuestro hogar, pero llevamos con nosotras un secreto: el orden no tiene que ser frío ni rígido. Tiene que estar vivo.",
+      "point1Title": "Enfoque Empático",
+      "point1Desc": "Te escuchamos sin juzgar nunca el estado de tu hogar.",
+      "point2Title": "Soluciones Creativas",
+      "point2Desc": "Encontramos espacio donde pensabas que no había.",
+      "point3Title": "Firma Sensorial",
+      "point3Desc": "Cada reorganización termina con un toque especial para tus sentidos.",
+      "quote": "El orden es la base de la alegría, y la alegría es el alma del hogar.",
+      "quoteAuthor": "Las Fundadoras",
+      "chartTitle": "Nuestro Equilibrio",
+      "chartTechnique": "Técnica",
+      "chartWarmth": "Calidez"
+    },
     "finalCta": {
-      "title": "¿Listo para transformar tus espacios?",
-      "description": "Contáctanos hoy para una consulta gratuita y descubre cómo podemos ayudarte a vivir mejor.",
-      "cta": "Solicita una consulta"
+      "title": "¿Listos para vivir <br class=\"hidden md:block\" />en un hogar <span class=\"text-accent\">en orden</span>?",
+      "description": "Reserva hoy tu consulta introductoria gratuita de 15 minutos. Empecemos a diseñar tu nuevo espacio juntos.",
+      "cta": "Reserva Consulta Gratuita"
     }
   },
   "about": {
@@ -250,7 +298,8 @@
     }
   },
   "footer": {
-    "description": "Servicio profesional de decluttering y organización del hogar en Roma. Transformamos tus espacios en ambientes ordenados y funcionales.",
+    "description": "Transformamos tu caos en un refugio de paz. Servicio profesional de decluttering y home organizing.",
+    "createdBy": "Creado con cariño por dos jóvenes cubanas en Italia.",
     "quickLinks": "Enlaces Rápidos",
     "contactInfo": "Contacto",
     "followUs": "Síguenos",
@@ -337,8 +386,16 @@
     "breakdownTotal": "Total estimado",
     "disclaimerTitle": "Nota",
     "disclaimerText": "El presupuesto indicado es puramente orientativo. Nuestro equipo elaborará un presupuesto justo y detallado en 24 horas.",
-    "whatsappButton": "Enviar Detalles y Reservar",
-    "whatsappIntro": "¡Hola! He completado la inspección digital en su sitio web.",
+    "submitButton": "Enviar Solicitud",
+    "submitting": "Enviando...",
+    "successTitle": "¡Solicitud enviada!",
+    "successMessage": "¡Gracias {name}! Hemos recibido tu solicitud y te responderemos en 24 horas con un presupuesto detallado.",
+    "submitError": "Ha ocurrido un error. Inténtalo de nuevo o contáctanos por email.",
+    "contactStepTitle": "Último paso",
+    "contactStepSubtitle": "Déjanos tus datos de contacto para recibir el presupuesto detallado",
+    "fullName": "Nombre Completo",
+    "emailField": "Correo Electrónico",
+    "phoneField": "Teléfono (opcional)",
     "estimate": "Estimación",
     "back": "Atrás",
     "next": "Siguiente",

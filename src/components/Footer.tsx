@@ -79,9 +79,10 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="mt-8 pt-8 border-t border-white/20 flex flex-col sm:flex-row justify-between items-center gap-4 text-sm text-white/80">
+        <div className="mt-8 pt-8 border-t border-white/20 flex flex-col items-center gap-2 text-sm text-white/80">
           <p>&copy; {new Date().getFullYear()} Casa in Ordine. {t('footer.rights')}</p>
-          <div className="flex gap-4">
+          <p className="text-xs text-white/50">{t('footer.createdBy')}</p>
+          <div className="flex gap-4 mt-2">
             <Link href={`/${locale}`} className="text-white/80 hover:text-white transition-colors">{t('footer.privacy')}</Link>
             <Link href={`/${locale}`} className="text-white/80 hover:text-white transition-colors">{t('footer.terms')}</Link>
           </div>

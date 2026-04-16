@@ -1,7 +1,7 @@
 {
   "metadata": {
     "title": "Casa in Ordine – Decluttering e Home Organizing a Roma",
-    "description": "Servizio professionale di decluttering e organizzazione della casa a Roma. Trasformiamo i tuoi spazi in ambienti ordinati e funzionali."
+    "description": "Trasformiamo il tuo caos in un rifugio di pace. Servizio professionale di decluttering e home organizing."
   },
   "nav": {
     "home": "Home",
@@ -12,9 +12,9 @@
     "contact": "Contatti"
   },
   "hero": {
-    "title": "Diamo vita ai tuoi spazi",
-    "subtitle": "Trasformiamo il caos in armonia e benessere",
-    "cta": "Scopri i nostri servizi",
+    "title": "Casa in Ordine",
+    "subtitle": "Uniamo l'efficienza metodica al calore della casa che accoglie davvero.",
+    "cta": "Prenota ora",
     "contactCta": "Contattaci"
   },
   "home": {
@@ -62,10 +62,58 @@
         }
       ]
     },
+    "beforeAfter": {
+      "title": "Trasformiamo il tuo <span class=\"text-accent\">caos</span> in un rifugio di <span class=\"text-primary\">pace</span>"
+    },
+    "reflection": {
+      "title": "Il disordine non è solo fisico, è <span class=\"text-accent\">mentale</span>.",
+      "description": "In Italia, la casa è il centro della vita. Ma tra lavoro, famiglia e traslochi, lo spazio può diventare una fonte di stress. Noi non sistemiamo solo scatole: riorganizziamo le tue abitudini per darti più tempo per ciò che ami.",
+      "benefit1Title": "Risparmia Tempo",
+      "benefit1Desc": "Meno tempo a cercare, più tempo a vivere",
+      "benefit2Title": "Meno Stress",
+      "benefit2Desc": "Uno spazio ordinato, una mente serena",
+      "chart": {
+        "mentalPeace": "Pace mentale",
+        "freeTime": "Tempo libero",
+        "productivity": "Produttività",
+        "sociality": "Socialità",
+        "wellbeing": "Benessere",
+        "before": "Prima",
+        "after": "Dopo Casa in Ordine"
+      },
+      "chartCaption": "Visualizzazione dell'equilibrio mentale dopo il nostro intervento."
+    },
+    "services": {
+      "title": "Come possiamo <span class=\"text-accent\">aiutarti</span>?",
+      "subtitle": "Perché quando abbiamo capito il tuo <b class=\"text-primary font-semibold\">bisogno</b>, definiamo l'area di <b class=\"text-primary font-semibold\">intervento</b>.",
+      "categories": {
+        "armadio": "Armadio",
+        "cucina": "Cucina",
+        "ufficio": "Ufficio",
+        "bagno": "Bagno",
+        "garage": "Garage",
+        "trasloco": "Trasloco"
+      }
+    },
+    "whyUs": {
+      "title": "Perché scegliere <span class=\"text-accent uppercase\">Noi</span>.",
+      "description": "Veniamo da una cultura dove l'ospitalità è sacra. In Italia abbiamo trovato la nostra casa, ma portiamo con noi un segreto: l'ordine non deve essere freddo o rigido. Deve essere vivo.",
+      "point1Title": "Approccio Empatico",
+      "point1Desc": "Ti ascoltiamo senza mai giudicare lo stato della tua casa.",
+      "point2Title": "Soluzioni Creative",
+      "point2Desc": "Troviamo spazio dove pensavi non ce ne fosse.",
+      "point3Title": "Firma Sensoriale",
+      "point3Desc": "Ogni riordino finisce con un tocco speciale per i tuoi sensi.",
+      "quote": "L'ordine è la base della gioia, e la gioia è l'anima della casa.",
+      "quoteAuthor": "Le Fondatrici",
+      "chartTitle": "Il Nostro Equilibrio",
+      "chartTechnique": "Tecnica",
+      "chartWarmth": "Calore"
+    },
     "finalCta": {
-      "title": "Pronto a trasformare i tuoi spazi?",
-      "description": "Contattaci oggi per una consulenza gratuita e scopri come possiamo aiutarti a vivere meglio.",
-      "cta": "Richiedi una consulenza"
+      "title": "Pronti a vivere <br class=\"hidden md:block\" />in una casa <span class=\"text-accent\">in ordine</span>?",
+      "description": "Prenota oggi la tua consulenza conoscitiva gratuita di 15 minuti. Iniziamo a progettare il tuo nuovo spazio insieme.",
+      "cta": "Prenota Consulenza Gratuita"
     }
   },
   "about": {
@@ -250,7 +298,8 @@
     }
   },
   "footer": {
-    "description": "Servizio professionale di decluttering e home organizing a Roma. Trasformiamo i tuoi spazi in ambienti ordinati e funzionali.",
+    "description": "Trasformiamo il tuo caos in un rifugio di pace. Servizio professionale di decluttering e home organizing.",
+    "createdBy": "Creato con cura da due giovani cubane in Italia.",
     "quickLinks": "Link Rapidi",
     "contactInfo": "Contatti",
     "followUs": "Seguici",
@@ -337,8 +386,16 @@
     "breakdownTotal": "Totale stimato",
     "disclaimerTitle": "Nota Bene",
     "disclaimerText": "Il preventivo sopra indicato è puramente indicativo. Il nostro team elaborerà entro 24 ore un preventivo equo e studiato.",
-    "whatsappButton": "Invia Dettagli & Prenota",
-    "whatsappIntro": "Ciao! Ho completato il sopralluogo digitale sul vostro sito.",
+    "submitButton": "Invia Richiesta",
+    "submitting": "Invio in corso...",
+    "successTitle": "Richiesta inviata!",
+    "successMessage": "Grazie {name}! Abbiamo ricevuto la tua richiesta. Ti risponderemo entro 24 ore con un preventivo dettagliato.",
+    "submitError": "Si è verificato un errore. Riprova o contattaci via email.",
+    "contactStepTitle": "Ultimo passo",
+    "contactStepSubtitle": "Lasciaci i tuoi contatti per ricevere il preventivo dettagliato",
+    "fullName": "Nome e Cognome",
+    "emailField": "Email",
+    "phoneField": "Telefono (opzionale)",
     "estimate": "Stima",
     "back": "Indietro",
     "next": "Avanti",

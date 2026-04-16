@@ -27,7 +27,7 @@ export default function AboutPage() {
       {/* Story Section */}
       <section className="py-16 md:py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid md:grid-cols-2 gap-12 items-center">
+          <div className="grid md:grid-cols-2 justify-between flex gap-x-64 gap-y-16 items-center">
             <div>
               <h2 className="text-3xl font-bold text-gray-900 mb-6">{t('story.title')}</h2>
               <div className="space-y-4 text-gray-600 leading-relaxed">
@@ -36,10 +36,11 @@ export default function AboutPage() {
                 <p>{t('story.p3')}</p>
               </div>
             </div>
-            <div className="rounded-2xl overflow-hidden aspect-[4/3] relative">
+
+            <div className="rounded-2xl overflow-hidden aspect-[4/4.8] relative">
               <Image
-                src="/images/gallery/closet-1.jpg"
-                alt="Armadio organizzato da Casa in Ordine"
+                src="/images/backgrounds/our-story.JPG"
+                alt="La nostra storia - Casa in Ordine"
                 fill
                 sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
