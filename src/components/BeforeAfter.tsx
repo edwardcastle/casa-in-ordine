@@ -12,7 +12,7 @@ interface BeforeAfterProps {
 
 export default function BeforeAfter({ beforeSrc, afterSrc, beforeAlt, afterAlt }: BeforeAfterProps) {
   const [position, setPosition] = useState(50);
-  const containerRef = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
 
   const updatePosition = useCallback((clientX: number) => {

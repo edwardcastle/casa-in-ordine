@@ -30,10 +30,10 @@ export default function Hero({
   backgroundImages,
   interval = 6000,
 }: HeroProps) {
-  const titleRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const arrowRef = useRef<HTMLAnchorElement>(null);
+  const titleRef = useRef<HTMLHeadingElement | null>(null);
+  const subtitleRef = useRef<HTMLParagraphElement | null>(null);
+  const ctaRef = useRef<HTMLDivElement | null>(null);
+  const arrowRef = useRef<HTMLAnchorElement | null>(null);
 
   // Normalize: carousel takes precedence, otherwise single image
   const slides = backgroundImages && backgroundImages.length > 0

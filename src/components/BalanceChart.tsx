@@ -12,9 +12,9 @@ interface BalanceChartProps {
 }
 
 export default function BalanceChart({ labels, data, title }: BalanceChartProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const canvasRef = useRef<HTMLCanvasElement>(null);
-  const chartRef = useRef<Chart | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const chartRef = useRef<Chart<'doughnut'> | null>(null);
   const [visible, setVisible] = useState(false);
 
   // Wait until the container is visible before creating the chart

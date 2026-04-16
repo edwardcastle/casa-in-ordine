@@ -21,7 +21,7 @@ export default function ScrollReveal({
   threshold = 0.15,
   className = '',
 }: ScrollRevealProps) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const el = ref.current;
