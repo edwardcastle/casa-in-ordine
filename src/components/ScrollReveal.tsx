@@ -18,7 +18,7 @@ export default function ScrollReveal({
   animation = 'fadeInUpShorter',
   delay = 0,
   duration = 600,
-  threshold = 0.15,
+  threshold = 0.1,
   className = '',
 }: ScrollRevealProps) {
   const ref = useRef<HTMLDivElement | null>(null);
@@ -27,16 +27,28 @@ export default function ScrollReveal({
     const el = ref.current;
     if (!el) return;
 
+    const reveal = () => {
+      el.style.animationDelay = `${delay}ms`;
+      el.style.animationDuration = `${duration}ms`;
+      el.classList.add('scroll-revealed');
+    };
+
+    // If already in viewport on mount, reveal immediately
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight && rect.bottom > 0) {
+      // Small timeout so the initial CSS state (opacity: 0) is painted first
+      setTimeout(reveal, 10 + delay);
+      return;
+    }
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.style.animationDelay = `${delay}ms`;
-          el.style.animationDuration = `${duration}ms`;
-          el.classList.add('scroll-revealed');
+          reveal();
           observer.unobserve(el);
         }
       },
-      { threshold, rootMargin: '0px 0px -40px 0px' }
+      { threshold, rootMargin: '0px 0px -20px 0px' }
     );
 
     observer.observe(el);

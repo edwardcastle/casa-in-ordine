@@ -88,7 +88,7 @@ export default function Hero({
                 src={src}
                 alt=""
                 fill
-                className="object-cover object-center w-[100%] h-auto"
+                className="object-cover object-center"
                 sizes="100vw"
                 priority={i === 0}
               />
