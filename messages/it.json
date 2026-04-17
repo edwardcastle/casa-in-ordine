@@ -117,30 +117,41 @@
     }
   },
   "about": {
-    "title": "Chi Siamo",
-    "metaDescription": "Scopri la storia e la missione di Casa in Ordine, il servizio di decluttering e home organizing professionale a Roma.",
-    "heroTitle": "La nostra storia",
-    "heroSubtitle": "Passione per l'ordine, amore per gli spazi",
+    "title": "Chi Siamo – Casa in Ordine | Decluttering e Home Organizing Professionale",
+    "metaDescription": "Dalia e Surinay, fondatrici di Casa in Ordine: servizio professionale di decluttering, riorganizzazione della casa e home organizing in Italia. Organizziamo armadi, cucine, uffici e ogni ambiente con soluzioni su misura.",
+    "heroTitle": "La Nostra Storia",
+    "heroSubtitle": "Due amiche, due percorsi, una sola visione.",
+    "intro": "Siamo Dalia e Surinay, due amiche cubane arrivate in Italia con un bagaglio fatto di sogni, esperienze e talenti diversi. Una con l'anima della danza, l'altra con la mente dell'economia: due mondi apparentemente distanti che, incontrandosi, hanno dato vita a Casa in Ordine. Perché crediamo che ogni spazio, proprio come una coreografia o un bilancio ben costruito, abbia bisogno di armonia e strategia per funzionare davvero.",
     "story": {
-      "title": "La Nostra Storia",
-      "p1": "Casa in Ordine nasce dalla passione per gli spazi ben organizzati e dalla convinzione che un ambiente ordinato possa migliorare significativamente la qualità della vita.",
-      "p2": "Con anni di esperienza nel settore del decluttering e dell'home organizing, aiutiamo famiglie e professionisti a Roma a trasformare le loro case in luoghi di pace e funzionalità.",
-      "p3": "Il nostro approccio è personalizzato: ascoltiamo le esigenze di ogni cliente e creiamo soluzioni su misura che riflettano il loro stile di vita."
+      "title": "Come nasce Casa in Ordine",
+      "p1": "L'idea è nata durante una cena tra amiche, parlando di progetti e desideri. Dalia ha confidato un sogno che custodiva da tempo: trasformare la sua naturale passione per l'organizzazione in qualcosa di concreto per le persone.",
+      "p2": "Surinay, conquistata da quell'entusiasmo, ha iniziato subito a immaginare come dare forma a quel sogno — e da quella sera non ci siamo più fermate.",
+      "p3": "Così, dall'incontro tra la disciplina del palcoscenico e la precisione dei numeri, è nata la nostra promessa: portare ordine, leggerezza e bellezza dentro le case delle persone."
+    },
+    "offer": {
+      "title": "Cosa offriamo a te",
+      "description": "In Casa in Ordine non ci limitiamo a riporre oggetti: studiamo le tue abitudini, ascoltiamo le tue esigenze e progettiamo sistemi su misura che uniscono estetica e funzionalità. Ogni cassetto diventa una piccola opera d'arte, ogni stanza un ingranaggio che lavora per te.",
+      "highlight": "Il valore aggiunto? Ti restituiamo tempo, serenità e quella sensazione di respiro che si prova entrando in uno spazio che ti somiglia davvero."
+    },
+    "goal": {
+      "title": "Il nostro obiettivo",
+      "description": "Vogliamo che Casa in Ordine diventi un punto di riferimento in Italia per chi cerca un modo nuovo di vivere la propria casa — non come un luogo da gestire, ma come un rifugio da abitare.",
+      "motto": "Perché l'ordine, per noi, non è un lusso: è una forma di benessere quotidiano. Diamo vita ai tuoi spazi."
     },
     "mission": {
-      "title": "La Nostra Missione",
+      "title": "I Nostri Valori",
       "values": [
         {
           "title": "Armonia",
-          "description": "Creiamo spazi che promuovono il benessere e la serenità, dove ogni oggetto ha il suo posto."
+          "description": "Ogni spazio merita equilibrio tra estetica e funzionalità, come una coreografia ben costruita."
         },
         {
-          "title": "Sostenibilità",
-          "description": "Promuoviamo un approccio consapevole al consumo, favorendo il riutilizzo e la donazione."
+          "title": "Empatia",
+          "description": "Ascoltiamo senza giudicare. La tua casa è il tuo mondo, e noi lo rispettiamo."
         },
         {
-          "title": "Personalizzazione",
-          "description": "Ogni casa è unica. Creiamo soluzioni su misura per ogni spazio e ogni esigenza."
+          "title": "Su Misura",
+          "description": "Niente soluzioni preconfezionate: ogni progetto di organizzazione nasce dalle tue esigenze reali."
         }
       ]
     },
@@ -149,19 +160,19 @@
       "steps": [
         {
           "title": "Ascolto",
-          "description": "Comprendiamo le tue esigenze e valutiamo lo stato attuale dei tuoi spazi."
+          "description": "Comprendiamo le tue abitudini e valutiamo gli spazi da riorganizzare."
         },
         {
-          "title": "Pianificazione",
-          "description": "Creiamo un piano d'azione personalizzato con obiettivi chiari e raggiungibili."
+          "title": "Progettazione",
+          "description": "Creiamo un piano di decluttering e organizzazione personalizzato."
         },
         {
-          "title": "Azione",
-          "description": "Lavoriamo insieme per declutterare, organizzare e ottimizzare ogni ambiente."
+          "title": "Intervento",
+          "description": "Riorganizziamo ogni ambiente con soluzioni pratiche e belle da vivere."
         },
         {
           "title": "Mantenimento",
-          "description": "Ti forniamo gli strumenti e le strategie per mantenere l'ordine nel tempo."
+          "description": "Ti insegniamo a mantenere l'ordine nel tempo con routine semplici."
         }
       ]
     }

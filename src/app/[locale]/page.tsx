@@ -1,11 +1,11 @@
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
-import Image from 'next/image';
 import Hero from '@/components/Hero';
 import BeforeAfter from '@/components/BeforeAfter';
 import ImpactChart from '@/components/ImpactChart';
 import BalanceChart from '@/components/BalanceChart';
 import ScrollReveal from '@/components/ScrollReveal';
+import OverlayImage from '@/components/OverlayImage';
 
 export default function HomePage() {
   const t = useTranslations();
@@ -170,15 +170,10 @@ export default function HomePage() {
             <ScrollReveal animation="fadeInUpShorter">
               <div className="relative">
                 <div className="absolute -top-5 -left-5 w-32 h-32 bg-accent/15 rounded-full blur-xl" />
-                <div className="relative rounded-2xl overflow-hidden aspect-[4/3]">
-                  <Image
-                    src="/images/backgrounds/why-choose-us.JPG"
-                    alt="Casa in Ordine team"
-                    fill
-                    sizes="(max-width: 768px) 100vw, 50vw"
-                    className="object-cover"
-                  />
-                </div>
+                <OverlayImage
+                  src="/images/backgrounds/why-choose-us.JPG"
+                  alt="Casa in Ordine team"
+                />
                 <blockquote className="mt-6 text-center italic text-gray-600">
                   &ldquo;{t('home.whyUs.quote')}&rdquo;
                   <footer className="mt-2 text-sm font-bold text-accent not-italic">

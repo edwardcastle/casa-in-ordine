@@ -117,30 +117,41 @@
     }
   },
   "about": {
-    "title": "About Us",
-    "metaDescription": "Discover the story and mission of Casa in Ordine, the professional decluttering and home organizing service in Rome.",
+    "title": "About Us – Casa in Ordine | Professional Decluttering & Home Organizing",
+    "metaDescription": "Meet Dalia and Surinay, founders of Casa in Ordine: professional decluttering, home reorganization and organizing service in Italy. Custom solutions for closets, kitchens, offices and every room.",
     "heroTitle": "Our Story",
-    "heroSubtitle": "Passion for order, love for spaces",
+    "heroSubtitle": "Two friends, two paths, one vision.",
+    "intro": "We are Dalia and Surinay, two Cuban friends who arrived in Italy with a suitcase full of dreams, experiences, and different talents. One with the soul of dance, the other with the mind of economics: two seemingly distant worlds that, meeting each other, gave life to Casa in Ordine. Because we believe every space, just like a choreography or a well-built balance sheet, needs harmony and strategy to truly work.",
     "story": {
-      "title": "Our Story",
-      "p1": "Casa in Ordine was born from a passion for well-organized spaces and the belief that a tidy environment can significantly improve quality of life.",
-      "p2": "With years of experience in decluttering and home organizing, we help families and professionals in Rome transform their homes into places of peace and functionality.",
-      "p3": "Our approach is personalized: we listen to each client's needs and create tailored solutions that reflect their lifestyle."
+      "title": "How Casa in Ordine was born",
+      "p1": "The idea was born during a dinner between friends, talking about projects and dreams. Dalia shared a dream she had been keeping for a long time: turning her natural passion for organization into something real for people.",
+      "p2": "Surinay, captivated by that enthusiasm, immediately started imagining how to shape that dream — and from that evening, we never stopped.",
+      "p3": "So, from the meeting between the discipline of the stage and the precision of numbers, our promise was born: to bring order, lightness, and beauty into people's homes."
+    },
+    "offer": {
+      "title": "What we offer you",
+      "description": "At Casa in Ordine, we don't just put things away: we study your habits, listen to your needs, and design custom systems that combine aesthetics and functionality. Every drawer becomes a small work of art, every room a gear that works for you.",
+      "highlight": "The added value? We give you back time, serenity, and that feeling of breathing that comes from entering a space that truly feels like you."
+    },
+    "goal": {
+      "title": "Our goal",
+      "description": "We want Casa in Ordine to become a reference point in Italy for those seeking a new way to experience their home — not as a place to manage, but as a refuge to inhabit.",
+      "motto": "Because for us, order is not a luxury: it's a form of daily well-being. We bring your spaces to life."
     },
     "mission": {
-      "title": "Our Mission",
+      "title": "Our Values",
       "values": [
         {
           "title": "Harmony",
-          "description": "We create spaces that promote well-being and serenity, where every object has its place."
+          "description": "Every space deserves balance between aesthetics and functionality, like a well-crafted choreography."
         },
         {
-          "title": "Sustainability",
-          "description": "We promote a conscious approach to consumption, encouraging reuse and donation."
+          "title": "Empathy",
+          "description": "We listen without judging. Your home is your world, and we respect it."
         },
         {
-          "title": "Personalization",
-          "description": "Every home is unique. We create tailored solutions for every space and every need."
+          "title": "Tailor-Made",
+          "description": "No pre-packaged solutions: every organizing project is born from your real needs."
         }
       ]
     },
@@ -149,19 +160,19 @@
       "steps": [
         {
           "title": "Listen",
-          "description": "We understand your needs and assess the current state of your spaces."
+          "description": "We understand your habits and assess the spaces to reorganize."
         },
         {
-          "title": "Plan",
-          "description": "We create a personalized action plan with clear and achievable goals."
+          "title": "Design",
+          "description": "We create a personalized decluttering and organizing plan."
         },
         {
-          "title": "Act",
-          "description": "We work together to declutter, organize, and optimize every room."
+          "title": "Transform",
+          "description": "We reorganize every room with practical, beautiful solutions."
         },
         {
           "title": "Maintain",
-          "description": "We provide you with tools and strategies to maintain order over time."
+          "description": "We teach you to keep things in order with simple routines."
         }
       ]
     }
