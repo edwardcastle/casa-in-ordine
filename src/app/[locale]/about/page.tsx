@@ -34,7 +34,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <ScrollReveal animation="fadeInLeft">
               <div>
-                <h2 className="text-clamp-section font-normal text-foreground mb-2">Chi Siamo</h2>
+                <h2 className="text-clamp-section font-normal text-foreground mb-2">{t('heroTitle')}</h2>
                 <p className="text-accent font-medium mb-6">{t('heroSubtitle')}</p>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   {t('intro')}

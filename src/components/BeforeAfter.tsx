@@ -41,7 +41,7 @@ export default function BeforeAfter({ beforeSrc, afterSrc, beforeAlt, afterAlt }
   return (
     <div
       ref={containerRef}
-      className="relative w-full overflow-hidden rounded-2xl cursor-col-resize select-none"
+      className="relative w-full overflow-hidden rounded-2xl cursor-col-resize select-none touch-none"
       style={{ height: 'clamp(360px, 35vw, 450px)' }}
       onPointerDown={handlePointerDown}
       onPointerMove={handlePointerMove}
