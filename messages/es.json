@@ -9,7 +9,8 @@
     "services": "Servicios",
     "gallery": "Galería",
     "blog": "Blog",
-    "contact": "Contacto"
+    "contact": "Contacto",
+    "preventivo": "Presupuesto"
   },
   "hero": {
     "title": "Casa in Ordine",
@@ -411,6 +412,14 @@
     "back": "Atrás",
     "next": "Siguiente",
     "restart": "Empezar de nuevo"
+  },
+  "preventivo": {
+    "title": "Presupuesto Gratis – Casa in Ordine | Decluttering y Home Organizing",
+    "metaDescription": "Solicita un presupuesto gratuito para tu proyecto de decluttering y home organizing. Inspección digital en pocos minutos.",
+    "heroTitle": "Presupuesto Gratis",
+    "heroSubtitle": "Descubre cuánto cuesta reorganizar tus espacios",
+    "wizardTitle": "Inspección Digital",
+    "wizardSubtitle": "Tres preguntas para conocernos, luego definimos tu espacio perfecto."
   },
   "notFound": {
     "title": "Página no encontrada",

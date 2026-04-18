@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import Hero from '@/components/Hero';
-import QuoteWizard from '@/components/QuoteWizard';
 
 export async function generateMetadata({
   params,
@@ -23,21 +22,6 @@ export default function ContactPage() {
   return (
     <>
       <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/gallery/bathroom-1.jpg" />
-
-      {/* Quote Wizard Section */}
-      <section className="py-16 md:py-24 bg-secondary-light">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-10">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-              {t('quoteTitle')}
-            </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              {t('quoteSubtitle')}
-            </p>
-          </div>
-          <QuoteWizard />
-        </div>
-      </section>
 
       <section className="py-16 md:py-24">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">

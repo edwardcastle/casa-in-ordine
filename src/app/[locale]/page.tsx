@@ -147,7 +147,7 @@ export default function HomePage() {
             {serviceCategories.map(({ key, icon }, i) => (
               <ScrollReveal key={key} animation="fadeInUpShorter" delay={i * 100}>
                 <Link
-                  href={`/${locale}/contact`}
+                  href={`/${locale}/preventivo`}
                   className="block bg-white rounded-2xl py-10 px-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group"
                 >
                   <div className="mx-auto mb-4 flex items-center justify-center text-primary group-hover:text-accent transition-colors">
@@ -235,7 +235,7 @@ export default function HomePage() {
           <ScrollReveal animation="fadeInUpShorter" delay={200}>
             <div className="flex flex-col items-center gap-4">
               <Link
-                href={`/${locale}/contact`}
+                href={`/${locale}/preventivo`}
                 className="inline-flex items-center justify-center px-8 py-3 bg-primary text-white font-bold rounded-full hover:bg-primary-light transition-colors duration-200 shadow-lg text-lg"
               >
                 {t('home.finalCta.cta')}

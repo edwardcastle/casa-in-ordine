@@ -9,7 +9,8 @@
     "services": "Services",
     "gallery": "Gallery",
     "blog": "Blog",
-    "contact": "Contact"
+    "contact": "Contact",
+    "preventivo": "Quote"
   },
   "hero": {
     "title": "Casa in Ordine",
@@ -411,6 +412,14 @@
     "back": "Back",
     "next": "Next",
     "restart": "Start over"
+  },
+  "preventivo": {
+    "title": "Free Quote – Casa in Ordine | Decluttering & Home Organizing",
+    "metaDescription": "Request a free quote for your decluttering and home organizing project. Digital survey in just a few minutes.",
+    "heroTitle": "Free Quote",
+    "heroSubtitle": "Find out how much it costs to reorganize your spaces",
+    "wizardTitle": "Digital Survey",
+    "wizardSubtitle": "Three questions to get to know each other, then we define your perfect space."
   },
   "notFound": {
     "title": "Page not found",

@@ -9,7 +9,8 @@
     "services": "Servizi",
     "gallery": "Galleria",
     "blog": "Blog",
-    "contact": "Contatti"
+    "contact": "Contatti",
+    "preventivo": "Preventivo"
   },
   "hero": {
     "title": "Casa in Ordine",
@@ -411,6 +412,14 @@
     "back": "Indietro",
     "next": "Avanti",
     "restart": "Ricomincia da capo"
+  },
+  "preventivo": {
+    "title": "Preventivo Gratuito – Casa in Ordine | Decluttering e Home Organizing",
+    "metaDescription": "Richiedi un preventivo gratuito per il tuo progetto di decluttering e home organizing. Sopralluogo digitale in pochi minuti.",
+    "heroTitle": "Preventivo Gratuito",
+    "heroSubtitle": "Scopri quanto costa riorganizzare i tuoi spazi",
+    "wizardTitle": "Sopralluogo Digitale",
+    "wizardSubtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto."
   },
   "notFound": {
     "title": "Pagina non trovata",
