@@ -3,104 +3,88 @@
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
 import { submitQuoteRequest } from '@/actions/contact';
+import CategoryIcon from '@/components/CategoryIcon';
 
 type Category = 'armadio' | 'cucina' | 'ufficio' | 'bagno' | 'garage' | 'trasloco';
 type Complexity = { value: number; label: string };
 
-// --- Effort-based pricing model ---
-// Grounded in Rome professional organizing market research (APOI, Cronoshare,
-// Italian P.O. published packages — Silva Bucci, Margherita Pecoraro, etc.)
-//
-// Rome market rate: €55-65/h effective, but clients see flat per-project prices.
-// This model uses flat base prices per room type (bakes in minimum effort),
-// plus incremental cost per size unit, scaled by complexity tier.
+// --- Work-package pricing model ---
+// Flat package prices per room type, sized by scope.
+// Small increments per extra unit keep totals accessible.
+// Typical range: €50 (small bathroom) – €350 (large move).
 //
 // Formula:
-//   projectCost = (basePrice + Σ(fieldValue × costPerUnit)) × complexityMultiplier
-//   extrasCost  = flat fee + % of projectCost (scales with project size)
-//   urgency     = quiz severity adds 0–10% (more chaos = more sorting decisions)
-//   total       = projectCost + extrasCost + urgency
+//   projectCost = basePrice + Σ(fieldValue × costPerUnit)
+//   complexityCost = projectCost × (complexityMultiplier - 1)  [surcharge only]
+//   extrasCost  = flat add-on fees
+//   urgency     = quiz adds 0–5% on top
+//   total       = projectCost + complexityCost + extrasCost + urgency
 
 interface CategoryConfig {
-  basePrice: number; // flat minimum for the category (consultation + basic scope)
-  fields: { id: string; costPerUnit: number }[]; // each unit adds flat €
+  basePrice: number; // package starting price
+  fields: { id: string; costPerUnit: number }[];
 }
 
 const categoryConfigs: Record<Category, CategoryConfig> = {
   armadio: {
-    // Standard wardrobe: €150 base (2-door, light). Market range: €120-450
-    basePrice: 150,
+    basePrice: 60,      // basic 2-door wardrobe package
     fields: [
-      { id: 'doors', costPerUnit: 40 },     // each additional door section: ~€40 effort
-      { id: 'drawers', costPerUnit: 18 },    // each internal drawer: ~€18
-      { id: 'height', costPerUnit: 55 },     // mezzanine/high shelves require ladder work
+      { id: 'doors', costPerUnit: 10 },
+      { id: 'drawers', costPerUnit: 5 },
+      { id: 'height', costPerUnit: 12 },
     ],
   },
   cucina: {
-    // Standard kitchen: €250 base (6-8 modules, light). Market range: €180-750
-    basePrice: 250,
+    basePrice: 80,      // standard kitchen package
     fields: [
-      { id: 'modules', costPerUnit: 28 },    // each cabinet/wall unit: ~€28
-      { id: 'pantry', costPerUnit: 120 },     // separate pantry is a sub-project: ~€120
-      { id: 'counters', costPerUnit: 45 },    // each counter/island surface: ~€45
+      { id: 'modules', costPerUnit: 6 },
+      { id: 'pantry', costPerUnit: 25 },
+      { id: 'counters', costPerUnit: 10 },
     ],
   },
   ufficio: {
-    // Standard office: €150 base (1 desk, light). Market range: €120-600
-    basePrice: 150,
+    basePrice: 60,      // single-desk office package
     fields: [
-      { id: 'desks', costPerUnit: 60 },      // each workstation: ~€60
-      { id: 'documents', costPerUnit: 45 },   // per linear meter of documents: ~€45
+      { id: 'desks', costPerUnit: 15 },
+      { id: 'documents', costPerUnit: 10 },
     ],
   },
   bagno: {
-    // Standard bathroom: €100 base. Market range: €90-350
-    basePrice: 100,
+    basePrice: 45,      // small bathroom package
     fields: [
-      { id: 'cabinets', costPerUnit: 45 },    // each cabinet/under-sink: ~€45
-      { id: 'shelves', costPerUnit: 22 },      // each open shelf: ~€22
+      { id: 'cabinets', costPerUnit: 10 },
+      { id: 'shelves', costPerUnit: 5 },
     ],
   },
   garage: {
-    // Standard garage/storage: €300 base. Market range: €250-1000
-    basePrice: 300,
+    basePrice: 90,      // standard garage package
     fields: [
-      { id: 'racks', costPerUnit: 55 },       // each shelf bay: ~€55
-      { id: 'tools', costPerUnit: 85 },        // workshop area intensity (1-5): ~€85/level
+      { id: 'racks', costPerUnit: 12 },
+      { id: 'tools', costPerUnit: 18 },
     ],
   },
   trasloco: {
-    // Small move/unpack: €400 base. Market range: €350-1500+
-    basePrice: 400,
+    basePrice: 120,     // small move/unpack package
     fields: [
-      { id: 'boxes', costPerUnit: 12 },       // each box to unpack & organize: ~€12
-      { id: 'rooms', costPerUnit: 150 },       // each room to set up from scratch: ~€150
+      { id: 'boxes', costPerUnit: 3 },
+      { id: 'rooms', costPerUnit: 30 },
     ],
   },
 };
 
-// Complexity tiers — based on Italian market data
-// Light = standard effort, Moderate = +50%, Critical = double
+// Complexity tiers — surcharges on the package price
 const complexityMultipliers: Record<number, number> = {
-  1: 1.0,    // light: space mostly organized, needs optimization
-  1.5: 1.5,  // moderate: cluttered, significant sorting needed (+50%)
-  2: 2.0,    // critical: heavily cluttered, deep intervention (2×)
+  1: 1.0,    // light: standard package
+  1.5: 1.15, // moderate: +15%
+  2: 1.3,    // critical: +30%
 };
 
-// Extras — flat base + percentage of project cost (scales naturally)
+// Extras — flat add-on fees
 const extrasConfig = {
-  materials: { baseCost: 40, percent: 0.08 },  // organizer kit: €40 + 8% of project
-  dump: { baseCost: 60, percent: 0.10 },         // disposal/donation: €60 + 10% of project
+  materials: { baseCost: 10, percent: 0.03 },
+  dump: { baseCost: 15, percent: 0.03 },
 };
 
-const categoryIcons: Record<Category, string> = {
-  armadio: 'M6 2a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V4a2 2 0 00-2-2H6zm6 0v20M8 12h2m4 0h2',
-  cucina: 'M3 6h18M3 6v14a2 2 0 002 2h14a2 2 0 002-2V6M8 6V4a2 2 0 012-2h4a2 2 0 012 2v2m-6 5h4',
-  ufficio: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
-  bagno: 'M4 6h16M4 6v10a2 2 0 002 2h12a2 2 0 002-2V6M9 6V4m6 2V4m-3 6v4',
-  garage: 'M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6',
-  trasloco: 'M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4',
-};
 
 export default function QuoteWizard() {
   const t = useTranslations('quote');
@@ -149,8 +133,8 @@ export default function QuoteWizard() {
       }) ?? 0;
       return score + optIdx;
     }, 0);
-    // Max quiz score = 6 (3 questions × option index 2), maps to 0–10%
-    const urgencyPercent = (quizScore / 6) * 0.10;
+    // Max quiz score = 6 (3 questions × option index 2), maps to 0–5%
+    const urgencyPercent = (quizScore / 6) * 0.05;
     const urgencyAmount = (projectCost + extrasCost) * urgencyPercent;
 
     const total = Math.round(projectCost + extrasCost + urgencyAmount);
@@ -260,9 +244,7 @@ export default function QuoteWizard() {
                   : 'border-secondary-dark bg-white hover:border-primary/50 hover:-translate-y-1'
               }`}
             >
-              <svg className="w-8 h-8 mx-auto mb-3 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d={categoryIcons[cat]} />
-              </svg>
+              <CategoryIcon category={cat} className="w-8 h-8 mx-auto mb-3" />
               <span className="font-semibold text-sm">{t(`categories.${cat}`)}</span>
             </button>
           ))}

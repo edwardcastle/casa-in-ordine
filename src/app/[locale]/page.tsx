@@ -6,32 +6,14 @@ import ImpactChart from '@/components/ImpactChart';
 import BalanceChart from '@/components/BalanceChart';
 import ScrollReveal from '@/components/ScrollReveal';
 import OverlayImage from '@/components/OverlayImage';
+import CategoryIcon from '@/components/CategoryIcon';
+import type { Category } from '@/components/CategoryIcon';
 
 export default function HomePage() {
   const t = useTranslations();
   const locale = useLocale();
 
-  // Filled-style icons matching the Porto FA icons
-  const serviceCategories = [
-    { key: 'armadio', icon: (
-      <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 640 512"><path d="M0 48C0 21.5 21.5 0 48 0L368 0c26.5 0 48 21.5 48 48l0 48-16 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l16 0 0 128-16 0c-17.7 0-32 14.3-32 32s14.3 32 32 32l16 0 0 128c0 26.5-21.5 48-48 48L240 528l0-96c0-35.3-28.7-64-64-64s-64 28.7-64 64l0 96L48 528c0-26.5-21.5-48-48-48L0 48z"/></svg>
-    )},
-    { key: 'cucina', icon: (
-      <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 576 512"><path d="M240 144A80 80 0 1 0 80 144a80 80 0 1 0 160 0zM464 48c26.5 0 48 21.5 48 48l0 112-80 0 0-16c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 16-48 0 0-112c0-26.5 21.5-48 48-48l96 0zM320 304l0 16 256 0 0-16c0-26.5-21.5-48-48-48l-160 0c-26.5 0-48 21.5-48 48zm-16-64c0-11 2.4-21.5 6.7-30.9C285.8 193.3 268.4 176 244.8 176l-133.6 0c-23.6 0-41 17.3-65.9 33.1C32.4 218.5 16 229 16 240l0 32c0 8.8 7.2 16 16 16l272 0 0-48zm16 160l0 64c0 26.5 21.5 48 48 48l160 0c26.5 0 48-21.5 48-48l0-64-256 0z"/></svg>
-    )},
-    { key: 'ufficio', icon: (
-      <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 640 512"><path d="M128 0C92.7 0 64 28.7 64 64l0 288c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l0-288c0-35.3-28.7-64-64-64L128 0zM176 160l288 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-288 0c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0-64l288 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-288 0c-8.8 0-16-7.2-16-16s7.2-16 16-16zm0 128l288 0c8.8 0 16 7.2 16 16s-7.2 16-16 16l-288 0c-8.8 0-16-7.2-16-16s7.2-16 16-16zM64 448c0 35.3 28.7 64 64 64l384 0c35.3 0 64-28.7 64-64l-512 0z"/></svg>
-    )},
-    { key: 'bagno', icon: (
-      <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 512 512"><path d="M256 0a32 32 0 0 1 32 32l0 10.6c22 3.8 42.1 13.4 58.6 27.5l7.5-7.5c12.5-12.5 32.8-12.5 45.3 0s12.5 32.8 0 45.3l-7.5 7.5c14.1 16.5 23.7 36.6 27.5 58.6l10.6 0a32 32 0 1 1 0 64l-10.6 0c-3.8 22-13.4 42.1-27.5 58.6l7.5 7.5c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0l-7.5-7.5c-16.5 14.1-36.6 23.7-58.6 27.5l0 10.6a32 32 0 1 1-64 0l0-10.6c-22-3.8-42.1-13.4-58.6-27.5l-7.5 7.5c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3l7.5-7.5C100.4 282.1 90.8 262 87 240L76.4 240a32 32 0 1 1 0-64l10.6 0c3.8-22 13.4-42.1 27.5-58.6l-7.5-7.5c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l7.5 7.5C176 56.4 196 46.8 218 43l0-11A32 32 0 0 1 256 0zm-64 208a64 64 0 1 0 128 0 64 64 0 1 0-128 0zm288 208a32 32 0 1 1 0 64 32 32 0 1 1 0-64zM32 416a32 32 0 1 1 64 0 32 32 0 1 1-64 0zm448 96a32 32 0 1 1 0-64 32 32 0 1 1 0 64zM32 480a32 32 0 1 1 64 0 32 32 0 1 1-64 0z"/></svg>
-    )},
-    { key: 'garage', icon: (
-      <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 640 512"><path d="M0 488L0 171.3c0-26.2 15.9-49.7 40.2-59.4L308.1 4.8c7.6-3.1 16.1-3.1 23.8 0L599.8 111.9c24.3 9.7 40.2 33.3 40.2 59.4L640 488c0 13.3-10.7 24-24 24l-48 0c-13.3 0-24-10.7-24-24l0-264c0-17.7-14.3-32-32-32l-384 0c-17.7 0-32 14.3-32 32l0 264c0 13.3-10.7 24-24 24l-48 0c-13.3 0-24-10.7-24-24zm488 24l-336 0c-13.3 0-24-10.7-24-24l0-56 384 0 0 56c0 13.3-10.7 24-24 24zM128 400l384 0 0-64-384 0 0 64zm0-96l384 0 0-64-384 0 0 64z"/></svg>
-    )},
-    { key: 'trasloco', icon: (
-      <svg className="w-10 h-10" fill="currentColor" viewBox="0 0 640 512"><path d="M58.9 42.1c3-6.1 9.6-9.6 16.3-8.7L320 64 564.8 33.4c6.7-.8 13.3 2.7 16.3 8.7l41.7 83.4c9 17.9-.6 39.6-19.8 45.1L439.6 217.3c-13.9 4-28.8-1.9-36.2-14.3L320 64 236.6 203c-7.4 12.4-22.3 18.3-36.2 14.3L37 170.6c-19.3-5.5-28.8-27.2-19.8-45.1L58.9 42.1zM321.1 128l54.9 91.4c14.9 24.8 44.6 36.6 72.5 28.6L576 211.6l0 167c0 22-15 41.2-36.4 46.6l-204.1 51c-10.2 2.6-20.9 2.6-31 0l-204.1-51C79 419.7 64 400.5 64 378.5l0-166.9 127.5 36.4c27.9 8 57.6-3.8 72.5-28.6L318.9 128l2.2 0z"/></svg>
-    )},
-  ];
+  const serviceCategories: Category[] = ['armadio', 'cucina', 'ufficio', 'bagno', 'garage', 'trasloco'];
 
   return (
     <>
@@ -144,14 +126,14 @@ export default function HomePage() {
             </p>
           </ScrollReveal>
           <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
-            {serviceCategories.map(({ key, icon }, i) => (
+            {serviceCategories.map((key, i) => (
               <ScrollReveal key={key} animation="fadeInUpShorter" delay={i * 100}>
                 <Link
                   href={`/${locale}/preventivo`}
                   className="block bg-white rounded-2xl py-10 px-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group"
                 >
-                  <div className="mx-auto mb-4 flex items-center justify-center text-primary group-hover:text-accent transition-colors">
-                    {icon}
+                  <div className="mx-auto mb-4 flex items-center justify-center group-hover:text-accent transition-colors">
+                    <CategoryIcon category={key} className="w-10 h-10" />
                   </div>
                   <h3 className="text-lg font-semibold text-foreground mt-2">
                     {t(`home.services.categories.${key}`)}

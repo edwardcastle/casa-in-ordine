@@ -112,7 +112,7 @@ html {
 /* ── Hero full-viewport + angled bottom ── */
 .hero-full {
   /* On mobile: slightly taller than the 4:3 images for more visual impact */
-  aspect-ratio: 3 / 3.2;
+  aspect-ratio: 3 / 3.3;
   display: flex;
   align-items: center;
   justify-content: center;
