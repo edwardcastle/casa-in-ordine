@@ -35,7 +35,7 @@ export default function Header() {
     <>
       {/* Header bar */}
       <header
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 md:py-4 left-0 right-0 z-50 transition-all duration-300 ${
           scrolled
             ? 'bg-primary/90 backdrop-blur-md shadow-lg'
             : 'bg-transparent'
@@ -51,7 +51,7 @@ export default function Header() {
                 width={250}
                 height={75}
                 priority
-                className={`w-auto transition-all duration-300 ${scrolled ? 'h-12 md:h-14 brightness-0 invert' : 'h-12 md:h-16'}`}
+                className={`w-auto transition-all duration-300 py-2 brightness-0 invert ${scrolled ? 'h-16 md:h-26' : 'h-16 md:h-26'}`}
               />
             </Link>
 
