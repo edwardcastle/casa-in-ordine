@@ -48,10 +48,10 @@ export default function Header() {
               <Image
                 src="/images/logo/logo_800x300.png"
                 alt="Casa in Ordine"
-                width={200}
+                width={250}
                 height={75}
                 priority
-                className={`w-auto transition-all duration-300 ${scrolled ? 'h-8 md:h-14 brightness-0 invert' : 'h-10 md:h-16'}`}
+                className={`w-auto transition-all duration-300 ${scrolled ? 'h-12 md:h-14 brightness-0 invert' : 'h-12 md:h-16'}`}
               />
             </Link>
 
