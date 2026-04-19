@@ -522,7 +522,7 @@ export default function QuoteWizard() {
           alt="Casa in Ordine"
           width={160}
           height={60}
-          className="h-10 w-auto"
+          className="h-32 w-auto"
         />
       </div>
       {/* Progress bar */}
