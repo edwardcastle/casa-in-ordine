@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useTranslations } from 'next-intl';
+import Image from 'next/image';
 import { submitQuoteRequest } from '@/actions/contact';
 import CategoryIcon from '@/components/CategoryIcon';
 
@@ -514,8 +515,18 @@ export default function QuoteWizard() {
 
   return (
     <div className="bg-white rounded-3xl shadow-lg border border-secondary-dark overflow-hidden">
+      {/* Logo */}
+      <div className="flex justify-center pt-6">
+        <Image
+          src="/images/logo/logo_800x300.png"
+          alt="Casa in Ordine"
+          width={160}
+          height={60}
+          className="h-10 w-auto"
+        />
+      </div>
       {/* Progress bar */}
-      <div className="h-2 bg-secondary">
+      <div className="h-2 bg-secondary mt-4">
         <div
           className="h-full bg-primary rounded-r-full transition-all duration-500"
           style={{ width: `${progress}%` }}
