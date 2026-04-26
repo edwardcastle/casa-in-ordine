@@ -11,10 +11,12 @@ interface QuoteRequestData {
   details: Record<string, number>;
   extras: { materials: boolean; dump: boolean };
   quizAnswers: string[];
+  availability?: { slot1: string; slot2: string; slot3: string };
+  notes?: string;
 }
 
 export async function submitQuoteRequest(data: QuoteRequestData) {
-  const { name, email, phone, category, complexity, total, breakdown, details, extras, quizAnswers } = data;
+  const { name, email, phone, category, complexity, total, breakdown, details, extras, quizAnswers, availability, notes } = data;
 
   if (!name || !email || !category) {
     return { success: false, error: 'Missing required fields' };
@@ -82,6 +84,18 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
           <ol style="padding-left: 20px;">
             ${quizAnswers.map((a) => a ? `<li style="margin-bottom: 4px;">${a}</li>` : '').join('')}
           </ol>` : ''}
+
+          ${availability && (availability.slot1 || availability.slot2 || availability.slot3) ? `
+          <h3 style="color: #7B8F7A;">Disponibilità</h3>
+          <ol style="padding-left: 20px;">
+            ${availability.slot1 ? `<li style="margin-bottom: 4px;">${new Date(availability.slot1).toLocaleString('it-IT', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>` : ''}
+            ${availability.slot2 ? `<li style="margin-bottom: 4px;">${new Date(availability.slot2).toLocaleString('it-IT', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>` : ''}
+            ${availability.slot3 ? `<li style="margin-bottom: 4px;">${new Date(availability.slot3).toLocaleString('it-IT', { day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' })}</li>` : ''}
+          </ol>` : ''}
+
+          ${notes ? `
+          <h3 style="color: #7B8F7A;">Note aggiuntive</h3>
+          <p style="padding: 12px; background: #f9f9f9; border-left: 3px solid #D98A6C; border-radius: 4px;">${notes.replace(/\n/g, '<br>')}</p>` : ''}
 
           <p style="color: #666; font-size: 12px; margin-top: 32px;">Inviato dal sopralluogo digitale di casainordine.com</p>
         `,

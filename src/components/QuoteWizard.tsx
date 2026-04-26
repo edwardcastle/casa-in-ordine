@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { submitQuoteRequest } from '@/actions/contact';
@@ -95,10 +95,14 @@ export default function QuoteWizard() {
   const [details, setDetails] = useState<Record<string, number>>({});
   const [complexity, setComplexity] = useState<Complexity | null>(null);
   const [extras, setExtras] = useState({ materials: false, dump: false });
+  const [availability, setAvailability] = useState({ slot1: '', slot2: '', slot3: '' });
+  const [notes, setNotes] = useState('');
+  const [photos, setPhotos] = useState<string[]>([]);
   const [contact, setContact] = useState({ name: '', email: '', phone: '' });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const photoInputRef = useRef<HTMLInputElement>(null);
 
-  const totalSteps = 7;
+  const totalSteps = 9;
   const progress = ((step + 1) / totalSteps) * 100;
 
   function calculatePrice(): { total: number; breakdown: { project: number; extras: number; urgency: number } } {
@@ -112,7 +116,7 @@ export default function QuoteWizard() {
       projectBase += (details[field.id] || 0) * field.costPerUnit;
     });
 
-    // 2. Apply complexity multiplier (1.0× / 1.5× / 2.0×)
+    // 2. Apply complexity multiplier (1.0× / 1.15× / 1.3×)
     const compMultiplier = complexityMultipliers[complexity.value] ?? 1;
     const projectCost = projectBase * compMultiplier;
 
@@ -125,7 +129,7 @@ export default function QuoteWizard() {
       extrasCost += extrasConfig.dump.baseCost + projectCost * extrasConfig.dump.percent;
     }
 
-    // 4. Quiz urgency factor (0–10%)
+    // 4. Quiz urgency factor (0–5%)
     //    Higher reported chaos = more sorting/decision effort required
     const quizScore = quiz.reduce((score, answer, qIdx) => {
       if (!answer) return score;
@@ -158,7 +162,8 @@ export default function QuoteWizard() {
       case 3: return category !== null;
       case 4: return true;
       case 5: return complexity !== null;
-      case 6: return true;
+      case 6: return true; // extras — optional
+      case 7: return true; // availability — optional
       default: return false;
     }
   }
@@ -179,11 +184,36 @@ export default function QuoteWizard() {
         details,
         extras,
         quizAnswers: quiz,
+        availability,
+        notes: notes.trim() || undefined,
       });
       setSubmitStatus(result.success ? 'success' : 'error');
     } catch {
       setSubmitStatus('error');
     }
+  }
+
+  function handlePhotoUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const files = Array.from(e.target.files ?? []);
+    const remaining = 5 - photos.length;
+    const toAdd = files.slice(0, remaining);
+    toAdd.forEach((file) => {
+      const reader = new FileReader();
+      reader.onload = (ev) => {
+        if (ev.target?.result) {
+          setPhotos((prev) => [...prev, ev.target!.result as string]);
+        }
+      };
+      reader.readAsDataURL(file);
+    });
+    e.target.value = '';
+  }
+
+  function formatDateTime(str: string): string {
+    if (!str) return t('dateNotSpecified');
+    return new Date(str).toLocaleString(undefined, {
+      day: 'numeric', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit',
+    });
   }
 
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
@@ -321,15 +351,14 @@ export default function QuoteWizard() {
     );
   }
 
-  function renderExtrasAndResult() {
-    const { total, breakdown } = calculatePrice();
+  function renderExtrasStep() {
     return (
       <div className="text-center">
-        {/* Extras */}
-        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-6">
+        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
           {t('extrasTitle')}
         </h3>
-        <div className="grid md:grid-cols-2 gap-4 max-w-lg mx-auto mb-10">
+        <p className="text-foreground/60 mb-8">{t('extrasSubtitle')}</p>
+        <div className="grid md:grid-cols-2 gap-4 max-w-lg mx-auto">
           <button
             onClick={() => setExtras({ ...extras, materials: !extras.materials })}
             className={`p-5 rounded-2xl border-2 text-center transition-all ${
@@ -355,59 +384,211 @@ export default function QuoteWizard() {
             <p className="text-xs text-foreground/60 mt-1">{t('extras.dumpDesc')}</p>
           </button>
         </div>
+      </div>
+    );
+  }
 
-        {/* Result */}
-        <div className="bg-white rounded-3xl p-8 shadow-md border border-secondary-dark max-w-lg mx-auto">
-          <div className="flex flex-wrap justify-center gap-2 mb-6">
-            {category && (
-              <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
-                {t(`categories.${category}`)}
-              </span>
-            )}
-            {complexity && (
-              <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
-                {complexity.label}
-              </span>
-            )}
-          </div>
+  function renderAvailabilityStep() {
+    return (
+      <div className="text-center">
+        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
+          {t('availabilityTitle')}
+        </h3>
+        <p className="text-foreground/60 mb-8">{t('availabilitySubtitle')}</p>
+        <div className="max-w-md mx-auto space-y-4">
+          {(['slot1', 'slot2', 'slot3'] as const).map((slot, idx) => (
+            <div key={slot} className="bg-secondary rounded-xl p-4 border border-secondary-dark text-left">
+              <label className="block text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
+                {t(`availabilitySlot${idx + 1}` as 'availabilitySlot1' | 'availabilitySlot2' | 'availabilitySlot3')}
+              </label>
+              <input
+                type="datetime-local"
+                value={availability[slot]}
+                onChange={(e) => setAvailability({ ...availability, [slot]: e.target.value })}
+                className="w-full border-b-2 border-secondary-dark bg-transparent py-2 text-sm font-semibold text-primary focus:border-primary focus:outline-none"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+    );
+  }
 
-          <p className="text-sm text-foreground/60 mb-2">{t('estimateLabel')}</p>
-          <div className="text-5xl font-bold text-foreground mb-6">
-            <span className="text-xl align-middle mr-1">€</span>{total}
+  function renderResultStep() {
+    const { total, breakdown } = calculatePrice();
+
+    // Build sensitization text
+    const isEmbarassed = quiz[2] === t('quiz.q3.options.2');
+    const sensitizationSuffix = isEmbarassed
+      ? t('sensitizationEmbarassed')
+      : t('sensitizationGeneral');
+
+    // Build detailed field summary
+    const fieldSummary = category
+      ? categoryConfigs[category].fields.filter((f) => (details[f.id] || 0) > 0)
+      : [];
+
+    return (
+      <div className="text-center">
+        {/* Summary pills + print button */}
+        <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
+          {category && (
+            <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
+              {t(`categories.${category}`)}
+            </span>
+          )}
+          {complexity && (
+            <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
+              {complexity.label}
+            </span>
+          )}
+          <button
+            onClick={() => window.print()}
+            title={t('printTitle')}
+            className="print:hidden w-9 h-9 rounded-full border border-secondary-dark bg-secondary flex items-center justify-center hover:border-primary hover:text-primary transition-all"
+          >
+            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Sensitization box */}
+        {quiz[0] && quiz[1] && (
+          <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 mb-6 text-left max-w-lg mx-auto">
+            <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-1">
+              {t('whyActNow')}
+            </p>
+            <p className="text-sm text-foreground/80">
+              {t('sensitizationMain', { q1: quiz[0], q2: quiz[1] })}{' '}
+              {sensitizationSuffix}
+            </p>
           </div>
+        )}
+
+        {/* Price */}
+        <p className="text-sm text-foreground/60 mb-2">{t('estimateLabel')}</p>
+        <div className="text-5xl font-bold text-foreground mb-6">
+          <span className="text-xl align-middle mr-1">€</span>{total}
+        </div>
+
+        <div className="max-w-lg mx-auto space-y-4 text-left">
 
           {/* Breakdown */}
-          <div className="bg-secondary rounded-xl p-4 mb-6 text-left space-y-2">
-            <div className="flex justify-between text-sm">
-              <span className="text-foreground/70">{t('breakdownProject')}</span>
-              <span className="font-semibold">€{breakdown.project}</span>
-            </div>
-            {breakdown.extras > 0 && (
+          <div className="bg-secondary rounded-xl p-4">
+            <div className="space-y-2">
               <div className="flex justify-between text-sm">
-                <span className="text-foreground/70">{t('breakdownExtras')}</span>
-                <span className="font-semibold">€{breakdown.extras}</span>
+                <span className="text-foreground/70">{t('breakdownProject')}</span>
+                <span className="font-semibold">€{breakdown.project}</span>
               </div>
-            )}
-            {breakdown.urgency > 0 && (
-              <div className="flex justify-between text-sm">
-                <span className="text-foreground/70">{t('breakdownUrgency')}</span>
-                <span className="font-semibold">€{breakdown.urgency}</span>
+              {breakdown.extras > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-foreground/70">{t('breakdownExtras')}</span>
+                  <span className="font-semibold">€{breakdown.extras}</span>
+                </div>
+              )}
+              {breakdown.urgency > 0 && (
+                <div className="flex justify-between text-sm">
+                  <span className="text-foreground/70">{t('breakdownUrgency')}</span>
+                  <span className="font-semibold">€{breakdown.urgency}</span>
+                </div>
+              )}
+              <div className="flex justify-between text-sm font-bold pt-2 border-t border-secondary-dark">
+                <span>{t('breakdownTotal')}</span>
+                <span>€{total}</span>
               </div>
-            )}
-            <div className="flex justify-between text-sm font-bold pt-2 border-t border-secondary-dark">
-              <span>{t('breakdownTotal')}</span>
-              <span>€{total}</span>
             </div>
           </div>
 
-          <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 mb-6 text-left">
+          {/* Survey summary + dates */}
+          <div className="bg-secondary rounded-xl p-4">
+            {fieldSummary.length > 0 && (
+              <>
+                <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
+                  {t('summaryTitle')}
+                </p>
+                <ul className="space-y-1 mb-4">
+                  {fieldSummary.map((f) => (
+                    <li key={f.id} className="flex items-center gap-2 text-sm">
+                      <span className="text-primary">✓</span>
+                      <span className="text-foreground/70">{t(`fields.${category!}.${f.id}`)}</span>
+                      <span className="font-semibold ml-auto">{details[f.id]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
+              {t('datesTitle')}
+            </p>
+            <ol className="space-y-1 text-sm text-foreground/70 list-decimal list-inside">
+              <li>{formatDateTime(availability.slot1)}</li>
+              <li>{formatDateTime(availability.slot2)}</li>
+              <li>{formatDateTime(availability.slot3)}</li>
+            </ol>
+          </div>
+
+          {/* Notes + Photos */}
+          <div className="grid md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-semibold text-foreground mb-2">
+                {t('notesLabel')}
+              </label>
+              <textarea
+                value={notes}
+                onChange={(e) => setNotes(e.target.value)}
+                placeholder={t('notesPlaceholder')}
+                rows={4}
+                className="w-full bg-secondary border-2 border-transparent rounded-xl p-4 text-sm resize-none focus:bg-white focus:border-primary focus:outline-none transition-all"
+              />
+            </div>
+            <div className="print:hidden">
+              <label className="block text-sm font-semibold text-foreground mb-2">
+                {t('photosLabel')}
+              </label>
+              <div
+                onClick={() => photoInputRef.current?.click()}
+                className="border-2 border-dashed border-secondary-dark rounded-xl p-4 min-h-[100px] flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-secondary/50 transition-all text-center"
+              >
+                <span className="text-2xl mb-1">📷</span>
+                <span className="text-xs font-semibold text-foreground/60">{t('photosUpload')}</span>
+                <span className="text-xs text-foreground/40 mt-1">
+                  {photos.length === 0 ? t('photosNone') : `${photos.length} / 5`}
+                </span>
+                <input
+                  ref={photoInputRef}
+                  type="file"
+                  className="hidden"
+                  multiple
+                  accept="image/*"
+                  onChange={handlePhotoUpload}
+                />
+              </div>
+              {photos.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {photos.map((src, i) => (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img
+                      key={i}
+                      src={src}
+                      alt=""
+                      className="w-12 h-12 object-cover rounded-lg border border-secondary-dark"
+                    />
+                  ))}
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="bg-accent/10 border-l-4 border-accent rounded-lg p-4">
             <p className="text-xs text-foreground/70">
               <span className="font-bold">{t('disclaimerTitle')}:</span> {t('disclaimerText')}
             </p>
           </div>
 
-          {/* Contact info form */}
-          <div className="border-t border-secondary-dark pt-6 mb-6 text-left">
+          {/* Contact form */}
+          <div className="print:hidden border-t border-secondary-dark pt-4">
             <h4 className="font-bold text-foreground mb-1 text-center">{t('contactStepTitle')}</h4>
             <p className="text-sm text-foreground/60 mb-4 text-center">{t('contactStepSubtitle')}</p>
             <div className="space-y-3">
@@ -453,13 +634,13 @@ export default function QuoteWizard() {
           </div>
 
           {submitStatus === 'error' && (
-            <p className="text-red-600 text-sm mb-4 text-center">{t('submitError')}</p>
+            <p className="print:hidden text-red-600 text-sm text-center">{t('submitError')}</p>
           )}
 
           <button
             onClick={handleSubmit}
             disabled={!canSubmitContact || submitStatus === 'sending'}
-            className="w-full bg-primary text-white py-4 rounded-full font-bold shadow-lg hover:bg-primary-dark transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
+            className="print:hidden w-full bg-primary text-white py-4 rounded-full font-bold shadow-lg hover:bg-primary-dark transition-all flex items-center justify-center gap-2 disabled:opacity-40 disabled:cursor-not-allowed"
           >
             {submitStatus === 'sending' ? (
               <>
@@ -472,7 +653,7 @@ export default function QuoteWizard() {
             ) : (
               <>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 {t('submitButton')}
               </>
@@ -508,9 +689,25 @@ export default function QuoteWizard() {
       case 3: return renderCategoryStep();
       case 4: return renderDetailsStep();
       case 5: return renderComplexityStep();
-      case 6: return renderExtrasAndResult();
+      case 6: return renderExtrasStep();
+      case 7: return renderAvailabilityStep();
+      case 8: return renderResultStep();
       default: return null;
     }
+  }
+
+  function handleReset() {
+    setStep(0);
+    setQuiz(['', '', '']);
+    setCategory(null);
+    setDetails({});
+    setComplexity(null);
+    setExtras({ materials: false, dump: false });
+    setAvailability({ slot1: '', slot2: '', slot3: '' });
+    setNotes('');
+    setPhotos([]);
+    setContact({ name: '', email: '', phone: '' });
+    setSubmitStatus('idle');
   }
 
   return (
@@ -526,7 +723,7 @@ export default function QuoteWizard() {
         />
       </div>
       {/* Progress bar */}
-      <div className="h-2 bg-secondary mt-4">
+      <div className="print:hidden h-2 bg-secondary mt-4">
         <div
           className="h-full bg-primary rounded-r-full transition-all duration-500"
           style={{ width: `${progress}%` }}
@@ -536,9 +733,9 @@ export default function QuoteWizard() {
       <div className="p-6 md:p-10">
         {renderStep()}
 
-        {/* Navigation */}
-        {submitStatus !== 'success' && step < 6 && (
-          <div className="flex justify-between mt-10 pt-6 border-t border-secondary">
+        {/* Navigation — visible on steps 0–7 */}
+        {submitStatus !== 'success' && step < 8 && (
+          <div className="print:hidden flex justify-between mt-10 pt-6 border-t border-secondary">
             <button
               onClick={() => setStep(step - 1)}
               className={`px-6 py-3 rounded-full border-2 border-secondary-dark font-semibold text-foreground/60 transition-all hover:border-primary ${
@@ -557,19 +754,11 @@ export default function QuoteWizard() {
           </div>
         )}
 
-        {(step === 6 || submitStatus === 'success') && (
-          <div className="text-center mt-6">
+        {/* Restart — visible on final step and after success */}
+        {(step === 8 || submitStatus === 'success') && (
+          <div className="print:hidden text-center mt-6">
             <button
-              onClick={() => {
-                setStep(0);
-                setQuiz(['', '', '']);
-                setCategory(null);
-                setDetails({});
-                setComplexity(null);
-                setExtras({ materials: false, dump: false });
-                setContact({ name: '', email: '', phone: '' });
-                setSubmitStatus('idle');
-              }}
+              onClick={handleReset}
               className="text-sm text-foreground/50 hover:text-primary transition-colors"
             >
               {t('restart')}
