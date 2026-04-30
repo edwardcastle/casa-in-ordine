@@ -12,7 +12,7 @@ type Complexity = { value: number; label: string };
 // --- Work-package pricing model ---
 // Flat package prices per room type, sized by scope.
 // Small increments per extra unit keep totals accessible.
-// Typical range: €50 (small bathroom) – €350 (large move).
+// Typical range: €30 (small bathroom) – €200 (large move).
 //
 // Formula:
 //   projectCost = basePrice + Σ(min(qty,2)×costPerUnit + max(qty-2,0)×costPerUnit×0.3)
@@ -28,47 +28,47 @@ interface CategoryConfig {
 
 const categoryConfigs: Record<Category, CategoryConfig> = {
   armadio: {
-    basePrice: 60,      // basic 2-door wardrobe package
+    basePrice: 40,      // basic 2-door wardrobe package
     fields: [
-      { id: 'doors', costPerUnit: 10 },
-      { id: 'drawers', costPerUnit: 5 },
-      { id: 'height', costPerUnit: 12 },
+      { id: 'doors', costPerUnit: 6 },
+      { id: 'drawers', costPerUnit: 3 },
+      { id: 'height', costPerUnit: 8 },
     ],
   },
   cucina: {
-    basePrice: 80,      // standard kitchen package
+    basePrice: 55,      // standard kitchen package
     fields: [
-      { id: 'modules', costPerUnit: 6 },
-      { id: 'pantry', costPerUnit: 25 },
-      { id: 'counters', costPerUnit: 10 },
+      { id: 'modules', costPerUnit: 4 },
+      { id: 'pantry', costPerUnit: 15 },
+      { id: 'counters', costPerUnit: 6 },
     ],
   },
   ufficio: {
-    basePrice: 60,      // single-desk office package
+    basePrice: 40,      // single-desk office package
     fields: [
-      { id: 'desks', costPerUnit: 15 },
-      { id: 'documents', costPerUnit: 10 },
+      { id: 'desks', costPerUnit: 10 },
+      { id: 'documents', costPerUnit: 6 },
     ],
   },
   bagno: {
-    basePrice: 45,      // small bathroom package
+    basePrice: 30,      // small bathroom package
     fields: [
-      { id: 'cabinets', costPerUnit: 10 },
-      { id: 'shelves', costPerUnit: 5 },
+      { id: 'cabinets', costPerUnit: 6 },
+      { id: 'shelves', costPerUnit: 3 },
     ],
   },
   garage: {
-    basePrice: 90,      // standard garage package
+    basePrice: 60,      // standard garage package
     fields: [
-      { id: 'racks', costPerUnit: 12 },
-      { id: 'tools', costPerUnit: 18 },
+      { id: 'racks', costPerUnit: 8 },
+      { id: 'tools', costPerUnit: 12 },
     ],
   },
   trasloco: {
-    basePrice: 120,     // small move/unpack package
+    basePrice: 80,      // small move/unpack package
     fields: [
-      { id: 'boxes', costPerUnit: 3 },
-      { id: 'rooms', costPerUnit: 30 },
+      { id: 'boxes', costPerUnit: 2 },
+      { id: 'rooms', costPerUnit: 20 },
     ],
   },
 };
@@ -82,8 +82,8 @@ const complexityMultipliers: Record<number, number> = {
 
 // Extras — flat add-on fees
 const extrasConfig = {
-  materials: { baseCost: 10, percent: 0.03 },
-  dump: { baseCost: 15, percent: 0.03 },
+  materials: { baseCost: 5, percent: 0.02 },
+  dump: { baseCost: 8, percent: 0.02 },
 };
 
 
