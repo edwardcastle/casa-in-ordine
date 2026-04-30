@@ -15,12 +15,12 @@ export async function generateMetadata({
     title: t('title'),
     description: t('metaDescription'),
     alternates: {
-      canonical: `https://www.casainordine.com/${locale}/preventivo`,
+      canonical: `https://casainordine.com/${locale}/preventivo`,
       languages: {
-        it: 'https://www.casainordine.com/it/preventivo',
-        en: 'https://www.casainordine.com/en/preventivo',
-        es: 'https://www.casainordine.com/es/preventivo',
-        'x-default': 'https://www.casainordine.com/it/preventivo',
+        it: 'https://casainordine.com/it/preventivo',
+        en: 'https://casainordine.com/en/preventivo',
+        es: 'https://casainordine.com/es/preventivo',
+        'x-default': 'https://casainordine.com/it/preventivo',
       },
     },
   };

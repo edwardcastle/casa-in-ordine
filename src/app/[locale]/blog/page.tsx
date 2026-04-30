@@ -14,12 +14,12 @@ export async function generateMetadata({
     title: t('title'),
     description: t('metaDescription'),
     alternates: {
-      canonical: `https://www.casainordine.com/${locale}/blog`,
+      canonical: `https://casainordine.com/${locale}/blog`,
       languages: {
-        it: 'https://www.casainordine.com/it/blog',
-        en: 'https://www.casainordine.com/en/blog',
-        es: 'https://www.casainordine.com/es/blog',
-        'x-default': 'https://www.casainordine.com/it/blog',
+        it: 'https://casainordine.com/it/blog',
+        en: 'https://casainordine.com/en/blog',
+        es: 'https://casainordine.com/es/blog',
+        'x-default': 'https://casainordine.com/it/blog',
       },
     },
   };
