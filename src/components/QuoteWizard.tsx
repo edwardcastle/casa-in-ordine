@@ -15,7 +15,7 @@ type Complexity = { value: number; label: string };
 // Typical range: €50 (small bathroom) – €350 (large move).
 //
 // Formula:
-//   projectCost = basePrice + Σ(fieldValue × costPerUnit)
+//   projectCost = basePrice + Σ(min(qty,2)×costPerUnit + max(qty-2,0)×costPerUnit×0.3)
 //   complexityCost = projectCost × (complexityMultiplier - 1)  [surcharge only]
 //   extrasCost  = flat add-on fees
 //   urgency     = quiz adds 0–5% on top
@@ -110,10 +110,15 @@ export default function QuoteWizard() {
 
     const config = categoryConfigs[category];
 
-    // 1. Base project cost = flat base + size increments
+    // 1. Base project cost = flat base + size increments (diminishing returns)
+    //    First 2 units at full price, additional units at 30% price
+    //    to prevent totals from inflating too much with many doors/cabinets/etc.
     let projectBase = config.basePrice;
     config.fields.forEach((field) => {
-      projectBase += (details[field.id] || 0) * field.costPerUnit;
+      const qty = details[field.id] || 0;
+      const fullPriceQty = Math.min(qty, 2);
+      const discountedQty = Math.max(qty - 2, 0);
+      projectBase += fullPriceQty * field.costPerUnit + discountedQty * field.costPerUnit * 0.3;
     });
 
     // 2. Apply complexity multiplier (1.0× / 1.15× / 1.3×)
