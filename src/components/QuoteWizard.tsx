@@ -111,14 +111,14 @@ export default function QuoteWizard() {
     const config = categoryConfigs[category];
 
     // 1. Base project cost = flat base + size increments (diminishing returns)
-    //    First 2 units at full price, additional units at 30% price
+    //    First unit at full price, additional units at 15% price
     //    to prevent totals from inflating too much with many doors/cabinets/etc.
     let projectBase = config.basePrice;
     config.fields.forEach((field) => {
       const qty = details[field.id] || 0;
-      const fullPriceQty = Math.min(qty, 2);
-      const discountedQty = Math.max(qty - 2, 0);
-      projectBase += fullPriceQty * field.costPerUnit + discountedQty * field.costPerUnit * 0.3;
+      const fullPriceQty = Math.min(qty, 1);
+      const discountedQty = Math.max(qty - 1, 0);
+      projectBase += fullPriceQty * field.costPerUnit + discountedQty * field.costPerUnit * 0.15;
     });
 
     // 2. Apply complexity multiplier (1.0× / 1.15× / 1.3×)
