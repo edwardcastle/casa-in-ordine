@@ -50,12 +50,12 @@ export async function generateMetadata({
       ],
     },
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `https://www.casainordine.com/${locale}`,
       languages: {
-        it: '/it',
-        en: '/en',
-        es: '/es',
-        'x-default': '/it',
+        it: 'https://www.casainordine.com/it',
+        en: 'https://www.casainordine.com/en',
+        es: 'https://www.casainordine.com/es',
+        'x-default': 'https://www.casainordine.com/it',
       },
     },
     openGraph: {

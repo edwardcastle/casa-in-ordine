@@ -28,47 +28,47 @@ interface CategoryConfig {
 
 const categoryConfigs: Record<Category, CategoryConfig> = {
   armadio: {
-    basePrice: 40,      // basic 2-door wardrobe package
+    basePrice: 50,      // basic 2-door wardrobe package
     fields: [
-      { id: 'doors', costPerUnit: 6 },
-      { id: 'drawers', costPerUnit: 3 },
-      { id: 'height', costPerUnit: 8 },
+      { id: 'doors', costPerUnit: 8 },
+      { id: 'drawers', costPerUnit: 4 },
+      { id: 'height', costPerUnit: 10 },
     ],
   },
   cucina: {
-    basePrice: 55,      // standard kitchen package
+    basePrice: 65,      // standard kitchen package
     fields: [
-      { id: 'modules', costPerUnit: 4 },
-      { id: 'pantry', costPerUnit: 15 },
-      { id: 'counters', costPerUnit: 6 },
+      { id: 'modules', costPerUnit: 5 },
+      { id: 'pantry', costPerUnit: 20 },
+      { id: 'counters', costPerUnit: 8 },
     ],
   },
   ufficio: {
-    basePrice: 40,      // single-desk office package
+    basePrice: 50,      // single-desk office package
     fields: [
-      { id: 'desks', costPerUnit: 10 },
-      { id: 'documents', costPerUnit: 6 },
+      { id: 'desks', costPerUnit: 12 },
+      { id: 'documents', costPerUnit: 8 },
     ],
   },
   bagno: {
-    basePrice: 30,      // small bathroom package
+    basePrice: 38,      // small bathroom package
     fields: [
-      { id: 'cabinets', costPerUnit: 6 },
-      { id: 'shelves', costPerUnit: 3 },
+      { id: 'cabinets', costPerUnit: 8 },
+      { id: 'shelves', costPerUnit: 4 },
     ],
   },
   garage: {
-    basePrice: 60,      // standard garage package
+    basePrice: 75,      // standard garage package
     fields: [
-      { id: 'racks', costPerUnit: 8 },
-      { id: 'tools', costPerUnit: 12 },
+      { id: 'racks', costPerUnit: 10 },
+      { id: 'tools', costPerUnit: 15 },
     ],
   },
   trasloco: {
-    basePrice: 80,      // small move/unpack package
+    basePrice: 100,     // small move/unpack package
     fields: [
-      { id: 'boxes', costPerUnit: 2 },
-      { id: 'rooms', costPerUnit: 20 },
+      { id: 'boxes', costPerUnit: 2.5 },
+      { id: 'rooms', costPerUnit: 25 },
     ],
   },
 };
@@ -82,8 +82,8 @@ const complexityMultipliers: Record<number, number> = {
 
 // Extras — flat add-on fees
 const extrasConfig = {
-  materials: { baseCost: 5, percent: 0.02 },
-  dump: { baseCost: 8, percent: 0.02 },
+  materials: { baseCost: 8, percent: 0.025 },
+  dump: { baseCost: 10, percent: 0.025 },
 };
 
 

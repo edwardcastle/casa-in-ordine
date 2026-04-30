@@ -15,6 +15,15 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('metaDescription'),
+    alternates: {
+      canonical: `https://www.casainordine.com/${locale}/services`,
+      languages: {
+        it: 'https://www.casainordine.com/it/services',
+        en: 'https://www.casainordine.com/en/services',
+        es: 'https://www.casainordine.com/es/services',
+        'x-default': 'https://www.casainordine.com/it/services',
+      },
+    },
   };
 }
 
