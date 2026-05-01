@@ -112,7 +112,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={`${montserrat.variable} font-sans antialiased`}>
-        <JsonLd />
+        <JsonLd locale={locale} />
         <NextIntlClientProvider messages={messages}>
           <Header />
           <main className="min-h-screen">{children}</main>
