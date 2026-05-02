@@ -39,7 +39,7 @@ export async function generateMetadata({
     ],
     authors: [{ name: 'Casa in Ordine' }],
     creator: 'Casa in Ordine',
-    metadataBase: new URL('https://www.casainordine.com'),
+    metadataBase: new URL('https://casainordine.com'),
     icons: {
       icon: [
         { url: '/favicon_32x32.png', sizes: '32x32', type: 'image/png' },
@@ -50,18 +50,18 @@ export async function generateMetadata({
       ],
     },
     alternates: {
-      canonical: `/${locale}`,
+      canonical: `https://casainordine.com/${locale}`,
       languages: {
-        it: '/it',
-        en: '/en',
-        es: '/es',
-        'x-default': '/it',
+        it: 'https://casainordine.com/it',
+        en: 'https://casainordine.com/en',
+        es: 'https://casainordine.com/es',
+        'x-default': 'https://casainordine.com/it',
       },
     },
     openGraph: {
       title: messages.metadata.title,
       description: messages.metadata.description,
-      url: `https://www.casainordine.com/${locale}`,
+      url: `https://casainordine.com/${locale}`,
       siteName: 'Casa in Ordine',
       locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
       type: 'website',
@@ -112,7 +112,7 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={`${montserrat.variable} font-sans antialiased`}>
-        <JsonLd />
+        <JsonLd locale={locale} />
         <NextIntlClientProvider messages={messages}>
           <Header />
           <main className="min-h-screen">{children}</main>

@@ -1,4 +1,6 @@
+import type { Metadata } from 'next';
 import { useTranslations, useLocale } from 'next-intl';
+import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import Hero from '@/components/Hero';
 import BeforeAfter from '@/components/BeforeAfter';
@@ -8,6 +10,50 @@ import ScrollReveal from '@/components/ScrollReveal';
 import OverlayImage from '@/components/OverlayImage';
 import CategoryIcon from '@/components/CategoryIcon';
 import type { Category } from '@/components/CategoryIcon';
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'metadata' });
+  return {
+    title: t('title'),
+    description: t('description'),
+    alternates: {
+      canonical: `https://casainordine.com/${locale}`,
+      languages: {
+        it: 'https://casainordine.com/it',
+        en: 'https://casainordine.com/en',
+        es: 'https://casainordine.com/es',
+        'x-default': 'https://casainordine.com/it',
+      },
+    },
+    openGraph: {
+      title: t('title'),
+      description: t('description'),
+      url: `https://casainordine.com/${locale}`,
+      siteName: 'Casa in Ordine',
+      locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
+      type: 'website',
+      images: [
+        {
+          url: '/images/logo/logo_1200x630.png',
+          width: 1200,
+          height: 630,
+          alt: 'Casa in Ordine - Decluttering e Home Organizing a Roma',
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: t('title'),
+      description: t('description'),
+      images: ['/images/logo/logo_1200x630.png'],
+    },
+  };
+}
 
 export default function HomePage() {
   const t = useTranslations();

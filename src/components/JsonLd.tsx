@@ -1,10 +1,20 @@
-export default function JsonLd() {
-  const structuredData = {
+interface JsonLdProps {
+  locale?: string;
+}
+
+const descriptions: Record<string, string> = {
+  it: 'Servizio professionale di decluttering e home organizing a Roma',
+  en: 'Professional decluttering and home organizing service in Rome',
+  es: 'Servicio profesional de decluttering y home organizing en Roma',
+};
+
+export default function JsonLd({ locale = 'it' }: JsonLdProps) {
+  const localBusiness = {
     '@context': 'https://schema.org',
     '@type': 'LocalBusiness',
     name: 'Casa in Ordine',
-    description: 'Servizio professionale di decluttering e home organizing a Roma',
-    url: 'https://www.casainordine.com',
+    description: descriptions[locale] ?? descriptions.it,
+    url: 'https://casainordine.com',
     telephone: '+393445856895',
     email: 'info@casainordine.com',
     address: {
@@ -21,10 +31,28 @@ export default function JsonLd() {
     sameAs: ['https://www.instagram.com/casainordine_it/'],
   };
 
+  const webSite = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'Casa in Ordine',
+    url: 'https://casainordine.com',
+    inLanguage: [
+      { '@type': 'Language', name: 'Italian', alternateName: 'it' },
+      { '@type': 'Language', name: 'English', alternateName: 'en' },
+      { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
+    ],
+  };
+
   return (
-    <script
-      type="application/ld+json"
-      dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
-    />
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSite) }}
+      />
+    </>
   );
 }

@@ -16,6 +16,24 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('metaDescription'),
+    alternates: {
+      canonical: `https://casainordine.com/${locale}/about`,
+      languages: {
+        it: 'https://casainordine.com/it/about',
+        en: 'https://casainordine.com/en/about',
+        es: 'https://casainordine.com/es/about',
+        'x-default': 'https://casainordine.com/it/about',
+      },
+    },
+    openGraph: {
+      title: t('title'),
+      description: t('metaDescription'),
+      url: `https://casainordine.com/${locale}/about`,
+      siteName: 'Casa in Ordine',
+      locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
+      type: 'website',
+      images: [{ url: '/images/logo/logo_1200x630.png', width: 1200, height: 630, alt: 'Casa in Ordine' }],
+    },
   };
 }
 

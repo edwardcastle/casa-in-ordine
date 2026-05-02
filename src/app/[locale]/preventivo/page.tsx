@@ -14,6 +14,24 @@ export async function generateMetadata({
   return {
     title: t('title'),
     description: t('metaDescription'),
+    alternates: {
+      canonical: `https://casainordine.com/${locale}/preventivo`,
+      languages: {
+        it: 'https://casainordine.com/it/preventivo',
+        en: 'https://casainordine.com/en/preventivo',
+        es: 'https://casainordine.com/es/preventivo',
+        'x-default': 'https://casainordine.com/it/preventivo',
+      },
+    },
+    openGraph: {
+      title: t('title'),
+      description: t('metaDescription'),
+      url: `https://casainordine.com/${locale}/preventivo`,
+      siteName: 'Casa in Ordine',
+      locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
+      type: 'website',
+      images: [{ url: '/images/logo/logo_1200x630.png', width: 1200, height: 630, alt: 'Casa in Ordine' }],
+    },
   };
 }
 

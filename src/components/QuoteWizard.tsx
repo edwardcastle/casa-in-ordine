@@ -12,10 +12,10 @@ type Complexity = { value: number; label: string };
 // --- Work-package pricing model ---
 // Flat package prices per room type, sized by scope.
 // Small increments per extra unit keep totals accessible.
-// Typical range: €50 (small bathroom) – €350 (large move).
+// Typical range: €30 (small bathroom) – €200 (large move).
 //
 // Formula:
-//   projectCost = basePrice + Σ(fieldValue × costPerUnit)
+//   projectCost = basePrice + Σ(min(qty,2)×costPerUnit + max(qty-2,0)×costPerUnit×0.3)
 //   complexityCost = projectCost × (complexityMultiplier - 1)  [surcharge only]
 //   extrasCost  = flat add-on fees
 //   urgency     = quiz adds 0–5% on top
@@ -28,47 +28,47 @@ interface CategoryConfig {
 
 const categoryConfigs: Record<Category, CategoryConfig> = {
   armadio: {
-    basePrice: 60,      // basic 2-door wardrobe package
+    basePrice: 50,      // basic 2-door wardrobe package
     fields: [
-      { id: 'doors', costPerUnit: 10 },
-      { id: 'drawers', costPerUnit: 5 },
-      { id: 'height', costPerUnit: 12 },
+      { id: 'doors', costPerUnit: 8 },
+      { id: 'drawers', costPerUnit: 4 },
+      { id: 'height', costPerUnit: 10 },
     ],
   },
   cucina: {
-    basePrice: 80,      // standard kitchen package
+    basePrice: 65,      // standard kitchen package
     fields: [
-      { id: 'modules', costPerUnit: 6 },
-      { id: 'pantry', costPerUnit: 25 },
-      { id: 'counters', costPerUnit: 10 },
+      { id: 'modules', costPerUnit: 5 },
+      { id: 'pantry', costPerUnit: 20 },
+      { id: 'counters', costPerUnit: 8 },
     ],
   },
   ufficio: {
-    basePrice: 60,      // single-desk office package
+    basePrice: 50,      // single-desk office package
     fields: [
-      { id: 'desks', costPerUnit: 15 },
-      { id: 'documents', costPerUnit: 10 },
+      { id: 'desks', costPerUnit: 12 },
+      { id: 'documents', costPerUnit: 8 },
     ],
   },
   bagno: {
-    basePrice: 45,      // small bathroom package
+    basePrice: 38,      // small bathroom package
     fields: [
-      { id: 'cabinets', costPerUnit: 10 },
-      { id: 'shelves', costPerUnit: 5 },
+      { id: 'cabinets', costPerUnit: 8 },
+      { id: 'shelves', costPerUnit: 4 },
     ],
   },
   garage: {
-    basePrice: 90,      // standard garage package
+    basePrice: 75,      // standard garage package
     fields: [
-      { id: 'racks', costPerUnit: 12 },
-      { id: 'tools', costPerUnit: 18 },
+      { id: 'racks', costPerUnit: 10 },
+      { id: 'tools', costPerUnit: 15 },
     ],
   },
   trasloco: {
-    basePrice: 120,     // small move/unpack package
+    basePrice: 100,     // small move/unpack package
     fields: [
-      { id: 'boxes', costPerUnit: 3 },
-      { id: 'rooms', costPerUnit: 30 },
+      { id: 'boxes', costPerUnit: 2.5 },
+      { id: 'rooms', costPerUnit: 25 },
     ],
   },
 };
@@ -82,8 +82,8 @@ const complexityMultipliers: Record<number, number> = {
 
 // Extras — flat add-on fees
 const extrasConfig = {
-  materials: { baseCost: 10, percent: 0.03 },
-  dump: { baseCost: 15, percent: 0.03 },
+  materials: { baseCost: 8, percent: 0.025 },
+  dump: { baseCost: 10, percent: 0.025 },
 };
 
 
@@ -110,10 +110,15 @@ export default function QuoteWizard() {
 
     const config = categoryConfigs[category];
 
-    // 1. Base project cost = flat base + size increments
+    // 1. Base project cost = flat base + size increments (diminishing returns)
+    //    First unit at full price, additional units at 15% price
+    //    to prevent totals from inflating too much with many doors/cabinets/etc.
     let projectBase = config.basePrice;
     config.fields.forEach((field) => {
-      projectBase += (details[field.id] || 0) * field.costPerUnit;
+      const qty = details[field.id] || 0;
+      const fullPriceQty = Math.min(qty, 1);
+      const discountedQty = Math.max(qty - 1, 0);
+      projectBase += fullPriceQty * field.costPerUnit + discountedQty * field.costPerUnit * 0.15;
     });
 
     // 2. Apply complexity multiplier (1.0× / 1.15× / 1.3×)
