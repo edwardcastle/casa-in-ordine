@@ -228,7 +228,8 @@
     "cta": {
       "title": "Comienza tu camino hacia el orden",
       "description": "Contáctanos para un presupuesto gratuito y personalizado.",
-      "button": "Solicita un presupuesto"
+      "button": "Solicita un presupuesto",
+      "serviceButton": "Solicita un presupuesto"
     }
   },
   "gallery": {

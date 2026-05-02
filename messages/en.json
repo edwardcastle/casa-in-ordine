@@ -228,7 +228,8 @@
     "cta": {
       "title": "Start your journey to order",
       "description": "Contact us for a free, personalized quote.",
-      "button": "Request a quote"
+      "button": "Request a quote",
+      "serviceButton": "Request a quote"
     }
   },
   "gallery": {

@@ -62,7 +62,7 @@ export default function ServicesPage() {
                     <h2 className="text-2xl md:text-3xl font-bold text-gray-900">{t(`items.${i}.title`)}</h2>
                   </div>
                   <p className="text-gray-600 leading-relaxed mb-6">{t(`items.${i}.description`)}</p>
-                  <ul className="space-y-3">
+                  <ul className="space-y-3 mb-8">
                     {[0, 1, 2, 3].map((j) => (
                       <li key={j} className="flex items-start gap-3">
                         <svg className="w-5 h-5 text-primary mt-0.5 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,6 +72,15 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
+                  <Link
+                    href={`/${locale}/preventivo`}
+                    className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary/90 transition-colors duration-200 shadow-md shadow-primary/20"
+                  >
+                    {t('cta.serviceButton')}
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </Link>
                 </div>
                 <div className={`rounded-2xl overflow-hidden aspect-[4/3] relative ${i % 2 === 1 ? 'md:[direction:ltr]' : ''}`}>
                   <Image
@@ -94,7 +103,7 @@ export default function ServicesPage() {
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{t('cta.title')}</h2>
           <p className="text-lg text-white/90 mb-8">{t('cta.description')}</p>
           <Link
-            href={`/${locale}/contact`}
+            href={`/${locale}/preventivo`}
             className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-secondary-light transition-colors duration-200 shadow-lg"
           >
             {t('cta.button')}

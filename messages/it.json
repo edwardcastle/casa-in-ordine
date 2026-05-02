@@ -228,7 +228,8 @@
     "cta": {
       "title": "Inizia il tuo percorso verso l'ordine",
       "description": "Contattaci per un preventivo gratuito e personalizzato.",
-      "button": "Richiedi un preventivo"
+      "button": "Richiedi un preventivo",
+      "serviceButton": "Richiedi preventivo"
     }
   },
   "gallery": {
