@@ -4,6 +4,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import Script from 'next/script';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
@@ -112,6 +113,12 @@ export default async function LocaleLayout({
   return (
     <html lang={locale}>
       <body className={`${montserrat.variable} font-sans antialiased`}>
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
+          data-website-id="1e5f6664-a355-4022-b92e-ed44f83ec536"
+          strategy="afterInteractive"
+        />
         <JsonLd locale={locale} />
         <NextIntlClientProvider messages={messages}>
           <Header />
