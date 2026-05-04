@@ -40,7 +40,9 @@ export default function PreventivoPage() {
 
   return (
     <>
-      <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/gallery/closet-1.jpg" />
+      <div className="print:hidden">
+        <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/gallery/closet-1.jpg" />
+      </div>
 
       <section className="py-16 md:py-24 bg-secondary-light">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">

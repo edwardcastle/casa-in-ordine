@@ -229,3 +229,25 @@ html {
 .animate-delay-200 { animation-delay: 200ms; }
 .animate-delay-300 { animation-delay: 300ms; }
 .animate-delay-400 { animation-delay: 400ms; }
+
+/* ── Print styles (preventivo quote) ── */
+@media print {
+  /* Hide page chrome */
+  header, footer { display: none !important; }
+
+  /* Let the wizard fill the page */
+  body { background: white !important; }
+  main { min-height: auto !important; padding: 0 !important; }
+
+  /* Remove card shadow/border for clean print */
+  .bg-white.rounded-3xl { box-shadow: none !important; border: none !important; }
+
+  /* Remove outer section padding for compact print */
+  .bg-secondary-light { padding-top: 0 !important; padding-bottom: 0 !important; }
+
+  /* Prevent content from being clipped across pages */
+  .bg-secondary.rounded-xl { break-inside: avoid; }
+
+  /* Ensure backgrounds print */
+  * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

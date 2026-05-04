@@ -534,7 +534,7 @@ export default function QuoteWizard() {
           </div>
 
           {/* Notes + Photos */}
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid md:grid-cols-2 print:block gap-4">
             <div>
               <label className="block text-sm font-semibold text-foreground mb-2">
                 {t('notesLabel')}
