@@ -5,6 +5,7 @@ import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Script from 'next/script';
+import CookieConsent from '@/components/CookieConsent';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
@@ -119,6 +120,7 @@ export default async function LocaleLayout({
           data-website-id="1e5f6664-a355-4022-b92e-ed44f83ec536"
           strategy="afterInteractive"
         />
+        <CookieConsent />
         <JsonLd locale={locale} />
         <NextIntlClientProvider messages={messages}>
           <Header />

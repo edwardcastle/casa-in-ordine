@@ -9,6 +9,7 @@ const pages = [
   { path: '/services', changeFrequency: 'monthly' as const, priority: 0.9 },
   { path: '/preventivo', changeFrequency: 'monthly' as const, priority: 0.8 },
   { path: '/contact', changeFrequency: 'monthly' as const, priority: 0.8 },
+  { path: '/blog', changeFrequency: 'weekly' as const, priority: 0.5 },
 ];
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -18,9 +19,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const locale of locales) {
       entries.push({
         url: `${baseUrl}/${locale}${page.path}`,
-        lastModified: new Date('2026-05-02'),
+        lastModified: new Date(),
         changeFrequency: page.changeFrequency,
-        priority: locale === 'it' ? page.priority : page.priority * 0.9,
+        priority:
+          locale === 'it'
+            ? page.priority
+            : Math.round(page.priority * 0.9 * 100) / 100,
         alternates: {
           languages: {
             ...Object.fromEntries(

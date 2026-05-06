@@ -320,6 +320,11 @@
     "privacy": "Privacy Policy",
     "terms": "Termini e Condizioni"
   },
+  "cookieConsent": {
+    "message": "Utilizziamo cookie di analisi per migliorare la tua esperienza. Puoi accettare o rifiutare il tracciamento di Google Analytics.",
+    "accept": "Accetta",
+    "reject": "Rifiuta"
+  },
   "quote": {
     "title": "Sopralluogo Digitale",
     "subtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto.",

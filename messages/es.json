@@ -320,6 +320,11 @@
     "privacy": "Política de Privacidad",
     "terms": "Términos y Condiciones"
   },
+  "cookieConsent": {
+    "message": "Usamos cookies de análisis para mejorar tu experiencia. Puedes aceptar o rechazar el seguimiento de Google Analytics.",
+    "accept": "Aceptar",
+    "reject": "Rechazar"
+  },
   "quote": {
     "title": "Inspección Digital",
     "subtitle": "Tres preguntas para conocernos, luego definimos tu espacio perfecto.",
