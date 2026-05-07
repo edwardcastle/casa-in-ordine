@@ -26,6 +26,11 @@ export async function generateMetadata({
   params: Promise<{ locale: string }>;
 }): Promise<Metadata> {
   const { locale } = await params;
+
+  if (!hasLocale(routing.locales, locale)) {
+    notFound();
+  }
+
   const messages = (await import(`../../../messages/${locale}.json`)).default;
 
   return {
@@ -120,9 +125,9 @@ export default async function LocaleLayout({
           data-website-id="1e5f6664-a355-4022-b92e-ed44f83ec536"
           strategy="afterInteractive"
         />
-        <CookieConsent />
         <JsonLd locale={locale} />
         <NextIntlClientProvider messages={messages}>
+          <CookieConsent />
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
