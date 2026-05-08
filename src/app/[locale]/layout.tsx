@@ -39,11 +39,7 @@ export async function generateMetadata({
       template: `%s | Casa in Ordine`,
     },
     description: messages.metadata.description,
-    keywords: [
-      'decluttering', 'home organizing', 'organizzazione casa', 'Roma',
-      'professional organizer', 'riordino', 'casa in ordine',
-      'organizzatore professionale', 'consulenza decluttering',
-    ],
+    keywords: messages.metadata.keywords.split(', '),
     authors: [{ name: 'Casa in Ordine' }],
     creator: 'Casa in Ordine',
     metadataBase: new URL('https://casainordine.com'),
