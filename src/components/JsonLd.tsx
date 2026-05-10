@@ -8,51 +8,61 @@ const descriptions: Record<string, string> = {
   es: 'Servicio profesional de decluttering y home organizing en Roma',
 };
 
+const ogLocales: Record<string, string> = {
+  it: 'it-IT',
+  en: 'en-US',
+  es: 'es-ES',
+};
+
 export default function JsonLd({ locale = 'it' }: JsonLdProps) {
-  const localBusiness = {
-    '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
-    name: 'Casa in Ordine',
-    description: descriptions[locale] ?? descriptions.it,
-    url: 'https://casainordine.com',
-    telephone: '+393445856895',
-    email: 'info@casainordine.com',
-    address: {
-      '@type': 'PostalAddress',
-      addressLocality: 'Roma',
-      addressCountry: 'IT',
-    },
-    areaServed: {
-      '@type': 'City',
-      name: 'Roma',
-    },
-    serviceType: ['Decluttering', 'Home Organizing', 'Professional Organizing'],
-    openingHours: 'Mo-Fr 09:00-18:00',
-    sameAs: ['https://www.instagram.com/casainordine_it/'],
-  };
+  const inLanguage = ogLocales[locale] ?? ogLocales.it;
 
   const webSite = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
     name: 'Casa in Ordine',
-    url: 'https://casainordine.com',
-    inLanguage: [
-      { '@type': 'Language', name: 'Italian', alternateName: 'it' },
-      { '@type': 'Language', name: 'English', alternateName: 'en' },
-      { '@type': 'Language', name: 'Spanish', alternateName: 'es' },
-    ],
+    url: `https://casainordine.com/${locale}`,
+    inLanguage,
+    description: descriptions[locale] ?? descriptions.it,
   };
+
+  const schemas: object[] = [webSite];
+
+  if (locale === 'it') {
+    schemas.push({
+      '@context': 'https://schema.org',
+      '@type': 'LocalBusiness',
+      '@id': 'https://casainordine.com/it#business',
+      name: 'Casa in Ordine',
+      description: descriptions.it,
+      url: 'https://casainordine.com/it',
+      telephone: '+393445856895',
+      email: 'info@casainordine.com',
+      inLanguage: 'it-IT',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Roma',
+        addressCountry: 'IT',
+      },
+      areaServed: {
+        '@type': 'City',
+        name: 'Roma',
+      },
+      serviceType: ['Decluttering', 'Home Organizing', 'Professional Organizing'],
+      openingHours: 'Mo-Fr 09:00-18:00',
+      sameAs: ['https://www.instagram.com/casainordine_it/'],
+    });
+  }
 
   return (
     <>
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(localBusiness) }}
-      />
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(webSite) }}
-      />
+      {schemas.map((schema, i) => (
+        <script
+          key={i}
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }}
+        />
+      ))}
     </>
   );
 }
