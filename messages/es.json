@@ -322,9 +322,11 @@
     "terms": "Términos y Condiciones"
   },
   "cookieConsent": {
-    "message": "Usamos cookies de análisis para mejorar tu experiencia. Puedes aceptar o rechazar el seguimiento de Google Analytics.",
+    "title": "Respetamos tu privacidad",
+    "message": "Usamos cookies de análisis para entender cómo mejorar tu experiencia. No se comparte ningún dato personal. Más detalles en nuestra <link>Política de Privacidad</link>.",
     "accept": "Aceptar",
-    "reject": "Rechazar"
+    "reject": "Rechazar",
+    "close": "Cerrar"
   },
   "quote": {
     "title": "Inspección Digital",
@@ -446,6 +448,64 @@
     "heroSubtitle": "Descubre cuánto cuesta reorganizar tus espacios",
     "wizardTitle": "Inspección Digital",
     "wizardSubtitle": "Tres preguntas para conocernos, luego definimos tu espacio perfecto."
+  },
+  "privacyPolicy": {
+    "title": "Política de Privacidad – Casa in Ordine",
+    "metaDescription": "Información sobre el tratamiento de datos personales conforme al art. 13 del Reglamento UE 2016/679 (RGPD).",
+    "heroTitle": "Política de Privacidad",
+    "heroSubtitle": "Tratamiento de datos personales conforme al art. 13 del Reglamento UE 2016/679 (RGPD)",
+    "intro": "De conformidad con el art. 13 del Reglamento UE 2016/679 (RGPD), CASA IN ORDINE, con domicilio legal en Via dei Monti Tiburtini, 510 – 00157 Roma, Italia, le informa sobre el uso de sus datos personales, en su calidad de Interesado, y sobre sus derechos (art. 7 del D. Lgs. 196/2003 y art. 15 del Reglamento UE 2016/679).",
+    "dataTypes": {
+      "title": "Tipos de Datos Tratados",
+      "lead": "La sociedad CASA IN ORDINE podrá tratar los siguientes Datos Personales:",
+      "personalLabel": "Datos Personales",
+      "personalText": "nombre, dirección, otros datos de contacto (p. ej. dirección de correo electrónico y número de teléfono), sexo, fecha y lugar de nacimiento.",
+      "marketingLabel": "Datos de marketing",
+      "marketingText": "información relativa al consentimiento otorgado o denegado por el interesado para recibir comunicaciones de marketing por parte del responsable."
+    },
+    "purposes": {
+      "title": "Finalidades del Tratamiento",
+      "lead": "Los Datos personales se tratan con las siguientes finalidades:",
+      "service": "Prestación de servicios de Decluttering y Organización de espacios.",
+      "marketingHeading": "Finalidades de Marketing directo previo consentimiento específico del Interesado:",
+      "marketing1": "enviar por correo electrónico, postal y/o SMS y/o contactos telefónicos, notificaciones push, comunicaciones comerciales y/o material publicitario sobre productos o servicios ofrecidos por el Titular, incluso a distancia, mediante el registro y el acceso al área reservada para clientes en el sitio https://casainordine.com/it",
+      "marketing2": "enviar por correo electrónico, postal y/o SMS y/o contactos telefónicos comunicaciones comerciales y/o promocionales de la Sociedad CASA IN ORDINE."
+    },
+    "sources": {
+      "title": "Fuentes de los Datos Personales",
+      "text": "CASA IN ORDINE recoge los Datos Personales directamente de los interesados, ocupándose de informarles sobre la necesidad de obtener tal información y sobre las consecuencias que podrían derivarse de la decisión de no facilitarla en el formulario correspondiente."
+    },
+    "processing": {
+      "title": "Modalidades del Tratamiento",
+      "text": "CASA IN ORDINE trata los Datos Personales en la medida necesaria para alcanzar las finalidades identificadas en la presente política de privacidad o dentro de los límites permitidos por la ley."
+    },
+    "retention": {
+      "title": "Periodo de Conservación de los Datos Personales",
+      "text": "CASA IN ORDINE tratará los datos personales durante el tiempo necesario para cumplir las finalidades anteriores y, en todo caso, no más de 10 años desde la finalización de la relación a efectos del servicio y no más de 2 años desde la recogida de los datos a efectos de marketing, y, en cualquier caso, de conformidad con las normas de la autoridad de control competente."
+    },
+    "recipients": {
+      "title": "Destinatarios de los Datos Personales",
+      "lead": "Los datos personales podrán hacerse accesibles, para las finalidades de la presente información, a:",
+      "item1": "empleados y colaboradores de CASA IN ORDINE en su calidad de encargados y/o responsables internos del tratamiento. La lista actualizada de los Responsables y Encargados del tratamiento se conserva en la sede legal de CASA IN ORDINE, ya indicada en los puntos anteriores.",
+      "item2": "sujetos a los que la comunicación de los datos sea obligatoria por ley, como, a título de ejemplo: ASL (autoridad sanitaria local), Agencia Tributaria, Magistratura, Fuerzas del Orden."
+    },
+    "rights": {
+      "title": "Derechos de los Interesados",
+      "lead": "El interesado tiene los derechos previstos en el art. 7 del Código de Privacidad y en el art. 15 del RGPD, en concreto el derecho a:",
+      "item1": "obtener la confirmación de la existencia o no de datos personales que le conciernan, aunque aún no estén registrados, y su comunicación en forma inteligible;",
+      "item2": "obtener la indicación de: a) el origen de los datos personales; b) las finalidades y modalidades del tratamiento; c) la lógica aplicada en caso de tratamiento realizado con la ayuda de instrumentos electrónicos; d) los datos identificativos del titular, de los responsables y del representante designado en virtud del art. 5, párrafo 2 del Código de Privacidad y del art. 3, párrafo 1 del RGPD; e) los sujetos o categorías de sujetos a los que los datos personales puedan ser comunicados o que puedan tener conocimiento de ellos en calidad de representante designado en el territorio del Estado, de responsables o encargados;",
+      "item3": "obtener: a) la actualización, la rectificación o, cuando exista interés, la integración de los datos; b) la cancelación, la transformación en forma anónima o el bloqueo de los datos tratados en violación de la ley, incluidos aquellos cuya conservación no sea necesaria en relación con las finalidades para las que fueron recogidos o posteriormente tratados; la certificación de que las operaciones referidas en las letras a) y b) han sido puestas en conocimiento, también en cuanto a su contenido, de quienes hayan recibido o difundido los datos, salvo cuando ello resulte imposible o suponga el empleo de medios manifiestamente desproporcionados respecto al derecho protegido;",
+      "item4": "oponerse, total o parcialmente: a) por motivos legítimos al tratamiento de los datos personales que le conciernan, aunque sean pertinentes para la finalidad de la recogida; b) al tratamiento de datos personales que le conciernan con fines de envío de material publicitario o de comunicación comercial, mediante el uso de correo electrónico y/o mediante modalidades de marketing tradicionales por teléfono y/o correo postal.",
+      "additional": "Cuando proceda, el interesado dispone también de los derechos previstos en los arts. 16-21 del RGPD (derecho de rectificación, derecho al olvido, derecho a la limitación del tratamiento, derecho a la portabilidad de los datos, derecho de oposición), así como del derecho a presentar reclamación ante la Autoridad Garante para la Protección de Datos Personales (Oficina de Relaciones con el Público, Piazza di Monte Citorio n. 121 – 00186 Roma. Teléfono: (+39) 06.69677.2917 – Correo electrónico: urp@gpdp.it)."
+    },
+    "commitment": "CASA IN ORDINE se compromete a que los Datos Personales sean completos, seguros y actualizados.",
+    "controller": {
+      "title": "Responsable del Tratamiento",
+      "name": "CASA IN ORDINE",
+      "address": "Via dei Monti Tiburtini, 510 – 00157 Roma, Italia",
+      "emailLabel": "Correo electrónico",
+      "email": "info@casainordine.com"
+    }
   },
   "notFound": {
     "title": "Página no encontrada",

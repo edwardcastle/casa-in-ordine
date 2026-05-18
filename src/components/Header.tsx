@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { useTranslations, useLocale } from 'next-intl';
 import LanguageSwitcher from './LanguageSwitcher';
 
@@ -11,6 +12,7 @@ export default function Header() {
   const [scrolled, setScrolled] = useState(false);
   const t = useTranslations('nav');
   const locale = useLocale();
+  const pathname = usePathname();
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 30);
@@ -18,6 +20,8 @@ export default function Header() {
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
+
+  if (pathname?.endsWith('/privacy-policy')) return null;
 
   const navLinks = [
     { href: `/${locale}`, label: t('home') },

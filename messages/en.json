@@ -322,9 +322,11 @@
     "terms": "Terms & Conditions"
   },
   "cookieConsent": {
-    "message": "We use analytics cookies to improve your experience. You can accept or reject Google Analytics tracking.",
+    "title": "We respect your privacy",
+    "message": "We use analytics cookies to understand how to improve your experience. No personal data is shared. More details in our <link>Privacy Policy</link>.",
     "accept": "Accept",
-    "reject": "Reject"
+    "reject": "Reject",
+    "close": "Close"
   },
   "quote": {
     "title": "Digital Survey",
@@ -446,6 +448,64 @@
     "heroSubtitle": "Find out how much it costs to reorganize your spaces",
     "wizardTitle": "Digital Survey",
     "wizardSubtitle": "Three questions to get to know each other, then we define your perfect space."
+  },
+  "privacyPolicy": {
+    "title": "Privacy Policy – Casa in Ordine",
+    "metaDescription": "Information on the processing of personal data pursuant to Art. 13 of EU Regulation 2016/679 (GDPR).",
+    "heroTitle": "Privacy Policy",
+    "heroSubtitle": "Processing of personal data pursuant to Art. 13 of EU Regulation 2016/679 (GDPR)",
+    "intro": "In compliance with Art. 13 of EU Regulation 2016/679 (GDPR), CASA IN ORDINE, with registered office at Via dei Monti Tiburtini, 510 – 00157 Rome, Italy, hereby informs you about the use of your personal data, in your capacity as Data Subject, and about your rights (Art. 7 of Italian Legislative Decree 196/2003 and Art. 15 of EU Regulation 2016/679).",
+    "dataTypes": {
+      "title": "Types of Data Processed",
+      "lead": "CASA IN ORDINE may process the following Personal Data:",
+      "personalLabel": "Personal Data",
+      "personalText": "name, address, other contact details (e.g. email address and telephone number), gender, date and place of birth.",
+      "marketingLabel": "Marketing Data",
+      "marketingText": "information regarding the consent granted or denied by the data subject to receive marketing communications from the controller."
+    },
+    "purposes": {
+      "title": "Purposes of Processing",
+      "lead": "Personal data is processed for:",
+      "service": "The provision of Decluttering and Home Organizing services.",
+      "marketingHeading": "Direct marketing purposes, subject to the specific consent of the Data Subject:",
+      "marketing1": "to send, via email, post and/or SMS and/or telephone, push notifications, commercial communications and/or advertising material concerning products or services offered by the Controller, including remotely, through registration and access to the customer area on the website https://casainordine.com/it",
+      "marketing2": "to send, via email, post and/or SMS and/or telephone, commercial and/or promotional communications from CASA IN ORDINE."
+    },
+    "sources": {
+      "title": "Sources of Personal Data",
+      "text": "CASA IN ORDINE collects Personal Data directly from data subjects, taking care to inform them about the need to obtain such information and the consequences that may arise from refusing to provide it in the relevant form."
+    },
+    "processing": {
+      "title": "Methods of Processing",
+      "text": "CASA IN ORDINE processes Personal Data to the extent necessary to achieve the purposes identified in this privacy policy or within the limits permitted by law."
+    },
+    "retention": {
+      "title": "Data Retention Period",
+      "text": "CASA IN ORDINE will process personal data for the time necessary to fulfil the purposes set out above and, in any case, for no longer than 10 years from the end of the relationship for service purposes and no longer than 2 years from data collection for marketing purposes, and, in any event, in compliance with the rules of the competent supervisory authority."
+    },
+    "recipients": {
+      "title": "Recipients of Personal Data",
+      "lead": "Personal data may be made accessible, for the purposes set out in this notice, to:",
+      "item1": "employees and collaborators of CASA IN ORDINE, in their capacity as internal processors and/or persons in charge of processing. The up-to-date list of Processors and persons in charge of processing is kept at the registered office of CASA IN ORDINE, indicated above.",
+      "item2": "parties to whom the communication of data is required by law, such as, by way of example: the local health authority (ASL), the Italian Revenue Agency, the Judiciary, and Law Enforcement bodies."
+    },
+    "rights": {
+      "title": "Rights of Data Subjects",
+      "lead": "The data subject has the rights set out in Art. 7 of the Italian Privacy Code and Art. 15 of the GDPR, namely the right to:",
+      "item1": "obtain confirmation as to whether or not personal data concerning them exist, even if not yet recorded, and the communication of such data in intelligible form;",
+      "item2": "obtain information on: a) the origin of the personal data; b) the purposes and methods of processing; c) the logic applied in the event of processing carried out with the assistance of electronic tools; d) the identifying details of the data controller, processors and designated representative pursuant to Art. 5, paragraph 2 of the Italian Privacy Code and Art. 3, paragraph 1 of the GDPR; e) the parties or categories of parties to whom personal data may be communicated, or who may become aware of it as a designated representative in the State, processors or persons in charge;",
+      "item3": "obtain: a) the updating, rectification or, where there is an interest, integration of the data; b) the erasure, anonymization or blocking of data processed in violation of the law, including data whose retention is not necessary in relation to the purposes for which they were collected or subsequently processed; confirmation that the operations referred to in points a) and b) have been notified, also with regard to their content, to those to whom the data have been communicated or disclosed, except where this proves impossible or involves the use of means manifestly disproportionate to the protected right;",
+      "item4": "object, in whole or in part: a) for legitimate reasons, to the processing of personal data concerning them, even if relevant to the purpose of collection; b) to the processing of personal data concerning them for the purpose of sending advertising material or commercial communications, by means of email and/or by means of traditional marketing methods such as telephone and/or postal mail.",
+      "additional": "Where applicable, the data subject also has the rights set out in Arts. 16-21 of the GDPR (right of rectification, right to be forgotten, right to restriction of processing, right to data portability, right to object), as well as the right to lodge a complaint with the Italian Data Protection Authority (Public Relations Office, Piazza di Monte Citorio n. 121 – 00186 Rome. Telephone: (+39) 06.69677.2917 – Email: urp@gpdp.it)."
+    },
+    "commitment": "CASA IN ORDINE is committed to ensuring that Personal Data is complete, secure and up to date.",
+    "controller": {
+      "title": "Data Controller",
+      "name": "CASA IN ORDINE",
+      "address": "Via dei Monti Tiburtini, 510 – 00157 Rome, Italy",
+      "emailLabel": "Email",
+      "email": "info@casainordine.com"
+    }
   },
   "notFound": {
     "title": "Page not found",
