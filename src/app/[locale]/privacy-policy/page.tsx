@@ -63,7 +63,7 @@ export default function PrivacyPolicyPage() {
 
   return (
     <article className="py-10 md:py-16 bg-white min-h-screen">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <Link
           href={`/${locale}`}
           className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:text-primary-dark transition-colors mb-8"
@@ -82,145 +82,156 @@ export default function PrivacyPolicyPage() {
         </Link>
 
         <header className="mb-10 md:mb-14">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight mb-3">
-            {t('heroTitle')}
-          </h1>
-          <p className="text-base md:text-lg text-gray-500">{t('heroSubtitle')}</p>
+          <div className="flex items-center gap-3 mb-3">
+            <svg
+              className="w-8 h-8 md:w-10 md:h-10 text-primary shrink-0"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+            </svg>
+            <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-foreground tracking-tight text-primary">
+              {t('heroTitle')}
+            </h1>
+          </div>
+          <p className="text-base md:text-lg text-gray-500 text-justify">{t('heroSubtitle')}</p>
         </header>
 
         <ScrollReveal animation="fadeInUpShorter">
-          <p className="text-gray-700 leading-relaxed text-[1.02rem] mb-12">
+          <p className="text-gray-700 leading-relaxed text-[1.02rem] text-justify mb-12">
             {highlightBrand(t('intro'))}
           </p>
         </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <section className="mb-10 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('dataTypes.title')}
-              </h2>
-              <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem]">
-                <p>{highlightBrand(t('dataTypes.lead'))}</p>
-                <ul className="space-y-3 pl-5 list-disc marker:text-accent">
-                  <li>
-                    <span className="font-semibold text-foreground">{t('dataTypes.personalLabel')}:</span>{' '}
-                    {t('dataTypes.personalText')}
-                  </li>
-                  <li>
-                    <span className="font-semibold text-foreground">{t('dataTypes.marketingLabel')}:</span>{' '}
-                    {t('dataTypes.marketingText')}
-                  </li>
-                </ul>
-              </div>
-            </section>
-          </ScrollReveal>
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('dataTypes.title')}
+            </h2>
+            <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem] text-justify">
+              <p>{highlightBrand(t('dataTypes.lead'))}</p>
+              <ul className="space-y-3 pl-5 list-disc marker:text-accent">
+                <li>
+                  <span className="font-semibold text-foreground">{t('dataTypes.personalLabel')}:</span>{' '}
+                  {t('dataTypes.personalText')}
+                </li>
+                <li>
+                  <span className="font-semibold text-foreground">{t('dataTypes.marketingLabel')}:</span>{' '}
+                  {t('dataTypes.marketingText')}
+                </li>
+              </ul>
+            </div>
+          </section>
+        </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <section className="mb-10 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('purposes.title')}
-              </h2>
-              <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem]">
-                <p>{t('purposes.lead')}</p>
-                <ul className="space-y-3 pl-5 list-disc marker:text-accent">
-                  <li>{t('purposes.service')}</li>
-                </ul>
-                <p className="font-medium text-foreground pt-2">{t('purposes.marketingHeading')}</p>
-                <ul className="space-y-3 pl-5 list-disc marker:text-accent">
-                  <li>{highlightBrand(t('purposes.marketing1'))}</li>
-                  <li>{highlightBrand(t('purposes.marketing2'))}</li>
-                </ul>
-              </div>
-            </section>
-          </ScrollReveal>
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('purposes.title')}
+            </h2>
+            <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem] text-justify">
+              <p>{t('purposes.lead')}</p>
+              <ul className="space-y-3 pl-5 list-disc marker:text-accent">
+                <li>{t('purposes.service')}</li>
+              </ul>
+              <p className="font-medium text-foreground pt-2 text-left">{t('purposes.marketingHeading')}</p>
+              <ul className="space-y-3 pl-5 list-disc marker:text-accent">
+                <li>{highlightBrand(t('purposes.marketing1'))}</li>
+                <li>{highlightBrand(t('purposes.marketing2'))}</li>
+              </ul>
+            </div>
+          </section>
+        </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <section className="mb-10 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('sources.title')}
-              </h2>
-              <p className="text-gray-700 leading-relaxed text-[1.02rem]">{highlightBrand(t('sources.text'))}</p>
-            </section>
-          </ScrollReveal>
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('sources.title')}
+            </h2>
+            <p className="text-gray-700 leading-relaxed text-[1.02rem] text-justify">{highlightBrand(t('sources.text'))}</p>
+          </section>
+        </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <section className="mb-10 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('processing.title')}
-              </h2>
-              <p className="text-gray-700 leading-relaxed text-[1.02rem]">{highlightBrand(t('processing.text'))}</p>
-            </section>
-          </ScrollReveal>
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('processing.title')}
+            </h2>
+            <p className="text-gray-700 leading-relaxed text-[1.02rem] text-justify">{highlightBrand(t('processing.text'))}</p>
+          </section>
+        </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <section className="mb-10 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('retention.title')}
-              </h2>
-              <p className="text-gray-700 leading-relaxed text-[1.02rem]">{highlightBrand(t('retention.text'))}</p>
-            </section>
-          </ScrollReveal>
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('retention.title')}
+            </h2>
+            <p className="text-gray-700 leading-relaxed text-[1.02rem] text-justify">{highlightBrand(t('retention.text'))}</p>
+          </section>
+        </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <section className="mb-10 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('recipients.title')}
-              </h2>
-              <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem]">
-                <p>{t('recipients.lead')}</p>
-                <ul className="space-y-3 pl-5 list-disc marker:text-accent">
-                  <li>{highlightBrand(t('recipients.item1'))}</li>
-                  <li>{highlightBrand(t('recipients.item2'))}</li>
-                </ul>
-              </div>
-            </section>
-          </ScrollReveal>
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('recipients.title')}
+            </h2>
+            <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem] text-justify">
+              <p>{t('recipients.lead')}</p>
+              <ul className="space-y-3 pl-5 list-disc marker:text-accent">
+                <li>{highlightBrand(t('recipients.item1'))}</li>
+                <li>{highlightBrand(t('recipients.item2'))}</li>
+              </ul>
+            </div>
+          </section>
+        </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <section className="mb-10 md:mb-12">
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('rights.title')}
-              </h2>
-              <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem]">
-                <p>{t('rights.lead')}</p>
-                <ul className="space-y-3 pl-5 list-disc marker:text-accent">
-                  <li>{t('rights.item1')}</li>
-                  <li>{t('rights.item2')}</li>
-                  <li>{t('rights.item3')}</li>
-                  <li>{t('rights.item4')}</li>
-                </ul>
-                <p className="pt-2">{t('rights.additional')}</p>
-              </div>
-            </section>
-          </ScrollReveal>
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('rights.title')}
+            </h2>
+            <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem] text-justify">
+              <p>{t('rights.lead')}</p>
+              <ul className="space-y-3 pl-5 list-disc marker:text-accent">
+                <li>{t('rights.item1')}</li>
+                <li>{t('rights.item2')}</li>
+                <li>{t('rights.item3')}</li>
+                <li>{t('rights.item4')}</li>
+              </ul>
+              <p className="pt-2 text-left">{t('rights.additional')}</p>
+            </div>
+          </section>
+        </ScrollReveal>
 
-          <ScrollReveal animation="fadeInUpShorter">
-            <div className="bg-primary/5 border-l-4 border-accent rounded-r-xl p-5 mb-12">
-              <p className="text-base md:text-lg font-medium text-foreground italic leading-relaxed">
-                {highlightBrand(t('commitment'))}
+        <ScrollReveal animation="fadeInUpShorter">
+          <div className="bg-primary/5 border-l-4 border-accent rounded-r-xl p-5 mb-12">
+            <p className="text-base md:text-lg font-medium text-foreground italic leading-relaxed text-justify">
+              {highlightBrand(t('commitment'))}
+            </p>
+          </div>
+        </ScrollReveal>
+
+        <ScrollReveal animation="fadeInUpShorter">
+          <section>
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('controller.title')}
+            </h2>
+            <div className="text-gray-700 leading-relaxed text-[1.02rem] space-y-1 text-justify">
+              <p className="font-bold text-primary">{t('controller.name')}</p>
+              <p>{t('controller.address')}</p>
+              <p>
+                {t('controller.emailLabel')}:{' '}
+                <a
+                  href={`mailto:${t('controller.email')}`}
+                  className="text-accent hover:underline"
+                >
+                  {t('controller.email')}
+                </a>
               </p>
             </div>
-          </ScrollReveal>
-
-          <ScrollReveal animation="fadeInUpShorter">
-            <section>
-              <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
-                {t('controller.title')}
-              </h2>
-              <div className="text-gray-700 leading-relaxed text-[1.02rem] space-y-1">
-                <p className="font-bold text-primary">{t('controller.name')}</p>
-                <p>{t('controller.address')}</p>
-                <p>
-                  {t('controller.emailLabel')}:{' '}
-                  <a
-                    href={`mailto:${t('controller.email')}`}
-                    className="text-accent hover:underline"
-                  >
-                    {t('controller.email')}
-                  </a>
-                </p>
-              </div>
-            </section>
+          </section>
         </ScrollReveal>
       </div>
     </article>
