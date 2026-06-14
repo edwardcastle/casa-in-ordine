@@ -255,26 +255,12 @@
     "heroSubtitle": "Tips and inspiration for better living",
     "comingSoon": "New articles coming soon!",
     "comingSoonDescription": "We're preparing interesting content to help you organize your home. Come back soon!",
-    "posts": [
-      {
-        "title": "5 Tips to Start Decluttering",
-        "excerpt": "Discover our practical tips for starting the decluttering journey in your home, starting from the basics.",
-        "date": "Coming soon",
-        "category": "Decluttering"
-      },
-      {
-        "title": "How to Organize the Perfect Closet",
-        "excerpt": "Complete guide to organizing your closet functionally and maintaining order over time.",
-        "date": "Coming soon",
-        "category": "Organizing"
-      },
-      {
-        "title": "The Organized Kitchen: A Practical Guide",
-        "excerpt": "Transform your kitchen into an efficient space with our professional organizing tips.",
-        "date": "Coming soon",
-        "category": "Organizing"
-      }
-    ]
+    "cta": {
+      "title": "Want a more organized home?",
+      "button": "Request a quote"
+    },
+    "relatedTitle": "Related articles",
+    "readMore": "Read the article"
   },
   "contact": {
     "title": "Contact",
@@ -335,15 +321,27 @@
     "quiz": {
       "q1": {
         "question": "1. How much time do you spend looking for lost items every day?",
-        "options": ["Less than 5 minutes", "10 to 20 minutes", "Too much! I can never find anything"]
+        "options": [
+          "Less than 5 minutes",
+          "10 to 20 minutes",
+          "Too much! I can never find anything"
+        ]
       },
       "q2": {
         "question": "2. What is your predominant feeling when you see the mess?",
-        "options": ["Indifference", "Slight frustration", "Anxiety and overwhelm"]
+        "options": [
+          "Indifference",
+          "Slight frustration",
+          "Anxiety and overwhelm"
+        ]
       },
       "q3": {
         "question": "3. Would you avoid inviting someone home because of the clutter?",
-        "options": ["Never", "Sometimes", "Often, I feel embarrassed"]
+        "options": [
+          "Never",
+          "Sometimes",
+          "Often, I feel embarrassed"
+        ]
       }
     },
     "categoryTitle": "Which area would you like to transform?",
@@ -389,9 +387,18 @@
     "complexityTitle": "Challenge Level",
     "complexitySubtitle": "How deep is the clutter in this area?",
     "complexity": {
-      "light": { "title": "Light", "description": "Just needs a new method" },
-      "moderate": { "title": "Moderate", "description": "Obvious accumulation of items" },
-      "critical": { "title": "Critical", "description": "Difficulty accessing or using the space" }
+      "light": {
+        "title": "Light",
+        "description": "Just needs a new method"
+      },
+      "moderate": {
+        "title": "Moderate",
+        "description": "Obvious accumulation of items"
+      },
+      "critical": {
+        "title": "Critical",
+        "description": "Difficulty accessing or using the space"
+      }
     },
     "extrasTitle": "Additional Services",
     "extras": {
@@ -511,5 +518,16 @@
     "title": "Page not found",
     "description": "The page you're looking for doesn't exist or has been moved.",
     "backHome": "Back to home"
+  },
+  "chat": {
+    "title": "Casa in Ordine Assistant",
+    "greeting": "Hi! 👋 I'm the Casa in Ordine assistant. How can I help you bring order to your spaces?",
+    "placeholder": "Type a message…",
+    "send": "Send",
+    "open": "Open chat",
+    "close": "Close chat",
+    "error": "Oops, something went wrong. Please try again or use the contact form.",
+    "poweredBy": "AI assistant",
+    "privacy": "Conversations may be reviewed to improve our service."
   }
 }

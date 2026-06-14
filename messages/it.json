@@ -255,26 +255,12 @@
     "heroSubtitle": "Consigli e ispirazioni per vivere meglio",
     "comingSoon": "Nuovi articoli in arrivo!",
     "comingSoonDescription": "Stiamo preparando contenuti interessanti per aiutarti a organizzare la tua casa. Torna a trovarci presto!",
-    "posts": [
-      {
-        "title": "5 Consigli per Iniziare il Decluttering",
-        "excerpt": "Scopri i nostri consigli pratici per iniziare il percorso di decluttering nella tua casa, partendo dalle basi.",
-        "date": "Prossimamente",
-        "category": "Decluttering"
-      },
-      {
-        "title": "Come Organizzare l'Armadio Perfetto",
-        "excerpt": "Guida completa per organizzare il tuo armadio in modo funzionale e mantenere l'ordine nel tempo.",
-        "date": "Prossimamente",
-        "category": "Organizzazione"
-      },
-      {
-        "title": "La Cucina Organizzata: Guida Pratica",
-        "excerpt": "Trasforma la tua cucina in uno spazio efficiente con i nostri consigli di organizzazione professionale.",
-        "date": "Prossimamente",
-        "category": "Organizzazione"
-      }
-    ]
+    "cta": {
+      "title": "Vuoi una casa più ordinata?",
+      "button": "Richiedi un preventivo"
+    },
+    "relatedTitle": "Articoli correlati",
+    "readMore": "Leggi l'articolo"
   },
   "contact": {
     "title": "Contatti",
@@ -335,15 +321,27 @@
     "quiz": {
       "q1": {
         "question": "1. Quanto tempo passi a cercare oggetti smarriti ogni giorno?",
-        "options": ["Meno di 5 minuti", "Dai 10 ai 20 minuti", "Troppo! Non trovo mai nulla"]
+        "options": [
+          "Meno di 5 minuti",
+          "Dai 10 ai 20 minuti",
+          "Troppo! Non trovo mai nulla"
+        ]
       },
       "q2": {
         "question": "2. Qual è la tua sensazione predominante nel vedere il disordine?",
-        "options": ["Indifferenza", "Leggera frustrazione", "Ansia e sopraffazione"]
+        "options": [
+          "Indifferenza",
+          "Leggera frustrazione",
+          "Ansia e sopraffazione"
+        ]
       },
       "q3": {
         "question": "3. Rinunceresti a invitare qualcuno a casa per colpa del caos?",
-        "options": ["Mai", "Qualche volta", "Spesso, mi vergogno"]
+        "options": [
+          "Mai",
+          "Qualche volta",
+          "Spesso, mi vergogno"
+        ]
       }
     },
     "categoryTitle": "Quale zona desideri far rifiorire?",
@@ -389,9 +387,18 @@
     "complexityTitle": "Livello di sfida",
     "complexitySubtitle": "Quanto è profondo il disordine in quest'area?",
     "complexity": {
-      "light": { "title": "Lieve", "description": "Serve solo un nuovo metodo" },
-      "moderate": { "title": "Moderato", "description": "Accumulo evidente di oggetti" },
-      "critical": { "title": "Critico", "description": "Difficoltà di accesso o uso" }
+      "light": {
+        "title": "Lieve",
+        "description": "Serve solo un nuovo metodo"
+      },
+      "moderate": {
+        "title": "Moderato",
+        "description": "Accumulo evidente di oggetti"
+      },
+      "critical": {
+        "title": "Critico",
+        "description": "Difficoltà di accesso o uso"
+      }
     },
     "extrasTitle": "Servizi Aggiuntivi",
     "extras": {
@@ -511,5 +518,16 @@
     "title": "Pagina non trovata",
     "description": "La pagina che stai cercando non esiste o è stata spostata.",
     "backHome": "Torna alla home"
+  },
+  "chat": {
+    "title": "Assistente Casa in Ordine",
+    "greeting": "Ciao! 👋 Sono l'assistente di Casa in Ordine. Come posso aiutarti a mettere in ordine i tuoi spazi?",
+    "placeholder": "Scrivi un messaggio…",
+    "send": "Invia",
+    "open": "Apri la chat",
+    "close": "Chiudi la chat",
+    "error": "Ops, qualcosa è andato storto. Riprova o usa il modulo di contatto.",
+    "poweredBy": "Assistente AI",
+    "privacy": "Le conversazioni possono essere riviste per migliorare il servizio."
   }
 }

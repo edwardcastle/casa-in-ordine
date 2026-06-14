@@ -9,6 +9,7 @@ import CookieConsent from '@/components/CookieConsent';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import JsonLd from '@/components/JsonLd';
+import ChatWidget from '@/components/ChatWidget';
 
 const montserrat = Montserrat({
   subsets: ['latin'],
@@ -127,6 +128,7 @@ export default async function LocaleLayout({
           <Header />
           <main className="min-h-screen">{children}</main>
           <Footer />
+          <ChatWidget />
         </NextIntlClientProvider>
       </body>
     </html>
