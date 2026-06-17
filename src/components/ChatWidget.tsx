@@ -1,11 +1,29 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocale, useTranslations } from 'next-intl';
 
 interface ChatMessage {
   role: 'user' | 'assistant';
   content: string;
+}
+
+// A real on-screen keyboard is tall (~250-350px). Anything smaller than this
+// is almost certainly browser-chrome noise (collapsing URL bar, etc.) rather
+// than a keyboard, so we ignore it to avoid jitter.
+const KEYBOARD_INSET_THRESHOLD = 120;
+
+// Touch devices (phones/tablets) are the ones with a software keyboard that
+// overlaps the layout viewport. We gate on the PRIMARY pointer being coarse —
+// not on window width — so the fix also covers landscape phones (width > 640)
+// while never engaging on a mouse-driven desktop (even a narrow, pinch-zoomed
+// window, which would otherwise shrink the visual viewport and false-trigger).
+function hasCoarsePointer(): boolean {
+  return (
+    typeof window !== 'undefined' &&
+    typeof window.matchMedia === 'function' &&
+    window.matchMedia('(pointer: coarse)').matches
+  );
 }
 
 export default function ChatWidget() {
@@ -20,17 +38,154 @@ export default function ChatWidget() {
   const [sending, setSending] = useState(false);
   const [error, setError] = useState(false);
 
+  // When the on-screen keyboard is open on a small screen we override the
+  // panel's fixed positioning with JS-computed geometry derived from
+  // window.visualViewport (the only reliable keyboard signal on iOS Safari).
+  // `undefined` => use the default Tailwind classes (desktop / no keyboard).
+  const [panelStyle, setPanelStyle] = useState<React.CSSProperties | undefined>(
+    undefined,
+  );
+
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  const scrollToLatest = useCallback(() => {
+    const el = scrollRef.current;
+    if (el) el.scrollTo({ top: el.scrollHeight });
+  }, []);
+
   // Keep the latest message in view.
   useEffect(() => {
-    scrollRef.current?.scrollTo({ top: scrollRef.current.scrollHeight });
-  }, [messages, sending]);
+    scrollToLatest();
+  }, [messages, sending, scrollToLatest]);
 
   useEffect(() => {
     if (open) inputRef.current?.focus();
   }, [open]);
+
+  // ── Virtual-keyboard handling ────────────────────────────────────────────
+  //
+  // Brutal cross-browser truth:
+  //  • iOS Safari does NOT shrink 100vh/100dvh for the keyboard and does NOT
+  //    support `interactive-widget=resizes-content`. A position:fixed element
+  //    stays glued to the *layout* viewport, so it slides behind the keyboard.
+  //    The ONLY accurate signal is window.visualViewport.
+  //  • Android Chrome generally resizes the visual viewport too (and honours
+  //    interactive-widget), but tracking visualViewport works there as well.
+  //  • Desktop has no keyboard; we leave the default styling untouched.
+  //
+  // While the chat is open we listen to visualViewport `resize` + `scroll`
+  // (iOS scrolls the page to reveal the focused input, changing offsetTop) and
+  // recompute the keyboard inset. When a keyboard is detected on a small
+  // screen we pin the panel inside the visible region so the composer always
+  // sits just above the keyboard and the whole message list stays visible.
+  useEffect(() => {
+    if (!open || typeof window === 'undefined') return;
+
+    const vv = window.visualViewport ?? null;
+    // Pointer type is stable for the session, so read it once.
+    const coarsePointer = hasCoarsePointer();
+
+    // Avoid redundant re-renders during the keyboard animation: only push new
+    // state when the computed geometry meaningfully changes.
+    let lastTop = -1;
+    let lastBottom = -1;
+    let lastActive = false;
+    let frame = 0;
+
+    const compute = () => {
+      frame = 0;
+
+      const innerHeight = window.innerHeight;
+      const viewportHeight = vv ? vv.height : innerHeight;
+      const offsetTop = vv ? vv.offsetTop : 0;
+
+      // Pixels the keyboard (and any bottom browser UI) cover in the layout
+      // viewport. ~0 when no keyboard is up. Derived from visualViewport.height
+      // (not width), so it fires in portrait AND landscape.
+      const keyboardInset = Math.max(
+        0,
+        innerHeight - viewportHeight - offsetTop,
+      );
+      const keyboardOpen = keyboardInset > KEYBOARD_INSET_THRESHOLD;
+
+      // Only take over positioning for the case the default styling fails: a
+      // software keyboard up on a touch device (any orientation). Everything
+      // else — desktop, or a touch device with no keyboard — keeps the original
+      // floating-card look.
+      if (!coarsePointer || !keyboardOpen) {
+        lastActive = false;
+        lastTop = -1;
+        lastBottom = -1;
+        // Reconcile back to the default class-based styling. The functional
+        // updater bails out cleanly when already undefined (no extra render),
+        // and resets correctly even on the first pass after a reopen.
+        setPanelStyle((prev) => (prev ? undefined : prev));
+        return;
+      }
+
+      const GAP = 12; // breathing room from viewport edges / keyboard
+      // `top` and `bottom` are in layout-viewport coordinates (what
+      // position:fixed uses). Following offsetTop keeps us aligned with the
+      // visual viewport even when iOS scrolls the page up.
+      const top = Math.round(offsetTop + GAP);
+      const bottom = Math.round(keyboardInset + GAP);
+
+      if (lastActive && top === lastTop && bottom === lastBottom) return;
+      lastActive = true;
+      lastTop = top;
+      lastBottom = bottom;
+
+      setPanelStyle({
+        top: `${top}px`,
+        bottom: `${bottom}px`,
+        // Stay anchored to the right (matching the launcher) and capped at the
+        // default card width, so on phones it fills the row while on tablets /
+        // landscape it stays a tidy column instead of an ultra-wide sheet.
+        left: 'auto',
+        right: '1rem',
+        width: 'calc(100vw - 2rem)',
+        maxWidth: '24rem',
+        height: 'auto',
+        maxHeight: 'none',
+      });
+
+      // The viewport just shrank; keep the newest message in view.
+      scrollToLatest();
+    };
+
+    const schedule = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(compute);
+    };
+
+    // Initial pass via rAF (the keyboard may already be up if the widget is
+    // reopened mid-typing). Scheduling — rather than calling compute()
+    // synchronously — keeps setState out of the effect body so it can't
+    // trigger a cascading render.
+    schedule();
+
+    if (vv) {
+      vv.addEventListener('resize', schedule);
+      vv.addEventListener('scroll', schedule);
+    }
+    // Fallback / orientation changes when visualViewport is unavailable.
+    window.addEventListener('resize', schedule);
+    window.addEventListener('orientationchange', schedule);
+
+    return () => {
+      if (frame) window.cancelAnimationFrame(frame);
+      // Drop any keyboard geometry so the next open starts from the default
+      // floating-card styling instead of a stale inline override.
+      setPanelStyle(undefined);
+      if (vv) {
+        vv.removeEventListener('resize', schedule);
+        vv.removeEventListener('scroll', schedule);
+      }
+      window.removeEventListener('resize', schedule);
+      window.removeEventListener('orientationchange', schedule);
+    };
+  }, [open, scrollToLatest]);
 
   async function send() {
     const text = input.trim();
@@ -135,7 +290,8 @@ export default function ChatWidget() {
         <div
           role="dialog"
           aria-label={t('title')}
-          className="fixed bottom-24 right-5 z-[60] flex h-[32rem] max-h-[calc(100vh-7rem)] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-secondary-dark bg-secondary-light shadow-2xl"
+          style={panelStyle}
+          className="fixed bottom-24 right-5 z-[60] flex h-[32rem] max-h-[calc(100dvh-7rem)] w-[calc(100vw-2.5rem)] max-w-sm flex-col overflow-hidden rounded-2xl border border-secondary-dark bg-secondary-light shadow-2xl"
         >
           {/* Header */}
           <div className="flex items-center justify-between bg-primary px-4 py-3 text-white">

@@ -9,6 +9,41 @@ import { mdxComponents } from '@/components/MdxContent';
 
 const baseUrl = 'https://casainordine.com';
 
+// Extract numbered "## N. Heading" sections into HowTo steps (name + lead text)
+// in the post's own locale. Used to emit HowTo structured data only for genuine
+// step-by-step guides, mirroring the visible content (no fabricated steps).
+function buildHowToSteps(markdown: string): { name: string; text: string }[] {
+  const lines = markdown.split('\n');
+  const sections: { name: string; body: string[] }[] = [];
+  let current: { name: string; body: string[] } | null = null;
+
+  for (const line of lines) {
+    const numbered = line.match(/^##\s*\d+\.\s*(.+?)\s*$/);
+    if (numbered) {
+      if (current) sections.push(current);
+      current = { name: numbered[1].trim(), body: [] };
+    } else if (/^##\s+/.test(line)) {
+      // A non-numbered H2 ends the step sequence.
+      if (current) sections.push(current);
+      current = null;
+    } else if (current) {
+      current.body.push(line);
+    }
+  }
+  if (current) sections.push(current);
+
+  const clean = (s: string) =>
+    s
+      .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // links -> visible text
+      .replace(/[*_`#>]/g, '') // emphasis / code / heading marks
+      .replace(/\s+/g, ' ')
+      .trim();
+
+  return sections
+    .map((s) => ({ name: clean(s.name), text: clean(s.body.join(' ')).slice(0, 300) }))
+    .filter((s) => s.name && s.text);
+}
+
 export function generateStaticParams() {
   return getPostSlugs().flatMap((slug) =>
     getPostLocales(slug).map((locale) => ({ locale, slug })),
@@ -31,7 +66,9 @@ export async function generateMetadata({
   languages['x-default'] = `${baseUrl}/${routing.defaultLocale}/blog/${slug}`;
 
   return {
-    title: post.title,
+    // `absolute` drops the "| Casa in Ordine" parent-template suffix so long
+    // post titles aren't truncated in SERPs (brand still shows via OG siteName).
+    title: { absolute: post.title },
     description: post.description,
     keywords: post.keywords,
     authors: [{ name: post.author }],
@@ -68,6 +105,8 @@ export default async function BlogPostPage({
   if (!post) notFound();
 
   const t = await getTranslations({ locale, namespace: 'blog' });
+  const tNav = await getTranslations({ locale, namespace: 'nav' });
+  const canonicalUrl = `${baseUrl}/${locale}/blog/${slug}`;
 
   const formattedDate = new Date(post.date).toLocaleDateString(locale, {
     day: 'numeric',
@@ -92,9 +131,51 @@ export default async function BlogPostPage({
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${baseUrl}/${locale}/blog/${slug}`,
+      '@id': canonicalUrl,
     },
   };
+
+  // Home > Blog > Post breadcrumb trail for SERP breadcrumbs + crawl context.
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: tNav('home'),
+        item: `${baseUrl}/${locale}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: tNav('blog'),
+        item: `${baseUrl}/${locale}/blog`,
+      },
+      { '@type': 'ListItem', position: 3, name: post.title, item: canonicalUrl },
+    ],
+  };
+
+  // HowTo only for genuine step-by-step guides (numbered H2s); steps come from
+  // the real headings/prose in this locale, so the markup matches the page.
+  const howToSteps = buildHowToSteps(post.content);
+  const howToSchema =
+    howToSteps.length >= 3
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'HowTo',
+          name: post.title,
+          description: post.description,
+          image: `${baseUrl}${post.coverImage}`,
+          inLanguage: locale,
+          step: howToSteps.map((s, i) => ({
+            '@type': 'HowToStep',
+            position: i + 1,
+            name: s.name,
+            text: s.text,
+          })),
+        }
+      : null;
 
   // Up to three related posts (same locale, excluding current).
   const related = getAllPosts(locale)
@@ -107,6 +188,16 @@ export default async function BlogPostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      {howToSchema && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }}
+        />
+      )}
 
       {/* Cover header */}
       <header
