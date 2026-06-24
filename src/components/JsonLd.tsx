@@ -2,6 +2,11 @@ interface JsonLdProps {
   locale?: string;
 }
 
+const BASE_URL = 'https://casainordine.com';
+const LOGO_URL = `${BASE_URL}/images/logo/logo_400x150.png`;
+const IMAGE_URL = `${BASE_URL}/images/logo/logo_1200x630.png`;
+const SAME_AS = ['https://www.instagram.com/casainordine_it/'];
+
 const descriptions: Record<string, string> = {
   it: 'Servizio professionale di decluttering e home organizing a Roma',
   en: 'Professional decluttering and home organizing service in Rome',
@@ -17,31 +22,58 @@ const ogLocales: Record<string, string> = {
 export default function JsonLd({ locale = 'it' }: JsonLdProps) {
   const inLanguage = ogLocales[locale] ?? ogLocales.it;
 
+  // Central brand node every other schema links back to via @id.
+  const organization = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    '@id': `${BASE_URL}/#organization`,
+    name: 'Casa in Ordine',
+    url: BASE_URL,
+    logo: {
+      '@type': 'ImageObject',
+      url: LOGO_URL,
+      width: 400,
+      height: 150,
+    },
+    sameAs: SAME_AS,
+  };
+
   const webSite = {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
+    '@id': `${BASE_URL}/#website`,
     name: 'Casa in Ordine',
-    url: `https://casainordine.com/${locale}`,
+    url: `${BASE_URL}/${locale}`,
     inLanguage,
     description: descriptions[locale] ?? descriptions.it,
+    publisher: { '@id': `${BASE_URL}/#organization` },
   };
 
-  const schemas: object[] = [webSite];
+  const schemas: object[] = [organization, webSite];
 
+  // LocalBusiness is emitted only on the Italian site: the physical service is
+  // scoped to Roma, so it must not be duplicated across the en/es locales.
   if (locale === 'it') {
     schemas.push({
       '@context': 'https://schema.org',
       '@type': 'LocalBusiness',
-      '@id': 'https://casainordine.com/it#business',
+      '@id': `${BASE_URL}/it#business`,
       name: 'Casa in Ordine',
       description: descriptions.it,
-      url: 'https://casainordine.com/it',
+      url: `${BASE_URL}/it`,
+      image: IMAGE_URL,
+      logo: LOGO_URL,
       telephone: '+393445856895',
       email: 'info@casainordine.com',
+      priceRange: '€€',
       inLanguage: 'it-IT',
+      parentOrganization: { '@id': `${BASE_URL}/#organization` },
       address: {
         '@type': 'PostalAddress',
+        streetAddress: 'Via dei Monti Tiburtini, 510',
+        postalCode: '00157',
         addressLocality: 'Roma',
+        addressRegion: 'RM',
         addressCountry: 'IT',
       },
       areaServed: {
@@ -50,7 +82,7 @@ export default function JsonLd({ locale = 'it' }: JsonLdProps) {
       },
       serviceType: ['Decluttering', 'Home Organizing', 'Professional Organizing'],
       openingHours: 'Mo-Fr 09:00-18:00',
-      sameAs: ['https://www.instagram.com/casainordine_it/'],
+      sameAs: SAME_AS,
     });
   }
 

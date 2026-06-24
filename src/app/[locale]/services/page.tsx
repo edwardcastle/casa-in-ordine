@@ -59,8 +59,33 @@ export default function ServicesPage() {
   const t = useTranslations('services');
   const locale = useLocale();
 
+  // OfferCatalog of the four services, built from the same translations the page
+  // renders, so the structured data mirrors the visible content.
+  const servicesSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'OfferCatalog',
+    name: t('title'),
+    url: `https://casainordine.com/${locale}/services`,
+    itemListElement: [0, 1, 2, 3].map((i) => ({
+      '@type': 'Offer',
+      position: i + 1,
+      itemOffered: {
+        '@type': 'Service',
+        name: t(`items.${i}.title`),
+        description: t(`items.${i}.description`),
+        serviceType: t(`items.${i}.title`),
+        provider: { '@id': 'https://casainordine.com/#organization' },
+        areaServed: { '@type': 'City', name: 'Roma' },
+      },
+    })),
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
+      />
       <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/backgrounds/kitchen-bg.jpg" />
 
       {/* Services */}
