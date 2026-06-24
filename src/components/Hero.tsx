@@ -5,6 +5,7 @@ import Image from 'next/image';
 
 interface HeroProps {
   title: string;
+  eyebrow?: string; // small brand/kicker line shown above the h1 (e.g. the brand on the homepage)
   subtitle?: string;
   cta?: {
     text: string;
@@ -22,6 +23,7 @@ interface HeroProps {
 
 export default function Hero({
   title,
+  eyebrow,
   subtitle,
   cta,
   secondaryCta,
@@ -30,6 +32,7 @@ export default function Hero({
   backgroundImages,
   interval = 6000,
 }: HeroProps) {
+  const eyebrowRef = useRef<HTMLParagraphElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const subtitleRef = useRef<HTMLParagraphElement | null>(null);
   const ctaRef = useRef<HTMLDivElement | null>(null);
@@ -64,6 +67,7 @@ export default function Hero({
       }, delay);
     };
 
+    animate(eyebrowRef.current, 100);
     animate(titleRef.current, 300);
     animate(subtitleRef.current, 800);
     animate(ctaRef.current, 1300);
@@ -109,6 +113,14 @@ export default function Hero({
       </div>
 
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
+        {eyebrow && (
+          <p
+            ref={eyebrowRef}
+            className="scroll-reveal scroll-reveal--fadeInUpShorter mb-3 text-sm md:text-base font-semibold uppercase tracking-[0.2em] text-white/80"
+          >
+            {eyebrow}
+          </p>
+        )}
         <h1
           ref={titleRef}
           className={`scroll-reveal scroll-reveal--blurIn font-extrabold text-white ${large ? 'text-clamp-hero' : 'text-3xl md:text-4xl lg:text-5xl'} leading-tight tracking-tight uppercase`}
