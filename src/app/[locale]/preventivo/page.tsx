@@ -57,6 +57,19 @@ export default function PreventivoPage() {
           <QuoteWizard />
         </div>
       </section>
+
+      <section className="py-16 md:py-24 print:hidden">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-6 text-2xl md:text-3xl font-bold text-gray-900">
+            {t('seo.title')}
+          </h2>
+          <div className="space-y-4 leading-relaxed text-gray-600">
+            {(t.raw('seo.paragraphs') as string[]).map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }

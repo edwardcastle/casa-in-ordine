@@ -42,6 +42,20 @@ export default function ContactPage() {
     <>
       <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/gallery/bathroom-1.jpg" />
 
+      <section className="pt-16 md:pt-24">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-6 text-2xl md:text-3xl font-bold text-gray-900">
+            {t('seo.title')}
+          </h2>
+          <div className="space-y-4 leading-relaxed text-gray-600">
+            {(t.raw('seo.paragraphs') as string[]).map((p, i) => (
+              <p key={i}>{p}</p>
+            ))}
+          </div>
+          <p className="mt-6 text-sm text-gray-500">{t('seo.address')}</p>
+        </div>
+      </section>
+
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid md:grid-cols-2 gap-12 items-start">
