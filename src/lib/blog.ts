@@ -12,6 +12,7 @@ export interface PostFrontmatter {
   description: string;
   excerpt: string;
   date: string; // ISO date, e.g. 2026-06-13
+  updated?: string; // ISO date; bump when editing an existing post so lastmod/dateModified reflect the edit
   category: string;
   keywords: string[];
   coverImage: string;
