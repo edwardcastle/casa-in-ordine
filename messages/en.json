@@ -14,7 +14,8 @@
     "preventivo": "Quote"
   },
   "hero": {
-    "title": "Casa in Ordine",
+    "title": "Decluttering & Home Organizing in Rome",
+    "brand": "Casa in Ordine",
     "subtitle": "We combine methodical efficiency with the warmth of a home that truly welcomes.",
     "cta": "Book now",
     "contactCta": "Contact us"
@@ -119,8 +120,8 @@
     }
   },
   "about": {
-    "title": "About Us – Casa in Ordine | Professional Decluttering & Home Organizing",
-    "metaDescription": "Meet Dalia and Surinay, founders of Casa in Ordine: professional decluttering, home reorganization and organizing service in Italy. Custom solutions for closets, kitchens, offices and every room.",
+    "title": "About Us – Decluttering & Home Organizing",
+    "metaDescription": "Meet Dalia and Surinay, founders of Casa in Ordine: professional decluttering, home reorganization and organizing across Italy, with custom solutions.",
     "heroTitle": "Our Story",
     "heroSubtitle": "Two friends, two paths, one vision.",
     "intro": "We are Dalia and Surinay, two Cuban friends who arrived in Italy with a suitcase full of dreams, experiences, and different talents. One with the soul of dance, the other with the mind of economics: two seemingly distant worlds that, meeting each other, gave life to Casa in Ordine. Because we believe every space, just like a choreography or a well-built balance sheet, needs harmony and strategy to truly work.",
@@ -180,7 +181,7 @@
     }
   },
   "services": {
-    "title": "Our Services",
+    "title": "Decluttering & Home Organizing Services in Rome",
     "metaDescription": "Discover the professional decluttering, home organizing, and consulting services offered by Casa in Ordine in Rome.",
     "heroTitle": "Professional Services",
     "heroSubtitle": "Tailored solutions for every need",
@@ -263,7 +264,7 @@
     "readMore": "Read the article"
   },
   "contact": {
-    "title": "Contact",
+    "title": "Contact – Home Organizing & Decluttering in Rome",
     "metaDescription": "Contact Casa in Ordine for a free decluttering and home organizing consultation in Rome.",
     "heroTitle": "Contact Us",
     "heroSubtitle": "We're here to help",
@@ -295,6 +296,14 @@
       "phone": "+39 344 5856 895",
       "hours": "Mon - Fri: 9:00 AM - 6:00 PM",
       "social": "Follow us on Instagram"
+    },
+    "seo": {
+      "title": "Get in touch about your organizing project",
+      "paragraphs": [
+        "Want to transform your home or office with a professional decluttering and home organizing service? Reach us through the form, by email or by phone: we usually reply within 24 working hours.",
+        "To help us give you a useful answer, tell us which spaces you want to organize, your area of Rome and the timeframe you have in mind. You’ll get practical advice and, if you wish, a free tailored quote."
+      ],
+      "address": "Casa in Ordine · Via dei Monti Tiburtini 510, 00157 Rome (RM), Italy"
     }
   },
   "footer": {
@@ -449,15 +458,23 @@
     "printTitle": "Print / Save PDF"
   },
   "preventivo": {
-    "title": "Free Quote – Casa in Ordine | Decluttering & Home Organizing",
+    "title": "Free Quote – Decluttering & Home Organizing",
     "metaDescription": "Request a free quote for your decluttering and home organizing project. Digital survey in just a few minutes.",
     "heroTitle": "Free Quote",
     "heroSubtitle": "Find out how much it costs to reorganize your spaces",
     "wizardTitle": "Digital Survey",
-    "wizardSubtitle": "Three questions to get to know each other, then we define your perfect space."
+    "wizardSubtitle": "Three questions to get to know each other, then we define your perfect space.",
+    "seo": {
+      "title": "How the free quote works",
+      "paragraphs": [
+        "Our quote for decluttering and home organizing in Rome is free and with no obligation. Through a short digital survey you tell us which spaces you want to reorganize — wardrobe, kitchen, home office, kids’ room, garage or a full move — and you get a personalized estimate in just a few minutes.",
+        "The cost of an organizing project depends on the size and number of rooms, the starting condition of the spaces, how many items need sorting, and your goal: from simple decluttering to a complete reorganization with systems to keep things in order over time.",
+        "We work in Rome and the surrounding area. After your request we get in touch to arrange the survey and define a tailored plan together, with clear timing and costs before we start."
+      ]
+    }
   },
   "privacyPolicy": {
-    "title": "Privacy Policy – Casa in Ordine",
+    "title": "Privacy Policy",
     "metaDescription": "Information on the processing of personal data pursuant to Art. 13 of EU Regulation 2016/679 (GDPR).",
     "heroTitle": "Privacy Policy",
     "heroSubtitle": "Processing of personal data pursuant to Art. 13 of EU Regulation 2016/679 (GDPR)",

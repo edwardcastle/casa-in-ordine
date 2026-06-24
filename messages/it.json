@@ -14,7 +14,8 @@
     "preventivo": "Preventivo"
   },
   "hero": {
-    "title": "Casa in Ordine",
+    "title": "Decluttering e Home Organizing a Roma",
+    "brand": "Casa in Ordine",
     "subtitle": "Uniamo l'efficienza metodica al calore della casa che accoglie davvero.",
     "cta": "Prenota ora",
     "contactCta": "Contattaci"
@@ -119,8 +120,8 @@
     }
   },
   "about": {
-    "title": "Chi Siamo – Casa in Ordine | Decluttering e Home Organizing Professionale",
-    "metaDescription": "Dalia e Surinay, fondatrici di Casa in Ordine: servizio professionale di decluttering, riorganizzazione della casa e home organizing in Italia. Organizziamo armadi, cucine, uffici e ogni ambiente con soluzioni su misura.",
+    "title": "Chi Siamo – Decluttering e Home Organizing",
+    "metaDescription": "Dalia e Surinay, fondatrici di Casa in Ordine: decluttering, riorganizzazione e home organizing professionale in Italia, con soluzioni su misura.",
     "heroTitle": "La Nostra Storia",
     "heroSubtitle": "Due amiche, due percorsi, una sola visione.",
     "intro": "Siamo Dalia e Surinay, due amiche cubane arrivate in Italia con un bagaglio fatto di sogni, esperienze e talenti diversi. Una con l'anima della danza, l'altra con la mente dell'economia: due mondi apparentemente distanti che, incontrandosi, hanno dato vita a Casa in Ordine. Perché crediamo che ogni spazio, proprio come una coreografia o un bilancio ben costruito, abbia bisogno di armonia e strategia per funzionare davvero.",
@@ -180,7 +181,7 @@
     }
   },
   "services": {
-    "title": "I Nostri Servizi",
+    "title": "Servizi di Decluttering e Home Organizing a Roma",
     "metaDescription": "Scopri i servizi di decluttering, home organizing e consulenza professionale offerti da Casa in Ordine a Roma.",
     "heroTitle": "Servizi Professionali",
     "heroSubtitle": "Soluzioni su misura per ogni esigenza",
@@ -263,7 +264,7 @@
     "readMore": "Leggi l'articolo"
   },
   "contact": {
-    "title": "Contatti",
+    "title": "Contatti – Home Organizing e Decluttering a Roma",
     "metaDescription": "Contatta Casa in Ordine per una consulenza gratuita di decluttering e home organizing a Roma.",
     "heroTitle": "Contattaci",
     "heroSubtitle": "Siamo qui per aiutarti",
@@ -295,6 +296,14 @@
       "phone": "+39 344 5856 895",
       "hours": "Lun - Ven: 9:00 - 18:00",
       "social": "Seguici su Instagram"
+    },
+    "seo": {
+      "title": "Contattaci per il tuo progetto di riordino",
+      "paragraphs": [
+        "Vuoi trasformare la tua casa o il tuo ufficio con un servizio professionale di decluttering e home organizing? Scrivici tramite il modulo, via email o per telefono: rispondiamo in genere entro 24 ore lavorative.",
+        "Per prepararti una risposta utile, indica gli ambienti da organizzare, la zona di Roma in cui ti trovi e i tempi che hai in mente. Riceverai consigli concreti e, se lo desideri, un preventivo gratuito su misura."
+      ],
+      "address": "Casa in Ordine · Via dei Monti Tiburtini 510, 00157 Roma (RM), Italia"
     }
   },
   "footer": {
@@ -449,15 +458,23 @@
     "printTitle": "Stampa / Salva PDF"
   },
   "preventivo": {
-    "title": "Preventivo Gratuito – Casa in Ordine | Decluttering e Home Organizing",
+    "title": "Preventivo Gratuito Decluttering e Home Organizing",
     "metaDescription": "Richiedi un preventivo gratuito per il tuo progetto di decluttering e home organizing. Sopralluogo digitale in pochi minuti.",
     "heroTitle": "Preventivo Gratuito",
     "heroSubtitle": "Scopri quanto costa riorganizzare i tuoi spazi",
     "wizardTitle": "Sopralluogo Digitale",
-    "wizardSubtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto."
+    "wizardSubtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto.",
+    "seo": {
+      "title": "Come funziona il preventivo gratuito",
+      "paragraphs": [
+        "Il preventivo per il nostro servizio di decluttering e home organizing a Roma è gratuito e senza impegno. Con un breve sopralluogo digitale ci racconti quali ambienti vuoi riorganizzare — armadio, cucina, ufficio, cameretta, garage o un intero trasloco — e ricevi una stima personalizzata in pochi minuti.",
+        "Il costo di un intervento di riordino dipende dalla metratura e dal numero di stanze, dallo stato di partenza degli spazi, dalla quantità di oggetti da selezionare e dall’obiettivo: dal semplice decluttering alla riorganizzazione completa con sistemi di mantenimento nel tempo.",
+        "Lavoriamo a Roma e nei comuni limitrofi. Dopo la tua richiesta ti contattiamo per fissare il sopralluogo e definire insieme un piano su misura, con tempi e costi chiari prima di iniziare."
+      ]
+    }
   },
   "privacyPolicy": {
-    "title": "Privacy Policy – Casa in Ordine",
+    "title": "Privacy Policy",
     "metaDescription": "Informativa sul trattamento dei dati personali ai sensi dell’art. 13 del GDPR UE 2016/679.",
     "heroTitle": "Informativa sulla Privacy",
     "heroSubtitle": "Trattamento dei dati personali ai sensi dell’art. 13 del GDPR UE 2016/679",
