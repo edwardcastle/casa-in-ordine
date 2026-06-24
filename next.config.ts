@@ -6,7 +6,9 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig: NextConfig = {
   headers: async () => [
     {
-      source: '/:path*',
+      // All content routes except the /api namespace (POST-only JSON endpoints
+      // that should not be tagged indexable).
+      source: '/((?!api/).*)',
       headers: [
         {
           key: 'X-Robots-Tag',
