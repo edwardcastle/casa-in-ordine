@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import Hero from '@/components/Hero';
 import { getAllPosts } from '@/lib/blog';
@@ -24,6 +25,22 @@ export async function generateMetadata({
         ...Object.fromEntries(locales.map((l) => [l, `${baseUrl}/${l}/blog`])),
         'x-default': `${baseUrl}/it/blog`,
       },
+    },
+    openGraph: {
+      title: t('title'),
+      description: t('metaDescription'),
+      url: `${baseUrl}/${locale}/blog`,
+      siteName: 'Casa in Ordine',
+      locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
+      type: 'website',
+      images: [
+        {
+          url: '/images/logo/logo_1200x630.png',
+          width: 1200,
+          height: 630,
+          alt: 'Casa in Ordine',
+        },
+      ],
     },
     robots: { index: true, follow: true },
   };
@@ -74,10 +91,15 @@ export default async function BlogPage({
                       href={`/${locale}/blog/${post.slug}`}
                       className="group block"
                     >
-                      <div
-                        className="h-48 bg-cover bg-center"
-                        style={{ backgroundImage: `url(${post.coverImage})` }}
-                      />
+                      <div className="relative h-48">
+                        <Image
+                          src={post.coverImage}
+                          alt={post.title}
+                          fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                          className="object-cover"
+                        />
+                      </div>
                       <div className="p-6">
                         <div className="mb-3 flex items-center gap-3">
                           <span className="rounded bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
@@ -90,9 +112,9 @@ export default async function BlogPage({
                             {date}
                           </time>
                         </div>
-                        <h3 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary">
+                        <h2 className="mb-2 text-lg font-semibold text-foreground group-hover:text-primary">
                           {post.title}
-                        </h3>
+                        </h2>
                         <p className="text-sm text-foreground/70">
                           {post.excerpt}
                         </p>

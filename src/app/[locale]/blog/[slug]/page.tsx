@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { routing } from '@/i18n/routing';
@@ -63,7 +64,12 @@ export async function generateMetadata({
   const languages: Record<string, string> = Object.fromEntries(
     localesWithPost.map((l) => [l, `${baseUrl}/${l}/blog/${slug}`]),
   );
-  languages['x-default'] = `${baseUrl}/${routing.defaultLocale}/blog/${slug}`;
+  // Point x-default at the default locale only when that translation exists;
+  // otherwise the first available locale, so the alternate never 404s.
+  const xDefaultLocale = localesWithPost.includes(routing.defaultLocale)
+    ? routing.defaultLocale
+    : localesWithPost[0];
+  languages['x-default'] = `${baseUrl}/${xDefaultLocale}/blog/${slug}`;
 
   return {
     // `absolute` drops the "| Casa in Ordine" parent-template suffix so long
@@ -114,6 +120,12 @@ export default async function BlogPostPage({
     year: 'numeric',
   });
 
+  // BCP-47 region tag, matching the WebSite/LocalBusiness schemas in JsonLd.tsx.
+  const langTag =
+    ({ it: 'it-IT', en: 'en-US', es: 'es-ES' } as Record<string, string>)[
+      locale
+    ] ?? 'it-IT';
+
   const articleSchema = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -121,13 +133,20 @@ export default async function BlogPostPage({
     description: post.description,
     image: `${baseUrl}${post.coverImage}`,
     datePublished: post.date,
-    dateModified: post.date,
-    inLanguage: locale,
+    dateModified: post.updated ?? post.date,
+    inLanguage: langTag,
     author: { '@type': 'Organization', name: post.author },
     publisher: {
       '@type': 'Organization',
+      '@id': `${baseUrl}/#organization`,
       name: 'Casa in Ordine',
-      url: `${baseUrl}/${locale}`,
+      url: baseUrl,
+      logo: {
+        '@type': 'ImageObject',
+        url: `${baseUrl}/images/logo/logo_400x150.png`,
+        width: 400,
+        height: 150,
+      },
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -167,7 +186,7 @@ export default async function BlogPostPage({
           name: post.title,
           description: post.description,
           image: `${baseUrl}${post.coverImage}`,
-          inLanguage: locale,
+          inLanguage: langTag,
           step: howToSteps.map((s, i) => ({
             '@type': 'HowToStep',
             position: i + 1,
@@ -201,9 +220,16 @@ export default async function BlogPostPage({
 
       {/* Cover header */}
       <header
-        className="relative flex min-h-[18rem] flex-col justify-end bg-cover bg-center px-4 py-10 text-white sm:px-6 md:min-h-[24rem] lg:px-8"
-        style={{ backgroundImage: `url(${post.coverImage})` }}
+        className="relative flex min-h-[18rem] flex-col justify-end px-4 py-10 text-white sm:px-6 md:min-h-[24rem] lg:px-8"
       >
+        <Image
+          src={post.coverImage}
+          alt={post.title}
+          fill
+          priority
+          sizes="100vw"
+          className="object-cover object-center"
+        />
         <div className="absolute inset-0 bg-black/45" />
         <div className="relative mx-auto w-full max-w-3xl">
           <Link
@@ -265,10 +291,15 @@ export default async function BlogPostPage({
                 href={`/${locale}/blog/${p.slug}`}
                 className="group overflow-hidden rounded-xl border border-secondary/40 bg-white shadow-sm transition-shadow hover:shadow-md"
               >
-                <div
-                  className="h-36 bg-cover bg-center"
-                  style={{ backgroundImage: `url(${p.coverImage})` }}
-                />
+                <div className="relative h-36">
+                  <Image
+                    src={p.coverImage}
+                    alt={p.title}
+                    fill
+                    sizes="(max-width: 768px) 100vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
                 <div className="p-4">
                   <span className="text-xs font-medium text-primary">
                     {p.category}
