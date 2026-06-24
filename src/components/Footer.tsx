@@ -86,7 +86,6 @@ export default function Footer() {
           <p className="text-xs text-white/50">{t('footer.createdBy')}</p>
           <div className="flex gap-4 mt-2">
             <Link href={`/${locale}/privacy-policy`} className="text-white/80 hover:text-white transition-colors">{t('footer.privacy')}</Link>
-            <Link href={`/${locale}`} className="text-white/80 hover:text-white transition-colors">{t('footer.terms')}</Link>
           </div>
         </div>
       </div>
