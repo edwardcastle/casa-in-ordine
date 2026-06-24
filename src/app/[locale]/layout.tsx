@@ -53,15 +53,10 @@ export async function generateMetadata({
         { url: '/favicon_180x180.png', sizes: '180x180', type: 'image/png' },
       ],
     },
-    alternates: {
-      canonical: `https://casainordine.com/${locale}`,
-      languages: {
-        it: 'https://casainordine.com/it',
-        en: 'https://casainordine.com/en',
-        es: 'https://casainordine.com/es',
-        'x-default': 'https://casainordine.com/it',
-      },
-    },
+    // No `alternates` here: canonical + hreflang are page-specific, so each
+    // page.tsx supplies its own. Putting the homepage's values in this shared
+    // layout would make every child route that forgets to override inherit the
+    // homepage canonical.
     openGraph: {
       title: messages.metadata.title,
       description: messages.metadata.description,
@@ -78,11 +73,12 @@ export async function generateMetadata({
         },
       ],
     },
+    // Only the card type is set site-wide; title/description/image are left to
+    // each page's own openGraph (pages that set neither fall back to og here).
+    // Hardcoding the homepage title/description made every subpage's X card
+    // show the homepage copy.
     twitter: {
       card: 'summary_large_image',
-      title: messages.metadata.title,
-      description: messages.metadata.description,
-      images: ['/images/logo/logo_1200x630.png'],
     },
     robots: {
       index: true,
@@ -117,7 +113,6 @@ export default async function LocaleLayout({
     <html lang={locale}>
       <body className={`${montserrat.variable} font-sans antialiased`}>
         <Script
-          defer
           src="https://cloud.umami.is/script.js"
           data-website-id="1e5f6664-a355-4022-b92e-ed44f83ec536"
           strategy="afterInteractive"
