@@ -1,9 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { Chart, DoughnutController, ArcElement, Tooltip, Legend } from 'chart.js';
-
-Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+import type { Chart as ChartType } from 'chart.js';
 
 interface BalanceChartProps {
   labels: string[];
@@ -14,7 +12,7 @@ interface BalanceChartProps {
 export default function BalanceChart({ labels, data, title }: BalanceChartProps) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const chartRef = useRef<Chart<'doughnut'> | null>(null);
+  const chartRef = useRef<ChartType<'doughnut'> | null>(null);
   const [visible, setVisible] = useState(false);
 
   // Wait until the container is visible before creating the chart
@@ -37,56 +35,67 @@ export default function BalanceChart({ labels, data, title }: BalanceChartProps)
   useEffect(() => {
     if (!visible || !canvasRef.current) return;
 
-    if (chartRef.current) {
-      chartRef.current.destroy();
-    }
+    // Load chart.js only once this chart scrolls into view, keeping the library
+    // out of the homepage's initial download + hydration path.
+    let cancelled = false;
+    let chart: ChartType<'doughnut'> | null = null;
 
-    chartRef.current = new Chart(canvasRef.current, {
-      type: 'doughnut',
-      data: {
-        labels,
-        datasets: [
-          {
-            data,
-            backgroundColor: ['#2D3748', '#D98A6C'],
-            borderWidth: 0,
-          },
-        ],
-      },
-      options: {
-        responsive: false,
-        maintainAspectRatio: false,
-        cutout: '65%',
-        plugins: {
-          legend: {
-            display: false,
-          },
-          tooltip: {
-            callbacks: {
-              label: (ctx) => `${ctx.label}: ${ctx.parsed}%`,
+    (async () => {
+      const { Chart, DoughnutController, ArcElement, Tooltip, Legend } = await import('chart.js');
+      Chart.register(DoughnutController, ArcElement, Tooltip, Legend);
+      if (cancelled || !canvasRef.current) return;
+
+      chartRef.current?.destroy();
+      chart = new Chart(canvasRef.current, {
+        type: 'doughnut',
+        data: {
+          labels,
+          datasets: [
+            {
+              data,
+              backgroundColor: ['#2D3748', '#D98A6C'],
+              borderWidth: 0,
+            },
+          ],
+        },
+        options: {
+          responsive: false,
+          maintainAspectRatio: false,
+          cutout: '65%',
+          plugins: {
+            legend: {
+              display: false,
+            },
+            tooltip: {
+              callbacks: {
+                label: (ctx) => `${ctx.label}: ${ctx.parsed}%`,
+              },
             },
           },
         },
-      },
-      plugins: [
-        {
-          id: 'centerText',
-          afterDraw(chart) {
-            const { ctx, width, height } = chart;
-            ctx.save();
-            ctx.font = 'bold 11px Montserrat';
-            ctx.fillStyle = '#2D3748';
-            ctx.textAlign = 'center';
-            ctx.textBaseline = 'middle';
-            ctx.fillText(`${data[0]}/${data[1]}`, width / 2, height / 2);
-            ctx.restore();
+        plugins: [
+          {
+            id: 'centerText',
+            afterDraw(c) {
+              const { ctx, width, height } = c;
+              ctx.save();
+              ctx.font = 'bold 11px Montserrat';
+              ctx.fillStyle = '#2D3748';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(`${data[0]}/${data[1]}`, width / 2, height / 2);
+              ctx.restore();
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
+      chartRef.current = chart;
+    })();
 
     return () => {
-      chartRef.current?.destroy();
+      cancelled = true;
+      chart?.destroy();
+      chartRef.current = null;
     };
   }, [visible, labels, data, title]);
 

@@ -46,6 +46,15 @@ export default function Hero({
 
   const [activeIdx, setActiveIdx] = useState(0);
 
+  // First paint emits only the LCP slide (i === 0); the rest mount on the next
+  // frame so they don't compete with the priority image for the initial request
+  // window. The first cross-fade is `interval` ms away, well after this.
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setMounted(true));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
   // Auto-advance carousel
   useEffect(() => {
     if (!hasCarousel) return;
@@ -81,23 +90,27 @@ export default function Hero({
       {/* Background carousel or solid color */}
       {slides.length > 0 ? (
         <>
-          {slides.map((src, i) => (
-            <div
-              key={src}
-              className="absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
-              style={{ opacity: i === activeIdx ? 1 : 0 }}
-              aria-hidden={i !== activeIdx}
-            >
-              <Image
-                src={src}
-                alt=""
-                fill
-                className="object-cover object-center"
-                sizes="100vw"
-                priority={i === 0}
-              />
-            </div>
-          ))}
+          {slides.map((src, i) => {
+            // Defer non-LCP slides until after hydration (see `mounted` above).
+            if (i > 0 && !mounted) return null;
+            return (
+              <div
+                key={src}
+                className="absolute inset-0 transition-opacity duration-[1500ms] ease-in-out"
+                style={{ opacity: i === activeIdx ? 1 : 0 }}
+                aria-hidden={i !== activeIdx}
+              >
+                <Image
+                  src={src}
+                  alt=""
+                  fill
+                  className="object-cover object-center"
+                  sizes="100vw"
+                  priority={i === 0}
+                />
+              </div>
+            );
+          })}
           <div className="absolute inset-0 bg-primary/55" />
         </>
       ) : (

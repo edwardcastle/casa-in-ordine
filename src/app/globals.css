@@ -55,13 +55,15 @@ html {
 /* Hidden state — every element starts invisible */
 .scroll-reveal {
   opacity: 0;
-  will-change: opacity, transform, filter;
 }
 
-/* Revealed state — animation plays once */
+/* Revealed state — animation plays once. `will-change` is scoped to the
+   animating window only; a permanent hint would keep every revealed element on
+   its own GPU layer for the page lifetime (memory/INP cost on low-end mobile). */
 .scroll-reveal.scroll-revealed {
   animation-fill-mode: both;
   animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
+  will-change: opacity, transform, filter;
 }
 
 /* Keyframes */
