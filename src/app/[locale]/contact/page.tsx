@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
 import { getTranslations } from 'next-intl/server';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 import Hero from '@/components/Hero';
 import ContactForm from '@/components/ContactForm';
+import { breadcrumbLd } from '@/lib/breadcrumb';
 
 export async function generateMetadata({
   params,
@@ -37,9 +38,20 @@ export async function generateMetadata({
 
 export default function ContactPage() {
   const t = useTranslations('contact');
+  const tNav = useTranslations('nav');
+  const locale = useLocale();
+
+  const breadcrumbSchema = breadcrumbLd(locale, [
+    { name: tNav('home'), path: '' },
+    { name: tNav('contact'), path: '/contact' },
+  ]);
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/gallery/bathroom-1.jpg" />
 
       <section className="pt-16 md:pt-24">

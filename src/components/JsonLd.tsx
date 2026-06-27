@@ -36,6 +36,16 @@ export default function JsonLd({ locale = 'it' }: JsonLdProps) {
       height: 150,
     },
     sameAs: SAME_AS,
+    // Contact on the brand entity (not LocalBusiness) so en/es — which omit the
+    // Roma-scoped LocalBusiness — still carry a contact signal, without
+    // duplicating a physical-business address across locales.
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'customer service',
+      telephone: '+393445856895',
+      email: 'info@casainordine.com',
+      availableLanguage: ['it', 'en', 'es'],
+    },
   };
 
   const webSite = {
