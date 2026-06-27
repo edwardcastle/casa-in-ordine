@@ -117,12 +117,18 @@
       "title": "Pronti a vivere <br class=\"hidden md:block\" />in una casa <span class=\"text-accent\">in ordine</span>?",
       "description": "Prenota oggi la tua consulenza conoscitiva gratuita di 15 minuti. Iniziamo a progettare il tuo nuovo spazio insieme.",
       "cta": "Prenota Consulenza Gratuita"
+    },
+    "fromBlog": {
+      "title": "Consigli dal blog",
+      "subtitle": "Guide pratiche per orientarti prima di iniziare.",
+      "cta": "Leggi tutti gli articoli"
     }
   },
   "about": {
     "title": "Chi Siamo – Decluttering e Home Organizing",
     "metaDescription": "Dalia e Surinay, fondatrici di Casa in Ordine: decluttering, riorganizzazione e home organizing professionale in Italia, con soluzioni su misura.",
     "heroTitle": "La Nostra Storia",
+    "whoTitle": "Chi Siamo",
     "heroSubtitle": "Due amiche, due percorsi, una sola visione.",
     "intro": "Siamo Dalia e Surinay, due amiche cubane arrivate in Italia con un bagaglio fatto di sogni, esperienze e talenti diversi. Una con l'anima della danza, l'altra con la mente dell'economia: due mondi apparentemente distanti che, incontrandosi, hanno dato vita a Casa in Ordine. Perché crediamo che ogni spazio, proprio come una coreografia o un bilancio ben costruito, abbia bisogno di armonia e strategia per funzionare davvero.",
     "story": {
@@ -178,12 +184,13 @@
           "description": "Ti insegniamo a mantenere l'ordine nel tempo con routine semplici."
         }
       ]
-    }
+    },
+    "exploreGuide": "Approfondisci sul blog:"
   },
   "services": {
     "title": "Servizi di Decluttering e Home Organizing a Roma",
     "metaDescription": "Scopri i servizi di decluttering, home organizing e consulenza professionale offerti da Casa in Ordine a Roma.",
-    "heroTitle": "Servizi Professionali",
+    "heroTitle": "Servizi di Decluttering e Home Organizing",
     "heroSubtitle": "Soluzioni su misura per ogni esigenza",
     "items": [
       {
@@ -232,7 +239,8 @@
       "description": "Contattaci per un preventivo gratuito e personalizzato.",
       "button": "Richiedi un preventivo",
       "serviceButton": "Richiedi preventivo"
-    }
+    },
+    "relatedGuide": "Guida correlata"
   },
   "gallery": {
     "title": "Galleria",
@@ -251,7 +259,8 @@
   },
   "blog": {
     "title": "Blog",
-    "metaDescription": "Consigli, guide e ispirazioni per organizzare la tua casa. Il blog di Casa in Ordine.",
+    "metaTitle": "Consigli di Decluttering e Home Organizing",
+    "metaDescription": "Consigli pratici, guide passo-passo e ispirazioni di decluttering e home organizing per riordinare casa e ritrovare ordine, spazio e serenità.",
     "heroTitle": "Il Nostro Blog",
     "heroSubtitle": "Consigli e ispirazioni per vivere meglio",
     "comingSoon": "Nuovi articoli in arrivo!",

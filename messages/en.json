@@ -117,12 +117,18 @@
       "title": "Ready to live <br class=\"hidden md:block\" />in a home <span class=\"text-accent\">in order</span>?",
       "description": "Book your free 15-minute introductory consultation today. Let's start designing your new space together.",
       "cta": "Book Free Consultation"
+    },
+    "fromBlog": {
+      "title": "From the blog",
+      "subtitle": "Practical guides to orient you before you begin.",
+      "cta": "Read all articles"
     }
   },
   "about": {
     "title": "About Us – Decluttering & Home Organizing",
     "metaDescription": "Meet Dalia and Surinay, founders of Casa in Ordine: professional decluttering, home reorganization and organizing across Italy, with custom solutions.",
     "heroTitle": "Our Story",
+    "whoTitle": "Who We Are",
     "heroSubtitle": "Two friends, two paths, one vision.",
     "intro": "We are Dalia and Surinay, two Cuban friends who arrived in Italy with a suitcase full of dreams, experiences, and different talents. One with the soul of dance, the other with the mind of economics: two seemingly distant worlds that, meeting each other, gave life to Casa in Ordine. Because we believe every space, just like a choreography or a well-built balance sheet, needs harmony and strategy to truly work.",
     "story": {
@@ -178,12 +184,13 @@
           "description": "We teach you to keep things in order with simple routines."
         }
       ]
-    }
+    },
+    "exploreGuide": "Read more on the blog:"
   },
   "services": {
     "title": "Decluttering & Home Organizing Services in Rome",
     "metaDescription": "Discover the professional decluttering, home organizing, and consulting services offered by Casa in Ordine in Rome.",
-    "heroTitle": "Professional Services",
+    "heroTitle": "Decluttering & Home Organizing Services",
     "heroSubtitle": "Tailored solutions for every need",
     "items": [
       {
@@ -232,7 +239,8 @@
       "description": "Contact us for a free, personalized quote.",
       "button": "Request a quote",
       "serviceButton": "Request a quote"
-    }
+    },
+    "relatedGuide": "Related guide"
   },
   "gallery": {
     "title": "Gallery",
@@ -251,7 +259,8 @@
   },
   "blog": {
     "title": "Blog",
-    "metaDescription": "Tips, guides, and inspiration for organizing your home. The Casa in Ordine blog.",
+    "metaTitle": "Decluttering & Home Organizing Tips",
+    "metaDescription": "Practical tips, step-by-step guides and inspiration on decluttering and home organizing to tidy your home and regain order, space and calm.",
     "heroTitle": "Our Blog",
     "heroSubtitle": "Tips and inspiration for better living",
     "comingSoon": "New articles coming soon!",

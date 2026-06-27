@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Hero from '@/components/Hero';
 import ScrollReveal from '@/components/ScrollReveal';
 import OverlayImage from '@/components/OverlayImage';
+import { breadcrumbLd } from '@/lib/breadcrumb';
+import { getPostMeta } from '@/lib/blog';
 
 export async function generateMetadata({
   params,
@@ -42,8 +44,20 @@ export default function AboutPage() {
   const tNav = useTranslations();
   const locale = useLocale();
 
+  const breadcrumbSchema = breadcrumbLd(locale, [
+    { name: tNav('nav.home'), path: '' },
+    { name: tNav('nav.about'), path: '/about' },
+  ]);
+
+  // Link the brand explainer so the About page feeds the content cluster.
+  const guide = getPostMeta('home-organizing-cosa-e-roma', locale);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/gallery/office-1.jpg" />
 
       {/* ── Chi Siamo + Intro — text left, image right ── */}
@@ -52,7 +66,7 @@ export default function AboutPage() {
           <div className="grid md:grid-cols-2 gap-10 md:gap-16 items-center">
             <ScrollReveal animation="fadeInLeft">
               <div>
-                <h2 className="text-clamp-section font-normal text-foreground mb-2">{t('heroTitle')}</h2>
+                <h2 className="text-clamp-section font-normal text-foreground mb-2">{t('whoTitle')}</h2>
                 <p className="text-accent font-medium mb-6">{t('heroSubtitle')}</p>
                 <p className="text-lg text-gray-600 leading-relaxed">
                   {t('intro')}
@@ -113,6 +127,17 @@ export default function AboutPage() {
                     &ldquo;{t('offer.highlight')}&rdquo;
                   </p>
                 </div>
+                {guide && (
+                  <p className="mt-6 text-sm text-gray-600">
+                    <span className="font-semibold text-foreground">{t('exploreGuide')}</span>{' '}
+                    <Link
+                      href={`/${locale}/blog/${guide.slug}`}
+                      className="text-primary underline underline-offset-2 hover:text-accent"
+                    >
+                      {guide.title}
+                    </Link>
+                  </p>
+                )}
               </div>
             </ScrollReveal>
             <ScrollReveal animation="fadeInRight" delay={150}>

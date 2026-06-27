@@ -17,7 +17,9 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: 'blog' });
 
   return {
-    title: t('title'),
+    // `metaTitle` is keyword-bearing for the SERP; `title` stays "Blog" because
+    // it's reused as the post-page back-link label.
+    title: t('metaTitle'),
     description: t('metaDescription'),
     alternates: {
       canonical: `${baseUrl}/${locale}/blog`,
@@ -27,7 +29,7 @@ export async function generateMetadata({
       },
     },
     openGraph: {
-      title: t('title'),
+      title: t('metaTitle'),
       description: t('metaDescription'),
       url: `${baseUrl}/${locale}/blog`,
       siteName: 'Casa in Ordine',

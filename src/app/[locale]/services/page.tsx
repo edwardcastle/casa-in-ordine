@@ -4,6 +4,8 @@ import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import Hero from '@/components/Hero';
+import { breadcrumbLd } from '@/lib/breadcrumb';
+import { getPostMeta } from '@/lib/blog';
 
 export async function generateMetadata({
   params,
@@ -57,7 +59,22 @@ const serviceIcons = [
 
 export default function ServicesPage() {
   const t = useTranslations('services');
+  const tNav = useTranslations('nav');
   const locale = useLocale();
+
+  const breadcrumbSchema = breadcrumbLd(locale, [
+    { name: tNav('home'), path: '' },
+    { name: tNav('services'), path: '/services' },
+  ]);
+
+  // One topically-matched guide per service (index-aligned with items 0-3), so
+  // the commercial page links down into the supporting content cluster.
+  const guides = [
+    'come-iniziare-il-decluttering',
+    'guida-completa-decluttering-e-home-organizing',
+    'home-organizing-cosa-e-roma',
+    'cambio-di-stagione-armadio',
+  ].map((slug) => getPostMeta(slug, locale));
 
   // OfferCatalog of the four services, built from the same translations the page
   // renders, so the structured data mirrors the visible content.
@@ -85,6 +102,10 @@ export default function ServicesPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(servicesSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
       <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/backgrounds/kitchen-bg.jpg" />
 
@@ -115,6 +136,17 @@ export default function ServicesPage() {
                       </li>
                     ))}
                   </ul>
+                  {guides[i] && (
+                    <p className="mb-6 text-sm text-gray-600">
+                      <span className="font-semibold text-foreground">{t('relatedGuide')}:</span>{' '}
+                      <Link
+                        href={`/${locale}/blog/${guides[i]!.slug}`}
+                        className="text-primary underline underline-offset-2 hover:text-accent"
+                      >
+                        {guides[i]!.title}
+                      </Link>
+                    </p>
+                  )}
                   <Link
                     href={`/${locale}/preventivo`}
                     className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-white font-semibold rounded-full hover:bg-primary/90 transition-colors duration-200 shadow-md shadow-primary/20"

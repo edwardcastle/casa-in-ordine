@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import { useTranslations, useLocale } from 'next-intl';
 import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
+import Image from 'next/image';
+import { getPostMeta } from '@/lib/blog';
+import type { PostMeta } from '@/lib/blog';
 import Hero from '@/components/Hero';
 import BeforeAfter from '@/components/BeforeAfter';
 import ImpactChart from '@/components/ImpactChart';
@@ -62,6 +65,16 @@ export default function HomePage() {
   const locale = useLocale();
 
   const serviceCategories: Category[] = ['armadio', 'cucina', 'ufficio', 'bagno', 'garage', 'trasloco'];
+
+  // Hand-picked guides surfaced from the homepage body so equity flows from the
+  // top-authority page into the content cluster (the pillar + two entry-points).
+  const featuredPosts = [
+    'guida-completa-decluttering-e-home-organizing',
+    'come-iniziare-il-decluttering',
+    'come-risparmiare-spazio-in-casa',
+  ]
+    .map((slug) => getPostMeta(slug, locale))
+    .filter((p): p is PostMeta => p !== null);
 
   return (
     <>
@@ -251,6 +264,62 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* From the blog — seeds the content cluster from the homepage body */}
+      {featuredPosts.length > 0 && (
+        <section className="py-16 md:py-24 bg-secondary-light">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <ScrollReveal animation="fadeInUpShorter">
+              <h2 className="text-clamp-section font-normal text-foreground text-center mb-3">
+                {t('home.fromBlog.title')}
+              </h2>
+              <p className="text-base md:text-lg text-foreground/70 text-center mb-12 max-w-3xl mx-auto">
+                {t('home.fromBlog.subtitle')}
+              </p>
+            </ScrollReveal>
+            <div className="grid gap-8 md:grid-cols-3">
+              {featuredPosts.map((post, i) => (
+                <ScrollReveal key={post.slug} animation="fadeInUpShorter" delay={i * 100}>
+                  <Link
+                    href={`/${locale}/blog/${post.slug}`}
+                    className="group block h-full overflow-hidden rounded-xl border border-secondary/30 bg-white shadow-md transition-shadow hover:shadow-lg"
+                  >
+                    <div className="relative h-44">
+                      <Image
+                        src={post.coverImage}
+                        alt={post.title}
+                        fill
+                        sizes="(max-width: 768px) 100vw, 33vw"
+                        className="object-cover"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <span className="rounded bg-primary/10 px-2 py-1 text-xs font-medium text-primary">
+                        {post.category}
+                      </span>
+                      <h3 className="mt-3 mb-2 text-lg font-semibold text-foreground group-hover:text-primary">
+                        {post.title}
+                      </h3>
+                      <p className="text-sm text-foreground/70">{post.excerpt}</p>
+                      <span className="mt-4 inline-block text-sm font-medium text-accent">
+                        {t('blog.readMore')} →
+                      </span>
+                    </div>
+                  </Link>
+                </ScrollReveal>
+              ))}
+            </div>
+            <div className="mt-10 text-center">
+              <Link
+                href={`/${locale}/blog`}
+                className="inline-flex items-center gap-2 font-semibold text-primary hover:text-primary-dark transition-colors"
+              >
+                {t('home.fromBlog.cta')} →
+              </Link>
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* Final CTA */}
       <section className="py-16 md:py-24 bg-foreground">

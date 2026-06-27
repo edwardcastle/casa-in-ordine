@@ -117,12 +117,18 @@
       "title": "¿Listos para vivir <br class=\"hidden md:block\" />en un hogar <span class=\"text-accent\">en orden</span>?",
       "description": "Reserva hoy tu consulta introductoria gratuita de 15 minutos. Empecemos a diseñar tu nuevo espacio juntos.",
       "cta": "Reserva Consulta Gratuita"
+    },
+    "fromBlog": {
+      "title": "Consejos del blog",
+      "subtitle": "Guías prácticas para orientarte antes de empezar.",
+      "cta": "Leer todos los artículos"
     }
   },
   "about": {
     "title": "Quiénes Somos – Decluttering y Home Organizing",
     "metaDescription": "Conoce a Dalia y Surinay, fundadoras de Casa in Ordine: decluttering, reorganización y home organizing profesional en Italia, con soluciones a medida.",
     "heroTitle": "Nuestra Historia",
+    "whoTitle": "Quiénes Somos",
     "heroSubtitle": "Dos amigas, dos caminos, una sola visión.",
     "intro": "Somos Dalia y Surinay, dos amigas cubanas que llegamos a Italia con una maleta llena de sueños, experiencias y talentos diferentes. Una con el alma de la danza, la otra con la mente de la economía: dos mundos aparentemente distantes que, al encontrarse, dieron vida a Casa in Ordine. Porque creemos que cada espacio, igual que una coreografía o un balance bien construido, necesita armonía y estrategia para funcionar de verdad.",
     "story": {
@@ -178,12 +184,13 @@
           "description": "Te enseñamos a mantener el orden con rutinas sencillas."
         }
       ]
-    }
+    },
+    "exploreGuide": "Más en el blog:"
   },
   "services": {
     "title": "Servicios de Decluttering y Home Organizing en Roma",
     "metaDescription": "Descubre los servicios profesionales de decluttering, home organizing y consultoría ofrecidos por Casa in Ordine en Roma.",
-    "heroTitle": "Servicios Profesionales",
+    "heroTitle": "Servicios de Decluttering y Home Organizing",
     "heroSubtitle": "Soluciones a medida para cada necesidad",
     "items": [
       {
@@ -232,7 +239,8 @@
       "description": "Contáctanos para un presupuesto gratuito y personalizado.",
       "button": "Solicita un presupuesto",
       "serviceButton": "Solicita un presupuesto"
-    }
+    },
+    "relatedGuide": "Guía relacionada"
   },
   "gallery": {
     "title": "Galería",
@@ -251,7 +259,8 @@
   },
   "blog": {
     "title": "Blog",
-    "metaDescription": "Consejos, guías e inspiración para organizar tu hogar. El blog de Casa in Ordine.",
+    "metaTitle": "Consejos de Decluttering y Home Organizing",
+    "metaDescription": "Consejos prácticos, guías paso a paso e inspiración de decluttering y home organizing para ordenar tu casa y recuperar orden, espacio y calma.",
     "heroTitle": "Nuestro Blog",
     "heroSubtitle": "Consejos e inspiración para vivir mejor",
     "comingSoon": "¡Nuevos artículos próximamente!",
