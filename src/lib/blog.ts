@@ -66,12 +66,46 @@ export function getPostMeta(slug: string, locale: string): PostMeta | null {
   return meta;
 }
 
-/** All posts for a locale, newest first. */
+/** All posts for a locale, newest first (slug as a stable tiebreak). */
 export function getAllPosts(locale: string): PostMeta[] {
   return getPostSlugs()
     .map((slug) => getPostMeta(slug, locale))
     .filter((p): p is PostMeta => p !== null)
-    .sort((a, b) => (a.date < b.date ? 1 : -1));
+    // Total-order comparator: equal dates fall back to slug so the listing
+    // order is deterministic across builds/filesystems (10+ posts share a date).
+    .sort((a, b) =>
+      a.date < b.date ? 1 : a.date > b.date ? -1 : a.slug.localeCompare(b.slug),
+    );
+}
+
+/**
+ * Posts most related to `slug`: same category (weighted) + shared keywords,
+ * newest as the final tiebreak. Replaces "newest 3" so each post links to its
+ * topical neighbours, spreading internal links across the whole corpus instead
+ * of always pointing at the 3 most recent posts.
+ */
+export function getRelatedPosts(
+  slug: string,
+  locale: string,
+  limit = 3,
+): PostMeta[] {
+  const all = getAllPosts(locale);
+  const current = all.find((p) => p.slug === slug);
+  const others = all.filter((p) => p.slug !== slug);
+  if (!current) return others.slice(0, limit);
+
+  const currentKeywords = new Set(current.keywords ?? []);
+  return others
+    .map((p) => {
+      let score = p.category === current.category ? 3 : 0;
+      score += (p.keywords ?? []).filter((k) => currentKeywords.has(k)).length;
+      return { post: p, score };
+    })
+    .sort((a, b) =>
+      b.score - a.score || (a.post.date < b.post.date ? 1 : -1),
+    )
+    .slice(0, limit)
+    .map((x) => x.post);
 }
 
 /** Locales for which a given post exists (drives hreflang alternates). */

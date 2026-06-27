@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { routing } from '@/i18n/routing';
-import { getAllPosts, getPost, getPostLocales, getPostSlugs } from '@/lib/blog';
+import { getPost, getPostLocales, getPostSlugs, getRelatedPosts } from '@/lib/blog';
 import { mdxComponents } from '@/components/MdxContent';
 
 const baseUrl = 'https://casainordine.com';
@@ -196,10 +196,8 @@ export default async function BlogPostPage({
         }
       : null;
 
-  // Up to three related posts (same locale, excluding current).
-  const related = getAllPosts(locale)
-    .filter((p) => p.slug !== slug)
-    .slice(0, 3);
+  // Up to three topically-related posts (same category + shared keywords).
+  const related = getRelatedPosts(slug, locale, 3);
 
   return (
     <article className="pb-16 md:pb-24">
