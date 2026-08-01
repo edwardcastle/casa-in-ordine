@@ -1,5 +1,14 @@
 'use server';
 
+/** Escape values that end up inside the HTML email body. */
+function esc(value: string): string {
+  return value
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
 interface QuoteRequestData {
   name: string;
   email: string;
@@ -29,7 +38,7 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
 
   const detailsRows = Object.entries(details)
     .filter(([, v]) => v > 0)
-    .map(([k, v]) => `<tr><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${k}</td><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${v}</td></tr>`)
+    .map(([k, v]) => `<tr><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${esc(k)}</td><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${v}</td></tr>`)
     .join('');
 
   const extrasList: string[] = [];
@@ -53,15 +62,15 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
           <h2>Nuovo preventivo dal sopralluogo digitale</h2>
           <h3 style="color: #7B8F7A;">Contatto</h3>
           <table style="border-collapse: collapse; width: 100%; margin-bottom: 24px;">
-            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Nome:</td><td style="padding: 8px;">${name}</td></tr>
-            <tr><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${email}</td></tr>
-            ${phone ? `<tr><td style="padding: 8px; font-weight: bold;">Telefono:</td><td style="padding: 8px;">${phone}</td></tr>` : ''}
+            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Nome:</td><td style="padding: 8px;">${esc(name)}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${esc(email)}</td></tr>
+            ${phone ? `<tr><td style="padding: 8px; font-weight: bold;">Telefono:</td><td style="padding: 8px;">${esc(phone)}</td></tr>` : ''}
           </table>
 
           <h3 style="color: #7B8F7A;">Progetto</h3>
           <table style="border-collapse: collapse; width: 100%; margin-bottom: 24px;">
-            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Area:</td><td style="padding: 8px;">${category}</td></tr>
-            <tr><td style="padding: 8px; font-weight: bold;">Complessità:</td><td style="padding: 8px;">${complexity}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Area:</td><td style="padding: 8px;">${esc(category)}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Complessità:</td><td style="padding: 8px;">${esc(complexity)}</td></tr>
             ${extrasList.length ? `<tr><td style="padding: 8px; font-weight: bold;">Extra:</td><td style="padding: 8px;">${extrasList.join(', ')}</td></tr>` : ''}
           </table>
 
@@ -82,7 +91,7 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
           ${quizAnswers.filter(Boolean).length ? `
           <h3 style="color: #7B8F7A;">Test del disordine</h3>
           <ol style="padding-left: 20px;">
-            ${quizAnswers.map((a) => a ? `<li style="margin-bottom: 4px;">${a}</li>` : '').join('')}
+            ${quizAnswers.map((a) => a ? `<li style="margin-bottom: 4px;">${esc(a)}</li>` : '').join('')}
           </ol>` : ''}
 
           ${availability && (availability.slot1 || availability.slot2 || availability.slot3) ? `
@@ -95,7 +104,7 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
 
           ${notes ? `
           <h3 style="color: #7B8F7A;">Note aggiuntive</h3>
-          <p style="padding: 12px; background: #f9f9f9; border-left: 3px solid #D98A6C; border-radius: 4px;">${notes.replace(/\n/g, '<br>')}</p>` : ''}
+          <p style="padding: 12px; background: #f9f9f9; border-left: 3px solid #D98A6C; border-radius: 4px;">${esc(notes).replace(/\n/g, '<br>')}</p>` : ''}
 
           <p style="color: #666; font-size: 12px; margin-top: 32px;">Inviato dal sopralluogo digitale di casainordine.com</p>
         `,
@@ -146,10 +155,10 @@ export async function submitContactForm(formData: FormData) {
         htmlContent: `
           <h2>Richiesta informazioni dal sito web</h2>
           <table style="border-collapse: collapse; width: 100%;">
-            <tr><td style="padding: 8px; font-weight: bold;">Nome:</td><td style="padding: 8px;">${name}</td></tr>
-            <tr><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${email}</td></tr>
-            ${phone ? `<tr><td style="padding: 8px; font-weight: bold;">Telefono:</td><td style="padding: 8px;">${phone}</td></tr>` : ''}
-            <tr><td style="padding: 8px; font-weight: bold;">Messaggio:</td><td style="padding: 8px;">${message.replace(/\n/g, '<br>')}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Nome:</td><td style="padding: 8px;">${esc(name)}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Email:</td><td style="padding: 8px;">${esc(email)}</td></tr>
+            ${phone ? `<tr><td style="padding: 8px; font-weight: bold;">Telefono:</td><td style="padding: 8px;">${esc(phone)}</td></tr>` : ''}
+            <tr><td style="padding: 8px; font-weight: bold;">Messaggio:</td><td style="padding: 8px;">${esc(message).replace(/\n/g, '<br>')}</td></tr>
           </table>
         `,
       }),
