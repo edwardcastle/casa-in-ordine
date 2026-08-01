@@ -17,15 +17,18 @@ interface QuoteRequestData {
   complexity: string;
   total: number;
   breakdown: { project: number; extras: number; urgency: number };
-  details: Record<string, number>;
-  extras: { materials: boolean; dump: boolean };
-  quizAnswers: string[];
+  /** Already-translated field labels — the raw ids mean nothing in an inbox. */
+  details: { label: string; value: number }[];
+  /** Translated labels of the selected add-ons, universal and area-specific. */
+  extras: string[];
+  /** Question text is included because it differs per area. */
+  quiz: { question: string; answer: string }[];
   availability?: { slot1: string; slot2: string; slot3: string };
   notes?: string;
 }
 
 export async function submitQuoteRequest(data: QuoteRequestData) {
-  const { name, email, phone, category, complexity, total, breakdown, details, extras, quizAnswers, availability, notes } = data;
+  const { name, email, phone, category, complexity, total, breakdown, details, extras, quiz, availability, notes } = data;
 
   if (!name || !email || !category) {
     return { success: false, error: 'Missing required fields' };
@@ -36,14 +39,16 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
     return { success: false, error: 'Invalid email address' };
   }
 
-  const detailsRows = Object.entries(details)
-    .filter(([, v]) => v > 0)
-    .map(([k, v]) => `<tr><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${esc(k)}</td><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${v}</td></tr>`)
+  const detailsRows = details
+    .filter(({ value }) => value > 0)
+    .map(({ label, value }) => `<tr><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${esc(label)}</td><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${value}</td></tr>`)
     .join('');
 
-  const extrasList: string[] = [];
-  if (extras.materials) extrasList.push('Fornitura Kit / Organizer Kit');
-  if (extras.dump) extrasList.push('Smaltimento / Disposal');
+  const extrasList = extras.map(esc);
+
+  const quizRows = quiz
+    .map(({ question, answer }) => `<li style="margin-bottom: 8px;"><span style="color: #666;">${esc(question)}</span><br><strong>${esc(answer)}</strong></li>`)
+    .join('');
 
   try {
     const response = await fetch('https://api.brevo.com/v3/smtp/email', {
@@ -88,10 +93,10 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
             <tr style="border-top: 2px solid #2D3748;"><td style="padding: 8px; font-weight: bold; font-size: 18px;">Totale stimato</td><td style="padding: 8px; text-align: right; font-weight: bold; font-size: 18px; color: #D98A6C;">€${total}</td></tr>
           </table>
 
-          ${quizAnswers.filter(Boolean).length ? `
+          ${quizRows ? `
           <h3 style="color: #7B8F7A;">Test del disordine</h3>
           <ol style="padding-left: 20px;">
-            ${quizAnswers.map((a) => a ? `<li style="margin-bottom: 4px;">${esc(a)}</li>` : '').join('')}
+            ${quizRows}
           </ol>` : ''}
 
           ${availability && (availability.slot1 || availability.slot2 || availability.slot3) ? `

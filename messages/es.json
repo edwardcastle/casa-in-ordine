@@ -336,34 +336,8 @@
     "title": "Inspección Digital",
     "subtitle": "Tres preguntas para conocernos, luego definimos tu espacio perfecto.",
     "quizBadge": "TEST DEL DESORDEN",
-    "quiz": {
-      "q1": {
-        "question": "1. ¿Cuánto tiempo pasas buscando objetos perdidos cada día?",
-        "options": [
-          "Menos de 5 minutos",
-          "De 10 a 20 minutos",
-          "¡Demasiado! Nunca encuentro nada"
-        ]
-      },
-      "q2": {
-        "question": "2. ¿Cuál es tu sensación predominante al ver el desorden?",
-        "options": [
-          "Indiferencia",
-          "Ligera frustración",
-          "Ansiedad y agobio"
-        ]
-      },
-      "q3": {
-        "question": "3. ¿Evitarías invitar a alguien a casa por culpa del caos?",
-        "options": [
-          "Nunca",
-          "A veces",
-          "A menudo, me da vergüenza"
-        ]
-      }
-    },
     "categoryTitle": "¿Qué zona quieres transformar?",
-    "categorySubtitle": "Ahora que entendemos la necesidad, definamos el área de intervención",
+    "categorySubtitle": "Elige por dónde empezar: las siguientes preguntas serán a medida",
     "categories": {
       "armadio": "Armario",
       "cucina": "Cocina",
@@ -372,8 +346,6 @@
       "garage": "Garaje",
       "trasloco": "Mudanza"
     },
-    "detailsTitle": "Análisis de espacios",
-    "detailsSubtitle": "Definamos el tamaño del proyecto",
     "fields": {
       "armadio": {
         "doors": "Número de puertas",
@@ -403,27 +375,16 @@
       }
     },
     "complexityTitle": "Nivel de desafío",
-    "complexitySubtitle": "¿Qué tan profundo es el desorden en esta área?",
-    "complexity": {
-      "light": {
-        "title": "Leve",
-        "description": "Solo necesita un nuevo método"
-      },
-      "moderate": {
-        "title": "Moderado",
-        "description": "Acumulación evidente de objetos"
-      },
-      "critical": {
-        "title": "Crítico",
-        "description": "Dificultad de acceso o uso"
-      }
-    },
     "extrasTitle": "Servicios Adicionales",
     "extras": {
-      "materials": "Kit de Organización",
-      "materialsDesc": "Traemos organizadores y divisores",
-      "dump": "Eliminación",
-      "dumpDesc": "Gestionamos la eliminación de residuos y donaciones"
+      "materials": {
+        "desc": "Traemos organizadores y separadores",
+        "label": "Suministro de kit"
+      },
+      "dump": {
+        "desc": "Gestionamos residuos y donaciones",
+        "label": "Retirada"
+      }
     },
     "estimateLabel": "Tu inversión estimada",
     "breakdownProject": "Servicio",
@@ -461,10 +422,333 @@
     "summaryTitle": "Resumen de la Inspección:",
     "datesTitle": "Fechas Solicitadas:",
     "dateNotSpecified": "No especificada",
-    "sensitizationMain": "Declaras que pasas {q1} buscando objetos y que te sientes {q2}.",
-    "sensitizationEmbarassed": "Es hora de recuperar tu espacio y volver a compartir tu casa con alegría.",
-    "sensitizationGeneral": "Nuestra intervención transformará este estrés en pura armonía cotidiana.",
-    "printTitle": "Imprimir / Guardar PDF"
+    "printTitle": "Imprimir / Guardar PDF",
+    "areas": {
+      "armadio": {
+        "detailsTitle": "Tu armario en detalle",
+        "detailsSubtitle": "Puertas, cajones y altillo: así calculamos los tiempos.",
+        "complexitySubtitle": "¿Qué tan profundo es el desorden en tu armario?",
+        "complexity": {
+          "light": {
+            "title": "Leve",
+            "description": "Todo cabe, solo falta un método"
+          },
+          "moderate": {
+            "title": "Moderado",
+            "description": "Pilas inestables y ropa sin estrenar"
+          },
+          "critical": {
+            "title": "Crítico",
+            "description": "Puertas que no cierran, ropa que no aparece"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "¿Cuánto tardas en encontrar la prenda que buscas?",
+            "options": [
+              "La encuentro enseguida",
+              "Tengo que mover algunas pilas",
+              "Vacío medio armario para encontrarla"
+            ]
+          },
+          "q2": {
+            "question": "¿Cómo llevas el cambio de temporada en el armario?",
+            "options": [
+              "Lo hago en una tarde",
+              "Lo aplazo unas semanas",
+              "Verano e invierno conviven todo el año"
+            ]
+          },
+          "q3": {
+            "question": "¿Cuánto espacio libre queda en la barra del armario?",
+            "options": [
+              "Las perchas se deslizan solas",
+              "Tengo que apartar perchas a mano",
+              "Cada prenda entra a presión"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Cambio de Temporada",
+          "desc": "Rotamos el armario y guardamos en fundas la ropa fuera de temporada"
+        },
+        "sensitization": {
+          "low": "Tu armario ya funciona: con un método pensado para sus puertas y cajones ganas minutos valiosos cada mañana.",
+          "mid": "Las pilas crecen y el cambio de temporada se aplaza: ordenar el armario ahora es más fácil que esperar a primavera.",
+          "high": "Si abrir las puertas te pesa, no pasa nada: en un día te devolvemos un armario donde encuentras cada prenda a la primera."
+        }
+      },
+      "cucina": {
+        "detailsTitle": "Tu cocina en detalle",
+        "detailsSubtitle": "Armarios, despensa y encimeras nos dicen cuánto espacio hay",
+        "complexitySubtitle": "¿Qué tan profundo es el desorden entre armarios y despensa?",
+        "complexity": {
+          "light": {
+            "title": "Leve",
+            "description": "Está todo, pero sin una lógica"
+          },
+          "moderate": {
+            "title": "Moderado",
+            "description": "Armarios llenos y duplicados por todas partes"
+          },
+          "critical": {
+            "title": "Crítico",
+            "description": "Encimeras invadidas y puertas que no cierran"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "¿Cuánto tardas en encontrar ollas y tapas?",
+            "options": [
+              "Las cojo enseguida, están a mano",
+              "Busco un poco, pero las encuentro",
+              "Tengo que vaciar medio armario"
+            ]
+          },
+          "q2": {
+            "question": "¿Cuánta encimera te queda libre para cocinar?",
+            "options": [
+              "Casi toda, cocino a gusto",
+              "Un rincón, me las apaño",
+              "Casi nada, muevo todo cada vez"
+            ]
+          },
+          "q3": {
+            "question": "¿Vuelves a comprar cosas que ya tienes en la despensa?",
+            "options": [
+              "Casi nunca, sé lo que tengo",
+              "De vez en cuando aparece un duplicado",
+              "A menudo, y encuentro paquetes caducados"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Control de Caducidad",
+          "desc": "Revisamos la despensa y retiramos los productos caducados"
+        },
+        "sensitization": {
+          "low": "Tu cocina ya funciona bien: con algunos ajustes ganas encimeras libres y minutos valiosos cada vez que cocinas.",
+          "mid": "Los duplicados en los armarios se multiplican rápido: ordenarlos ahora es poco trabajo y cocinar vuelve a ser ligero.",
+          "high": "No hay nada de qué avergonzarse: devolvemos el orden a la despensa y a las encimeras, y tu cocina vuelve a ser un sitio donde estar a gusto."
+        }
+      },
+      "ufficio": {
+        "detailsTitle": "Tu oficina en detalle",
+        "detailsSubtitle": "Escritorios y metros de documentos nos dicen cuánto tiempo hace falta.",
+        "complexitySubtitle": "¿Qué tan profundo es el desorden entre papeles y escritorios?",
+        "complexity": {
+          "light": {
+            "title": "Leve",
+            "description": "Escritorio libre, archivo por afinar"
+          },
+          "moderate": {
+            "title": "Moderado",
+            "description": "Pilas de papeles en escritorio y sillas"
+          },
+          "critical": {
+            "title": "Crítico",
+            "description": "Papeles por todas partes, difícil trabajar"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "¿Cuánto tardas en encontrar una factura de hace dos años?",
+            "options": [
+              "Un minuto, sé dónde está",
+              "Un cuarto de hora buscando",
+              "Mejor pedir una copia nueva"
+            ]
+          },
+          "q2": {
+            "question": "¿Cuánto papel tienes esperando a archivar?",
+            "options": [
+              "Una bandeja sobre el escritorio",
+              "Dos pilas y un cajón lleno",
+              "Cajas cerradas desde hace meses"
+            ]
+          },
+          "q3": {
+            "question": "¿Cómo empiezas el día en tu escritorio?",
+            "options": [
+              "Me siento y arranco enseguida",
+              "Antes muevo alguna pila",
+              "Trabajo en otro sitio, está lleno"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Archivo Digital",
+          "desc": "Escaneamos y ordenamos los documentos que quieres conservar"
+        },
+        "sensitization": {
+          "low": "Tu oficina ya está bajo control: con nosotros ganas un archivo impecable y algunas horas libres cada semana.",
+          "mid": "Las pilas de papel sobre el escritorio crecen rápido: ordenarlas ahora es fácil y evita que pierdas documentos importantes.",
+          "high": "Incluso la oficina más saturada vuelve a ser habitable: nos ocupamos de los papeles y el escritorio, sin juzgar, para que vuelvas a trabajar tranquilo."
+        }
+      },
+      "bagno": {
+        "detailsTitle": "Tu baño en detalle",
+        "detailsSubtitle": "Muebles y estantes nos dicen cuánto espacio ordenar",
+        "complexitySubtitle": "¿Qué tan profundo es el desorden en tu baño?",
+        "complexity": {
+          "light": {
+            "title": "Leve",
+            "description": "Solo necesita un método para los productos"
+          },
+          "moderate": {
+            "title": "Moderado",
+            "description": "Frascos duplicados y estantes abarrotados"
+          },
+          "critical": {
+            "title": "Crítico",
+            "description": "Bajo el lavabo lleno, no ves nada dentro"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "Por la mañana, ¿encuentras enseguida cepillo y crema?",
+            "options": [
+              "Sí, todo a mano",
+              "Algún cajón que revolver",
+              "Muevo todo para encontrar una cosa"
+            ]
+          },
+          "q2": {
+            "question": "¿Cuántos frascos abiertos o caducados tienes en el baño?",
+            "options": [
+              "Casi ninguno",
+              "Algún producto olvidado",
+              "Prefiero no mirar las caducidades"
+            ]
+          },
+          "q3": {
+            "question": "Si llega una visita, ¿ordenas el baño a toda prisa?",
+            "options": [
+              "No, ya está presentable",
+              "Un repaso rápido",
+              "Escondo todo bajo el lavabo"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Orden Bajo el Lavabo",
+          "desc": "Traemos contenedores a medida para el espacio bajo el lavabo"
+        },
+        "sensitization": {
+          "low": "Tu baño ya está en equilibrio: bastan unos pequeños ajustes para ganar minutos valiosos cada mañana y mantenerlo así.",
+          "mid": "Cada frasco de más hace el baño más pesado: actuar ahora es sencillo y evita tener que empezar de cero en seis meses.",
+          "high": "No hay nada de qué avergonzarse: el baño se llena sin pedir permiso. En pocas horas vuelve a ser respirable y tuyo."
+        }
+      },
+      "garage": {
+        "detailsTitle": "Tu garaje en detalle",
+        "detailsSubtitle": "Tramos de estantería y zona de herramientas nos dicen cuánto espacio recuperar",
+        "complexitySubtitle": "¿Qué tan profundo es el desorden entre estanterías y herramientas?",
+        "complexity": {
+          "light": {
+            "title": "Leve",
+            "description": "Solo falta un sitio para cada herramienta"
+          },
+          "moderate": {
+            "title": "Moderado",
+            "description": "Cajas y herramientas acumuladas durante años"
+          },
+          "critical": {
+            "title": "Crítico",
+            "description": "El coche no entra y pasas a duras penas"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "¿Cuánto tardas en encontrar una herramienta en el garaje?",
+            "options": [
+              "La cojo del estante al momento",
+              "Tengo que abrir un par de cajas",
+              "Acabo comprándola otra vez"
+            ]
+          },
+          "q2": {
+            "question": "¿Todavía puedes aparcar el coche en el garaje?",
+            "options": [
+              "Sí, entra y sale sin problema",
+              "Solo con alguna maniobra extra",
+              "El coche ya se queda fuera"
+            ]
+          },
+          "q3": {
+            "question": "¿Cómo te sientes cuando abres el garaje?",
+            "options": [
+              "Bien, cada cosa en su sitio",
+              "Un poco de fastidio por las cajas",
+              "Cierro y lo dejo para otro día"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Inventario de Herramientas",
+          "desc": "Catalogamos y etiquetamos tus herramientas y materiales"
+        },
+        "sensitization": {
+          "low": "Tu garaje ya está bajo control: con unos pequeños ajustes encuentras cualquier herramienta al instante y ganas tiempo cada semana.",
+          "mid": "Unos meses más y las cajas ocuparán el sitio del coche: actuar ahora es sencillo, rápido y te evita un trabajo mucho mayor.",
+          "high": "El garaje no se llenó en un día y tú no eres el problema: vamos nosotros, estante a estante, y te devolvemos el espacio."
+        }
+      },
+      "trasloco": {
+        "detailsTitle": "Tu mudanza en detalle",
+        "detailsSubtitle": "Cajas y habitaciones por montar: así calculamos los tiempos.",
+        "complexitySubtitle": "¿Qué tan caótica es tu mudanza ahora mismo?",
+        "complexity": {
+          "light": {
+            "title": "Leve",
+            "description": "Pocas cajas y ya etiquetadas"
+          },
+          "moderate": {
+            "title": "Moderado",
+            "description": "Cajas mezcladas, por reabrir y ordenar"
+          },
+          "critical": {
+            "title": "Crítico",
+            "description": "Casa llena de cajas, nada en su sitio"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "¿Por dónde vas con las cajas?",
+            "options": [
+              "Casi todas cerradas y etiquetadas",
+              "Empecé, pero sin un orden claro",
+              "Todavía no he empezado"
+            ]
+          },
+          "q2": {
+            "question": "¿Cuánto te queda por seleccionar antes de la mudanza?",
+            "options": [
+              "Poco, ya elegí qué llevarme",
+              "Un par de habitaciones por revisar",
+              "Prácticamente toda la casa"
+            ]
+          },
+          "q3": {
+            "question": "¿Qué suele pasar los días después de la mudanza?",
+            "options": [
+              "Lo desembalo todo en pocos días",
+              "Quedan cajas abiertas durante semanas",
+              "Alguna caja no la abro nunca"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Etiquetado de Cajas",
+          "desc": "Etiquetamos nosotros cada caja, habitación por habitación"
+        },
+        "sensitization": {
+          "low": "Tu mudanza va bien encaminada: nos ocupamos de las últimas cajas y te hacemos ganar días enteros en la casa nueva.",
+          "mid": "Las cajas se multiplican: darte un método ahora evita que la casa nueva se llene de cajas abiertas.",
+          "high": "Una mudanza así pesa a cualquiera: la afrontamos nosotros caja tras caja y tu casa nueva será habitable ya desde la primera noche."
+        }
+      }
+    }
   },
   "preventivo": {
     "title": "Presupuesto Gratis – Decluttering y Home Organizing",
@@ -472,7 +756,7 @@
     "heroTitle": "Presupuesto Gratis",
     "heroSubtitle": "Descubre cuánto cuesta reorganizar tus espacios",
     "wizardTitle": "Inspección Digital",
-    "wizardSubtitle": "Tres preguntas para conocernos, luego definimos tu espacio perfecto.",
+    "wizardSubtitle": "Elige tu zona, responde tres preguntas a medida y recibe tu estimación al instante.",
     "seo": {
       "title": "Cómo funciona el presupuesto gratuito",
       "paragraphs": [

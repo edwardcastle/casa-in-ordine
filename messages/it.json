@@ -336,34 +336,8 @@
     "title": "Sopralluogo Digitale",
     "subtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto.",
     "quizBadge": "TEST DEL DISORDINE",
-    "quiz": {
-      "q1": {
-        "question": "1. Quanto tempo passi a cercare oggetti smarriti ogni giorno?",
-        "options": [
-          "Meno di 5 minuti",
-          "Dai 10 ai 20 minuti",
-          "Troppo! Non trovo mai nulla"
-        ]
-      },
-      "q2": {
-        "question": "2. Qual è la tua sensazione predominante nel vedere il disordine?",
-        "options": [
-          "Indifferenza",
-          "Leggera frustrazione",
-          "Ansia e sopraffazione"
-        ]
-      },
-      "q3": {
-        "question": "3. Rinunceresti a invitare qualcuno a casa per colpa del caos?",
-        "options": [
-          "Mai",
-          "Qualche volta",
-          "Spesso, mi vergogno"
-        ]
-      }
-    },
     "categoryTitle": "Quale zona desideri far rifiorire?",
-    "categorySubtitle": "Ora che abbiamo capito il bisogno, definiamo l'area di intervento",
+    "categorySubtitle": "Scegli da dove ripartire: le domande successive saranno su misura",
     "categories": {
       "armadio": "Armadio",
       "cucina": "Cucina",
@@ -372,8 +346,6 @@
       "garage": "Garage",
       "trasloco": "Trasloco"
     },
-    "detailsTitle": "Analisi degli spazi",
-    "detailsSubtitle": "Definiamo la grandezza del progetto",
     "fields": {
       "armadio": {
         "doors": "Numero Ante",
@@ -403,27 +375,16 @@
       }
     },
     "complexityTitle": "Livello di sfida",
-    "complexitySubtitle": "Quanto è profondo il disordine in quest'area?",
-    "complexity": {
-      "light": {
-        "title": "Lieve",
-        "description": "Serve solo un nuovo metodo"
-      },
-      "moderate": {
-        "title": "Moderato",
-        "description": "Accumulo evidente di oggetti"
-      },
-      "critical": {
-        "title": "Critico",
-        "description": "Difficoltà di accesso o uso"
-      }
-    },
     "extrasTitle": "Servizi Aggiuntivi",
     "extras": {
-      "materials": "Fornitura Kit",
-      "materialsDesc": "Portiamo noi organizer e divisori",
-      "dump": "Smaltimento",
-      "dumpDesc": "Gestiamo noi il conferimento rifiuti/donazioni"
+      "materials": {
+        "desc": "Portiamo noi organizer e divisori",
+        "label": "Fornitura Kit"
+      },
+      "dump": {
+        "desc": "Gestiamo noi il conferimento rifiuti/donazioni",
+        "label": "Smaltimento"
+      }
     },
     "estimateLabel": "Il tuo investimento stimato",
     "breakdownProject": "Intervento",
@@ -461,10 +422,333 @@
     "summaryTitle": "Riepilogo Sopralluogo:",
     "datesTitle": "Date Richieste:",
     "dateNotSpecified": "Non specificata",
-    "sensitizationMain": "Dichiari di passare {q1} a cercare oggetti e di sentirti {q2}.",
-    "sensitizationEmbarassed": "È tempo di riprenderti il tuo spazio per tornare a condividere la tua casa con gioia.",
-    "sensitizationGeneral": "Il nostro intervento trasformerà questo stress in pura armonia quotidiana.",
-    "printTitle": "Stampa / Salva PDF"
+    "printTitle": "Stampa / Salva PDF",
+    "areas": {
+      "armadio": {
+        "detailsTitle": "Il tuo armadio nel dettaglio",
+        "detailsSubtitle": "Ante, cassetti e soppalco: così calcoliamo i tempi.",
+        "complexitySubtitle": "Quanto è profondo il disordine dentro l'armadio?",
+        "complexity": {
+          "light": {
+            "title": "Lieve",
+            "description": "Tutto ci sta, manca solo un metodo"
+          },
+          "moderate": {
+            "title": "Moderato",
+            "description": "Pile instabili e capi mai indossati"
+          },
+          "critical": {
+            "title": "Critico",
+            "description": "Ante che non chiudono, capi introvabili"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "Quanto ci metti a trovare il capo che cerchi?",
+            "options": [
+              "Lo prendo al volo",
+              "Devo spostare qualche pila",
+              "Svuoto mezzo armadio per trovarlo"
+            ]
+          },
+          "q2": {
+            "question": "Come gestisci il cambio di stagione nell'armadio?",
+            "options": [
+              "Lo faccio in un pomeriggio",
+              "Lo rimando di qualche settimana",
+              "Estate e inverno convivono tutto l'anno"
+            ]
+          },
+          "q3": {
+            "question": "Quanto spazio libero resta sulla barra appendiabiti?",
+            "options": [
+              "Le grucce scorrono senza sforzo",
+              "Devo spostare le grucce a mano",
+              "Ogni capo entra a forza"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Cambio di Stagione",
+          "desc": "Ruotiamo noi l'armadio e imbustiamo i capi fuori stagione"
+        },
+        "sensitization": {
+          "low": "Il tuo armadio funziona già: con un metodo su misura per ante e cassetti guadagni minuti preziosi ogni mattina.",
+          "mid": "Le pile crescono e il cambio di stagione slitta: intervenire adesso sull'armadio è più facile che rimandare a primavera.",
+          "high": "Se aprire le ante ti pesa, va bene così: in una giornata ti ridiamo un armadio dove ogni capo si trova al volo."
+        }
+      },
+      "cucina": {
+        "detailsTitle": "La tua cucina nel dettaglio",
+        "detailsSubtitle": "Pensili, dispensa e piani ci dicono quanto spazio c'è",
+        "complexitySubtitle": "Quanto è profondo il disordine tra pensili e dispensa?",
+        "complexity": {
+          "light": {
+            "title": "Lieve",
+            "description": "C'è tutto, ma manca una logica"
+          },
+          "moderate": {
+            "title": "Moderato",
+            "description": "Pensili pieni e doppioni ovunque"
+          },
+          "critical": {
+            "title": "Critico",
+            "description": "Piani invasi e ante che non chiudono"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "Quanto ci metti a trovare pentole e coperchi?",
+            "options": [
+              "Li prendo subito, sono a portata",
+              "Cerco un po', ma li trovo",
+              "Devo svuotare mezzo pensile"
+            ]
+          },
+          "q2": {
+            "question": "Quanto piano di lavoro ti resta libero per cucinare?",
+            "options": [
+              "Quasi tutto, cucino comodo",
+              "Un angolo, mi arrangio",
+              "Quasi niente, sposto tutto ogni volta"
+            ]
+          },
+          "q3": {
+            "question": "Ti capita di ricomprare cose che hai già in dispensa?",
+            "options": [
+              "Quasi mai, so cosa ho",
+              "Ogni tanto scopro un doppione",
+              "Spesso, e trovo confezioni scadute"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Controllo Scadenze",
+          "desc": "Controlliamo noi la dispensa e smaltiamo i prodotti scaduti"
+        },
+        "sensitization": {
+          "low": "La tua cucina funziona già bene: con qualche accorgimento in più guadagni piani liberi e minuti preziosi ogni volta che cucini.",
+          "mid": "I doppioni nei pensili si moltiplicano in fretta: sistemarli ora è un lavoro breve, e cucinare torna subito leggero.",
+          "high": "Non c'è nulla di cui vergognarsi: rimettiamo ordine tra dispensa e piani di lavoro, e la tua cucina torna un posto dove stare bene."
+        }
+      },
+      "ufficio": {
+        "detailsTitle": "Il tuo ufficio nel dettaglio",
+        "detailsSubtitle": "Scrivanie e metri di documenti ci dicono quanto tempo serve.",
+        "complexitySubtitle": "Quanto è profondo il disordine tra carte e scrivanie?",
+        "complexity": {
+          "light": {
+            "title": "Lieve",
+            "description": "Scrivania libera, archivio da rifinire"
+          },
+          "moderate": {
+            "title": "Moderato",
+            "description": "Pile di documenti su scrivania e sedie"
+          },
+          "critical": {
+            "title": "Critico",
+            "description": "Carte ovunque, difficile lavorare"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "Quanto ci metti a trovare una fattura di due anni fa?",
+            "options": [
+              "Un minuto, so dov’è",
+              "Un quarto d’ora di ricerca",
+              "Meglio richiederne una copia"
+            ]
+          },
+          "q2": {
+            "question": "Quanta carta da archiviare hai in attesa?",
+            "options": [
+              "Un vassoio sulla scrivania",
+              "Due pile e un cassetto pieno",
+              "Scatoloni chiusi da mesi"
+            ]
+          },
+          "q3": {
+            "question": "Come inizi la giornata alla scrivania?",
+            "options": [
+              "Mi siedo e parto subito",
+              "Prima sposto qualche pila",
+              "Lavoro altrove, la scrivania è piena"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Archivio Digitale",
+          "desc": "Scansioniamo e ordiniamo noi i documenti da conservare"
+        },
+        "sensitization": {
+          "low": "Il tuo ufficio è già sotto controllo: con noi guadagni un archivio impeccabile e qualche ora libera ogni settimana.",
+          "mid": "Le pile di carte sulla scrivania crescono in fretta: sistemarle ora è semplice e ti evita di perdere documenti importanti.",
+          "high": "Anche l’ufficio più sommerso torna vivibile: pensiamo noi a carte e scrivania, senza giudicare, e tu torni a lavorare sereno."
+        }
+      },
+      "bagno": {
+        "detailsTitle": "Il tuo bagno nel dettaglio",
+        "detailsSubtitle": "Mobiletti e mensole ci dicono quanto spazio sistemare",
+        "complexitySubtitle": "Quanto è profondo il disordine nel tuo bagno?",
+        "complexity": {
+          "light": {
+            "title": "Lieve",
+            "description": "Serve solo un metodo per i prodotti"
+          },
+          "moderate": {
+            "title": "Moderato",
+            "description": "Flaconi doppi e mensole affollate"
+          },
+          "critical": {
+            "title": "Critico",
+            "description": "Sottolavabo pieno, non ci vedi dentro"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "Al mattino trovi subito spazzolino e crema?",
+            "options": [
+              "Sì, tutto a portata di mano",
+              "Qualche cassetto da frugare",
+              "Sposto tutto per trovare una cosa"
+            ]
+          },
+          "q2": {
+            "question": "Quanti flaconi aperti o scaduti hai in bagno?",
+            "options": [
+              "Quasi nessuno",
+              "Qualche prodotto dimenticato",
+              "Preferisco non guardare le scadenze"
+            ]
+          },
+          "q3": {
+            "question": "Se arriva un ospite, sistemi il bagno di corsa?",
+            "options": [
+              "No, è già presentabile",
+              "Do una sistemata veloce",
+              "Nascondo tutto sotto il lavabo"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Ordine Sottolavabo",
+          "desc": "Portiamo contenitori su misura per lo spazio sottolavabo"
+        },
+        "sensitization": {
+          "low": "Il tuo bagno è già in equilibrio: bastano pochi accorgimenti per guadagnare minuti preziosi ogni mattina e mantenerlo così.",
+          "mid": "Ogni flacone in più rende il bagno più faticoso: intervenire adesso è semplice e ti evita di ricominciare tra sei mesi.",
+          "high": "Non c'è nulla di cui vergognarsi: il bagno si riempie senza chiedere permesso. In poche ore torna respirabile e tuo."
+        }
+      },
+      "garage": {
+        "detailsTitle": "Il tuo garage nel dettaglio",
+        "detailsSubtitle": "Campate e zona attrezzi ci dicono quanto spazio recuperare",
+        "complexitySubtitle": "Quanto è profondo il disordine tra scaffali e attrezzi?",
+        "complexity": {
+          "light": {
+            "title": "Lieve",
+            "description": "Serve solo un posto per ogni attrezzo"
+          },
+          "moderate": {
+            "title": "Moderato",
+            "description": "Scatoloni e attrezzi accumulati da anni"
+          },
+          "critical": {
+            "title": "Critico",
+            "description": "L'auto non entra e passi a fatica"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "Quanto ci metti a trovare un attrezzo in garage?",
+            "options": [
+              "Lo prendo subito dallo scaffale",
+              "Devo aprire un paio di scatoloni",
+              "Finisco per ricomprarlo"
+            ]
+          },
+          "q2": {
+            "question": "Riesci ancora a parcheggiare l'auto in garage?",
+            "options": [
+              "Sì, entra ed esce senza problemi",
+              "Solo con qualche manovra in più",
+              "L'auto ormai resta fuori"
+            ]
+          },
+          "q3": {
+            "question": "Come ti senti quando apri il garage?",
+            "options": [
+              "Bene, ogni cosa al suo posto",
+              "Un po' di fastidio per gli scatoloni",
+              "Richiudo e rimando a un altro giorno"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Inventario Attrezzi",
+          "desc": "Cataloghiamo ed etichettiamo noi attrezzi e materiali"
+        },
+        "sensitization": {
+          "low": "Il tuo garage è già sotto controllo: con qualche accorgimento in più ritrovi ogni attrezzo al volo e guadagni tempo ogni settimana.",
+          "mid": "Ancora qualche mese e gli scatoloni prenderanno il posto dell'auto: intervenire adesso è semplice, veloce e ti evita un lavoro molto più grande.",
+          "high": "Il garage non si è riempito in un giorno e non sei tu il problema: veniamo noi, uno scaffale alla volta, e ti restituiamo lo spazio."
+        }
+      },
+      "trasloco": {
+        "detailsTitle": "Il tuo trasloco nel dettaglio",
+        "detailsSubtitle": "Scatoloni e stanze da allestire: da qui calcoliamo i tempi.",
+        "complexitySubtitle": "Quanto è caotico il tuo trasloco in questo momento?",
+        "complexity": {
+          "light": {
+            "title": "Lieve",
+            "description": "Pochi scatoloni e già etichettati"
+          },
+          "moderate": {
+            "title": "Moderato",
+            "description": "Scatoloni misti, da riaprire e smistare"
+          },
+          "critical": {
+            "title": "Critico",
+            "description": "Casa piena di scatoloni, nulla al suo posto"
+          }
+        },
+        "quiz": {
+          "q1": {
+            "question": "A che punto sei con gli scatoloni?",
+            "options": [
+              "Quasi tutti chiusi ed etichettati",
+              "Ho iniziato, ma senza un ordine preciso",
+              "Devo ancora cominciare"
+            ]
+          },
+          "q2": {
+            "question": "Quanta roba devi ancora selezionare prima del trasloco?",
+            "options": [
+              "Poca, ho già scelto cosa portare",
+              "Un paio di stanze da rivedere",
+              "Praticamente tutta la casa"
+            ]
+          },
+          "q3": {
+            "question": "Cosa succede di solito nei giorni dopo il trasloco?",
+            "options": [
+              "Disfo tutto in pochi giorni",
+              "Restano scatoloni aperti per settimane",
+              "Qualche scatolone non lo apro mai"
+            ]
+          }
+        },
+        "extra": {
+          "label": "Etichettatura Scatoloni",
+          "desc": "Etichettiamo noi ogni scatolone stanza per stanza"
+        },
+        "sensitization": {
+          "low": "Il tuo trasloco è già ben avviato: ci pensiamo noi agli ultimi scatoloni e ti facciamo guadagnare giorni interi nella casa nuova.",
+          "mid": "Gli scatoloni si stanno moltiplicando: darsi un metodo adesso ti evita di ritrovarti la casa nuova piena di scatoloni aperti.",
+          "high": "Un trasloco così pesa a chiunque: lo affrontiamo noi scatolone dopo scatolone e la casa nuova sarà vivibile già dalla prima sera."
+        }
+      }
+    }
   },
   "preventivo": {
     "title": "Preventivo Gratuito Decluttering e Home Organizing",
@@ -472,7 +756,7 @@
     "heroTitle": "Preventivo Gratuito",
     "heroSubtitle": "Scopri quanto costa riorganizzare i tuoi spazi",
     "wizardTitle": "Sopralluogo Digitale",
-    "wizardSubtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto.",
+    "wizardSubtitle": "Scegli l'area, rispondi a tre domande su misura e ricevi subito la tua stima.",
     "seo": {
       "title": "Come funziona il preventivo gratuito",
       "paragraphs": [

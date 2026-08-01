@@ -5,96 +5,44 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { submitQuoteRequest } from '@/actions/contact';
 import CategoryIcon from '@/components/CategoryIcon';
+import {
+  CATEGORIES,
+  MAX_QUIZ_SCORE,
+  MAX_URGENCY_PERCENT,
+  QUIZ_LENGTH,
+  QUIZ_OPTIONS,
+  categoryConfigs,
+  complexityLevels,
+  complexityMultipliers,
+  extrasForCategory,
+  quizScore,
+  sensitizationBand,
+  universalExtras,
+  type Category,
+  type ExtraConfig,
+} from '@/lib/quote/config';
 
-type Category = 'armadio' | 'cucina' | 'ufficio' | 'bagno' | 'garage' | 'trasloco';
 type Complexity = { value: number; label: string };
 
-// --- Work-package pricing model ---
-// Flat package prices per room type, sized by scope.
-// Small increments per extra unit keep totals accessible.
-// Typical range: €30 (small bathroom) – €200 (large move).
-//
-// Formula:
-//   projectCost = basePrice + Σ(min(qty,2)×costPerUnit + max(qty-2,0)×costPerUnit×0.3)
-//   complexityCost = projectCost × (complexityMultiplier - 1)  [surcharge only]
-//   extrasCost  = flat add-on fees
-//   urgency     = quiz adds 0–5% on top
-//   total       = projectCost + complexityCost + extrasCost + urgency
-
-interface CategoryConfig {
-  basePrice: number; // package starting price
-  fields: { id: string; costPerUnit: number }[];
-}
-
-const categoryConfigs: Record<Category, CategoryConfig> = {
-  armadio: {
-    basePrice: 50,      // basic 2-door wardrobe package
-    fields: [
-      { id: 'doors', costPerUnit: 8 },
-      { id: 'drawers', costPerUnit: 4 },
-      { id: 'height', costPerUnit: 10 },
-    ],
-  },
-  cucina: {
-    basePrice: 65,      // standard kitchen package
-    fields: [
-      { id: 'modules', costPerUnit: 5 },
-      { id: 'pantry', costPerUnit: 20 },
-      { id: 'counters', costPerUnit: 8 },
-    ],
-  },
-  ufficio: {
-    basePrice: 50,      // single-desk office package
-    fields: [
-      { id: 'desks', costPerUnit: 12 },
-      { id: 'documents', costPerUnit: 8 },
-    ],
-  },
-  bagno: {
-    basePrice: 38,      // small bathroom package
-    fields: [
-      { id: 'cabinets', costPerUnit: 8 },
-      { id: 'shelves', costPerUnit: 4 },
-    ],
-  },
-  garage: {
-    basePrice: 75,      // standard garage package
-    fields: [
-      { id: 'racks', costPerUnit: 10 },
-      { id: 'tools', costPerUnit: 15 },
-    ],
-  },
-  trasloco: {
-    basePrice: 100,     // small move/unpack package
-    fields: [
-      { id: 'boxes', costPerUnit: 2.5 },
-      { id: 'rooms', costPerUnit: 25 },
-    ],
-  },
-};
-
-// Complexity tiers — surcharges on the package price
-const complexityMultipliers: Record<number, number> = {
-  1: 1.0,    // light: standard package
-  1.5: 1.15, // moderate: +15%
-  2: 1.3,    // critical: +30%
-};
-
-// Extras — flat add-on fees
-const extrasConfig = {
-  materials: { baseCost: 8, percent: 0.025 },
-  dump: { baseCost: 10, percent: 0.025 },
-};
-
+// Step indices. The category comes first so every later step can be written
+// for the area the visitor actually picked.
+const STEP_CATEGORY = 0;
+const STEP_QUIZ_FIRST = 1;
+const STEP_DETAILS = 4;
+const STEP_COMPLEXITY = 5;
+const STEP_EXTRAS = 6;
+const STEP_AVAILABILITY = 7;
+const STEP_RESULT = 8;
+const TOTAL_STEPS = 9;
 
 export default function QuoteWizard() {
   const t = useTranslations('quote');
   const [step, setStep] = useState(0);
-  const [quiz, setQuiz] = useState<string[]>(['', '', '']);
   const [category, setCategory] = useState<Category | null>(null);
+  const [quizAnswers, setQuizAnswers] = useState<(number | null)[]>(Array(QUIZ_LENGTH).fill(null));
   const [details, setDetails] = useState<Record<string, number>>({});
   const [complexity, setComplexity] = useState<Complexity | null>(null);
-  const [extras, setExtras] = useState({ materials: false, dump: false });
+  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
   const [availability, setAvailability] = useState({ slot1: '', slot2: '', slot3: '' });
   const [notes, setNotes] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
@@ -102,8 +50,29 @@ export default function QuoteWizard() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const photoInputRef = useRef<HTMLInputElement>(null);
 
-  const totalSteps = 9;
-  const progress = ((step + 1) / totalSteps) * 100;
+  const progress = ((step + 1) / TOTAL_STEPS) * 100;
+
+  // --- i18n helpers -------------------------------------------------------
+  // Everything that varies by area lives under `quote.areas.<category>`.
+
+  function area(key: string): string {
+    return t(`areas.${category}.${key}`);
+  }
+
+  function quizOptions(qIndex: number): string[] {
+    return t.raw(`areas.${category}.quiz.q${qIndex + 1}.options`) as string[];
+  }
+
+  function isUniversalExtra(id: string): boolean {
+    return universalExtras.some((e) => e.id === id);
+  }
+
+  function extraCopy(extra: ExtraConfig): { label: string; desc: string } {
+    const base = isUniversalExtra(extra.id) ? `extras.${extra.id}` : `areas.${category}.extra`;
+    return { label: t(`${base}.label`), desc: t(`${base}.desc`) };
+  }
+
+  // --- pricing ------------------------------------------------------------
 
   function calculatePrice(): { total: number; breakdown: { project: number; extras: number; urgency: number } } {
     if (!category || !complexity) return { total: 0, breakdown: { project: 0, extras: 0, urgency: 0 } };
@@ -125,26 +94,16 @@ export default function QuoteWizard() {
     const compMultiplier = complexityMultipliers[complexity.value] ?? 1;
     const projectCost = projectBase * compMultiplier;
 
-    // 3. Extras (flat base + % of project cost — scales naturally with size)
-    let extrasCost = 0;
-    if (extras.materials) {
-      extrasCost += extrasConfig.materials.baseCost + projectCost * extrasConfig.materials.percent;
-    }
-    if (extras.dump) {
-      extrasCost += extrasConfig.dump.baseCost + projectCost * extrasConfig.dump.percent;
-    }
+    // 3. Extras (flat base + % of project cost — scales naturally with size).
+    //    Filtered against the current area so a stale id can never be charged.
+    const extrasCost = extrasForCategory(category)
+      .filter((extra) => selectedExtras.includes(extra.id))
+      .reduce((sum, extra) => sum + extra.baseCost + projectCost * extra.percent, 0);
 
     // 4. Quiz urgency factor (0–5%)
-    //    Higher reported chaos = more sorting/decision effort required
-    const quizScore = quiz.reduce((score, answer, qIdx) => {
-      if (!answer) return score;
-      const optIdx = [0, 1, 2].find((i) => {
-        try { return answer === t(`quiz.q${qIdx + 1}.options.${i}`); } catch { return false; }
-      }) ?? 0;
-      return score + optIdx;
-    }, 0);
-    // Max quiz score = 6 (3 questions × option index 2), maps to 0–5%
-    const urgencyPercent = (quizScore / 6) * 0.05;
+    //    Higher reported chaos = more sorting/decision effort required.
+    //    Options are ordered calmest-first, so the index is the severity.
+    const urgencyPercent = (quizScore(quizAnswers) / MAX_QUIZ_SCORE) * MAX_URGENCY_PERCENT;
     const urgencyAmount = (projectCost + extrasCost) * urgencyPercent;
 
     const total = Math.round(projectCost + extrasCost + urgencyAmount);
@@ -160,17 +119,30 @@ export default function QuoteWizard() {
   }
 
   function canProceed(): boolean {
-    switch (step) {
-      case 0: return quiz[0] !== '';
-      case 1: return quiz[1] !== '';
-      case 2: return quiz[2] !== '';
-      case 3: return category !== null;
-      case 4: return true;
-      case 5: return complexity !== null;
-      case 6: return true; // extras — optional
-      case 7: return true; // availability — optional
-      default: return false;
+    if (step === STEP_CATEGORY) return category !== null;
+    if (step >= STEP_QUIZ_FIRST && step < STEP_QUIZ_FIRST + QUIZ_LENGTH) {
+      return quizAnswers[step - STEP_QUIZ_FIRST] !== null;
     }
+    if (step === STEP_COMPLEXITY) return complexity !== null;
+    // details, extras and availability are all optional
+    return step === STEP_DETAILS || step === STEP_EXTRAS || step === STEP_AVAILABILITY;
+  }
+
+  function selectCategory(cat: Category) {
+    if (cat === category) return;
+    setCategory(cat);
+    // Answers, sizes and the area add-on all belong to the previous area.
+    setQuizAnswers(Array(QUIZ_LENGTH).fill(null));
+    const newDetails: Record<string, number> = {};
+    categoryConfigs[cat].fields.forEach((f) => (newDetails[f.id] = 0));
+    setDetails(newDetails);
+    setSelectedExtras((prev) => prev.filter(isUniversalExtra));
+  }
+
+  function toggleExtra(id: string) {
+    setSelectedExtras((prev) =>
+      prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id],
+    );
   }
 
   async function handleSubmit() {
@@ -186,9 +158,19 @@ export default function QuoteWizard() {
         complexity: complexity.label,
         total,
         breakdown,
-        details,
-        extras,
-        quizAnswers: quiz,
+        // Labels rather than raw keys — the recipient reads this in an inbox.
+        details: categoryConfigs[category].fields
+          .filter((f) => (details[f.id] || 0) > 0)
+          .map((f) => ({ label: t(`fields.${category}.${f.id}`), value: details[f.id] })),
+        extras: extrasForCategory(category)
+          .filter((extra) => selectedExtras.includes(extra.id))
+          .map((extra) => extraCopy(extra).label),
+        // Questions differ per area, so the answers alone would be meaningless.
+        quiz: quizAnswers.flatMap((answer, i) =>
+          answer === null
+            ? []
+            : [{ question: area(`quiz.q${i + 1}.question`), answer: quizOptions(i)[answer] }],
+        ),
         availability,
         notes: notes.trim() || undefined,
       });
@@ -224,40 +206,7 @@ export default function QuoteWizard() {
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
   const canSubmitContact = contact.name.trim() !== '' && isValidEmail(contact.email);
 
-  function renderQuizStep(qIndex: number) {
-    return (
-      <div className="text-center">
-        <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider rounded-full mb-4">
-          {t('quizBadge')}
-        </span>
-        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-8">
-          {t(`quiz.q${qIndex + 1}.question`)}
-        </h3>
-        <div className="max-w-lg mx-auto space-y-3">
-          {[0, 1, 2].map((optIdx) => (
-            <button
-              key={optIdx}
-              onClick={() => {
-                const newQuiz = [...quiz];
-                newQuiz[qIndex] = t(`quiz.q${qIndex + 1}.options.${optIdx}`);
-                setQuiz(newQuiz);
-              }}
-              className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all ${
-                quiz[qIndex] === t(`quiz.q${qIndex + 1}.options.${optIdx}`)
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : 'border-secondary-dark bg-white hover:border-primary/50'
-              }`}
-            >
-              {t(`quiz.q${qIndex + 1}.options.${optIdx}`)}
-            </button>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
   function renderCategoryStep() {
-    const categories: Category[] = ['armadio', 'cucina', 'ufficio', 'bagno', 'garage', 'trasloco'];
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
@@ -265,15 +214,10 @@ export default function QuoteWizard() {
         </h3>
         <p className="text-foreground/60 mb-8">{t('categorySubtitle')}</p>
         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {categories.map((cat) => (
+          {CATEGORIES.map((cat) => (
             <button
               key={cat}
-              onClick={() => {
-                setCategory(cat);
-                const newDetails: Record<string, number> = {};
-                categoryConfigs[cat].fields.forEach((f) => (newDetails[f.id] = 0));
-                setDetails(newDetails);
-              }}
+              onClick={() => selectCategory(cat)}
               className={`p-5 rounded-2xl border-2 text-center transition-all ${
                 category === cat
                   ? 'border-primary bg-primary/10'
@@ -289,15 +233,50 @@ export default function QuoteWizard() {
     );
   }
 
+  function renderQuizStep(qIndex: number) {
+    if (!category) return null;
+    const options = quizOptions(qIndex);
+    return (
+      <div className="text-center">
+        <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider rounded-full mb-4">
+          {t('quizBadge')}
+        </span>
+        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-8">
+          <span className="text-foreground/40 mr-2">{qIndex + 1}.</span>
+          {area(`quiz.q${qIndex + 1}.question`)}
+        </h3>
+        <div className="max-w-lg mx-auto space-y-3">
+          {Array.from({ length: QUIZ_OPTIONS }, (_, optIdx) => (
+            <button
+              key={optIdx}
+              onClick={() => {
+                const next = [...quizAnswers];
+                next[qIndex] = optIdx;
+                setQuizAnswers(next);
+              }}
+              className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all ${
+                quizAnswers[qIndex] === optIdx
+                  ? 'border-primary bg-primary/10 text-primary'
+                  : 'border-secondary-dark bg-white hover:border-primary/50'
+              }`}
+            >
+              {options[optIdx]}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   function renderDetailsStep() {
     if (!category) return null;
     const config = categoryConfigs[category];
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-          {t('detailsTitle')}
+          {area('detailsTitle')}
         </h3>
-        <p className="text-foreground/60 mb-8">{t('detailsSubtitle')}</p>
+        <p className="text-foreground/60 mb-8">{area('detailsSubtitle')}</p>
         <div className="max-w-lg mx-auto space-y-4">
           {config.fields.map((field) => (
             <div key={field.id} className="bg-secondary p-4 rounded-xl text-left">
@@ -322,33 +301,29 @@ export default function QuoteWizard() {
   }
 
   function renderComplexityStep() {
-    const levels = [
-      { value: 1, key: 'light' },
-      { value: 1.5, key: 'moderate' },
-      { value: 2, key: 'critical' },
-    ];
+    if (!category) return null;
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
           {t('complexityTitle')}
         </h3>
-        <p className="text-foreground/60 mb-8">{t('complexitySubtitle')}</p>
+        <p className="text-foreground/60 mb-8">{area('complexitySubtitle')}</p>
         <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-          {levels.map((level) => (
+          {complexityLevels.map((level) => (
             <button
               key={level.key}
-              onClick={() => setComplexity({ value: level.value, label: t(`complexity.${level.key}.title`) })}
+              onClick={() =>
+                setComplexity({ value: level.value, label: area(`complexity.${level.key}.title`) })
+              }
               className={`p-6 rounded-2xl border-2 text-center transition-all ${
                 complexity?.value === level.value
                   ? 'border-primary bg-primary/10'
                   : 'border-secondary-dark bg-white hover:border-primary/50'
               }`}
             >
-              <div className="text-3xl mb-3">
-                {level.key === 'light' ? '🌿' : level.key === 'moderate' ? '🌤️' : '🌪️'}
-              </div>
-              <h4 className="font-bold mb-1">{t(`complexity.${level.key}.title`)}</h4>
-              <p className="text-xs text-foreground/60">{t(`complexity.${level.key}.description`)}</p>
+              <div className="text-3xl mb-3">{level.icon}</div>
+              <h4 className="font-bold mb-1">{area(`complexity.${level.key}.title`)}</h4>
+              <p className="text-xs text-foreground/60">{area(`complexity.${level.key}.description`)}</p>
             </button>
           ))}
         </div>
@@ -357,37 +332,32 @@ export default function QuoteWizard() {
   }
 
   function renderExtrasStep() {
+    if (!category) return null;
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
           {t('extrasTitle')}
         </h3>
         <p className="text-foreground/60 mb-8">{t('extrasSubtitle')}</p>
-        <div className="grid md:grid-cols-2 gap-4 max-w-lg mx-auto">
-          <button
-            onClick={() => setExtras({ ...extras, materials: !extras.materials })}
-            className={`p-5 rounded-2xl border-2 text-center transition-all ${
-              extras.materials
-                ? 'border-primary bg-primary/10'
-                : 'border-secondary-dark bg-white hover:border-primary/50'
-            }`}
-          >
-            <div className="text-2xl mb-2">📦</div>
-            <h4 className="font-semibold text-sm">{t('extras.materials')}</h4>
-            <p className="text-xs text-foreground/60 mt-1">{t('extras.materialsDesc')}</p>
-          </button>
-          <button
-            onClick={() => setExtras({ ...extras, dump: !extras.dump })}
-            className={`p-5 rounded-2xl border-2 text-center transition-all ${
-              extras.dump
-                ? 'border-primary bg-primary/10'
-                : 'border-secondary-dark bg-white hover:border-primary/50'
-            }`}
-          >
-            <div className="text-2xl mb-2">🚛</div>
-            <h4 className="font-semibold text-sm">{t('extras.dump')}</h4>
-            <p className="text-xs text-foreground/60 mt-1">{t('extras.dumpDesc')}</p>
-          </button>
+        <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
+          {extrasForCategory(category).map((extra) => {
+            const { label, desc } = extraCopy(extra);
+            return (
+              <button
+                key={extra.id}
+                onClick={() => toggleExtra(extra.id)}
+                className={`p-5 rounded-2xl border-2 text-center transition-all ${
+                  selectedExtras.includes(extra.id)
+                    ? 'border-primary bg-primary/10'
+                    : 'border-secondary-dark bg-white hover:border-primary/50'
+                }`}
+              >
+                <div className="text-2xl mb-2">{extra.icon}</div>
+                <h4 className="font-semibold text-sm">{label}</h4>
+                <p className="text-xs text-foreground/60 mt-1">{desc}</p>
+              </button>
+            );
+          })}
         </div>
       </div>
     );
@@ -420,28 +390,24 @@ export default function QuoteWizard() {
   }
 
   function renderResultStep() {
+    if (!category) return null;
     const { total, breakdown } = calculatePrice();
 
-    // Build sensitization text
-    const isEmbarassed = quiz[2] === t('quiz.q3.options.2');
-    const sensitizationSuffix = isEmbarassed
-      ? t('sensitizationEmbarassed')
-      : t('sensitizationGeneral');
+    // The "why act now" paragraph is written per area and picked by how much
+    // chaos the answers reported.
+    const allAnswered = quizAnswers.every((a) => a !== null);
+    const band = sensitizationBand(quizScore(quizAnswers));
 
-    // Build detailed field summary
-    const fieldSummary = category
-      ? categoryConfigs[category].fields.filter((f) => (details[f.id] || 0) > 0)
-      : [];
+    const fieldSummary = categoryConfigs[category].fields.filter((f) => (details[f.id] || 0) > 0);
+    const chosenExtras = extrasForCategory(category).filter((e) => selectedExtras.includes(e.id));
 
     return (
       <div className="text-center">
         {/* Summary pills + print button */}
         <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
-          {category && (
-            <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
-              {t(`categories.${category}`)}
-            </span>
-          )}
+          <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
+            {t(`categories.${category}`)}
+          </span>
           {complexity && (
             <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
               {complexity.label}
@@ -459,15 +425,12 @@ export default function QuoteWizard() {
         </div>
 
         {/* Sensitization box */}
-        {quiz[0] && quiz[1] && (
+        {allAnswered && (
           <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 mb-6 text-left max-w-lg mx-auto">
             <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-1">
               {t('whyActNow')}
             </p>
-            <p className="text-sm text-foreground/80">
-              {t('sensitizationMain', { q1: quiz[0], q2: quiz[1] })}{' '}
-              {sensitizationSuffix}
-            </p>
+            <p className="text-sm text-foreground/80">{area(`sensitization.${band}`)}</p>
           </div>
         )}
 
@@ -516,8 +479,23 @@ export default function QuoteWizard() {
                   {fieldSummary.map((f) => (
                     <li key={f.id} className="flex items-center gap-2 text-sm">
                       <span className="text-primary">✓</span>
-                      <span className="text-foreground/70">{t(`fields.${category!}.${f.id}`)}</span>
+                      <span className="text-foreground/70">{t(`fields.${category}.${f.id}`)}</span>
                       <span className="font-semibold ml-auto">{details[f.id]}</span>
+                    </li>
+                  ))}
+                </ul>
+              </>
+            )}
+            {chosenExtras.length > 0 && (
+              <>
+                <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
+                  {t('extrasTitle')}
+                </p>
+                <ul className="space-y-1 mb-4">
+                  {chosenExtras.map((extra) => (
+                    <li key={extra.id} className="flex items-center gap-2 text-sm">
+                      <span className="text-primary">✓</span>
+                      <span className="text-foreground/70">{extraCopy(extra).label}</span>
                     </li>
                   ))}
                 </ul>
@@ -658,7 +636,7 @@ export default function QuoteWizard() {
             ) : (
               <>
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                 </svg>
                 {t('submitButton')}
               </>
@@ -688,26 +666,26 @@ export default function QuoteWizard() {
   function renderStep() {
     if (submitStatus === 'success') return renderSuccess();
     switch (step) {
-      case 0: return renderQuizStep(0);
-      case 1: return renderQuizStep(1);
-      case 2: return renderQuizStep(2);
-      case 3: return renderCategoryStep();
-      case 4: return renderDetailsStep();
-      case 5: return renderComplexityStep();
-      case 6: return renderExtrasStep();
-      case 7: return renderAvailabilityStep();
-      case 8: return renderResultStep();
+      case STEP_CATEGORY: return renderCategoryStep();
+      case STEP_QUIZ_FIRST: return renderQuizStep(0);
+      case STEP_QUIZ_FIRST + 1: return renderQuizStep(1);
+      case STEP_QUIZ_FIRST + 2: return renderQuizStep(2);
+      case STEP_DETAILS: return renderDetailsStep();
+      case STEP_COMPLEXITY: return renderComplexityStep();
+      case STEP_EXTRAS: return renderExtrasStep();
+      case STEP_AVAILABILITY: return renderAvailabilityStep();
+      case STEP_RESULT: return renderResultStep();
       default: return null;
     }
   }
 
   function handleReset() {
     setStep(0);
-    setQuiz(['', '', '']);
     setCategory(null);
+    setQuizAnswers(Array(QUIZ_LENGTH).fill(null));
     setDetails({});
     setComplexity(null);
-    setExtras({ materials: false, dump: false });
+    setSelectedExtras([]);
     setAvailability({ slot1: '', slot2: '', slot3: '' });
     setNotes('');
     setPhotos([]);
@@ -738,8 +716,8 @@ export default function QuoteWizard() {
       <div className="p-6 md:p-10">
         {renderStep()}
 
-        {/* Navigation — visible on steps 0–7 */}
-        {submitStatus !== 'success' && step < 8 && (
+        {/* Navigation — visible on every step before the result */}
+        {submitStatus !== 'success' && step < STEP_RESULT && (
           <div className="print:hidden flex justify-between mt-10 pt-6 border-t border-secondary">
             <button
               onClick={() => setStep(step - 1)}
@@ -760,7 +738,7 @@ export default function QuoteWizard() {
         )}
 
         {/* Restart — visible on final step and after success */}
-        {(step === 8 || submitStatus === 'success') && (
+        {(step === STEP_RESULT || submitStatus === 'success') && (
           <div className="print:hidden text-center mt-6">
             <button
               onClick={handleReset}
