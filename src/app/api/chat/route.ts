@@ -7,6 +7,7 @@ import {
   type CaptureLeadInput,
 } from '@/lib/chat/prompt';
 import { sendLeadEmail } from '@/lib/chat/leads';
+import { clientIp, createRateLimiter } from '@/lib/security/rate-limit';
 
 export const runtime = 'nodejs';
 
@@ -16,18 +17,8 @@ const MAX_MESSAGES = 40;
 const MAX_CONTENT_LENGTH = 4000;
 const MAX_TOOL_ROUNDS = 3;
 
-// --- Lightweight in-memory rate limiting (per IP, sliding window) ---
-const RATE_LIMIT = 20; // requests
-const RATE_WINDOW_MS = 60_000; // per minute
-const hits = new Map<string, number[]>();
-
-function isRateLimited(ip: string): boolean {
-  const now = Date.now();
-  const recent = (hits.get(ip) ?? []).filter((t) => now - t < RATE_WINDOW_MS);
-  recent.push(now);
-  hits.set(ip, recent);
-  return recent.length > RATE_LIMIT;
-}
+// Per-IP sliding window, 20 requests per minute.
+const rateLimiter = createRateLimiter({ limit: 20, windowMs: 60_000 });
 
 interface ClientMessage {
   role: 'user' | 'assistant';
@@ -61,11 +52,8 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const ip =
-    req.headers.get('x-forwarded-for')?.split(',')[0].trim() ||
-    req.headers.get('x-real-ip') ||
-    'unknown';
-  if (isRateLimited(ip)) {
+  const ip = clientIp(req.headers);
+  if (rateLimiter.check(ip)) {
     return Response.json({ error: 'Too many requests.' }, { status: 429 });
   }
 
