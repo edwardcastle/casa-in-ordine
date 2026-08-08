@@ -1,0 +1,58 @@
+/**
+ * Throwaway-mailbox providers. Someone using one cannot be reached with a
+ * quote a day later, so a request from these is not a lead.
+ *
+ * Deliberately short and high-confidence: the full public lists run to tens of
+ * thousands of entries and sweep up small legitimate providers with them. The
+ * DNS check in `email.ts` is what does the heavy lifting.
+ */
+export const DISPOSABLE_DOMAINS = new Set([
+  '0-mail.com',
+  '10minutemail.com',
+  '10minutemail.net',
+  '20minutemail.com',
+  'anonbox.net',
+  'byom.de',
+  'dispostable.com',
+  'discard.email',
+  'emailondeck.com',
+  'fakeinbox.com',
+  'fakemail.net',
+  'getairmail.com',
+  'getnada.com',
+  'guerrillamail.com',
+  'guerrillamail.net',
+  'guerrillamail.org',
+  'harakirimail.com',
+  'inboxbear.com',
+  'incognitomail.com',
+  'jetable.org',
+  'mailcatch.com',
+  'maildrop.cc',
+  'mailinator.com',
+  'mailnesia.com',
+  'mailsac.com',
+  'mintemail.com',
+  'moakt.com',
+  'mohmal.com',
+  'mytemp.email',
+  'nowmymail.com',
+  'sharklasers.com',
+  'spam4.me',
+  'spamgourmet.com',
+  'temp-mail.io',
+  'temp-mail.org',
+  'tempail.com',
+  'tempinbox.com',
+  'tempmail.com',
+  'tempmail.net',
+  'tempmailo.com',
+  'tempr.email',
+  'throwawaymail.com',
+  'trashmail.com',
+  'trashmail.de',
+  'trbvm.com',
+  'yopmail.com',
+  'yopmail.fr',
+  'yopmail.net',
+]);
