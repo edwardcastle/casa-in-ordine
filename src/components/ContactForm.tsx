@@ -1,19 +1,50 @@
 'use client';
 
 import { useTranslations } from 'next-intl';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { submitContactForm } from '@/actions/contact';
+import TurnstileWidget, { isTurnstileEnabled } from '@/components/TurnstileWidget';
+import { HONEYPOT_FIELD, RENDERED_AT_FIELD } from '@/lib/security/fields';
+
+// Reasons worth explaining. Anything else collapses into the generic error so
+// a script cannot use the response to work out which check caught it.
+const EXPLAINED_REASONS = new Set([
+  'rate-limited',
+  'captcha',
+  'email-format',
+  'email-disposable',
+  'email-unreachable',
+  'message-too-short',
+  'message-too-long',
+]);
 
 export default function ContactForm() {
   const t = useTranslations('contact.form');
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [reason, setReason] = useState<string>('send-failed');
+  const [token, setToken] = useState('');
+  // Stamped on mount, so a submission arriving milliseconds later is visibly
+  // not a person filling in a form. Set in an effect rather than during
+  // render: the clock would otherwise differ between server and hydration.
+  const renderedAt = useRef(0);
+  useEffect(() => {
+    renderedAt.current = Date.now();
+  }, []);
 
   async function handleSubmit(formData: FormData) {
     setStatus('sending');
+    formData.set('cf-turnstile-response', token);
+    formData.set(RENDERED_AT_FIELD, String(renderedAt.current));
     try {
       const result = await submitContactForm(formData);
-      setStatus(result.success ? 'success' : 'error');
+      if (result.success) {
+        setStatus('success');
+        return;
+      }
+      setReason(EXPLAINED_REASONS.has(result.reason) ? result.reason : 'send-failed');
+      setStatus('error');
     } catch {
+      setReason('send-failed');
       setStatus('error');
     }
   }
@@ -82,8 +113,23 @@ export default function ContactForm() {
         />
       </div>
 
+      {/* Hidden from people, tempting to form-fillers. Positioned off-screen
+          rather than display:none, which some bots check for. */}
+      <div aria-hidden="true" className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">
+        <label htmlFor={HONEYPOT_FIELD}>Website</label>
+        <input
+          type="text"
+          id={HONEYPOT_FIELD}
+          name={HONEYPOT_FIELD}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
+      {isTurnstileEnabled && <TurnstileWidget onVerify={setToken} className="flex justify-center" />}
+
       {status === 'error' && (
-        <p className="text-red-600 text-sm">{t('error')}</p>
+        <p className="text-red-600 text-sm">{t(`errors.${reason}`)}</p>
       )}
 
       <button

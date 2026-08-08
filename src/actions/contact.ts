@@ -1,5 +1,8 @@
 'use server';
 
+import { guardSubmission } from '@/lib/security/guard';
+import { HONEYPOT_FIELD, RENDERED_AT_FIELD } from '@/lib/security/fields';
+
 /** Escape values that end up inside the HTML email body. */
 function esc(value: string): string {
   return value
@@ -140,18 +143,27 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
 }
 
 export async function submitContactForm(formData: FormData) {
-  const name = formData.get('name') as string;
-  const email = formData.get('email') as string;
-  const phone = formData.get('phone') as string;
-  const message = formData.get('message') as string;
+  const name = ((formData.get('name') as string) ?? '').trim();
+  const email = ((formData.get('email') as string) ?? '').trim();
+  const phone = ((formData.get('phone') as string) ?? '').trim();
+  const message = ((formData.get('message') as string) ?? '').trim();
 
-  if (!name || !email || !message) {
-    return { success: false, error: 'Missing required fields' };
+  if (!message) {
+    return { success: false as const, reason: 'invalid' as const };
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return { success: false, error: 'Invalid email address' };
+  const guard = await guardSubmission({
+    name,
+    email,
+    phone,
+    message,
+    token: (formData.get('cf-turnstile-response') as string) ?? undefined,
+    trap: (formData.get(HONEYPOT_FIELD) as string) ?? undefined,
+    renderedAt: Number(formData.get(RENDERED_AT_FIELD)) || undefined,
+  });
+
+  if (!guard.ok) {
+    return { success: false as const, reason: guard.reason };
   }
 
   try {
@@ -182,12 +194,12 @@ export async function submitContactForm(formData: FormData) {
     if (!response.ok) {
       const error = await response.text();
       console.error('Brevo API error:', error);
-      return { success: false, error: 'Failed to send email' };
+      return { success: false as const, reason: 'send-failed' as const };
     }
 
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error('Contact form error:', error);
-    return { success: false, error: 'Failed to send email' };
+    return { success: false as const, reason: 'send-failed' as const };
   }
 }

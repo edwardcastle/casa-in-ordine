@@ -296,7 +296,17 @@
       "submit": "Send Message",
       "sending": "Sending...",
       "success": "Message sent successfully! We'll get back to you soon.",
-      "error": "An error occurred. Please try again later."
+      "error": "An error occurred. Please try again later.",
+      "errors": {
+        "captcha": "Security check failed. Please reload the page and try again.",
+        "email-disposable": "Please use a permanent email address — we can't reply to a temporary mailbox.",
+        "email-format": "That email address doesn't look valid. Please check it and try again.",
+        "email-unreachable": "We can't reach that email domain. Please check the spelling.",
+        "message-too-long": "That message is too long. Please keep it under 5000 characters.",
+        "message-too-short": "Please tell us a little more about how we can help.",
+        "rate-limited": "You've sent several requests recently. Please try again in an hour, or email info@casainordine.com.",
+        "send-failed": "We couldn't send your message. Please try again or email us at info@casainordine.com."
+      }
     },
     "info": {
       "title": "Information",

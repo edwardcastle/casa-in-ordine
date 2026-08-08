@@ -296,7 +296,17 @@
       "submit": "Invia Messaggio",
       "sending": "Invio in corso...",
       "success": "Messaggio inviato con successo! Ti risponderemo al più presto.",
-      "error": "Si è verificato un errore. Riprova più tardi."
+      "error": "Si è verificato un errore. Riprova più tardi.",
+      "errors": {
+        "captcha": "Verifica di sicurezza non riuscita. Ricarica la pagina e riprova.",
+        "email-disposable": "Usa un indirizzo email permanente: su una casella temporanea non potremmo risponderti.",
+        "email-format": "L'indirizzo email non sembra valido. Controlla e riprova.",
+        "email-unreachable": "Non riusciamo a raggiungere questo dominio email. Controlla che sia scritto correttamente.",
+        "message-too-long": "Il messaggio è troppo lungo. Riassumilo in meno di 5000 caratteri.",
+        "message-too-short": "Scrivi qualche parola in più su come possiamo aiutarti.",
+        "rate-limited": "Hai inviato troppe richieste di recente. Riprova tra un'ora o scrivici a info@casainordine.com.",
+        "send-failed": "Non siamo riusciti a inviare il messaggio. Riprova o scrivici a info@casainordine.com."
+      }
     },
     "info": {
       "title": "Informazioni",
