@@ -40,6 +40,9 @@ export type RejectionReason =
   | 'message-too-short'
   | 'message-too-long'
   | 'message-spam'
+  | 'missing-fields'
+  | 'field-too-long'
+  /** Bot signals only. Stays vague so a script learns nothing. */
   | 'invalid';
 
 export type GuardResult =
@@ -62,35 +65,43 @@ export interface SubmissionInput {
   renderedAt?: number;
 }
 
+function refuse(reason: RejectionReason, detail?: string): GuardResult {
+  // Without this a refusal is invisible: the browser shows one sentence and
+  // the server said nothing, so nobody could tell a spam score from an
+  // unreachable domain from a dead captcha token.
+  console.warn(`Submission refused: ${reason}${detail ? ` (${detail})` : ''}`);
+  return { ok: false, reason };
+}
+
 export async function guardSubmission(input: SubmissionInput): Promise<GuardResult> {
   const { name, email, phone, message, messageOptional, token, trap, renderedAt } = input;
 
   // 1. Honeypot — hidden from real users, irresistible to form-fillers.
   if (trap && trap.trim() !== '') {
-    return { ok: false, reason: 'invalid' };
+    return refuse('invalid', 'honeypot filled');
   }
 
   // 2. Submitted implausibly fast. The stamp is forgeable, which is fine:
   //    it is one layer, and forging it still leaves the rest.
   if (renderedAt && Number.isFinite(renderedAt)) {
     if (Date.now() - renderedAt < MIN_FILL_MS) {
-      return { ok: false, reason: 'invalid' };
+      return refuse('invalid', `submitted after ${Date.now() - renderedAt}ms`);
     }
   }
 
   // 3. Required fields and length caps, before anything expensive.
   if (!name?.trim() || !email?.trim()) {
-    return { ok: false, reason: 'invalid' };
+    return refuse('missing-fields');
   }
   if (!withinLimit(name, FIELD_LIMITS.name) || !withinLimit(phone, FIELD_LIMITS.phone)) {
-    return { ok: false, reason: 'invalid' };
+    return refuse('field-too-long');
   }
 
   // 4. Hammering guard. Generous, because everything it counts might still be
   //    a person getting their own address wrong.
   const ip = clientIp(await headers());
   if (attemptLimiter.check(ip)) {
-    return { ok: false, reason: 'rate-limited' };
+    return refuse('rate-limited', `${ip} exceeded the attempt budget`);
   }
 
   // 5. Turnstile. A missing secret is a deployment mistake rather than an
@@ -99,7 +110,7 @@ export async function guardSubmission(input: SubmissionInput): Promise<GuardResu
   //    customer is worse than one running without its captcha.
   const captcha = await verifyTurnstile(token, ip);
   if (captcha === 'fail') {
-    return { ok: false, reason: 'captcha' };
+    return refuse('captcha', 'Turnstile did not accept the token');
   }
   if (captcha === 'not-configured') {
     console.error(
@@ -111,36 +122,33 @@ export async function guardSubmission(input: SubmissionInput): Promise<GuardResu
   if (message !== undefined) {
     const content = checkMessage(name, message, { optional: messageOptional });
     if (!content.ok) {
-      return {
-        ok: false,
-        reason:
-          content.problem === 'too-short'
-            ? 'message-too-short'
-            : content.problem === 'too-long'
-              ? 'message-too-long'
-              : 'message-spam',
-      };
+      return refuse(
+        content.problem === 'too-short'
+          ? 'message-too-short'
+          : content.problem === 'too-long'
+            ? 'message-too-long'
+            : 'message-spam',
+      );
     }
   }
 
   // 7. Address reachability last — it is the only check that waits on DNS.
   const address = await checkEmail(email);
   if (!address.ok) {
-    return {
-      ok: false,
-      reason:
-        address.problem === 'format'
-          ? 'email-format'
-          : address.problem === 'disposable'
-            ? 'email-disposable'
-            : 'email-unreachable',
-    };
+    return refuse(
+      address.problem === 'format'
+        ? 'email-format'
+        : address.problem === 'disposable'
+          ? 'email-disposable'
+          : 'email-unreachable',
+      email,
+    );
   }
 
   // 8. Delivery budget, counted last so only submissions that were going to
   //    become an email spend it. Everything above this line is free to retry.
   if (sendLimiter.check(ip)) {
-    return { ok: false, reason: 'rate-limited' };
+    return refuse('rate-limited', `${ip} exceeded the delivery budget`);
   }
 
   return { ok: true, email: address.email };

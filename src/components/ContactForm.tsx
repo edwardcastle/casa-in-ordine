@@ -16,6 +16,9 @@ const EXPLAINED_REASONS = new Set([
   'email-unreachable',
   'message-too-short',
   'message-too-long',
+  'message-spam',
+  'missing-fields',
+  'field-too-long',
 ]);
 
 export default function ContactForm() {

@@ -46,6 +46,9 @@ const EXPLAINED_REASONS = new Set([
   'email-disposable',
   'email-unreachable',
   'message-too-long',
+  'message-spam',
+  'missing-fields',
+  'field-too-long',
 ]);
 
 export default function QuoteWizard() {

@@ -302,8 +302,11 @@
         "email-disposable": "Questo è un indirizzo email temporaneo: non potremmo inviarti il preventivo. Usane uno che leggi di solito.",
         "email-format": "Questo indirizzo email non sembra completo. Controlla che non manchi nulla prima della @ o dopo il punto.",
         "email-unreachable": "Non troviamo un servizio di posta per questo indirizzo. Controlla che il dominio dopo la @ sia scritto bene.",
+        "field-too-long": "Nome o telefono sono troppo lunghi. Accorciali e riprova.",
+        "message-spam": "Il messaggio sembra generato automaticamente. Riscrivilo con parole tue, senza link, e riprova.",
         "message-too-long": "Il messaggio è troppo lungo. Riassumi i punti principali in meno di 5000 caratteri.",
         "message-too-short": "Raccontaci qualcosa in più: bastano una o due frasi su cosa vorresti sistemare.",
+        "missing-fields": "Compila nome ed email: senza quelli non possiamo risponderti.",
         "rate-limited": "Hai già inviato diverse richieste. Attendi un'ora oppure scrivici direttamente a info@casainordine.com.",
         "send-failed": "Qualcosa non ha funzionato e il messaggio non è partito. Riprova tra un istante o scrivici a info@casainordine.com."
       }
@@ -599,7 +602,10 @@
       "email-disposable": "Questo è un indirizzo email temporaneo: non potremmo inviarti il preventivo. Usane uno che leggi di solito.",
       "email-format": "Questo indirizzo email non sembra completo. Controlla che non manchi nulla prima della @ o dopo il punto.",
       "email-unreachable": "Non troviamo un servizio di posta per questo indirizzo. Controlla che il dominio dopo la @ sia scritto bene.",
+      "field-too-long": "Nome o telefono sono troppo lunghi. Accorciali e riprova.",
+      "message-spam": "Il messaggio sembra generato automaticamente. Riscrivilo con parole tue, senza link, e riprova.",
       "message-too-long": "Il messaggio è troppo lungo. Riassumi i punti principali in meno di 5000 caratteri.",
+      "missing-fields": "Compila nome ed email: senza quelli non possiamo risponderti.",
       "rate-limited": "Hai già inviato diverse richieste. Attendi un'ora oppure scrivici direttamente a info@casainordine.com.",
       "send-failed": "Qualcosa non ha funzionato e il messaggio non è partito. Riprova tra un istante o scrivici a info@casainordine.com."
     }
