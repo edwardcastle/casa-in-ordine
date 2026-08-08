@@ -23,6 +23,10 @@ export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [reason, setReason] = useState<string>('send-failed');
   const [token, setToken] = useState('');
+  // Controlled so a rejection does not wipe what the visitor wrote. React
+  // resets an uncontrolled form once the action settles, which would cost
+  // them the whole message over a mistyped address.
+  const [fields, setFields] = useState({ name: '', email: '', phone: '', message: '' });
   // Stamped on mount, so a submission arriving milliseconds later is visibly
   // not a person filling in a form. Set in an effect rather than during
   // render: the clock would otherwise differ between server and hydration.
@@ -71,6 +75,8 @@ export default function ContactForm() {
           id="name"
           name="name"
           required
+          value={fields.name}
+          onChange={(e) => setFields({ ...fields, name: e.target.value })}
           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-colors"
         />
       </div>
@@ -84,6 +90,8 @@ export default function ContactForm() {
           id="email"
           name="email"
           required
+          value={fields.email}
+          onChange={(e) => setFields({ ...fields, email: e.target.value })}
           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-colors"
         />
       </div>
@@ -96,6 +104,8 @@ export default function ContactForm() {
           type="tel"
           id="phone"
           name="phone"
+          value={fields.phone}
+          onChange={(e) => setFields({ ...fields, phone: e.target.value })}
           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-colors"
         />
       </div>
@@ -109,6 +119,8 @@ export default function ContactForm() {
           name="message"
           required
           rows={5}
+          value={fields.message}
+          onChange={(e) => setFields({ ...fields, message: e.target.value })}
           className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary/50 focus:border-primary outline-none transition-colors resize-vertical"
         />
       </div>
