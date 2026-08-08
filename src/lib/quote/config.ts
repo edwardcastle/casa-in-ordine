@@ -1,129 +1,328 @@
 // --- Work-package pricing model ---
-// Flat package prices per room type, sized by scope.
-// Small increments per extra unit keep totals accessible.
-// Typical range: €30 (small bathroom) – €200 (large move).
 //
-// Formula:
-//   projectBase   = basePrice + Σ(first unit × costPerUnit + extra units × costPerUnit × 0.15)
-//   projectCost   = projectBase × complexityMultiplier
-//   extrasCost    = Σ(flat base + percent × projectCost) for each selected extra
-//   urgency       = quiz score (0–6) mapped to 0–5% of (projectCost + extrasCost)
-//   total         = projectCost + extrasCost + urgency
+// The wizard asks categorical questions per zone rather than numeric sizes, so
+// the price is assembled from the options the visitor picks:
+//
+//   projectBase = zone.basePrice + Σ(price of every selected option)
+//   projectCost = projectBase × accumulation multiplier
+//   urgency     = projectCost × timing surcharge
+//   total       = projectCost + urgency
+//
+// Options with price 0 are diagnostic — they tell the team what to prepare but
+// do not move the estimate.
 
-export type Category = 'armadio' | 'cucina' | 'ufficio' | 'bagno' | 'garage' | 'trasloco';
+export type Zone = 'armadio' | 'cucina' | 'bagno' | 'living' | 'trasloco' | 'garage';
 
-export const CATEGORIES: Category[] = ['armadio', 'cucina', 'ufficio', 'bagno', 'garage', 'trasloco'];
+export const ZONES: Zone[] = ['armadio', 'cucina', 'bagno', 'living', 'trasloco', 'garage'];
 
-/** Number of clutter questions asked after the area is chosen. */
-export const QUIZ_LENGTH = 3;
-
-/** Options per question. Index 0 is always the calmest answer, 2 the most chaotic. */
-export const QUIZ_OPTIONS = 3;
-
-interface CategoryConfig {
-  basePrice: number; // package starting price
-  fields: { id: string; costPerUnit: number }[];
+export interface QuoteOption {
+  id: string;
+  /** € added to the project base when selected. */
+  price: number;
+  /**
+   * Multi-select only: selecting this option clears the others, and selecting
+   * any other clears this one. Used for "everything" options that would
+   * otherwise overlap with the narrower ones.
+   */
+  exclusive?: boolean;
 }
 
-export const categoryConfigs: Record<Category, CategoryConfig> = {
+export interface QuoteQuestion {
+  id: string;
+  type: 'single' | 'multi';
+  options: QuoteOption[];
+}
+
+export interface ZoneConfig {
+  /** Package starting price before any option is added. */
+  basePrice: number;
+  questions: QuoteQuestion[];
+}
+
+export const zoneConfigs: Record<Zone, ZoneConfig> = {
   armadio: {
-    basePrice: 50,      // basic 2-door wardrobe package
-    fields: [
-      { id: 'doors', costPerUnit: 8 },
-      { id: 'drawers', costPerUnit: 4 },
-      { id: 'height', costPerUnit: 10 },
+    basePrice: 50,
+    questions: [
+      {
+        id: 'tipologia',
+        type: 'single',
+        options: [
+          { id: 'standard', price: 0 },
+          { id: 'grande', price: 25 },
+          { id: 'cabina', price: 60 },
+        ],
+      },
+      {
+        id: 'destinatario',
+        type: 'single',
+        options: [
+          { id: 'individuale', price: 0 },
+          { id: 'coppia', price: 18 },
+          { id: 'bambini', price: 10 },
+        ],
+      },
+      {
+        // Diagnostic: tells the team what to prepare, no price impact.
+        id: 'difficolta',
+        type: 'single',
+        options: [
+          { id: 'tempo', price: 0 },
+          { id: 'pieno', price: 0 },
+          { id: 'piegatura', price: 0 },
+        ],
+      },
+      {
+        id: 'cambioStagione',
+        type: 'single',
+        options: [
+          { id: 'si', price: 15 },
+          { id: 'no', price: 0 },
+        ],
+      },
     ],
   },
+
   cucina: {
-    basePrice: 65,      // standard kitchen package
-    fields: [
-      { id: 'modules', costPerUnit: 5 },
-      { id: 'pantry', costPerUnit: 20 },
-      { id: 'counters', costPerUnit: 8 },
+    basePrice: 65,
+    questions: [
+      {
+        id: 'aree',
+        type: 'multi',
+        options: [
+          { id: 'dispensa', price: 12 },
+          { id: 'mobili', price: 22 },
+          // Covers both of the above, so it cannot be combined with them.
+          { id: 'completa', price: 35, exclusive: true },
+        ],
+      },
+      {
+        id: 'problema',
+        type: 'single',
+        options: [
+          { id: 'scadenze', price: 0 },
+          { id: 'piani', price: 0 },
+          { id: 'contenitori', price: 0 },
+        ],
+      },
+      {
+        id: 'acquisti',
+        type: 'single',
+        options: [
+          { id: 'si', price: 18 },
+          { id: 'no', price: 0 },
+        ],
+      },
     ],
   },
-  ufficio: {
-    basePrice: 50,      // single-desk office package
-    fields: [
-      { id: 'desks', costPerUnit: 12 },
-      { id: 'documents', costPerUnit: 8 },
-    ],
-  },
+
   bagno: {
-    basePrice: 38,      // small bathroom package
-    fields: [
-      { id: 'cabinets', costPerUnit: 8 },
-      { id: 'shelves', costPerUnit: 4 },
+    basePrice: 38,
+    questions: [
+      {
+        id: 'quantita',
+        type: 'single',
+        options: [
+          { id: 'uno', price: 0 },
+          { id: 'due', price: 28 },
+        ],
+      },
+      {
+        id: 'contenimento',
+        type: 'multi',
+        options: [
+          { id: 'cassettoni', price: 8 },
+          { id: 'colonna', price: 8 },
+          { id: 'specchio', price: 6 },
+        ],
+      },
+      {
+        id: 'esigenza',
+        type: 'single',
+        options: [
+          { id: 'scaduti', price: 0 },
+          { id: 'scorte', price: 0 },
+        ],
+      },
     ],
   },
-  garage: {
-    basePrice: 75,      // standard garage package
-    fields: [
-      { id: 'racks', costPerUnit: 10 },
-      { id: 'tools', costPerUnit: 15 },
+
+  living: {
+    basePrice: 50,
+    questions: [
+      {
+        id: 'area',
+        type: 'single',
+        options: [
+          { id: 'soggiorno', price: 10 },
+          { id: 'office', price: 0 },
+          { id: 'giochi', price: 8 },
+        ],
+      },
+      {
+        id: 'causa',
+        type: 'single',
+        options: [
+          { id: 'documenti', price: 0 },
+          { id: 'giocattoli', price: 0 },
+          { id: 'decorativi', price: 0 },
+        ],
+      },
     ],
   },
+
   trasloco: {
-    basePrice: 100,     // small move/unpack package
-    fields: [
-      { id: 'boxes', costPerUnit: 2.5 },
-      { id: 'rooms', costPerUnit: 25 },
+    basePrice: 100,
+    questions: [
+      {
+        id: 'fase',
+        type: 'single',
+        options: [
+          { id: 'pre', price: 0 },
+          { id: 'imballaggio', price: 30 },
+          { id: 'unpacking', price: 35 },
+          { id: 'completo', price: 80 },
+        ],
+      },
+      {
+        id: 'vani',
+        type: 'single',
+        options: [
+          { id: 'piccolo', price: 0 },
+          { id: 'medio', price: 40 },
+          { id: 'grande', price: 90 },
+        ],
+      },
+    ],
+  },
+
+  garage: {
+    basePrice: 75,
+    questions: [
+      {
+        id: 'tipologia',
+        type: 'single',
+        options: [
+          { id: 'ripostiglio', price: 0 },
+          { id: 'box', price: 20 },
+          { id: 'magazzino', price: 55 },
+        ],
+      },
+      {
+        id: 'contenuto',
+        type: 'single',
+        options: [
+          { id: 'attrezzi', price: 12 },
+          { id: 'scorte', price: 8 },
+          { id: 'misto', price: 18 },
+        ],
+      },
+      {
+        id: 'obiettivo',
+        type: 'single',
+        options: [
+          { id: 'auto', price: 0 },
+          { id: 'scaffalature', price: 0 },
+          { id: 'selezione', price: 0 },
+        ],
+      },
+      {
+        id: 'smaltimento',
+        type: 'single',
+        options: [
+          { id: 'si', price: 20 },
+          { id: 'no', price: 0 },
+        ],
+      },
     ],
   },
 };
 
-// Complexity tiers — surcharges on the package price
-export const complexityLevels = [
-  { value: 1, key: 'light', icon: '🌿' },
-  { value: 1.5, key: 'moderate', icon: '🌤️' },
-  { value: 2, key: 'critical', icon: '🌪️' },
+/** Closing questions, asked for every zone after the zone-specific ones. */
+export const accumulationLevels = [
+  { id: 'lieve', multiplier: 1.0, icon: '🌿' },
+  { id: 'medio', multiplier: 1.15, icon: '🌤️' },
+  { id: 'alto', multiplier: 1.3, icon: '🌪️' },
 ] as const;
 
-export const complexityMultipliers: Record<number, number> = {
-  1: 1.0,    // light: standard package
-  1.5: 1.15, // moderate: +15%
-  2: 1.3,    // critical: +30%
-};
+/** A rush job costs more; booking within the month does not. */
+export const timingOptions = [
+  { id: 'asap', surcharge: 0.05, icon: '⚡' },
+  { id: 'mese', surcharge: 0, icon: '🗓️' },
+] as const;
 
-export interface ExtraConfig {
-  id: string;
-  baseCost: number;
-  percent: number;
-  icon: string;
+export type AccumulationId = (typeof accumulationLevels)[number]['id'];
+export type TimingId = (typeof timingOptions)[number]['id'];
+
+/** Answers to a zone's questions: question id → selected option ids. */
+export type ZoneAnswers = Record<string, string[]>;
+
+export function questionsFor(zone: Zone): QuoteQuestion[] {
+  return zoneConfigs[zone].questions;
 }
 
-/** Add-ons offered for every area. Labels live at `quote.extras.<id>`. */
-export const universalExtras: ExtraConfig[] = [
-  { id: 'materials', baseCost: 8, percent: 0.025, icon: '📦' },
-  { id: 'dump', baseCost: 10, percent: 0.025, icon: '🚛' },
-];
+/**
+ * Applies an option click. Single-choice replaces the selection; multi-choice
+ * toggles, honouring `exclusive` so an "everything" option and the narrower
+ * ones it covers can never both be selected.
+ */
+export function toggleOption(
+  question: QuoteQuestion,
+  selected: string[],
+  optionId: string,
+): string[] {
+  if (question.type === 'single') {
+    return selected.includes(optionId) ? [] : [optionId];
+  }
 
-/** One extra per area. Labels live at `quote.areas.<category>.extra`. */
-export const categoryExtras: Record<Category, ExtraConfig> = {
-  armadio: { id: 'cambioStagione', baseCost: 12, percent: 0.025, icon: '🍂' },
-  cucina: { id: 'scadenze', baseCost: 15, percent: 0.025, icon: '🗓️' },
-  ufficio: { id: 'archiviazione', baseCost: 15, percent: 0.025, icon: '🗂️' },
-  bagno: { id: 'sottolavabo', baseCost: 10, percent: 0.025, icon: '🧴' },
-  garage: { id: 'inventario', baseCost: 12, percent: 0.025, icon: '🔧' },
-  trasloco: { id: 'etichettatura', baseCost: 12, percent: 0.025, icon: '🏷️' },
-};
+  if (selected.includes(optionId)) {
+    return selected.filter((id) => id !== optionId);
+  }
 
-export function extrasForCategory(category: Category): ExtraConfig[] {
-  return [...universalExtras, categoryExtras[category]];
+  const isExclusive = question.options.find((o) => o.id === optionId)?.exclusive;
+  if (isExclusive) return [optionId];
+
+  const exclusiveIds = question.options.filter((o) => o.exclusive).map((o) => o.id);
+  return [...selected.filter((id) => !exclusiveIds.includes(id)), optionId];
 }
 
-/** Sum of the chosen option indices, 0–6. Unanswered questions score 0. */
-export function quizScore(answers: (number | null)[]): number {
-  return answers.reduce<number>((sum, index) => sum + (index ?? 0), 0);
+export function isAnswered(answers: ZoneAnswers, questionId: string): boolean {
+  return (answers[questionId]?.length ?? 0) > 0;
 }
 
-/** Max quiz score maps to a 5% urgency surcharge. */
-export const MAX_QUIZ_SCORE = QUIZ_LENGTH * (QUIZ_OPTIONS - 1);
-export const MAX_URGENCY_PERCENT = 0.05;
+export interface PriceBreakdown {
+  total: number;
+  project: number;
+  urgency: number;
+}
 
-/** Which sensitization paragraph the result page shows, by quiz score. */
-export function sensitizationBand(score: number): 'low' | 'mid' | 'high' {
-  if (score <= 1) return 'low';
-  if (score <= 3) return 'mid';
-  return 'high';
+export function calculatePrice(
+  zone: Zone,
+  answers: ZoneAnswers,
+  accumulation: AccumulationId | null,
+  timing: TimingId | null,
+): PriceBreakdown {
+  const config = zoneConfigs[zone];
+
+  const optionsTotal = config.questions.reduce((sum, question) => {
+    const selected = answers[question.id] ?? [];
+    return (
+      sum +
+      question.options
+        .filter((option) => selected.includes(option.id))
+        .reduce((s, option) => s + option.price, 0)
+    );
+  }, 0);
+
+  const multiplier =
+    accumulationLevels.find((l) => l.id === accumulation)?.multiplier ?? 1;
+  const projectCost = (config.basePrice + optionsTotal) * multiplier;
+
+  const surcharge = timingOptions.find((t) => t.id === timing)?.surcharge ?? 0;
+  const urgencyAmount = projectCost * surcharge;
+
+  return {
+    total: Math.round(projectCost + urgencyAmount),
+    project: Math.round(projectCost),
+    urgency: Math.round(urgencyAmount),
+  };
 }

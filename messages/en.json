@@ -333,63 +333,9 @@
     "close": "Close"
   },
   "quote": {
-    "title": "Digital Survey",
-    "subtitle": "Three questions to get to know each other, then we define your perfect space.",
-    "quizBadge": "CLUTTER TEST",
-    "categoryTitle": "Which area would you like to transform?",
-    "categorySubtitle": "Choose where to start: the next questions will be tailored to it",
-    "categories": {
-      "armadio": "Closet",
-      "cucina": "Kitchen",
-      "ufficio": "Office",
-      "bagno": "Bathroom",
-      "garage": "Garage",
-      "trasloco": "Moving"
-    },
-    "fields": {
-      "armadio": {
-        "doors": "Number of Doors",
-        "drawers": "Internal Drawers",
-        "height": "Mezzanine Height (meters)"
-      },
-      "cucina": {
-        "modules": "Number of Modules/Cabinets",
-        "pantry": "Separate Pantry (Yes=1, No=0)",
-        "counters": "Countertops/Islands"
-      },
-      "ufficio": {
-        "desks": "Desk Stations",
-        "documents": "Linear Meters of Documents"
-      },
-      "bagno": {
-        "cabinets": "Cabinets/Under-sink",
-        "shelves": "Open Shelves"
-      },
-      "garage": {
-        "racks": "Shelf Bays",
-        "tools": "Tools/Workshop Area (1-5)"
-      },
-      "trasloco": {
-        "boxes": "Estimated Number of Boxes",
-        "rooms": "Rooms to Set Up"
-      }
-    },
-    "complexityTitle": "Challenge Level",
-    "extrasTitle": "Additional Services",
-    "extras": {
-      "materials": {
-        "desc": "We bring the organizers and dividers",
-        "label": "Organizer Kit"
-      },
-      "dump": {
-        "desc": "We handle waste disposal and donations",
-        "label": "Disposal"
-      }
-    },
     "estimateLabel": "Your estimated investment",
     "breakdownProject": "Service",
-    "breakdownExtras": "Additional services",
-    "breakdownUrgency": "Complexity adjustment",
+    "breakdownUrgency": "Rush surcharge",
     "breakdownTotal": "Estimated total",
     "disclaimerTitle": "Please Note",
     "disclaimerText": "The quote above is purely indicative. Our team will prepare a fair and detailed quote within 24 hours.",
@@ -403,11 +349,9 @@
     "fullName": "Full Name",
     "emailField": "Email",
     "phoneField": "Phone (optional)",
-    "estimate": "Estimate",
     "back": "Back",
     "next": "Next",
     "restart": "Start over",
-    "extrasSubtitle": "Make the experience even more complete",
     "availabilityTitle": "When can we meet?",
     "availabilitySubtitle": "Indicate up to 3 preferred dates and times for the survey",
     "availabilitySlot1": "Option 1 (Preferred)",
@@ -418,337 +362,217 @@
     "photosLabel": "Photos of the space (Max 5)",
     "photosUpload": "Click to add photos",
     "photosNone": "No photos selected",
-    "whyActNow": "Why act now:",
-    "summaryTitle": "Survey Summary:",
+    "summaryTitle": "Survey summary:",
     "datesTitle": "Requested Dates:",
     "dateNotSpecified": "Not specified",
     "printTitle": "Print / Save PDF",
-    "areas": {
+    "zones": {
       "armadio": {
-        "detailsTitle": "Your closet in detail",
-        "detailsSubtitle": "Doors, drawers and top unit: that's how we plan the time.",
-        "complexitySubtitle": "How deep is the clutter inside your closet?",
-        "complexity": {
-          "light": {
-            "title": "Light",
-            "description": "Everything fits, it just needs a system"
+        "label": "Closets & Walk-in Closets",
+        "tagline": "Wardrobe",
+        "questions": {
+          "tipologia": {
+            "question": "What kind of wardrobe do you have?",
+            "options": {
+              "standard": "Standard closet (2-4 doors)",
+              "grande": "Large closet (6+ doors or sliding doors)",
+              "cabina": "Full walk-in closet"
+            }
           },
-          "moderate": {
-            "title": "Moderate",
-            "description": "Wobbly piles and clothes never worn"
+          "destinatario": {
+            "question": "The service is for:",
+            "options": {
+              "individuale": "Individual wardrobe",
+              "coppia": "Couple's wardrobe",
+              "bambini": "Kids' / teens' wardrobe"
+            }
           },
-          "critical": {
-            "title": "Critical",
-            "description": "Doors won't close, clothes you can't find"
+          "difficolta": {
+            "question": "What's the main difficulty you run into in the morning?",
+            "options": {
+              "tempo": "I can't find my clothes and waste too much time getting dressed.",
+              "pieno": "The closet is full but I feel like I have “nothing to wear”.",
+              "piegatura": "My clothes get creased and there's no effective folding system."
+            }
+          },
+          "cambioStagione": {
+            "question": "Would you like to include the full Seasonal Changeover and basket labeling?",
+            "options": {
+              "si": "Yes, I'd like a complete seasonal reorganization.",
+              "no": "No, I only want to reorganize the clothes I have now."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "How long does it take to find the garment you want?",
-            "options": [
-              "I grab it right away",
-              "I have to move a few piles",
-              "I empty half the closet to find it"
-            ]
-          },
-          "q2": {
-            "question": "How do you handle the seasonal swap in your closet?",
-            "options": [
-              "I do it in one afternoon",
-              "I put it off for a few weeks",
-              "Summer and winter live together all year"
-            ]
-          },
-          "q3": {
-            "question": "How much free space is left on the hanging rail?",
-            "options": [
-              "Hangers slide with no effort",
-              "I have to push hangers aside",
-              "Every garment goes in by force"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Seasonal Changeover",
-          "desc": "We rotate the closet and bag up your off-season clothes"
-        },
-        "sensitization": {
-          "low": "Your closet already works: with a method built around its doors and drawers you gain precious minutes every morning.",
-          "mid": "The piles are growing and the seasonal swap keeps slipping: sorting the closet now is easier than waiting until spring.",
-          "high": "If opening those doors weighs on you, that's okay: in one day we give you back a closet where every garment is easy to find."
         }
       },
       "cucina": {
-        "detailsTitle": "Your kitchen in detail",
-        "detailsSubtitle": "Cabinets, pantry and countertops tell us how much space there is",
-        "complexitySubtitle": "How deep is the clutter in your cabinets and pantry?",
-        "complexity": {
-          "light": {
-            "title": "Light",
-            "description": "It's all there, but with no logic"
+        "label": "Kitchen & Pantry",
+        "tagline": "Food and utensils",
+        "questions": {
+          "aree": {
+            "question": "Which areas of the kitchen need our help?",
+            "options": {
+              "dispensa": "Only the food pantry",
+              "mobili": "Wall cabinets and drawers (pots, utensils, dishes)",
+              "completa": "Full kitchen + Pantry"
+            }
           },
-          "moderate": {
-            "title": "Moderate",
-            "description": "Cabinets full, duplicates everywhere"
+          "problema": {
+            "question": "What's the main problem in the kitchen?",
+            "options": {
+              "scadenze": "Food expires or piles up because you can't see what you have.",
+              "piani": "Not enough space on the countertops.",
+              "contenitori": "Visual clutter and no suitable containers/labels."
+            }
           },
-          "critical": {
-            "title": "Critical",
-            "description": "Countertops taken over, doors that won't close"
+          "acquisti": {
+            "question": "Would you like us to select and advise you on buying containers and airtight jars?",
+            "options": {
+              "si": "Yes, I'd like a complete aesthetic and functional result.",
+              "no": "No, I'd rather use the containers I already have."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "How long does it take you to find pots and lids?",
-            "options": [
-              "I grab them right away, they're handy",
-              "I search a bit, but I find them",
-              "I have to empty half a cabinet"
-            ]
-          },
-          "q2": {
-            "question": "How much countertop do you have free to cook on?",
-            "options": [
-              "Almost all of it, I cook comfortably",
-              "One corner, I make do",
-              "Almost none, I move everything each time"
-            ]
-          },
-          "q3": {
-            "question": "Do you re-buy food you already have in the pantry?",
-            "options": [
-              "Almost never, I know what's there",
-              "Now and then I find a duplicate",
-              "Often, and I find expired packages"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Expiry Date Check",
-          "desc": "We check your pantry and dispose of expired products"
-        },
-        "sensitization": {
-          "low": "Your kitchen already works well: with a few tweaks you gain free countertops and precious minutes every time you cook.",
-          "mid": "Duplicates in the cabinets multiply fast: sorting them now is a short job, and cooking feels light again right away.",
-          "high": "There's nothing to be ashamed of: we bring order back to your pantry and countertops, and your kitchen becomes a good place to be again."
-        }
-      },
-      "ufficio": {
-        "detailsTitle": "Your office in detail",
-        "detailsSubtitle": "Desks and meters of documents tell us how much time it takes.",
-        "complexitySubtitle": "How deep is the clutter on papers and desks?",
-        "complexity": {
-          "light": {
-            "title": "Light",
-            "description": "Desk is clear, filing needs polish"
-          },
-          "moderate": {
-            "title": "Moderate",
-            "description": "Stacks of papers on desk and chairs"
-          },
-          "critical": {
-            "title": "Critical",
-            "description": "Papers everywhere, hard to work"
-          }
-        },
-        "quiz": {
-          "q1": {
-            "question": "How long does it take to find a two-year-old invoice?",
-            "options": [
-              "A minute, I know where it is",
-              "A quarter of an hour of digging",
-              "Easier to ask for a copy"
-            ]
-          },
-          "q2": {
-            "question": "How much paper is waiting to be filed?",
-            "options": [
-              "A tray on the desk",
-              "Two piles and a full drawer",
-              "Boxes closed for months"
-            ]
-          },
-          "q3": {
-            "question": "How does your day at the desk start?",
-            "options": [
-              "I sit down and get going",
-              "I move a few piles first",
-              "I work elsewhere, the desk is full"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Digital Archiving",
-          "desc": "We scan and sort the documents you want to keep"
-        },
-        "sensitization": {
-          "low": "Your office is already under control: with us you gain a flawless archive and a few free hours every week.",
-          "mid": "Piles of paper on the desk grow fast: sorting them now is easy and saves you from losing important documents.",
-          "high": "Even the most buried office becomes livable again: we take care of the papers and the desk, without judging, so you can work calmly again."
         }
       },
       "bagno": {
-        "detailsTitle": "Your bathroom in detail",
-        "detailsSubtitle": "Cabinets and shelves tell us how much space to sort",
-        "complexitySubtitle": "How deep is the clutter in your bathroom?",
-        "complexity": {
-          "light": {
-            "title": "Light",
-            "description": "Just needs a method for the products"
+        "label": "Bathroom & Personal Care",
+        "tagline": "Cosmetics and supplies",
+        "questions": {
+          "quantita": {
+            "question": "How many bathrooms would you like to reorganize?",
+            "options": {
+              "uno": "1 main bathroom",
+              "due": "2 or more bathrooms"
+            }
           },
-          "moderate": {
-            "title": "Moderate",
-            "description": "Duplicate bottles and crowded shelves"
+          "contenimento": {
+            "question": "How are your storage spaces set up?",
+            "options": {
+              "cassettoni": "Deep drawers under the sink",
+              "colonna": "Tall unit or open shelves",
+              "specchio": "Mirrored cabinet / Wall cabinets"
+            }
           },
-          "critical": {
-            "title": "Critical",
-            "description": "Under-sink full, you can't see inside"
+          "esigenza": {
+            "question": "What's the main need?",
+            "options": {
+              "scaduti": "Clearing out expired or unused cosmetics/medicines.",
+              "scorte": "Creating clear categories for personal hygiene supplies."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "In the morning, do you find your toothbrush and cream fast?",
-            "options": [
-              "Yes, everything within reach",
-              "A drawer or two to rummage through",
-              "I move everything to find one thing"
-            ]
-          },
-          "q2": {
-            "question": "How many opened or expired bottles are in your bathroom?",
-            "options": [
-              "Almost none",
-              "A few forgotten products",
-              "I'd rather not check the dates"
-            ]
-          },
-          "q3": {
-            "question": "If a guest drops by, do you tidy the bathroom in a rush?",
-            "options": [
-              "No, it's already presentable",
-              "A quick once-over",
-              "I hide everything under the sink"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Under-Sink Tidy-Up",
-          "desc": "We bring containers fitted to your under-sink space"
-        },
-        "sensitization": {
-          "low": "Your bathroom is already balanced: a few small adjustments are enough to save precious minutes every morning and keep it that way.",
-          "mid": "Every extra bottle makes the bathroom harder work: acting now is simple and saves you starting over in six months.",
-          "high": "There's nothing to be ashamed of: a bathroom fills up without asking permission. In a few hours it feels airy and yours again."
         }
       },
-      "garage": {
-        "detailsTitle": "Your garage in detail",
-        "detailsSubtitle": "Shelf bays and tool area tell us how much space to reclaim",
-        "complexitySubtitle": "How deep is the clutter between shelves and tools?",
-        "complexity": {
-          "light": {
-            "title": "Light",
-            "description": "Every tool just needs its own place"
+      "living": {
+        "label": "Living Areas & Home Office",
+        "tagline": "Shared spaces",
+        "questions": {
+          "area": {
+            "question": "Which area of your home would you like to organize?",
+            "options": {
+              "soggiorno": "Living room / Lounge area",
+              "office": "Home Office corner / Work desk",
+              "giochi": "Kids' play area"
+            }
           },
-          "moderate": {
-            "title": "Moderate",
-            "description": "Boxes and tools piled up over years"
-          },
-          "critical": {
-            "title": "Critical",
-            "description": "The car won't fit and you squeeze past"
+          "causa": {
+            "question": "What's the main cause of the clutter in this area?",
+            "options": {
+              "documenti": "A build-up of documents, cables and office supplies.",
+              "giocattoli": "Toys and items with no fixed place.",
+              "decorativi": "Too many decorative pieces or objects accumulated over time."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "How long does it take to find a tool in the garage?",
-            "options": [
-              "I grab it straight off the shelf",
-              "I have to open a couple of boxes",
-              "I end up buying it again"
-            ]
-          },
-          "q2": {
-            "question": "Can you still park the car in the garage?",
-            "options": [
-              "Yes, it goes in and out easily",
-              "Only with some extra maneuvering",
-              "The car stays outside now"
-            ]
-          },
-          "q3": {
-            "question": "How do you feel when you open the garage?",
-            "options": [
-              "Good, everything has its place",
-              "A bit annoyed by the boxes",
-              "I shut it and leave it for another day"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Tool Inventory",
-          "desc": "We catalog and label your tools and materials"
-        },
-        "sensitization": {
-          "low": "Your garage is already under control: with a few small tweaks you'll find any tool in seconds and save time every week.",
-          "mid": "Give it a few more months and the boxes will take the car's place: acting now is simple, quick and saves you a far bigger job.",
-          "high": "The garage didn't fill up in a day and you are not the problem: we come in, one shelf at a time, and give the space back to you."
         }
       },
       "trasloco": {
-        "detailsTitle": "Your move in detail",
-        "detailsSubtitle": "Boxes and rooms to set up: that's how we work out the time.",
-        "complexitySubtitle": "How chaotic is your move right now?",
-        "complexity": {
-          "light": {
-            "title": "Light",
-            "description": "Few boxes, already labeled"
+        "label": "Moving & Setup Special",
+        "tagline": "Zero Stress Move",
+        "questions": {
+          "fase": {
+            "question": "At which stage of your move do you need our support?",
+            "options": {
+              "pre": "Pre-Move: decluttering and sorting before you pack.",
+              "imballaggio": "Packing: systematic boxing up, organized room by room.",
+              "unpacking": "Unpacking & Setup: unpacking and organizing your new home from day 1.",
+              "completo": "Full Service: total management from home to home."
+            }
           },
-          "moderate": {
-            "title": "Moderate",
-            "description": "Mixed boxes to reopen and sort"
-          },
-          "critical": {
-            "title": "Critical",
-            "description": "House full of boxes, nothing in place"
+          "vani": {
+            "question": "How many rooms does your new home have?",
+            "options": {
+              "piccolo": "1-2 Rooms (Studio / One-bedroom)",
+              "medio": "3-4 Rooms (Two-bedroom / Three-bedroom)",
+              "grande": "Large property / Villa"
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "How far along are you with the boxes?",
-            "options": [
-              "Almost all sealed and labeled",
-              "Started, but with no real order",
-              "I haven't started yet"
-            ]
+        }
+      },
+      "garage": {
+        "label": "Garage, Cellar & Storage Room",
+        "tagline": "Storage spaces",
+        "questions": {
+          "tipologia": {
+            "question": "What type of space do you want to reorganize?",
+            "options": {
+              "ripostiglio": "Cellar or storage room",
+              "box": "Garage / single-car space",
+              "magazzino": "Double garage or large storeroom"
+            }
           },
-          "q2": {
-            "question": "How much is still to sort through before the move?",
-            "options": [
-              "Little, I've already chosen",
-              "A couple of rooms to go",
-              "Pretty much the whole house"
-            ]
+          "contenuto": {
+            "question": "What does the space mainly hold?",
+            "options": {
+              "attrezzi": "Tools and work materials",
+              "scorte": "Supplies, suitcases and seasonal items",
+              "misto": "A bit of everything, all mixed together"
+            }
           },
-          "q3": {
-            "question": "What usually happens in the days after a move?",
-            "options": [
-              "I unpack everything within days",
-              "Open boxes stay around for weeks",
-              "Some boxes I never open at all"
-            ]
+          "obiettivo": {
+            "question": "What's the main goal?",
+            "options": {
+              "auto": "Free up space to park the car.",
+              "scaffalature": "Set up shelving and dedicated zones by category.",
+              "selezione": "Sort through and dispose of what you no longer need."
+            }
+          },
+          "smaltimento": {
+            "question": "Would you like to include disposal of everything you decide to let go?",
+            "options": {
+              "si": "Yes, your team handles the disposal or the donations.",
+              "no": "No, I'll take care of that myself."
+            }
           }
-        },
-        "extra": {
-          "label": "Box Labeling",
-          "desc": "We label every box for you, room by room"
-        },
-        "sensitization": {
-          "low": "Your move is already well under way: we take care of the last boxes and save you whole days in your new home.",
-          "mid": "The boxes keep multiplying: a method now keeps your new home from filling up with open boxes.",
-          "high": "A move like this weighs on anyone: we take it on box after box, and your new home will be livable from the very first evening."
         }
       }
-    }
+    },
+    "closing": {
+      "accumulo": {
+        "question": "Estimated clutter level in the space",
+        "options": {
+          "lieve": "Light: I just need an organizing system that's more functional and better looking.",
+          "medio": "Medium: I have quite a few unused items and no real organizing structure.",
+          "alto": "High: a lot has built up and the space needs deep decluttering."
+        }
+      },
+      "timing": {
+        "question": "When would you like the service to take place?",
+        "options": {
+          "asap": "As soon as possible (within 7-10 days)",
+          "mese": "Sometime this month"
+        }
+      }
+    },
+    "zoneTitle": "Which area would you like to transform?",
+    "zoneSubtitle": "Pick the area: the next questions will be tailored to it",
+    "pickOne": "Choose one option",
+    "pickMany": "You can select more than one",
+    "accumuloSubtitle": "This helps us estimate the time required",
+    "timingSubtitle": "We arrange the schedule around your needs",
+    "accumuloShort": {
+      "lieve": "Light clutter",
+      "medio": "Medium clutter",
+      "alto": "Heavy clutter"
+    },
+    "photosHint": "Upload 1 or 2 photos of the area to organize: it helps us give you an almost exact estimate of time and cost."
   },
   "preventivo": {
     "title": "Free Quote – Decluttering & Home Organizing",
@@ -756,7 +580,7 @@
     "heroTitle": "Free Quote",
     "heroSubtitle": "Find out how much it costs to reorganize your spaces",
     "wizardTitle": "Digital Survey",
-    "wizardSubtitle": "Pick your area, answer three tailored questions and get your estimate right away.",
+    "wizardSubtitle": "Pick your area, answer a few tailored questions and get your estimate right away.",
     "seo": {
       "title": "How the free quote works",
       "paragraphs": [

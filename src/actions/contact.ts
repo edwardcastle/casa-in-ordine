@@ -13,24 +13,22 @@ interface QuoteRequestData {
   name: string;
   email: string;
   phone?: string;
-  category: string;
-  complexity: string;
+  /** Translated label of the chosen zone. */
+  zone: string;
   total: number;
-  breakdown: { project: number; extras: number; urgency: number };
-  /** Already-translated field labels — the raw ids mean nothing in an inbox. */
-  details: { label: string; value: number }[];
-  /** Translated labels of the selected add-ons, universal and area-specific. */
-  extras: string[];
-  /** Question text is included because it differs per area. */
-  quiz: { question: string; answer: string }[];
+  breakdown: { project: number; urgency: number };
+  /** Question text travels with the answer: questions differ per zone. */
+  answers: { question: string; answer: string }[];
+  accumulation: string;
+  timing: string;
   availability?: { slot1: string; slot2: string; slot3: string };
   notes?: string;
 }
 
 export async function submitQuoteRequest(data: QuoteRequestData) {
-  const { name, email, phone, category, complexity, total, breakdown, details, extras, quiz, availability, notes } = data;
+  const { name, email, phone, zone, total, breakdown, answers, accumulation, timing, availability, notes } = data;
 
-  if (!name || !email || !category) {
+  if (!name || !email || !zone) {
     return { success: false, error: 'Missing required fields' };
   }
 
@@ -39,14 +37,8 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
     return { success: false, error: 'Invalid email address' };
   }
 
-  const detailsRows = details
-    .filter(({ value }) => value > 0)
-    .map(({ label, value }) => `<tr><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${esc(label)}</td><td style="padding: 6px 12px; border-bottom: 1px solid #eee;">${value}</td></tr>`)
-    .join('');
-
-  const extrasList = extras.map(esc);
-
-  const quizRows = quiz
+  const answerRows = answers
+    .filter(({ answer }) => answer)
     .map(({ question, answer }) => `<li style="margin-bottom: 8px;"><span style="color: #666;">${esc(question)}</span><br><strong>${esc(answer)}</strong></li>`)
     .join('');
 
@@ -62,7 +54,7 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
         sender: { name: 'Casa in Ordine Website', email: 'info@casainordine.com' },
         to: [{ email: 'info@casainordine.com', name: 'Casa in Ordine' }],
         replyTo: { email, name },
-        subject: `Nuovo preventivo: ${name} - ${category} (€${total})`,
+        subject: `Nuovo preventivo: ${name} - ${zone} (€${total})`,
         htmlContent: `
           <h2>Nuovo preventivo dal sopralluogo digitale</h2>
           <h3 style="color: #7B8F7A;">Contatto</h3>
@@ -74,29 +66,22 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
 
           <h3 style="color: #7B8F7A;">Progetto</h3>
           <table style="border-collapse: collapse; width: 100%; margin-bottom: 24px;">
-            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Area:</td><td style="padding: 8px;">${esc(category)}</td></tr>
-            <tr><td style="padding: 8px; font-weight: bold;">Complessità:</td><td style="padding: 8px;">${esc(complexity)}</td></tr>
-            ${extrasList.length ? `<tr><td style="padding: 8px; font-weight: bold;">Extra:</td><td style="padding: 8px;">${extrasList.join(', ')}</td></tr>` : ''}
+            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Zona:</td><td style="padding: 8px;">${esc(zone)}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Accumulo:</td><td style="padding: 8px;">${esc(accumulation)}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold;">Tempistica:</td><td style="padding: 8px;">${esc(timing)}</td></tr>
           </table>
-
-          ${detailsRows ? `
-          <h3 style="color: #7B8F7A;">Dettagli spazio</h3>
-          <table style="border-collapse: collapse; width: 100%; margin-bottom: 24px;">
-            ${detailsRows}
-          </table>` : ''}
 
           <h3 style="color: #7B8F7A;">Stima</h3>
           <table style="border-collapse: collapse; width: 100%; margin-bottom: 24px;">
             <tr><td style="padding: 8px;">Intervento</td><td style="padding: 8px; text-align: right;">€${breakdown.project}</td></tr>
-            ${breakdown.extras > 0 ? `<tr><td style="padding: 8px;">Servizi aggiuntivi</td><td style="padding: 8px; text-align: right;">€${breakdown.extras}</td></tr>` : ''}
-            ${breakdown.urgency > 0 ? `<tr><td style="padding: 8px;">Adeguamento complessità</td><td style="padding: 8px; text-align: right;">€${breakdown.urgency}</td></tr>` : ''}
+            ${breakdown.urgency > 0 ? `<tr><td style="padding: 8px;">Supplemento urgenza</td><td style="padding: 8px; text-align: right;">€${breakdown.urgency}</td></tr>` : ''}
             <tr style="border-top: 2px solid #2D3748;"><td style="padding: 8px; font-weight: bold; font-size: 18px;">Totale stimato</td><td style="padding: 8px; text-align: right; font-weight: bold; font-size: 18px; color: #D98A6C;">€${total}</td></tr>
           </table>
 
-          ${quizRows ? `
-          <h3 style="color: #7B8F7A;">Test del disordine</h3>
+          ${answerRows ? `
+          <h3 style="color: #7B8F7A;">Risposte del sopralluogo</h3>
           <ol style="padding-left: 20px;">
-            ${quizRows}
+            ${answerRows}
           </ol>` : ''}
 
           ${availability && (availability.slot1 || availability.slot2 || availability.slot3) ? `

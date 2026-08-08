@@ -6,43 +6,33 @@ import Image from 'next/image';
 import { submitQuoteRequest } from '@/actions/contact';
 import CategoryIcon from '@/components/CategoryIcon';
 import {
-  CATEGORIES,
-  MAX_QUIZ_SCORE,
-  MAX_URGENCY_PERCENT,
-  QUIZ_LENGTH,
-  QUIZ_OPTIONS,
-  categoryConfigs,
-  complexityLevels,
-  complexityMultipliers,
-  extrasForCategory,
-  quizScore,
-  sensitizationBand,
-  universalExtras,
-  type Category,
-  type ExtraConfig,
+  ZONES,
+  accumulationLevels,
+  calculatePrice,
+  isAnswered,
+  questionsFor,
+  timingOptions,
+  toggleOption,
+  type AccumulationId,
+  type QuoteQuestion,
+  type TimingId,
+  type Zone,
+  type ZoneAnswers,
 } from '@/lib/quote/config';
 
-type Complexity = { value: number; label: string };
-
-// Step indices. The category comes first so every later step can be written
-// for the area the visitor actually picked.
-const STEP_CATEGORY = 0;
-const STEP_QUIZ_FIRST = 1;
-const STEP_DETAILS = 4;
-const STEP_COMPLEXITY = 5;
-const STEP_EXTRAS = 6;
-const STEP_AVAILABILITY = 7;
-const STEP_RESULT = 8;
-const TOTAL_STEPS = 9;
+// The flow is: zone → that zone's questions → accumulation → timing →
+// availability → result. Zones ask between two and four questions, so every
+// step after the questions is positioned relative to how many the zone has.
+const STEP_ZONE = 0;
+const STEP_QUESTIONS = 1;
 
 export default function QuoteWizard() {
   const t = useTranslations('quote');
   const [step, setStep] = useState(0);
-  const [category, setCategory] = useState<Category | null>(null);
-  const [quizAnswers, setQuizAnswers] = useState<(number | null)[]>(Array(QUIZ_LENGTH).fill(null));
-  const [details, setDetails] = useState<Record<string, number>>({});
-  const [complexity, setComplexity] = useState<Complexity | null>(null);
-  const [selectedExtras, setSelectedExtras] = useState<string[]>([]);
+  const [zone, setZone] = useState<Zone | null>(null);
+  const [answers, setAnswers] = useState<ZoneAnswers>({});
+  const [accumulation, setAccumulation] = useState<AccumulationId | null>(null);
+  const [timing, setTiming] = useState<TimingId | null>(null);
   const [availability, setAvailability] = useState({ slot1: '', slot2: '', slot3: '' });
   const [notes, setNotes] = useState('');
   const [photos, setPhotos] = useState<string[]>([]);
@@ -50,127 +40,85 @@ export default function QuoteWizard() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const photoInputRef = useRef<HTMLInputElement>(null);
 
-  const progress = ((step + 1) / TOTAL_STEPS) * 100;
+  const questions = zone ? questionsFor(zone) : [];
+
+  const stepAccumulation = STEP_QUESTIONS + questions.length;
+  const stepTiming = stepAccumulation + 1;
+  const stepAvailability = stepTiming + 1;
+  const stepResult = stepAvailability + 1;
+  const totalSteps = stepResult + 1;
+
+  const progress = ((step + 1) / totalSteps) * 100;
 
   // --- i18n helpers -------------------------------------------------------
-  // Everything that varies by area lives under `quote.areas.<category>`.
+  // Zone copy lives at `quote.zones.<zone>`, closing copy at `quote.closing`.
 
-  function area(key: string): string {
-    return t(`areas.${category}.${key}`);
+  function zoneText(key: string): string {
+    return t(`zones.${zone}.${key}`);
   }
 
-  function quizOptions(qIndex: number): string[] {
-    return t.raw(`areas.${category}.quiz.q${qIndex + 1}.options`) as string[];
+  function questionText(question: QuoteQuestion): string {
+    return zoneText(`questions.${question.id}.question`);
   }
 
-  function isUniversalExtra(id: string): boolean {
-    return universalExtras.some((e) => e.id === id);
+  function optionText(question: QuoteQuestion, optionId: string): string {
+    return zoneText(`questions.${question.id}.options.${optionId}`);
   }
 
-  function extraCopy(extra: ExtraConfig): { label: string; desc: string } {
-    const base = isUniversalExtra(extra.id) ? `extras.${extra.id}` : `areas.${category}.extra`;
-    return { label: t(`${base}.label`), desc: t(`${base}.desc`) };
+  // --- state --------------------------------------------------------------
+
+  function selectZone(next: Zone) {
+    if (next === zone) return;
+    setZone(next);
+    setAnswers({}); // the previous zone's answers do not apply here
   }
 
-  // --- pricing ------------------------------------------------------------
-
-  function calculatePrice(): { total: number; breakdown: { project: number; extras: number; urgency: number } } {
-    if (!category || !complexity) return { total: 0, breakdown: { project: 0, extras: 0, urgency: 0 } };
-
-    const config = categoryConfigs[category];
-
-    // 1. Base project cost = flat base + size increments (diminishing returns)
-    //    First unit at full price, additional units at 15% price
-    //    to prevent totals from inflating too much with many doors/cabinets/etc.
-    let projectBase = config.basePrice;
-    config.fields.forEach((field) => {
-      const qty = details[field.id] || 0;
-      const fullPriceQty = Math.min(qty, 1);
-      const discountedQty = Math.max(qty - 1, 0);
-      projectBase += fullPriceQty * field.costPerUnit + discountedQty * field.costPerUnit * 0.15;
-    });
-
-    // 2. Apply complexity multiplier (1.0× / 1.15× / 1.3×)
-    const compMultiplier = complexityMultipliers[complexity.value] ?? 1;
-    const projectCost = projectBase * compMultiplier;
-
-    // 3. Extras (flat base + % of project cost — scales naturally with size).
-    //    Filtered against the current area so a stale id can never be charged.
-    const extrasCost = extrasForCategory(category)
-      .filter((extra) => selectedExtras.includes(extra.id))
-      .reduce((sum, extra) => sum + extra.baseCost + projectCost * extra.percent, 0);
-
-    // 4. Quiz urgency factor (0–5%)
-    //    Higher reported chaos = more sorting/decision effort required.
-    //    Options are ordered calmest-first, so the index is the severity.
-    const urgencyPercent = (quizScore(quizAnswers) / MAX_QUIZ_SCORE) * MAX_URGENCY_PERCENT;
-    const urgencyAmount = (projectCost + extrasCost) * urgencyPercent;
-
-    const total = Math.round(projectCost + extrasCost + urgencyAmount);
-
-    return {
-      total,
-      breakdown: {
-        project: Math.round(projectCost),
-        extras: Math.round(extrasCost),
-        urgency: Math.round(urgencyAmount),
-      },
-    };
+  function pickOption(question: QuoteQuestion, optionId: string) {
+    setAnswers((prev) => ({
+      ...prev,
+      [question.id]: toggleOption(question, prev[question.id] ?? [], optionId),
+    }));
   }
+
+  const price =
+    zone !== null
+      ? calculatePrice(zone, answers, accumulation, timing)
+      : { total: 0, project: 0, urgency: 0 };
 
   function canProceed(): boolean {
-    if (step === STEP_CATEGORY) return category !== null;
-    if (step >= STEP_QUIZ_FIRST && step < STEP_QUIZ_FIRST + QUIZ_LENGTH) {
-      return quizAnswers[step - STEP_QUIZ_FIRST] !== null;
+    if (step === STEP_ZONE) return zone !== null;
+
+    const questionIndex = step - STEP_QUESTIONS;
+    if (questionIndex >= 0 && questionIndex < questions.length) {
+      return isAnswered(answers, questions[questionIndex].id);
     }
-    if (step === STEP_COMPLEXITY) return complexity !== null;
-    // details, extras and availability are all optional
-    return step === STEP_DETAILS || step === STEP_EXTRAS || step === STEP_AVAILABILITY;
-  }
 
-  function selectCategory(cat: Category) {
-    if (cat === category) return;
-    setCategory(cat);
-    // Answers, sizes and the area add-on all belong to the previous area.
-    setQuizAnswers(Array(QUIZ_LENGTH).fill(null));
-    const newDetails: Record<string, number> = {};
-    categoryConfigs[cat].fields.forEach((f) => (newDetails[f.id] = 0));
-    setDetails(newDetails);
-    setSelectedExtras((prev) => prev.filter(isUniversalExtra));
-  }
-
-  function toggleExtra(id: string) {
-    setSelectedExtras((prev) =>
-      prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id],
-    );
+    if (step === stepAccumulation) return accumulation !== null;
+    if (step === stepTiming) return timing !== null;
+    return step === stepAvailability; // dates are optional
   }
 
   async function handleSubmit() {
-    if (!category || !complexity) return;
+    if (!zone || !accumulation || !timing) return;
     setSubmitStatus('sending');
-    const { total, breakdown } = calculatePrice();
     try {
       const result = await submitQuoteRequest({
         name: contact.name,
         email: contact.email,
         phone: contact.phone || undefined,
-        category: t(`categories.${category}`),
-        complexity: complexity.label,
-        total,
-        breakdown,
-        // Labels rather than raw keys — the recipient reads this in an inbox.
-        details: categoryConfigs[category].fields
-          .filter((f) => (details[f.id] || 0) > 0)
-          .map((f) => ({ label: t(`fields.${category}.${f.id}`), value: details[f.id] })),
-        extras: extrasForCategory(category)
-          .filter((extra) => selectedExtras.includes(extra.id))
-          .map((extra) => extraCopy(extra).label),
-        // Questions differ per area, so the answers alone would be meaningless.
-        quiz: quizAnswers.flatMap((answer, i) =>
-          answer === null
-            ? []
-            : [{ question: area(`quiz.q${i + 1}.question`), answer: quizOptions(i)[answer] }],
-        ),
+        zone: zoneText('label'),
+        total: price.total,
+        breakdown: { project: price.project, urgency: price.urgency },
+        // Question text travels with the answer: it differs per zone, so the
+        // answer alone would not say what was asked.
+        answers: questions.map((question) => ({
+          question: questionText(question),
+          answer: (answers[question.id] ?? [])
+            .map((optionId) => optionText(question, optionId))
+            .join(' · '),
+        })),
+        accumulation: t(`closing.accumulo.options.${accumulation}`),
+        timing: t(`closing.timing.options.${timing}`),
         availability,
         notes: notes.trim() || undefined,
       });
@@ -206,26 +154,33 @@ export default function QuoteWizard() {
   const isValidEmail = (e: string) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e);
   const canSubmitContact = contact.name.trim() !== '' && isValidEmail(contact.email);
 
-  function renderCategoryStep() {
+  // --- steps --------------------------------------------------------------
+
+  function renderZoneStep() {
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-          {t('categoryTitle')}
+          {t('zoneTitle')}
         </h3>
-        <p className="text-foreground/60 mb-8">{t('categorySubtitle')}</p>
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-          {CATEGORIES.map((cat) => (
+        <p className="text-foreground/60 mb-8">{t('zoneSubtitle')}</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {ZONES.map((z) => (
             <button
-              key={cat}
-              onClick={() => selectCategory(cat)}
+              key={z}
+              onClick={() => selectZone(z)}
               className={`p-5 rounded-2xl border-2 text-center transition-all ${
-                category === cat
+                zone === z
                   ? 'border-primary bg-primary/10'
                   : 'border-secondary-dark bg-white hover:border-primary/50 hover:-translate-y-1'
               }`}
             >
-              <CategoryIcon category={cat} className="w-8 h-8 mx-auto mb-3" />
-              <span className="font-semibold text-sm">{t(`categories.${cat}`)}</span>
+              <CategoryIcon category={z} className="w-8 h-8 mx-auto mb-3" />
+              <span className="block font-semibold text-sm leading-snug">
+                {t(`zones.${z}.label`)}
+              </span>
+              <span className="block text-xs text-foreground/50 mt-1">
+                {t(`zones.${z}.tagline`)}
+              </span>
             </button>
           ))}
         </div>
@@ -233,97 +188,79 @@ export default function QuoteWizard() {
     );
   }
 
-  function renderQuizStep(qIndex: number) {
-    if (!category) return null;
-    const options = quizOptions(qIndex);
+  function renderQuestionStep(questionIndex: number) {
+    const question = questions[questionIndex];
+    if (!question) return null;
+    const selected = answers[question.id] ?? [];
+
     return (
       <div className="text-center">
         <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider rounded-full mb-4">
-          {t('quizBadge')}
+          {zoneText('label')}
         </span>
-        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-8">
-          <span className="text-foreground/40 mr-2">{qIndex + 1}.</span>
-          {area(`quiz.q${qIndex + 1}.question`)}
+        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
+          <span className="text-foreground/40 mr-2">{questionIndex + 1}.</span>
+          {questionText(question)}
         </h3>
+        <p className="text-xs text-foreground/50 mb-6">
+          {question.type === 'multi' ? t('pickMany') : t('pickOne')}
+        </p>
         <div className="max-w-lg mx-auto space-y-3">
-          {Array.from({ length: QUIZ_OPTIONS }, (_, optIdx) => (
-            <button
-              key={optIdx}
-              onClick={() => {
-                const next = [...quizAnswers];
-                next[qIndex] = optIdx;
-                setQuizAnswers(next);
-              }}
-              className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all ${
-                quizAnswers[qIndex] === optIdx
-                  ? 'border-primary bg-primary/10 text-primary'
-                  : 'border-secondary-dark bg-white hover:border-primary/50'
-              }`}
-            >
-              {options[optIdx]}
-            </button>
-          ))}
+          {question.options.map((option) => {
+            const isSelected = selected.includes(option.id);
+            return (
+              <button
+                key={option.id}
+                onClick={() => pickOption(question, option.id)}
+                aria-pressed={isSelected}
+                className={`w-full p-4 rounded-xl border-2 text-left font-medium transition-all flex items-start gap-3 ${
+                  isSelected
+                    ? 'border-primary bg-primary/10 text-primary'
+                    : 'border-secondary-dark bg-white hover:border-primary/50'
+                }`}
+              >
+                <span
+                  className={`mt-0.5 flex-shrink-0 w-5 h-5 flex items-center justify-center border-2 transition-all ${
+                    question.type === 'multi' ? 'rounded-md' : 'rounded-full'
+                  } ${isSelected ? 'border-primary bg-primary text-white' : 'border-secondary-dark'}`}
+                >
+                  {isSelected && (
+                    <svg className="w-3 h-3" fill="none" stroke="currentColor" strokeWidth={3} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                    </svg>
+                  )}
+                </span>
+                <span>{optionText(question, option.id)}</span>
+              </button>
+            );
+          })}
         </div>
       </div>
     );
   }
 
-  function renderDetailsStep() {
-    if (!category) return null;
-    const config = categoryConfigs[category];
+  function renderAccumulationStep() {
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-          {area('detailsTitle')}
+          {t('closing.accumulo.question')}
         </h3>
-        <p className="text-foreground/60 mb-8">{area('detailsSubtitle')}</p>
-        <div className="max-w-lg mx-auto space-y-4">
-          {config.fields.map((field) => (
-            <div key={field.id} className="bg-secondary p-4 rounded-xl text-left">
-              <label className="block text-sm font-semibold text-foreground mb-2">
-                {t(`fields.${category}.${field.id}`)}
-              </label>
-              <input
-                type="number"
-                min="0"
-                value={details[field.id] || ''}
-                onChange={(e) =>
-                  setDetails({ ...details, [field.id]: parseFloat(e.target.value) || 0 })
-                }
-                placeholder="0"
-                className="w-full border-b-2 border-secondary-dark bg-transparent py-2 text-lg font-bold text-primary focus:border-primary focus:outline-none"
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-    );
-  }
-
-  function renderComplexityStep() {
-    if (!category) return null;
-    return (
-      <div className="text-center">
-        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-          {t('complexityTitle')}
-        </h3>
-        <p className="text-foreground/60 mb-8">{area('complexitySubtitle')}</p>
-        <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-          {complexityLevels.map((level) => (
+        <p className="text-foreground/60 mb-8">{t('accumuloSubtitle')}</p>
+        <div className="grid md:grid-cols-3 gap-4 max-w-3xl mx-auto">
+          {accumulationLevels.map((level) => (
             <button
-              key={level.key}
-              onClick={() =>
-                setComplexity({ value: level.value, label: area(`complexity.${level.key}.title`) })
-              }
+              key={level.id}
+              onClick={() => setAccumulation(level.id)}
               className={`p-6 rounded-2xl border-2 text-center transition-all ${
-                complexity?.value === level.value
+                accumulation === level.id
                   ? 'border-primary bg-primary/10'
                   : 'border-secondary-dark bg-white hover:border-primary/50'
               }`}
             >
               <div className="text-3xl mb-3">{level.icon}</div>
-              <h4 className="font-bold mb-1">{area(`complexity.${level.key}.title`)}</h4>
-              <p className="text-xs text-foreground/60">{area(`complexity.${level.key}.description`)}</p>
+              <p className="text-sm text-foreground/70">
+                {t(`closing.accumulo.options.${level.id}`)}
+              </p>
             </button>
           ))}
         </div>
@@ -331,33 +268,30 @@ export default function QuoteWizard() {
     );
   }
 
-  function renderExtrasStep() {
-    if (!category) return null;
+  function renderTimingStep() {
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-          {t('extrasTitle')}
+          {t('closing.timing.question')}
         </h3>
-        <p className="text-foreground/60 mb-8">{t('extrasSubtitle')}</p>
-        <div className="grid md:grid-cols-3 gap-4 max-w-2xl mx-auto">
-          {extrasForCategory(category).map((extra) => {
-            const { label, desc } = extraCopy(extra);
-            return (
-              <button
-                key={extra.id}
-                onClick={() => toggleExtra(extra.id)}
-                className={`p-5 rounded-2xl border-2 text-center transition-all ${
-                  selectedExtras.includes(extra.id)
-                    ? 'border-primary bg-primary/10'
-                    : 'border-secondary-dark bg-white hover:border-primary/50'
-                }`}
-              >
-                <div className="text-2xl mb-2">{extra.icon}</div>
-                <h4 className="font-semibold text-sm">{label}</h4>
-                <p className="text-xs text-foreground/60 mt-1">{desc}</p>
-              </button>
-            );
-          })}
+        <p className="text-foreground/60 mb-8">{t('timingSubtitle')}</p>
+        <div className="grid sm:grid-cols-2 gap-4 max-w-lg mx-auto">
+          {timingOptions.map((option) => (
+            <button
+              key={option.id}
+              onClick={() => setTiming(option.id)}
+              className={`p-6 rounded-2xl border-2 text-center transition-all ${
+                timing === option.id
+                  ? 'border-primary bg-primary/10'
+                  : 'border-secondary-dark bg-white hover:border-primary/50'
+              }`}
+            >
+              <div className="text-3xl mb-3">{option.icon}</div>
+              <p className="text-sm font-medium text-foreground/80">
+                {t(`closing.timing.options.${option.id}`)}
+              </p>
+            </button>
+          ))}
         </div>
       </div>
     );
@@ -390,27 +324,18 @@ export default function QuoteWizard() {
   }
 
   function renderResultStep() {
-    if (!category) return null;
-    const { total, breakdown } = calculatePrice();
-
-    // The "why act now" paragraph is written per area and picked by how much
-    // chaos the answers reported.
-    const allAnswered = quizAnswers.every((a) => a !== null);
-    const band = sensitizationBand(quizScore(quizAnswers));
-
-    const fieldSummary = categoryConfigs[category].fields.filter((f) => (details[f.id] || 0) > 0);
-    const chosenExtras = extrasForCategory(category).filter((e) => selectedExtras.includes(e.id));
+    if (!zone) return null;
 
     return (
       <div className="text-center">
         {/* Summary pills + print button */}
         <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
           <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
-            {t(`categories.${category}`)}
+            {zoneText('label')}
           </span>
-          {complexity && (
+          {accumulation && (
             <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
-              {complexity.label}
+              {t(`accumuloShort.${accumulation}`)}
             </span>
           )}
           <button
@@ -424,20 +349,10 @@ export default function QuoteWizard() {
           </button>
         </div>
 
-        {/* Sensitization box */}
-        {allAnswered && (
-          <div className="bg-accent/10 border border-accent/30 rounded-xl p-4 mb-6 text-left max-w-lg mx-auto">
-            <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-1">
-              {t('whyActNow')}
-            </p>
-            <p className="text-sm text-foreground/80">{area(`sensitization.${band}`)}</p>
-          </div>
-        )}
-
         {/* Price */}
         <p className="text-sm text-foreground/60 mb-2">{t('estimateLabel')}</p>
         <div className="text-5xl font-bold text-foreground mb-6">
-          <span className="text-xl align-middle mr-1">€</span>{total}
+          <span className="text-xl align-middle mr-1">€</span>{price.total}
         </div>
 
         <div className="max-w-lg mx-auto space-y-4 text-left">
@@ -447,60 +362,56 @@ export default function QuoteWizard() {
             <div className="space-y-2">
               <div className="flex justify-between text-sm">
                 <span className="text-foreground/70">{t('breakdownProject')}</span>
-                <span className="font-semibold">€{breakdown.project}</span>
+                <span className="font-semibold">€{price.project}</span>
               </div>
-              {breakdown.extras > 0 && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-foreground/70">{t('breakdownExtras')}</span>
-                  <span className="font-semibold">€{breakdown.extras}</span>
-                </div>
-              )}
-              {breakdown.urgency > 0 && (
+              {price.urgency > 0 && (
                 <div className="flex justify-between text-sm">
                   <span className="text-foreground/70">{t('breakdownUrgency')}</span>
-                  <span className="font-semibold">€{breakdown.urgency}</span>
+                  <span className="font-semibold">€{price.urgency}</span>
                 </div>
               )}
               <div className="flex justify-between text-sm font-bold pt-2 border-t border-secondary-dark">
                 <span>{t('breakdownTotal')}</span>
-                <span>€{total}</span>
+                <span>€{price.total}</span>
               </div>
             </div>
           </div>
 
-          {/* Survey summary + dates */}
+          {/* Answers + dates */}
           <div className="bg-secondary rounded-xl p-4">
-            {fieldSummary.length > 0 && (
-              <>
-                <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
-                  {t('summaryTitle')}
-                </p>
-                <ul className="space-y-1 mb-4">
-                  {fieldSummary.map((f) => (
-                    <li key={f.id} className="flex items-center gap-2 text-sm">
+            <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
+              {t('summaryTitle')}
+            </p>
+            <ul className="space-y-2 mb-4">
+              {questions.map((question) => {
+                const selected = answers[question.id] ?? [];
+                if (selected.length === 0) return null;
+                return (
+                  <li key={question.id} className="text-sm">
+                    <span className="block text-foreground/50 text-xs">
+                      {questionText(question)}
+                    </span>
+                    <span className="flex items-start gap-2 text-foreground/80">
                       <span className="text-primary">✓</span>
-                      <span className="text-foreground/70">{t(`fields.${category}.${f.id}`)}</span>
-                      <span className="font-semibold ml-auto">{details[f.id]}</span>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
-            {chosenExtras.length > 0 && (
-              <>
-                <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
-                  {t('extrasTitle')}
-                </p>
-                <ul className="space-y-1 mb-4">
-                  {chosenExtras.map((extra) => (
-                    <li key={extra.id} className="flex items-center gap-2 text-sm">
-                      <span className="text-primary">✓</span>
-                      <span className="text-foreground/70">{extraCopy(extra).label}</span>
-                    </li>
-                  ))}
-                </ul>
-              </>
-            )}
+                      <span>
+                        {selected.map((id) => optionText(question, id)).join(' · ')}
+                      </span>
+                    </span>
+                  </li>
+                );
+              })}
+              {timing && (
+                <li className="text-sm">
+                  <span className="block text-foreground/50 text-xs">
+                    {t('closing.timing.question')}
+                  </span>
+                  <span className="flex items-start gap-2 text-foreground/80">
+                    <span className="text-primary">✓</span>
+                    <span>{t(`closing.timing.options.${timing}`)}</span>
+                  </span>
+                </li>
+              )}
+            </ul>
             <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
               {t('datesTitle')}
             </p>
@@ -529,6 +440,7 @@ export default function QuoteWizard() {
               <label className="block text-sm font-semibold text-foreground mb-2">
                 {t('photosLabel')}
               </label>
+              <p className="text-xs text-foreground/50 mb-2">{t('photosHint')}</p>
               <div
                 onClick={() => photoInputRef.current?.click()}
                 className="border-2 border-dashed border-secondary-dark rounded-xl p-4 min-h-[100px] flex flex-col items-center justify-center cursor-pointer hover:border-primary hover:bg-secondary/50 transition-all text-center"
@@ -665,27 +577,26 @@ export default function QuoteWizard() {
 
   function renderStep() {
     if (submitStatus === 'success') return renderSuccess();
-    switch (step) {
-      case STEP_CATEGORY: return renderCategoryStep();
-      case STEP_QUIZ_FIRST: return renderQuizStep(0);
-      case STEP_QUIZ_FIRST + 1: return renderQuizStep(1);
-      case STEP_QUIZ_FIRST + 2: return renderQuizStep(2);
-      case STEP_DETAILS: return renderDetailsStep();
-      case STEP_COMPLEXITY: return renderComplexityStep();
-      case STEP_EXTRAS: return renderExtrasStep();
-      case STEP_AVAILABILITY: return renderAvailabilityStep();
-      case STEP_RESULT: return renderResultStep();
-      default: return null;
+    if (step === STEP_ZONE) return renderZoneStep();
+
+    const questionIndex = step - STEP_QUESTIONS;
+    if (questionIndex >= 0 && questionIndex < questions.length) {
+      return renderQuestionStep(questionIndex);
     }
+
+    if (step === stepAccumulation) return renderAccumulationStep();
+    if (step === stepTiming) return renderTimingStep();
+    if (step === stepAvailability) return renderAvailabilityStep();
+    if (step === stepResult) return renderResultStep();
+    return null;
   }
 
   function handleReset() {
     setStep(0);
-    setCategory(null);
-    setQuizAnswers(Array(QUIZ_LENGTH).fill(null));
-    setDetails({});
-    setComplexity(null);
-    setSelectedExtras([]);
+    setZone(null);
+    setAnswers({});
+    setAccumulation(null);
+    setTiming(null);
     setAvailability({ slot1: '', slot2: '', slot3: '' });
     setNotes('');
     setPhotos([]);
@@ -717,7 +628,7 @@ export default function QuoteWizard() {
         {renderStep()}
 
         {/* Navigation — visible on every step before the result */}
-        {submitStatus !== 'success' && step < STEP_RESULT && (
+        {submitStatus !== 'success' && step < stepResult && (
           <div className="print:hidden flex justify-between mt-10 pt-6 border-t border-secondary">
             <button
               onClick={() => setStep(step - 1)}
@@ -738,7 +649,7 @@ export default function QuoteWizard() {
         )}
 
         {/* Restart — visible on final step and after success */}
-        {(step === STEP_RESULT || submitStatus === 'success') && (
+        {(step === stepResult || submitStatus === 'success') && (
           <div className="print:hidden text-center mt-6">
             <button
               onClick={handleReset}

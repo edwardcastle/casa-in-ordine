@@ -1,8 +1,17 @@
 import type { ReactNode } from 'react';
 
-type Category = 'armadio' | 'cucina' | 'ufficio' | 'bagno' | 'garage' | 'trasloco';
+// `ufficio` is the homepage service card; `living` is the broader wizard zone
+// that covers the lounge, the home office and the kids' play area.
+type Category = 'armadio' | 'cucina' | 'ufficio' | 'living' | 'bagno' | 'garage' | 'trasloco';
 
 const icons: Record<Category, ReactNode> = {
+  living: (
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" className="w-full h-full">
+      <path d="M3 11V7.5A1.5 1.5 0 014.5 6h15A1.5 1.5 0 0121 7.5V11" />
+      <path d="M5 11a2 2 0 00-2 2v4h18v-4a2 2 0 00-2-2 2 2 0 00-2 2v1H7v-1a2 2 0 00-2-2z" />
+      <path d="M6 11V8.5h12V11M4 17v2M20 17v2" />
+    </svg>
+  ),
   armadio: (
     <svg viewBox="0 0 32 32" fill="currentColor" className="w-full h-full">
       <rect x="19" y="12" width="2" height="2"/><rect x="11" y="12" width="2" height="2"/>

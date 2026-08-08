@@ -333,63 +333,9 @@
     "close": "Chiudi"
   },
   "quote": {
-    "title": "Sopralluogo Digitale",
-    "subtitle": "Tre domande per conoscerci, poi definiamo il tuo spazio perfetto.",
-    "quizBadge": "TEST DEL DISORDINE",
-    "categoryTitle": "Quale zona desideri far rifiorire?",
-    "categorySubtitle": "Scegli da dove ripartire: le domande successive saranno su misura",
-    "categories": {
-      "armadio": "Armadio",
-      "cucina": "Cucina",
-      "ufficio": "Ufficio",
-      "bagno": "Bagno",
-      "garage": "Garage",
-      "trasloco": "Trasloco"
-    },
-    "fields": {
-      "armadio": {
-        "doors": "Numero Ante",
-        "drawers": "Cassetti Interni",
-        "height": "Altezza Soppalco (metri)"
-      },
-      "cucina": {
-        "modules": "Numero Moduli/Pensili",
-        "pantry": "Dispensa Separata (Sì=1, No=0)",
-        "counters": "Piani Lavoro/Isole"
-      },
-      "ufficio": {
-        "desks": "Postazioni Scrivania",
-        "documents": "Metri Lineari Documenti"
-      },
-      "bagno": {
-        "cabinets": "Mobiletti/Sottolavabo",
-        "shelves": "Scaffali a Vista"
-      },
-      "garage": {
-        "racks": "Campate Scaffali",
-        "tools": "Area Attrezzi/Workshop (1-5)"
-      },
-      "trasloco": {
-        "boxes": "Stima Numero Scatoloni",
-        "rooms": "Numero Stanze da Allestire"
-      }
-    },
-    "complexityTitle": "Livello di sfida",
-    "extrasTitle": "Servizi Aggiuntivi",
-    "extras": {
-      "materials": {
-        "desc": "Portiamo noi organizer e divisori",
-        "label": "Fornitura Kit"
-      },
-      "dump": {
-        "desc": "Gestiamo noi il conferimento rifiuti/donazioni",
-        "label": "Smaltimento"
-      }
-    },
     "estimateLabel": "Il tuo investimento stimato",
     "breakdownProject": "Intervento",
-    "breakdownExtras": "Servizi aggiuntivi",
-    "breakdownUrgency": "Adeguamento complessità",
+    "breakdownUrgency": "Supplemento urgenza",
     "breakdownTotal": "Totale stimato",
     "disclaimerTitle": "Nota Bene",
     "disclaimerText": "Il preventivo sopra indicato è puramente indicativo. Il nostro team elaborerà entro 24 ore un preventivo equo e studiato.",
@@ -403,11 +349,9 @@
     "fullName": "Nome e Cognome",
     "emailField": "Email",
     "phoneField": "Telefono (opzionale)",
-    "estimate": "Stima",
     "back": "Indietro",
     "next": "Avanti",
     "restart": "Ricomincia da capo",
-    "extrasSubtitle": "Rendi l'esperienza ancora più completa",
     "availabilityTitle": "Quando possiamo incontrarci?",
     "availabilitySubtitle": "Indica fino a 3 preferenze di data e orario per il sopralluogo",
     "availabilitySlot1": "Opzione 1 (Preferita)",
@@ -418,337 +362,217 @@
     "photosLabel": "Foto dello spazio (Max 5)",
     "photosUpload": "Clicca per aggiungere foto",
     "photosNone": "Nessuna foto selezionata",
-    "whyActNow": "Perché agire ora:",
     "summaryTitle": "Riepilogo Sopralluogo:",
     "datesTitle": "Date Richieste:",
     "dateNotSpecified": "Non specificata",
     "printTitle": "Stampa / Salva PDF",
-    "areas": {
+    "zones": {
       "armadio": {
-        "detailsTitle": "Il tuo armadio nel dettaglio",
-        "detailsSubtitle": "Ante, cassetti e soppalco: così calcoliamo i tempi.",
-        "complexitySubtitle": "Quanto è profondo il disordine dentro l'armadio?",
-        "complexity": {
-          "light": {
-            "title": "Lieve",
-            "description": "Tutto ci sta, manca solo un metodo"
+        "label": "Armadi & Cabine Armadio",
+        "tagline": "Guardaroba",
+        "questions": {
+          "tipologia": {
+            "question": "Qual è la tipologia del tuo guardaroba?",
+            "options": {
+              "standard": "Armadio standard (2-4 ante)",
+              "grande": "Armadio grande (6+ ante o ante scorrevoli)",
+              "cabina": "Cabina armadio completa"
+            }
           },
-          "moderate": {
-            "title": "Moderato",
-            "description": "Pile instabili e capi mai indossati"
+          "destinatario": {
+            "question": "Il servizio è dedicato a:",
+            "options": {
+              "individuale": "Guardaroba individuale",
+              "coppia": "Guardaroba di coppia",
+              "bambini": "Guardaroba bambini / ragazzi"
+            }
           },
-          "critical": {
-            "title": "Critico",
-            "description": "Ante che non chiudono, capi introvabili"
+          "difficolta": {
+            "question": "Qual è la difficoltà principale che riscontri la mattina?",
+            "options": {
+              "tempo": "Non trovo i capi e perdo troppo tempo a vestirmi.",
+              "pieno": "L'armadio è pieno ma sento di «non avere niente da mettere».",
+              "piegatura": "I vestiti si sgualciscono e manca un sistema di piegatura efficace."
+            }
+          },
+          "cambioStagione": {
+            "question": "Desideri includere il Cambio Stagione completo e l'etichettatura delle ceste?",
+            "options": {
+              "si": "Sì, vorrei una riorganizzazione stagionale completa.",
+              "no": "No, mi interessa solo riorganizzare i capi attuali."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "Quanto ci metti a trovare il capo che cerchi?",
-            "options": [
-              "Lo prendo al volo",
-              "Devo spostare qualche pila",
-              "Svuoto mezzo armadio per trovarlo"
-            ]
-          },
-          "q2": {
-            "question": "Come gestisci il cambio di stagione nell'armadio?",
-            "options": [
-              "Lo faccio in un pomeriggio",
-              "Lo rimando di qualche settimana",
-              "Estate e inverno convivono tutto l'anno"
-            ]
-          },
-          "q3": {
-            "question": "Quanto spazio libero resta sulla barra appendiabiti?",
-            "options": [
-              "Le grucce scorrono senza sforzo",
-              "Devo spostare le grucce a mano",
-              "Ogni capo entra a forza"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Cambio di Stagione",
-          "desc": "Ruotiamo noi l'armadio e imbustiamo i capi fuori stagione"
-        },
-        "sensitization": {
-          "low": "Il tuo armadio funziona già: con un metodo su misura per ante e cassetti guadagni minuti preziosi ogni mattina.",
-          "mid": "Le pile crescono e il cambio di stagione slitta: intervenire adesso sull'armadio è più facile che rimandare a primavera.",
-          "high": "Se aprire le ante ti pesa, va bene così: in una giornata ti ridiamo un armadio dove ogni capo si trova al volo."
         }
       },
       "cucina": {
-        "detailsTitle": "La tua cucina nel dettaglio",
-        "detailsSubtitle": "Pensili, dispensa e piani ci dicono quanto spazio c'è",
-        "complexitySubtitle": "Quanto è profondo il disordine tra pensili e dispensa?",
-        "complexity": {
-          "light": {
-            "title": "Lieve",
-            "description": "C'è tutto, ma manca una logica"
+        "label": "Cucina & Dispensa",
+        "tagline": "Alimenti e utensili",
+        "questions": {
+          "aree": {
+            "question": "Quali aree della cucina richiedono il nostro intervento?",
+            "options": {
+              "dispensa": "Solo la dispensa alimentare",
+              "mobili": "Mobili pensili e cassetti (pentole, utensili, stoviglie)",
+              "completa": "Cucina completa + Dispensa"
+            }
           },
-          "moderate": {
-            "title": "Moderato",
-            "description": "Pensili pieni e doppioni ovunque"
+          "problema": {
+            "question": "Qual è il problema principale in cucina?",
+            "options": {
+              "scadenze": "Gli alimenti scadono o si accumulano perché non c'è visibilità.",
+              "piani": "Mancanza di spazio sui piani di lavoro.",
+              "contenitori": "Disordine visivo e assenza di contenitori/etichette adatte."
+            }
           },
-          "critical": {
-            "title": "Critico",
-            "description": "Piani invasi e ante che non chiudono"
+          "acquisti": {
+            "question": "Desideri la selezione e consulenza per l'acquisto di contenitori e barattoli ermetici?",
+            "options": {
+              "si": "Sì, desidero un risultato estetico e funzionale completo.",
+              "no": "No, preferisco utilizzare i contenitori che possiedo già."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "Quanto ci metti a trovare pentole e coperchi?",
-            "options": [
-              "Li prendo subito, sono a portata",
-              "Cerco un po', ma li trovo",
-              "Devo svuotare mezzo pensile"
-            ]
-          },
-          "q2": {
-            "question": "Quanto piano di lavoro ti resta libero per cucinare?",
-            "options": [
-              "Quasi tutto, cucino comodo",
-              "Un angolo, mi arrangio",
-              "Quasi niente, sposto tutto ogni volta"
-            ]
-          },
-          "q3": {
-            "question": "Ti capita di ricomprare cose che hai già in dispensa?",
-            "options": [
-              "Quasi mai, so cosa ho",
-              "Ogni tanto scopro un doppione",
-              "Spesso, e trovo confezioni scadute"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Controllo Scadenze",
-          "desc": "Controlliamo noi la dispensa e smaltiamo i prodotti scaduti"
-        },
-        "sensitization": {
-          "low": "La tua cucina funziona già bene: con qualche accorgimento in più guadagni piani liberi e minuti preziosi ogni volta che cucini.",
-          "mid": "I doppioni nei pensili si moltiplicano in fretta: sistemarli ora è un lavoro breve, e cucinare torna subito leggero.",
-          "high": "Non c'è nulla di cui vergognarsi: rimettiamo ordine tra dispensa e piani di lavoro, e la tua cucina torna un posto dove stare bene."
-        }
-      },
-      "ufficio": {
-        "detailsTitle": "Il tuo ufficio nel dettaglio",
-        "detailsSubtitle": "Scrivanie e metri di documenti ci dicono quanto tempo serve.",
-        "complexitySubtitle": "Quanto è profondo il disordine tra carte e scrivanie?",
-        "complexity": {
-          "light": {
-            "title": "Lieve",
-            "description": "Scrivania libera, archivio da rifinire"
-          },
-          "moderate": {
-            "title": "Moderato",
-            "description": "Pile di documenti su scrivania e sedie"
-          },
-          "critical": {
-            "title": "Critico",
-            "description": "Carte ovunque, difficile lavorare"
-          }
-        },
-        "quiz": {
-          "q1": {
-            "question": "Quanto ci metti a trovare una fattura di due anni fa?",
-            "options": [
-              "Un minuto, so dov’è",
-              "Un quarto d’ora di ricerca",
-              "Meglio richiederne una copia"
-            ]
-          },
-          "q2": {
-            "question": "Quanta carta da archiviare hai in attesa?",
-            "options": [
-              "Un vassoio sulla scrivania",
-              "Due pile e un cassetto pieno",
-              "Scatoloni chiusi da mesi"
-            ]
-          },
-          "q3": {
-            "question": "Come inizi la giornata alla scrivania?",
-            "options": [
-              "Mi siedo e parto subito",
-              "Prima sposto qualche pila",
-              "Lavoro altrove, la scrivania è piena"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Archivio Digitale",
-          "desc": "Scansioniamo e ordiniamo noi i documenti da conservare"
-        },
-        "sensitization": {
-          "low": "Il tuo ufficio è già sotto controllo: con noi guadagni un archivio impeccabile e qualche ora libera ogni settimana.",
-          "mid": "Le pile di carte sulla scrivania crescono in fretta: sistemarle ora è semplice e ti evita di perdere documenti importanti.",
-          "high": "Anche l’ufficio più sommerso torna vivibile: pensiamo noi a carte e scrivania, senza giudicare, e tu torni a lavorare sereno."
         }
       },
       "bagno": {
-        "detailsTitle": "Il tuo bagno nel dettaglio",
-        "detailsSubtitle": "Mobiletti e mensole ci dicono quanto spazio sistemare",
-        "complexitySubtitle": "Quanto è profondo il disordine nel tuo bagno?",
-        "complexity": {
-          "light": {
-            "title": "Lieve",
-            "description": "Serve solo un metodo per i prodotti"
+        "label": "Bagno & Cura Personale",
+        "tagline": "Cosmetici e scorte",
+        "questions": {
+          "quantita": {
+            "question": "Quanti bagni desideri riorganizzare?",
+            "options": {
+              "uno": "1 bagno principale",
+              "due": "2 o più bagni"
+            }
           },
-          "moderate": {
-            "title": "Moderato",
-            "description": "Flaconi doppi e mensole affollate"
+          "contenimento": {
+            "question": "Come sono strutturati gli spazi di contenimento?",
+            "options": {
+              "cassettoni": "Cassettoni sotto il lavabo",
+              "colonna": "Mobile a colonna o scaffali a vista",
+              "specchio": "Armadietto a specchio / Pensili"
+            }
           },
-          "critical": {
-            "title": "Critico",
-            "description": "Sottolavabo pieno, non ci vedi dentro"
+          "esigenza": {
+            "question": "Qual è l'esigenza principale?",
+            "options": {
+              "scaduti": "Eliminare prodotti cosmetici/farmaci scaduti o inutilizzati.",
+              "scorte": "Creare una suddivisione chiara delle scorte di igiene personale."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "Al mattino trovi subito spazzolino e crema?",
-            "options": [
-              "Sì, tutto a portata di mano",
-              "Qualche cassetto da frugare",
-              "Sposto tutto per trovare una cosa"
-            ]
-          },
-          "q2": {
-            "question": "Quanti flaconi aperti o scaduti hai in bagno?",
-            "options": [
-              "Quasi nessuno",
-              "Qualche prodotto dimenticato",
-              "Preferisco non guardare le scadenze"
-            ]
-          },
-          "q3": {
-            "question": "Se arriva un ospite, sistemi il bagno di corsa?",
-            "options": [
-              "No, è già presentabile",
-              "Do una sistemata veloce",
-              "Nascondo tutto sotto il lavabo"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Ordine Sottolavabo",
-          "desc": "Portiamo contenitori su misura per lo spazio sottolavabo"
-        },
-        "sensitization": {
-          "low": "Il tuo bagno è già in equilibrio: bastano pochi accorgimenti per guadagnare minuti preziosi ogni mattina e mantenerlo così.",
-          "mid": "Ogni flacone in più rende il bagno più faticoso: intervenire adesso è semplice e ti evita di ricominciare tra sei mesi.",
-          "high": "Non c'è nulla di cui vergognarsi: il bagno si riempie senza chiedere permesso. In poche ore torna respirabile e tuo."
         }
       },
-      "garage": {
-        "detailsTitle": "Il tuo garage nel dettaglio",
-        "detailsSubtitle": "Campate e zona attrezzi ci dicono quanto spazio recuperare",
-        "complexitySubtitle": "Quanto è profondo il disordine tra scaffali e attrezzi?",
-        "complexity": {
-          "light": {
-            "title": "Lieve",
-            "description": "Serve solo un posto per ogni attrezzo"
+      "living": {
+        "label": "Zone Living & Home Office",
+        "tagline": "Spazi condivisi",
+        "questions": {
+          "area": {
+            "question": "Quale area della casa desideri riordinare?",
+            "options": {
+              "soggiorno": "Soggiorno / Zona living",
+              "office": "Angolo Home Office / Scrivania da lavoro",
+              "giochi": "Area giochi bambini"
+            }
           },
-          "moderate": {
-            "title": "Moderato",
-            "description": "Scatoloni e attrezzi accumulati da anni"
-          },
-          "critical": {
-            "title": "Critico",
-            "description": "L'auto non entra e passi a fatica"
+          "causa": {
+            "question": "Qual è la causa principale del disordine in questa zona?",
+            "options": {
+              "documenti": "Accumulo di documenti, cavi ed elementi da ufficio.",
+              "giocattoli": "Giocattoli e oggetti senza una collocazione fissa.",
+              "decorativi": "Troppi elementi decorativi o oggetti accumulati nel tempo."
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "Quanto ci metti a trovare un attrezzo in garage?",
-            "options": [
-              "Lo prendo subito dallo scaffale",
-              "Devo aprire un paio di scatoloni",
-              "Finisco per ricomprarlo"
-            ]
-          },
-          "q2": {
-            "question": "Riesci ancora a parcheggiare l'auto in garage?",
-            "options": [
-              "Sì, entra ed esce senza problemi",
-              "Solo con qualche manovra in più",
-              "L'auto ormai resta fuori"
-            ]
-          },
-          "q3": {
-            "question": "Come ti senti quando apri il garage?",
-            "options": [
-              "Bene, ogni cosa al suo posto",
-              "Un po' di fastidio per gli scatoloni",
-              "Richiudo e rimando a un altro giorno"
-            ]
-          }
-        },
-        "extra": {
-          "label": "Inventario Attrezzi",
-          "desc": "Cataloghiamo ed etichettiamo noi attrezzi e materiali"
-        },
-        "sensitization": {
-          "low": "Il tuo garage è già sotto controllo: con qualche accorgimento in più ritrovi ogni attrezzo al volo e guadagni tempo ogni settimana.",
-          "mid": "Ancora qualche mese e gli scatoloni prenderanno il posto dell'auto: intervenire adesso è semplice, veloce e ti evita un lavoro molto più grande.",
-          "high": "Il garage non si è riempito in un giorno e non sei tu il problema: veniamo noi, uno scaffale alla volta, e ti restituiamo lo spazio."
         }
       },
       "trasloco": {
-        "detailsTitle": "Il tuo trasloco nel dettaglio",
-        "detailsSubtitle": "Scatoloni e stanze da allestire: da qui calcoliamo i tempi.",
-        "complexitySubtitle": "Quanto è caotico il tuo trasloco in questo momento?",
-        "complexity": {
-          "light": {
-            "title": "Lieve",
-            "description": "Pochi scatoloni e già etichettati"
+        "label": "Speciale Trasloco & Setup",
+        "tagline": "Zero Stress Move",
+        "questions": {
+          "fase": {
+            "question": "In quale fase del trasloco hai bisogno del nostro supporto?",
+            "options": {
+              "pre": "Pre-Trasloco: decluttering e selezione prima di inscatolare.",
+              "imballaggio": "Imballaggio: inscatolamento sistematico e suddiviso per ambienti.",
+              "unpacking": "Unpacking & Setup: disimballaggio e organizzazione nella nuova casa fin dal 1° giorno.",
+              "completo": "Servizio Completo: gestione totale da casa a casa."
+            }
           },
-          "moderate": {
-            "title": "Moderato",
-            "description": "Scatoloni misti, da riaprire e smistare"
-          },
-          "critical": {
-            "title": "Critico",
-            "description": "Casa piena di scatoloni, nulla al suo posto"
+          "vani": {
+            "question": "Da quante stanze è composta la nuova abitazione?",
+            "options": {
+              "piccolo": "1-2 Vani (Monolocale / Bilocale)",
+              "medio": "3-4 Vani (Trilocale / Quadrilocale)",
+              "grande": "Immobile grande / Villa"
+            }
           }
-        },
-        "quiz": {
-          "q1": {
-            "question": "A che punto sei con gli scatoloni?",
-            "options": [
-              "Quasi tutti chiusi ed etichettati",
-              "Ho iniziato, ma senza un ordine preciso",
-              "Devo ancora cominciare"
-            ]
+        }
+      },
+      "garage": {
+        "label": "Garage, Cantina & Ripostiglio",
+        "tagline": "Spazi di stoccaggio",
+        "questions": {
+          "tipologia": {
+            "question": "Qual è la tipologia dello spazio da riorganizzare?",
+            "options": {
+              "ripostiglio": "Cantina o ripostiglio",
+              "box": "Garage / Box auto",
+              "magazzino": "Garage doppio o magazzino"
+            }
           },
-          "q2": {
-            "question": "Quanta roba devi ancora selezionare prima del trasloco?",
-            "options": [
-              "Poca, ho già scelto cosa portare",
-              "Un paio di stanze da rivedere",
-              "Praticamente tutta la casa"
-            ]
+          "contenuto": {
+            "question": "Cosa contiene principalmente lo spazio?",
+            "options": {
+              "attrezzi": "Attrezzi e materiale da lavoro",
+              "scorte": "Scorte, valigie e oggetti stagionali",
+              "misto": "Un po' di tutto, senza una divisione precisa"
+            }
           },
-          "q3": {
-            "question": "Cosa succede di solito nei giorni dopo il trasloco?",
-            "options": [
-              "Disfo tutto in pochi giorni",
-              "Restano scatoloni aperti per settimane",
-              "Qualche scatolone non lo apro mai"
-            ]
+          "obiettivo": {
+            "question": "Qual è l'obiettivo principale?",
+            "options": {
+              "auto": "Liberare spazio per parcheggiare l'auto.",
+              "scaffalature": "Creare scaffalature e zone dedicate per categoria.",
+              "selezione": "Selezionare e smaltire ciò che non serve più."
+            }
+          },
+          "smaltimento": {
+            "question": "Desideri includere il servizio di smaltimento di ciò che verrà eliminato?",
+            "options": {
+              "si": "Sì, gestite voi il conferimento in discarica o le donazioni.",
+              "no": "No, me ne occupo personalmente."
+            }
           }
-        },
-        "extra": {
-          "label": "Etichettatura Scatoloni",
-          "desc": "Etichettiamo noi ogni scatolone stanza per stanza"
-        },
-        "sensitization": {
-          "low": "Il tuo trasloco è già ben avviato: ci pensiamo noi agli ultimi scatoloni e ti facciamo guadagnare giorni interi nella casa nuova.",
-          "mid": "Gli scatoloni si stanno moltiplicando: darsi un metodo adesso ti evita di ritrovarti la casa nuova piena di scatoloni aperti.",
-          "high": "Un trasloco così pesa a chiunque: lo affrontiamo noi scatolone dopo scatolone e la casa nuova sarà vivibile già dalla prima sera."
         }
       }
-    }
+    },
+    "closing": {
+      "accumulo": {
+        "question": "Livello di accumulo stimato nello spazio",
+        "options": {
+          "lieve": "Lieve: ho solo bisogno di un sistema d'ordine più funzionale ed estetico.",
+          "medio": "Medio: ho diversi oggetti inutilizzati e manca una struttura organizzativa.",
+          "alto": "Alto: c'è molto accumulo ed è necessario un decluttering profondo."
+        }
+      },
+      "timing": {
+        "question": "Quando vorresti effettuare l'intervento?",
+        "options": {
+          "asap": "Il prima possibile (entro 7-10 giorni)",
+          "mese": "Nel corso di questo mese"
+        }
+      }
+    },
+    "zoneTitle": "Quale zona desideri far rifiorire?",
+    "zoneSubtitle": "Scegli l'area: le domande successive saranno su misura",
+    "pickOne": "Scegli un'opzione",
+    "pickMany": "Puoi selezionare più opzioni",
+    "accumuloSubtitle": "Questo ci aiuta a stimare il tempo necessario",
+    "timingSubtitle": "Organizziamo il calendario in base alle tue esigenze",
+    "accumuloShort": {
+      "lieve": "Accumulo lieve",
+      "medio": "Accumulo medio",
+      "alto": "Accumulo alto"
+    },
+    "photosHint": "Carica 1 o 2 foto della zona da organizzare: ci aiuterà a fornirti una stima quasi esatta del tempo e del costo."
   },
   "preventivo": {
     "title": "Preventivo Gratuito Decluttering e Home Organizing",
@@ -756,7 +580,7 @@
     "heroTitle": "Preventivo Gratuito",
     "heroSubtitle": "Scopri quanto costa riorganizzare i tuoi spazi",
     "wizardTitle": "Sopralluogo Digitale",
-    "wizardSubtitle": "Scegli l'area, rispondi a tre domande su misura e ricevi subito la tua stima.",
+    "wizardSubtitle": "Scegli la zona, rispondi a poche domande su misura e ricevi subito la tua stima.",
     "seo": {
       "title": "Come funziona il preventivo gratuito",
       "paragraphs": [

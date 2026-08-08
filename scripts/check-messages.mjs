@@ -1,8 +1,11 @@
 #!/usr/bin/env node
 /**
- * Verifies every locale file exposes the same key set as the reference locale.
- * next-intl throws at runtime on a missing key, and a missing key in one locale
- * is invisible while developing in another.
+ * Verifies every locale file exposes the same key set as the reference locale,
+ * and that each quote zone defines the full question/option tree.
+ *
+ * next-intl throws at runtime on a missing key, and the wizard builds its keys
+ * from the chosen zone — so a gap is invisible until someone picks that zone in
+ * that language.
  *
  *   node scripts/check-messages.mjs
  */
@@ -10,10 +13,12 @@ import { readFileSync } from 'node:fs';
 
 const REFERENCE = 'it';
 const LOCALES = ['it', 'en', 'es'];
+const ZONES = ['armadio', 'cucina', 'bagno', 'living', 'trasloco', 'garage'];
+const CLOSING = ['accumulo', 'timing'];
 
 function flatten(value, prefix = '') {
   if (Array.isArray(value)) {
-    // Arrays are positional (quiz options): compare length, not contents.
+    // Arrays are positional: compare length, not contents.
     return [`${prefix}[${value.length}]`];
   }
   if (value !== null && typeof value === 'object') {
@@ -24,11 +29,15 @@ function flatten(value, prefix = '') {
   return [prefix];
 }
 
-const keysByLocale = Object.fromEntries(
+const messages = Object.fromEntries(
   LOCALES.map((locale) => [
     locale,
-    new Set(flatten(JSON.parse(readFileSync(`messages/${locale}.json`, 'utf8')))),
+    JSON.parse(readFileSync(`messages/${locale}.json`, 'utf8')),
   ]),
+);
+
+const keysByLocale = Object.fromEntries(
+  LOCALES.map((locale) => [locale, new Set(flatten(messages[locale]))]),
 );
 
 const reference = keysByLocale[REFERENCE];
@@ -47,58 +56,72 @@ for (const locale of LOCALES.filter((l) => l !== REFERENCE)) {
   }
 }
 
-// The wizard builds these key paths at runtime from the chosen area, so a gap
-// here is invisible until someone picks that area in that language.
-const CATEGORIES = ['armadio', 'cucina', 'ufficio', 'bagno', 'garage', 'trasloco'];
-const AREA_KEYS = [
-  'detailsTitle',
-  'detailsSubtitle',
-  'complexitySubtitle',
-  'complexity.light.title',
-  'complexity.light.description',
-  'complexity.moderate.title',
-  'complexity.moderate.description',
-  'complexity.critical.title',
-  'complexity.critical.description',
-  'quiz.q1.question',
-  'quiz.q2.question',
-  'quiz.q3.question',
-  'extra.label',
-  'extra.desc',
-  'sensitization.low',
-  'sensitization.mid',
-  'sensitization.high',
-];
-
-function get(obj, path) {
-  return path.split('.').reduce((acc, k) => (acc == null ? acc : acc[k]), obj);
-}
+// Structural check: the wizard reads zones.<zone>.questions.<q>.options.<o>,
+// so every locale must agree on which questions and options exist.
+const refZones = messages[REFERENCE].quote.zones;
 
 for (const locale of LOCALES) {
-  const quote = JSON.parse(readFileSync(`messages/${locale}.json`, 'utf8')).quote;
+  const quote = messages[locale].quote;
 
-  for (const category of CATEGORIES) {
-    const area = quote.areas?.[category];
-    if (!area) {
+  for (const zone of ZONES) {
+    const block = quote.zones?.[zone];
+    if (!block) {
       failed = true;
-      console.error(`${locale}.json: quote.areas.${category} is missing`);
+      console.error(`${locale}.json: quote.zones.${zone} is missing`);
       continue;
     }
 
-    for (const key of AREA_KEYS) {
-      if (typeof get(area, key) !== 'string') {
+    for (const field of ['label', 'tagline']) {
+      if (typeof block[field] !== 'string') {
         failed = true;
-        console.error(`${locale}.json: quote.areas.${category}.${key} is missing`);
+        console.error(`${locale}.json: quote.zones.${zone}.${field} is missing`);
       }
     }
 
-    // Options are read by index, so the count is load-bearing.
-    for (const q of ['q1', 'q2', 'q3']) {
-      const options = area.quiz?.[q]?.options;
-      if (!Array.isArray(options) || options.length !== 3) {
+    const refQuestions = Object.keys(refZones[zone].questions);
+    const questions = Object.keys(block.questions ?? {});
+
+    if (questions.join() !== refQuestions.join()) {
+      failed = true;
+      console.error(
+        `${locale}.json: quote.zones.${zone} questions [${questions}] ` +
+          `do not match ${REFERENCE} [${refQuestions}]`,
+      );
+      continue;
+    }
+
+    for (const q of refQuestions) {
+      if (typeof block.questions[q].question !== 'string') {
         failed = true;
-        console.error(`${locale}.json: quote.areas.${category}.quiz.${q}.options must have 3 entries`);
+        console.error(`${locale}.json: quote.zones.${zone}.questions.${q}.question is missing`);
       }
+      const refOptions = Object.keys(refZones[zone].questions[q].options);
+      const options = Object.keys(block.questions[q].options ?? {});
+      if (options.join() !== refOptions.join()) {
+        failed = true;
+        console.error(
+          `${locale}.json: quote.zones.${zone}.questions.${q} options [${options}] ` +
+            `do not match ${REFERENCE} [${refOptions}]`,
+        );
+      }
+    }
+  }
+
+  for (const c of CLOSING) {
+    const block = quote.closing?.[c];
+    if (!block || typeof block.question !== 'string') {
+      failed = true;
+      console.error(`${locale}.json: quote.closing.${c} is missing`);
+      continue;
+    }
+    const refOptions = Object.keys(messages[REFERENCE].quote.closing[c].options);
+    const options = Object.keys(block.options ?? {});
+    if (options.join() !== refOptions.join()) {
+      failed = true;
+      console.error(
+        `${locale}.json: quote.closing.${c} options [${options}] ` +
+          `do not match ${REFERENCE} [${refOptions}]`,
+      );
     }
   }
 }
@@ -109,5 +132,5 @@ if (failed) {
 
 console.log(
   `All ${LOCALES.length} locales match ${REFERENCE}.json (${reference.size} keys) ` +
-    `and define all ${CATEGORIES.length} areas.`,
+    `and define all ${ZONES.length} zones.`,
 );
