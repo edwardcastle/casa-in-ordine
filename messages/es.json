@@ -572,7 +572,19 @@
       "medio": "Acumulación media",
       "alto": "Acumulación alta"
     },
-    "photosHint": "Sube 1 o 2 fotos de la zona a organizar: nos ayudará a darte una estimación casi exacta del tiempo y del coste."
+    "photosHint": "Sube 1 o 2 fotos de la zona a organizar: nos ayudará a darte una estimación casi exacta del tiempo y del coste.",
+    "zoneTitleAnother": "¿Qué otra zona quieres añadir?",
+    "zoneAlreadyAdded": "Ya en el presupuesto",
+    "zoneCount": "{count, plural, one {# zona en el presupuesto} other {# zonas en el presupuesto}}",
+    "zoneAddedTitle": "{zone} añadida al presupuesto",
+    "zoneAddedQuestion": "¿Quieres que organicemos también otra parte de la casa? Recibirás un único presupuesto con todo.",
+    "addAnotherZone": "Añadir otra zona",
+    "continueToQuote": "Ir al presupuesto",
+    "cartTitle": "Las zonas de tu presupuesto",
+    "cartSubtitle": "Añade todas las zonas que quieras: al final recibirás un único presupuesto",
+    "removeZone": "Quitar {zone} del presupuesto",
+    "breakdownSubtotal": "Subtotal",
+    "editZones": "Editar zonas"
   },
   "preventivo": {
     "title": "Presupuesto Gratis – Decluttering y Home Organizing",

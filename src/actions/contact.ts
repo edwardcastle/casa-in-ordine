@@ -9,26 +9,33 @@ function esc(value: string): string {
     .replace(/"/g, '&quot;');
 }
 
+/** One room the visitor asked us to quote. A request can carry several. */
+interface QuoteZone {
+  /** Translated label of the zone. */
+  zone: string;
+  accumulation: string;
+  subtotal: number;
+  /** Question text travels with the answer: questions differ per zone. */
+  answers: { question: string; answer: string }[];
+}
+
 interface QuoteRequestData {
   name: string;
   email: string;
   phone?: string;
-  /** Translated label of the chosen zone. */
-  zone: string;
+  zones: QuoteZone[];
+  subtotal: number;
+  urgency: number;
   total: number;
-  breakdown: { project: number; urgency: number };
-  /** Question text travels with the answer: questions differ per zone. */
-  answers: { question: string; answer: string }[];
-  accumulation: string;
   timing: string;
   availability?: { slot1: string; slot2: string; slot3: string };
   notes?: string;
 }
 
 export async function submitQuoteRequest(data: QuoteRequestData) {
-  const { name, email, phone, zone, total, breakdown, answers, accumulation, timing, availability, notes } = data;
+  const { name, email, phone, zones, subtotal, urgency, total, timing, availability, notes } = data;
 
-  if (!name || !email || !zone) {
+  if (!name || !email || zones.length === 0) {
     return { success: false, error: 'Missing required fields' };
   }
 
@@ -37,9 +44,28 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
     return { success: false, error: 'Invalid email address' };
   }
 
-  const answerRows = answers
-    .filter(({ answer }) => answer)
-    .map(({ question, answer }) => `<li style="margin-bottom: 8px;"><span style="color: #666;">${esc(question)}</span><br><strong>${esc(answer)}</strong></li>`)
+  const zoneSections = zones
+    .map(
+      (z) => `
+        <h4 style="color: #2D3748; margin: 20px 0 6px;">${esc(z.zone)} — €${z.subtotal}</h4>
+        <p style="margin: 0 0 8px; color: #666; font-size: 13px;">Accumulo: ${esc(z.accumulation)}</p>
+        <ol style="padding-left: 20px; margin: 0;">
+          ${z.answers
+            .filter(({ answer }) => answer)
+            .map(
+              ({ question, answer }) =>
+                `<li style="margin-bottom: 8px;"><span style="color: #666;">${esc(question)}</span><br><strong>${esc(answer)}</strong></li>`,
+            )
+            .join('')}
+        </ol>`,
+    )
+    .join('');
+
+  const zoneRows = zones
+    .map(
+      (z) =>
+        `<tr><td style="padding: 8px;">${esc(z.zone)}</td><td style="padding: 8px; text-align: right;">€${z.subtotal}</td></tr>`,
+    )
     .join('');
 
   try {
@@ -54,7 +80,7 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
         sender: { name: 'Casa in Ordine Website', email: 'info@casainordine.com' },
         to: [{ email: 'info@casainordine.com', name: 'Casa in Ordine' }],
         replyTo: { email, name },
-        subject: `Nuovo preventivo: ${name} - ${zone} (€${total})`,
+        subject: `Nuovo preventivo: ${name} - ${zones.map((z) => z.zone).join(', ')} (€${total})`,
         htmlContent: `
           <h2>Nuovo preventivo dal sopralluogo digitale</h2>
           <h3 style="color: #7B8F7A;">Contatto</h3>
@@ -66,23 +92,22 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
 
           <h3 style="color: #7B8F7A;">Progetto</h3>
           <table style="border-collapse: collapse; width: 100%; margin-bottom: 24px;">
-            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Zona:</td><td style="padding: 8px;">${esc(zone)}</td></tr>
-            <tr><td style="padding: 8px; font-weight: bold;">Accumulo:</td><td style="padding: 8px;">${esc(accumulation)}</td></tr>
+            <tr><td style="padding: 8px; font-weight: bold; width: 140px;">Zone richieste:</td><td style="padding: 8px;">${zones.length}</td></tr>
             <tr><td style="padding: 8px; font-weight: bold;">Tempistica:</td><td style="padding: 8px;">${esc(timing)}</td></tr>
           </table>
 
           <h3 style="color: #7B8F7A;">Stima</h3>
           <table style="border-collapse: collapse; width: 100%; margin-bottom: 24px;">
-            <tr><td style="padding: 8px;">Intervento</td><td style="padding: 8px; text-align: right;">€${breakdown.project}</td></tr>
-            ${breakdown.urgency > 0 ? `<tr><td style="padding: 8px;">Supplemento urgenza</td><td style="padding: 8px; text-align: right;">€${breakdown.urgency}</td></tr>` : ''}
+            ${zoneRows}
+            ${urgency > 0 ? `
+            <tr style="border-top: 1px solid #ddd;"><td style="padding: 8px;">Subtotale</td><td style="padding: 8px; text-align: right;">€${subtotal}</td></tr>
+            <tr><td style="padding: 8px;">Supplemento urgenza</td><td style="padding: 8px; text-align: right;">€${urgency}</td></tr>` : ''}
             <tr style="border-top: 2px solid #2D3748;"><td style="padding: 8px; font-weight: bold; font-size: 18px;">Totale stimato</td><td style="padding: 8px; text-align: right; font-weight: bold; font-size: 18px; color: #D98A6C;">€${total}</td></tr>
           </table>
 
-          ${answerRows ? `
+          ${zoneSections ? `
           <h3 style="color: #7B8F7A;">Risposte del sopralluogo</h3>
-          <ol style="padding-left: 20px;">
-            ${answerRows}
-          </ol>` : ''}
+          ${zoneSections}` : ''}
 
           ${availability && (availability.slot1 || availability.slot2 || availability.slot3) ? `
           <h3 style="color: #7B8F7A;">Disponibilità</h3>

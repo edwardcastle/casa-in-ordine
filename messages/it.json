@@ -572,7 +572,19 @@
       "medio": "Accumulo medio",
       "alto": "Accumulo alto"
     },
-    "photosHint": "Carica 1 o 2 foto della zona da organizzare: ci aiuterà a fornirti una stima quasi esatta del tempo e del costo."
+    "photosHint": "Carica 1 o 2 foto della zona da organizzare: ci aiuterà a fornirti una stima quasi esatta del tempo e del costo.",
+    "zoneTitleAnother": "Quale altra zona vuoi aggiungere?",
+    "zoneAlreadyAdded": "Già nel preventivo",
+    "zoneCount": "{count, plural, one {# zona nel preventivo} other {# zone nel preventivo}}",
+    "zoneAddedTitle": "{zone} aggiunta al preventivo",
+    "zoneAddedQuestion": "Vuoi far riorganizzare anche un'altra parte della casa? Riceverai un unico preventivo con tutto.",
+    "addAnotherZone": "Aggiungi un'altra zona",
+    "continueToQuote": "Vai al preventivo",
+    "cartTitle": "Le zone del tuo preventivo",
+    "cartSubtitle": "Aggiungi tutte le zone che vuoi: alla fine riceverai un unico preventivo",
+    "removeZone": "Rimuovi {zone} dal preventivo",
+    "breakdownSubtotal": "Subtotale",
+    "editZones": "Modifica le zone"
   },
   "preventivo": {
     "title": "Preventivo Gratuito Decluttering e Home Organizing",

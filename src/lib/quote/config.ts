@@ -289,22 +289,24 @@ export function isAnswered(answers: ZoneAnswers, questionId: string): boolean {
   return (answers[questionId]?.length ?? 0) > 0;
 }
 
-export interface PriceBreakdown {
-  total: number;
-  project: number;
-  urgency: number;
+/**
+ * One zone the visitor has finished configuring. A quote is a list of these —
+ * someone can have the closet, the kitchen and the garage priced in one go.
+ */
+export interface QuoteEntry {
+  /** Stable across removals so React keys and edits stay correct. */
+  id: number;
+  zone: Zone;
+  answers: ZoneAnswers;
+  accumulation: AccumulationId;
 }
 
-export function calculatePrice(
-  zone: Zone,
-  answers: ZoneAnswers,
-  accumulation: AccumulationId | null,
-  timing: TimingId | null,
-): PriceBreakdown {
-  const config = zoneConfigs[zone];
+/** Price of one zone, including its own accumulation level. */
+export function entrySubtotal(entry: QuoteEntry): number {
+  const config = zoneConfigs[entry.zone];
 
   const optionsTotal = config.questions.reduce((sum, question) => {
-    const selected = answers[question.id] ?? [];
+    const selected = entry.answers[question.id] ?? [];
     return (
       sum +
       question.options
@@ -314,15 +316,38 @@ export function calculatePrice(
   }, 0);
 
   const multiplier =
-    accumulationLevels.find((l) => l.id === accumulation)?.multiplier ?? 1;
-  const projectCost = (config.basePrice + optionsTotal) * multiplier;
+    accumulationLevels.find((l) => l.id === entry.accumulation)?.multiplier ?? 1;
 
+  return (config.basePrice + optionsTotal) * multiplier;
+}
+
+export interface QuoteTotals {
+  /** Per-entry subtotals, in the order the zones were added. */
+  zones: { id: number; zone: Zone; subtotal: number }[];
+  subtotal: number;
+  urgency: number;
+  total: number;
+}
+
+/**
+ * Zones are priced independently and summed — no multi-zone discount. The
+ * timing surcharge applies once, to the whole job.
+ */
+export function calculateTotals(entries: QuoteEntry[], timing: TimingId | null): QuoteTotals {
+  const zones = entries.map((entry) => ({
+    id: entry.id,
+    zone: entry.zone,
+    subtotal: Math.round(entrySubtotal(entry)),
+  }));
+
+  const exactSubtotal = entries.reduce((sum, entry) => sum + entrySubtotal(entry), 0);
   const surcharge = timingOptions.find((t) => t.id === timing)?.surcharge ?? 0;
-  const urgencyAmount = projectCost * surcharge;
+  const urgencyAmount = exactSubtotal * surcharge;
 
   return {
-    total: Math.round(projectCost + urgencyAmount),
-    project: Math.round(projectCost),
+    zones,
+    subtotal: Math.round(exactSubtotal),
     urgency: Math.round(urgencyAmount),
+    total: Math.round(exactSubtotal + urgencyAmount),
   };
 }

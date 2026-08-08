@@ -572,7 +572,19 @@
       "medio": "Medium clutter",
       "alto": "Heavy clutter"
     },
-    "photosHint": "Upload 1 or 2 photos of the area to organize: it helps us give you an almost exact estimate of time and cost."
+    "photosHint": "Upload 1 or 2 photos of the area to organize: it helps us give you an almost exact estimate of time and cost.",
+    "zoneTitleAnother": "Which other area would you like to add?",
+    "zoneAlreadyAdded": "Already in the quote",
+    "zoneCount": "{count, plural, one {# area in the quote} other {# areas in the quote}}",
+    "zoneAddedTitle": "{zone} added to your quote",
+    "zoneAddedQuestion": "Would you like another part of your home organized too? You'll get a single quote covering everything.",
+    "addAnotherZone": "Add another area",
+    "continueToQuote": "Go to the quote",
+    "cartTitle": "The areas in your quote",
+    "cartSubtitle": "Add as many areas as you like: you'll receive one quote covering them all",
+    "removeZone": "Remove {zone} from the quote",
+    "breakdownSubtotal": "Subtotal",
+    "editZones": "Edit areas"
   },
   "preventivo": {
     "title": "Free Quote – Decluttering & Home Organizing",

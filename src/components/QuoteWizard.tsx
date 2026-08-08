@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { submitQuoteRequest } from '@/actions/contact';
@@ -8,30 +8,48 @@ import CategoryIcon from '@/components/CategoryIcon';
 import {
   ZONES,
   accumulationLevels,
-  calculatePrice,
+  calculateTotals,
   isAnswered,
   questionsFor,
   timingOptions,
   toggleOption,
   type AccumulationId,
+  type QuoteEntry,
   type QuoteQuestion,
   type TimingId,
   type Zone,
   type ZoneAnswers,
 } from '@/lib/quote/config';
 
-// The flow is: zone → that zone's questions → accumulation → timing →
-// availability → result. Zones ask between two and four questions, so every
-// step after the questions is positioned relative to how many the zone has.
-const STEP_ZONE = 0;
-const STEP_QUESTIONS = 1;
+// A quote holds one or more zones. Each zone is configured in a loop —
+// pick it, answer its questions, rate its clutter — and lands in the cart.
+// The tail (timing, dates, contact) is answered once for the whole job.
+type Phase =
+  | 'zone'
+  | 'questions'
+  | 'accumulation'
+  | 'cart'
+  | 'timing'
+  | 'availability'
+  | 'result';
+
+const TAIL_PHASES: Phase[] = ['cart', 'timing', 'availability', 'result'];
 
 export default function QuoteWizard() {
   const t = useTranslations('quote');
-  const [step, setStep] = useState(0);
-  const [zone, setZone] = useState<Zone | null>(null);
-  const [answers, setAnswers] = useState<ZoneAnswers>({});
-  const [accumulation, setAccumulation] = useState<AccumulationId | null>(null);
+
+  const [entries, setEntries] = useState<QuoteEntry[]>([]);
+  const [nextId, setNextId] = useState(1);
+
+  // The zone currently being configured, before it joins the cart.
+  const [draftZone, setDraftZone] = useState<Zone | null>(null);
+  const [draftAnswers, setDraftAnswers] = useState<ZoneAnswers>({});
+  const [draftAccumulation, setDraftAccumulation] = useState<AccumulationId | null>(null);
+
+  const [phase, setPhase] = useState<Phase>('zone');
+  const [questionIndex, setQuestionIndex] = useState(0);
+  const [showAddedModal, setShowAddedModal] = useState(false);
+
   const [timing, setTiming] = useState<TimingId | null>(null);
   const [availability, setAvailability] = useState({ slot1: '', slot2: '', slot3: '' });
   const [notes, setNotes] = useState('');
@@ -40,84 +58,204 @@ export default function QuoteWizard() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const photoInputRef = useRef<HTMLInputElement>(null);
 
-  const questions = zone ? questionsFor(zone) : [];
+  const draftQuestions = draftZone ? questionsFor(draftZone) : [];
+  const totals = calculateTotals(entries, timing);
 
-  const stepAccumulation = STEP_QUESTIONS + questions.length;
-  const stepTiming = stepAccumulation + 1;
-  const stepAvailability = stepTiming + 1;
-  const stepResult = stepAvailability + 1;
-  const totalSteps = stepResult + 1;
-
-  const progress = ((step + 1) / totalSteps) * 100;
+  // Escape closes the "zone added" prompt without choosing, leaving the cart.
+  useEffect(() => {
+    if (!showAddedModal) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setShowAddedModal(false);
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [showAddedModal]);
 
   // --- i18n helpers -------------------------------------------------------
-  // Zone copy lives at `quote.zones.<zone>`, closing copy at `quote.closing`.
 
-  function zoneText(key: string): string {
-    return t(`zones.${zone}.${key}`);
+  function zoneLabel(zone: Zone): string {
+    return t(`zones.${zone}.label`);
   }
 
-  function questionText(question: QuoteQuestion): string {
-    return zoneText(`questions.${question.id}.question`);
+  function questionText(zone: Zone, question: QuoteQuestion): string {
+    return t(`zones.${zone}.questions.${question.id}.question`);
   }
 
-  function optionText(question: QuoteQuestion, optionId: string): string {
-    return zoneText(`questions.${question.id}.options.${optionId}`);
+  function optionText(zone: Zone, question: QuoteQuestion, optionId: string): string {
+    return t(`zones.${zone}.questions.${question.id}.options.${optionId}`);
   }
+
+  // --- navigation ---------------------------------------------------------
+
+  function canProceed(): boolean {
+    switch (phase) {
+      case 'zone':
+        return draftZone !== null;
+      case 'questions':
+        return isAnswered(draftAnswers, draftQuestions[questionIndex]?.id ?? '');
+      case 'accumulation':
+        return draftAccumulation !== null;
+      case 'cart':
+        return entries.length > 0;
+      case 'timing':
+        return timing !== null;
+      case 'availability':
+        return true; // dates are optional
+      default:
+        return false;
+    }
+  }
+
+  /** Moves the finished draft zone into the cart and clears it. */
+  function commitDraft() {
+    if (!draftZone || !draftAccumulation) return;
+    setEntries((prev) => [
+      ...prev,
+      { id: nextId, zone: draftZone, answers: draftAnswers, accumulation: draftAccumulation },
+    ]);
+    setNextId((id) => id + 1);
+    setDraftZone(null);
+    setDraftAnswers({});
+    setDraftAccumulation(null);
+  }
+
+  function goNext() {
+    switch (phase) {
+      case 'zone':
+        setQuestionIndex(0);
+        setPhase('questions');
+        return;
+      case 'questions':
+        if (questionIndex + 1 < draftQuestions.length) {
+          setQuestionIndex(questionIndex + 1);
+        } else {
+          setPhase('accumulation');
+        }
+        return;
+      case 'accumulation':
+        commitDraft();
+        setPhase('cart');
+        setShowAddedModal(true);
+        return;
+      case 'cart':
+        setPhase('timing');
+        return;
+      case 'timing':
+        setPhase('availability');
+        return;
+      case 'availability':
+        setPhase('result');
+        return;
+    }
+  }
+
+  function goBack() {
+    switch (phase) {
+      case 'zone':
+        // Only reachable when a zone is already in the cart: abandon this one.
+        setDraftZone(null);
+        setDraftAnswers({});
+        setDraftAccumulation(null);
+        setPhase('cart');
+        return;
+      case 'questions':
+        if (questionIndex > 0) setQuestionIndex(questionIndex - 1);
+        else setPhase('zone');
+        return;
+      case 'accumulation':
+        setQuestionIndex(Math.max(draftQuestions.length - 1, 0));
+        setPhase('questions');
+        return;
+      case 'timing':
+        setPhase('cart');
+        return;
+      case 'availability':
+        setPhase('timing');
+        return;
+    }
+  }
+
+  // Back is hidden at the very start, and on the cart, where the zone is
+  // already committed and the way to undo it is the remove button.
+  const canGoBack =
+    phase === 'questions' ||
+    phase === 'accumulation' ||
+    phase === 'timing' ||
+    phase === 'availability' ||
+    (phase === 'zone' && entries.length > 0);
+
+  function startAnotherZone() {
+    setShowAddedModal(false);
+    setDraftZone(null);
+    setDraftAnswers({});
+    setDraftAccumulation(null);
+    setQuestionIndex(0);
+    setPhase('zone');
+  }
+
+  function continueToQuote() {
+    setShowAddedModal(false);
+    setPhase('timing');
+  }
+
+  function removeEntry(id: number) {
+    const remaining = entries.filter((e) => e.id !== id);
+    setEntries(remaining);
+    // Removing the last zone leaves nothing to quote — back to the picker.
+    if (remaining.length === 0) setPhase('zone');
+  }
+
+  // Progress runs across the current zone plus the shared tail. Adding a
+  // second zone restarts the zone part, which is what is actually happening.
+  const zoneStepCount = 1 + Math.max(draftQuestions.length, 1) + 1;
+  const sequenceLength = zoneStepCount + TAIL_PHASES.length;
+  const position = (() => {
+    if (phase === 'zone') return 0;
+    if (phase === 'questions') return 1 + questionIndex;
+    if (phase === 'accumulation') return zoneStepCount - 1;
+    return zoneStepCount + TAIL_PHASES.indexOf(phase);
+  })();
+  const progress = ((position + 1) / sequenceLength) * 100;
 
   // --- state --------------------------------------------------------------
 
   function selectZone(next: Zone) {
-    if (next === zone) return;
-    setZone(next);
-    setAnswers({}); // the previous zone's answers do not apply here
+    if (next === draftZone) return;
+    setDraftZone(next);
+    setDraftAnswers({});
+    setDraftAccumulation(null);
   }
 
   function pickOption(question: QuoteQuestion, optionId: string) {
-    setAnswers((prev) => ({
+    setDraftAnswers((prev) => ({
       ...prev,
       [question.id]: toggleOption(question, prev[question.id] ?? [], optionId),
     }));
   }
 
-  const price =
-    zone !== null
-      ? calculatePrice(zone, answers, accumulation, timing)
-      : { total: 0, project: 0, urgency: 0 };
-
-  function canProceed(): boolean {
-    if (step === STEP_ZONE) return zone !== null;
-
-    const questionIndex = step - STEP_QUESTIONS;
-    if (questionIndex >= 0 && questionIndex < questions.length) {
-      return isAnswered(answers, questions[questionIndex].id);
-    }
-
-    if (step === stepAccumulation) return accumulation !== null;
-    if (step === stepTiming) return timing !== null;
-    return step === stepAvailability; // dates are optional
-  }
-
   async function handleSubmit() {
-    if (!zone || !accumulation || !timing) return;
+    if (entries.length === 0 || !timing) return;
     setSubmitStatus('sending');
     try {
       const result = await submitQuoteRequest({
         name: contact.name,
         email: contact.email,
         phone: contact.phone || undefined,
-        zone: zoneText('label'),
-        total: price.total,
-        breakdown: { project: price.project, urgency: price.urgency },
-        // Question text travels with the answer: it differs per zone, so the
-        // answer alone would not say what was asked.
-        answers: questions.map((question) => ({
-          question: questionText(question),
-          answer: (answers[question.id] ?? [])
-            .map((optionId) => optionText(question, optionId))
-            .join(' · '),
+        zones: entries.map((entry) => ({
+          zone: zoneLabel(entry.zone),
+          accumulation: t(`closing.accumulo.options.${entry.accumulation}`),
+          subtotal: totals.zones.find((z) => z.id === entry.id)?.subtotal ?? 0,
+          // Question text travels with the answer: it differs per zone.
+          answers: questionsFor(entry.zone).map((question) => ({
+            question: questionText(entry.zone, question),
+            answer: (entry.answers[question.id] ?? [])
+              .map((optionId) => optionText(entry.zone, question, optionId))
+              .join(' · '),
+          })),
         })),
-        accumulation: t(`closing.accumulo.options.${accumulation}`),
+        subtotal: totals.subtotal,
+        urgency: totals.urgency,
+        total: totals.total,
         timing: t(`closing.timing.options.${timing}`),
         availability,
         notes: notes.trim() || undefined,
@@ -157,50 +295,55 @@ export default function QuoteWizard() {
   // --- steps --------------------------------------------------------------
 
   function renderZoneStep() {
+    const taken = new Set(entries.map((e) => e.zone));
     return (
       <div className="text-center">
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
-          {t('zoneTitle')}
+          {entries.length > 0 ? t('zoneTitleAnother') : t('zoneTitle')}
         </h3>
         <p className="text-foreground/60 mb-8">{t('zoneSubtitle')}</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {ZONES.map((z) => (
-            <button
-              key={z}
-              onClick={() => selectZone(z)}
-              className={`p-5 rounded-2xl border-2 text-center transition-all ${
-                zone === z
-                  ? 'border-primary bg-primary/10'
-                  : 'border-secondary-dark bg-white hover:border-primary/50 hover:-translate-y-1'
-              }`}
-            >
-              <CategoryIcon category={z} className="w-8 h-8 mx-auto mb-3" />
-              <span className="block font-semibold text-sm leading-snug">
-                {t(`zones.${z}.label`)}
-              </span>
-              <span className="block text-xs text-foreground/50 mt-1">
-                {t(`zones.${z}.tagline`)}
-              </span>
-            </button>
-          ))}
+          {ZONES.map((z) => {
+            const isTaken = taken.has(z);
+            return (
+              <button
+                key={z}
+                onClick={() => !isTaken && selectZone(z)}
+                disabled={isTaken}
+                className={`p-5 rounded-2xl border-2 text-center transition-all ${
+                  isTaken
+                    ? 'border-secondary-dark bg-secondary/60 opacity-60 cursor-not-allowed'
+                    : draftZone === z
+                      ? 'border-primary bg-primary/10'
+                      : 'border-secondary-dark bg-white hover:border-primary/50 hover:-translate-y-1'
+                }`}
+              >
+                <CategoryIcon category={z} className="w-8 h-8 mx-auto mb-3" />
+                <span className="block font-semibold text-sm leading-snug">{zoneLabel(z)}</span>
+                <span className="block text-xs text-foreground/50 mt-1">
+                  {isTaken ? t('zoneAlreadyAdded') : t(`zones.${z}.tagline`)}
+                </span>
+              </button>
+            );
+          })}
         </div>
       </div>
     );
   }
 
-  function renderQuestionStep(questionIndex: number) {
-    const question = questions[questionIndex];
-    if (!question) return null;
-    const selected = answers[question.id] ?? [];
+  function renderQuestionStep() {
+    const question = draftQuestions[questionIndex];
+    if (!draftZone || !question) return null;
+    const selected = draftAnswers[question.id] ?? [];
 
     return (
       <div className="text-center">
         <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider rounded-full mb-4">
-          {zoneText('label')}
+          {zoneLabel(draftZone)}
         </span>
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
           <span className="text-foreground/40 mr-2">{questionIndex + 1}.</span>
-          {questionText(question)}
+          {questionText(draftZone, question)}
         </h3>
         <p className="text-xs text-foreground/50 mb-6">
           {question.type === 'multi' ? t('pickMany') : t('pickOne')}
@@ -230,7 +373,7 @@ export default function QuoteWizard() {
                     </svg>
                   )}
                 </span>
-                <span>{optionText(question, option.id)}</span>
+                <span>{optionText(draftZone, question, option.id)}</span>
               </button>
             );
           })}
@@ -240,8 +383,12 @@ export default function QuoteWizard() {
   }
 
   function renderAccumulationStep() {
+    if (!draftZone) return null;
     return (
       <div className="text-center">
+        <span className="inline-block px-3 py-1 bg-accent/20 text-accent text-xs font-bold uppercase tracking-wider rounded-full mb-4">
+          {zoneLabel(draftZone)}
+        </span>
         <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
           {t('closing.accumulo.question')}
         </h3>
@@ -250,9 +397,9 @@ export default function QuoteWizard() {
           {accumulationLevels.map((level) => (
             <button
               key={level.id}
-              onClick={() => setAccumulation(level.id)}
+              onClick={() => setDraftAccumulation(level.id)}
               className={`p-6 rounded-2xl border-2 text-center transition-all ${
-                accumulation === level.id
+                draftAccumulation === level.id
                   ? 'border-primary bg-primary/10'
                   : 'border-secondary-dark bg-white hover:border-primary/50'
               }`}
@@ -263,6 +410,113 @@ export default function QuoteWizard() {
               </p>
             </button>
           ))}
+        </div>
+      </div>
+    );
+  }
+
+  /** The cart: every zone added so far, with the option to add more. */
+  function renderCartStep() {
+    return (
+      <div className="text-center">
+        <h3 className="text-xl md:text-2xl font-bold text-foreground mb-2">
+          {t('cartTitle')}
+        </h3>
+        <p className="text-foreground/60 mb-8">{t('cartSubtitle')}</p>
+
+        <ul className="max-w-lg mx-auto space-y-3 mb-8 text-left">
+          {entries.map((entry) => {
+            const subtotal = totals.zones.find((z) => z.id === entry.id)?.subtotal ?? 0;
+            return (
+              <li
+                key={entry.id}
+                className="flex items-center gap-3 bg-secondary rounded-xl p-4 border border-secondary-dark"
+              >
+                <CategoryIcon category={entry.zone} className="w-7 h-7 flex-shrink-0" />
+                <div className="min-w-0 flex-1">
+                  <p className="font-semibold text-sm truncate">{zoneLabel(entry.zone)}</p>
+                  <p className="text-xs text-foreground/50">
+                    {t(`accumuloShort.${entry.accumulation}`)}
+                  </p>
+                </div>
+                <span className="font-bold text-primary">€{subtotal}</span>
+                <button
+                  onClick={() => removeEntry(entry.id)}
+                  aria-label={t('removeZone', { zone: zoneLabel(entry.zone) })}
+                  title={t('removeZone', { zone: zoneLabel(entry.zone) })}
+                  className="flex-shrink-0 w-8 h-8 rounded-full border border-secondary-dark flex items-center justify-center text-foreground/40 hover:border-red-400 hover:text-red-500 transition-colors"
+                >
+                  <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+
+        <div className="max-w-lg mx-auto flex items-center justify-between text-sm font-bold border-t border-secondary-dark pt-4">
+          <span>{t('breakdownSubtotal')}</span>
+          <span>€{totals.subtotal}</span>
+        </div>
+
+        <button
+          onClick={startAnotherZone}
+          className="mt-8 inline-flex items-center gap-2 px-6 py-3 rounded-full border-2 border-dashed border-primary/50 text-primary font-semibold hover:bg-primary/5 hover:border-primary transition-all"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+          </svg>
+          {t('addAnotherZone')}
+        </button>
+      </div>
+    );
+  }
+
+  /** Shown the moment a zone lands in the cart. */
+  function renderAddedModal() {
+    const justAdded = entries[entries.length - 1];
+    if (!justAdded) return null;
+
+    return (
+      <div className="print:hidden fixed inset-0 z-50 flex items-center justify-center p-4">
+        <div
+          className="absolute inset-0 bg-foreground/40 backdrop-blur-sm"
+          onClick={() => setShowAddedModal(false)}
+        />
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="qw-added-title"
+          className="relative bg-white rounded-3xl shadow-xl border border-secondary-dark max-w-md w-full p-6 md:p-8 text-center"
+        >
+          <div className="w-14 h-14 mx-auto mb-4 rounded-full bg-primary/10 flex items-center justify-center">
+            <svg className="w-7 h-7 text-primary" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h4 id="qw-added-title" className="text-lg font-bold text-foreground mb-1">
+            {t('zoneAddedTitle', { zone: zoneLabel(justAdded.zone) })}
+          </h4>
+          <p className="text-sm text-foreground/60 mb-6">{t('zoneAddedQuestion')}</p>
+
+          <div className="space-y-3">
+            <button
+              onClick={startAnotherZone}
+              className="w-full px-6 py-3 rounded-full border-2 border-primary text-primary font-semibold hover:bg-primary/5 transition-all flex items-center justify-center gap-2"
+            >
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+              </svg>
+              {t('addAnotherZone')}
+            </button>
+            <button
+              onClick={continueToQuote}
+              className="w-full px-6 py-3 rounded-full bg-primary text-white font-semibold shadow-md hover:bg-primary-dark transition-all"
+            >
+              {t('continueToQuote')}
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -324,20 +578,29 @@ export default function QuoteWizard() {
   }
 
   function renderResultStep() {
-    if (!zone) return null;
-
     return (
       <div className="text-center">
         {/* Summary pills + print button */}
         <div className="flex flex-wrap justify-center items-center gap-2 mb-6">
-          <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
-            {zoneText('label')}
-          </span>
-          {accumulation && (
-            <span className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary">
-              {t(`accumuloShort.${accumulation}`)}
+          {entries.map((entry) => (
+            <span
+              key={entry.id}
+              className="inline-flex items-center gap-1.5 bg-secondary px-3 py-1.5 rounded-full text-xs font-semibold text-primary"
+            >
+              {zoneLabel(entry.zone)}
             </span>
-          )}
+          ))}
+          {/* Without this the only way to add a zone after seeing the price
+              would be to restart and lose every answer. */}
+          <button
+            onClick={() => setPhase('cart')}
+            className="print:hidden inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full border border-dashed border-primary/50 text-xs font-semibold text-primary hover:bg-primary/5 transition-colors"
+          >
+            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+            </svg>
+            {t('editZones')}
+          </button>
           <button
             onClick={() => window.print()}
             title={t('printTitle')}
@@ -352,66 +615,93 @@ export default function QuoteWizard() {
         {/* Price */}
         <p className="text-sm text-foreground/60 mb-2">{t('estimateLabel')}</p>
         <div className="text-5xl font-bold text-foreground mb-6">
-          <span className="text-xl align-middle mr-1">€</span>{price.total}
+          <span className="text-xl align-middle mr-1">€</span>{totals.total}
         </div>
 
         <div className="max-w-lg mx-auto space-y-4 text-left">
 
-          {/* Breakdown */}
+          {/* Breakdown — one line per zone */}
           <div className="bg-secondary rounded-xl p-4">
             <div className="space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-foreground/70">{t('breakdownProject')}</span>
-                <span className="font-semibold">€{price.project}</span>
-              </div>
-              {price.urgency > 0 && (
-                <div className="flex justify-between text-sm">
-                  <span className="text-foreground/70">{t('breakdownUrgency')}</span>
-                  <span className="font-semibold">€{price.urgency}</span>
+              {entries.map((entry) => (
+                <div key={entry.id} className="flex justify-between text-sm">
+                  <span className="text-foreground/70">{zoneLabel(entry.zone)}</span>
+                  <span className="font-semibold">
+                    €{totals.zones.find((z) => z.id === entry.id)?.subtotal ?? 0}
+                  </span>
                 </div>
+              ))}
+              {totals.urgency > 0 && (
+                <>
+                  <div className="flex justify-between text-sm pt-2 border-t border-secondary-dark">
+                    <span className="text-foreground/70">{t('breakdownSubtotal')}</span>
+                    <span className="font-semibold">€{totals.subtotal}</span>
+                  </div>
+                  <div className="flex justify-between text-sm">
+                    <span className="text-foreground/70">{t('breakdownUrgency')}</span>
+                    <span className="font-semibold">€{totals.urgency}</span>
+                  </div>
+                </>
               )}
               <div className="flex justify-between text-sm font-bold pt-2 border-t border-secondary-dark">
                 <span>{t('breakdownTotal')}</span>
-                <span>€{price.total}</span>
+                <span>€{totals.total}</span>
               </div>
             </div>
           </div>
 
-          {/* Answers + dates */}
+          {/* Answers, grouped by zone */}
           <div className="bg-secondary rounded-xl p-4">
-            <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
+            <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-3">
               {t('summaryTitle')}
             </p>
-            <ul className="space-y-2 mb-4">
-              {questions.map((question) => {
-                const selected = answers[question.id] ?? [];
-                if (selected.length === 0) return null;
-                return (
-                  <li key={question.id} className="text-sm">
-                    <span className="block text-foreground/50 text-xs">
-                      {questionText(question)}
-                    </span>
-                    <span className="flex items-start gap-2 text-foreground/80">
-                      <span className="text-primary">✓</span>
-                      <span>
-                        {selected.map((id) => optionText(question, id)).join(' · ')}
-                      </span>
-                    </span>
-                  </li>
-                );
-              })}
-              {timing && (
-                <li className="text-sm">
-                  <span className="block text-foreground/50 text-xs">
-                    {t('closing.timing.question')}
+            {entries.map((entry) => (
+              <div key={entry.id} className="mb-4 last:mb-0">
+                <p className="font-semibold text-sm text-primary mb-1">
+                  {zoneLabel(entry.zone)}
+                  <span className="font-normal text-foreground/50">
+                    {' · '}
+                    {t(`accumuloShort.${entry.accumulation}`)}
                   </span>
-                  <span className="flex items-start gap-2 text-foreground/80">
-                    <span className="text-primary">✓</span>
-                    <span>{t(`closing.timing.options.${timing}`)}</span>
-                  </span>
-                </li>
-              )}
-            </ul>
+                </p>
+                <ul className="space-y-2">
+                  {questionsFor(entry.zone).map((question) => {
+                    const selected = entry.answers[question.id] ?? [];
+                    if (selected.length === 0) return null;
+                    return (
+                      <li key={question.id} className="text-sm">
+                        <span className="block text-foreground/50 text-xs">
+                          {questionText(entry.zone, question)}
+                        </span>
+                        <span className="flex items-start gap-2 text-foreground/80">
+                          <span className="text-primary">✓</span>
+                          <span>
+                            {selected
+                              .map((id) => optionText(entry.zone, question, id))
+                              .join(' · ')}
+                          </span>
+                        </span>
+                      </li>
+                    );
+                  })}
+                </ul>
+              </div>
+            ))}
+            {timing && (
+              <p className="text-sm border-t border-secondary-dark pt-3">
+                <span className="block text-foreground/50 text-xs">
+                  {t('closing.timing.question')}
+                </span>
+                <span className="flex items-start gap-2 text-foreground/80">
+                  <span className="text-primary">✓</span>
+                  <span>{t(`closing.timing.options.${timing}`)}</span>
+                </span>
+              </p>
+            )}
+          </div>
+
+          {/* Dates */}
+          <div className="bg-secondary rounded-xl p-4">
             <p className="text-xs font-bold uppercase tracking-wide text-foreground/50 mb-2">
               {t('datesTitle')}
             </p>
@@ -575,27 +865,28 @@ export default function QuoteWizard() {
     );
   }
 
-  function renderStep() {
+  function renderPhase() {
     if (submitStatus === 'success') return renderSuccess();
-    if (step === STEP_ZONE) return renderZoneStep();
-
-    const questionIndex = step - STEP_QUESTIONS;
-    if (questionIndex >= 0 && questionIndex < questions.length) {
-      return renderQuestionStep(questionIndex);
+    switch (phase) {
+      case 'zone': return renderZoneStep();
+      case 'questions': return renderQuestionStep();
+      case 'accumulation': return renderAccumulationStep();
+      case 'cart': return renderCartStep();
+      case 'timing': return renderTimingStep();
+      case 'availability': return renderAvailabilityStep();
+      case 'result': return renderResultStep();
     }
-
-    if (step === stepAccumulation) return renderAccumulationStep();
-    if (step === stepTiming) return renderTimingStep();
-    if (step === stepAvailability) return renderAvailabilityStep();
-    if (step === stepResult) return renderResultStep();
-    return null;
   }
 
   function handleReset() {
-    setStep(0);
-    setZone(null);
-    setAnswers({});
-    setAccumulation(null);
+    setEntries([]);
+    setNextId(1);
+    setDraftZone(null);
+    setDraftAnswers({});
+    setDraftAccumulation(null);
+    setPhase('zone');
+    setQuestionIndex(0);
+    setShowAddedModal(false);
     setTiming(null);
     setAvailability({ slot1: '', slot2: '', slot3: '' });
     setNotes('');
@@ -603,6 +894,8 @@ export default function QuoteWizard() {
     setContact({ name: '', email: '', phone: '' });
     setSubmitStatus('idle');
   }
+
+  const isDone = submitStatus === 'success';
 
   return (
     <div className="bg-white rounded-3xl shadow-lg border border-secondary-dark overflow-hidden">
@@ -616,6 +909,14 @@ export default function QuoteWizard() {
           className="h-20 md:h-32 w-auto"
         />
       </div>
+
+      {/* Zone counter — the quote can hold several */}
+      {!isDone && entries.length > 0 && phase !== 'result' && (
+        <p className="print:hidden text-center text-xs font-semibold text-primary mt-4">
+          {t('zoneCount', { count: entries.length })}
+        </p>
+      )}
+
       {/* Progress bar */}
       <div className="print:hidden h-2 bg-secondary mt-4">
         <div
@@ -625,31 +926,31 @@ export default function QuoteWizard() {
       </div>
 
       <div className="p-6 md:p-10">
-        {renderStep()}
+        {renderPhase()}
 
-        {/* Navigation — visible on every step before the result */}
-        {submitStatus !== 'success' && step < stepResult && (
+        {/* Navigation — hidden on the result step and after success */}
+        {!isDone && phase !== 'result' && (
           <div className="print:hidden flex justify-between mt-10 pt-6 border-t border-secondary">
             <button
-              onClick={() => setStep(step - 1)}
+              onClick={goBack}
               className={`px-6 py-3 rounded-full border-2 border-secondary-dark font-semibold text-foreground/60 transition-all hover:border-primary ${
-                step === 0 ? 'invisible' : ''
+                canGoBack ? '' : 'invisible'
               }`}
             >
               {t('back')}
             </button>
             <button
-              onClick={() => setStep(step + 1)}
+              onClick={goNext}
               disabled={!canProceed()}
               className="px-8 py-3 rounded-full bg-primary text-white font-semibold shadow-md transition-all hover:bg-primary-dark disabled:opacity-40 disabled:cursor-not-allowed"
             >
-              {t('next')}
+              {phase === 'cart' ? t('continueToQuote') : t('next')}
             </button>
           </div>
         )}
 
         {/* Restart — visible on final step and after success */}
-        {(step === stepResult || submitStatus === 'success') && (
+        {(phase === 'result' || isDone) && (
           <div className="print:hidden text-center mt-6">
             <button
               onClick={handleReset}
@@ -660,6 +961,8 @@ export default function QuoteWizard() {
           </div>
         )}
       </div>
+
+      {showAddedModal && !isDone && renderAddedModal()}
     </div>
   );
 }
