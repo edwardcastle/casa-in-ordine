@@ -298,14 +298,14 @@
       "success": "Messaggio inviato con successo! Ti risponderemo al più presto.",
       "error": "Si è verificato un errore. Riprova più tardi.",
       "errors": {
-        "captcha": "Verifica di sicurezza non riuscita. Ricarica la pagina e riprova.",
-        "email-disposable": "Usa un indirizzo email permanente: su una casella temporanea non potremmo risponderti.",
-        "email-format": "L'indirizzo email non sembra valido. Controlla e riprova.",
-        "email-unreachable": "Non riusciamo a raggiungere questo dominio email. Controlla che sia scritto correttamente.",
-        "message-too-long": "Il messaggio è troppo lungo. Riassumilo in meno di 5000 caratteri.",
-        "message-too-short": "Scrivi qualche parola in più su come possiamo aiutarti.",
-        "rate-limited": "Hai inviato troppe richieste di recente. Riprova tra un'ora o scrivici a info@casainordine.com.",
-        "send-failed": "Non siamo riusciti a inviare il messaggio. Riprova o scrivici a info@casainordine.com."
+        "captcha": "Non siamo riusciti a completare il controllo anti-spam. Attendi un istante e premi di nuovo Invia.",
+        "email-disposable": "Questo è un indirizzo email temporaneo: non potremmo inviarti il preventivo. Usane uno che leggi di solito.",
+        "email-format": "Questo indirizzo email non sembra completo. Controlla che non manchi nulla prima della @ o dopo il punto.",
+        "email-unreachable": "Non troviamo un servizio di posta per questo indirizzo. Controlla che il dominio dopo la @ sia scritto bene.",
+        "message-too-long": "Il messaggio è troppo lungo. Riassumi i punti principali in meno di 5000 caratteri.",
+        "message-too-short": "Raccontaci qualcosa in più: bastano una o due frasi su cosa vorresti sistemare.",
+        "rate-limited": "Hai già inviato diverse richieste. Attendi un'ora oppure scrivici direttamente a info@casainordine.com.",
+        "send-failed": "Qualcosa non ha funzionato e il messaggio non è partito. Riprova tra un istante o scrivici a info@casainordine.com."
       }
     },
     "info": {
@@ -595,13 +595,13 @@
     "breakdownSubtotal": "Subtotale",
     "editZones": "Modifica le zone",
     "errors": {
-      "captcha": "Verifica di sicurezza non riuscita. Ricarica la pagina e riprova.",
-      "email-disposable": "Usa un indirizzo email permanente: su una casella temporanea non potremmo risponderti.",
-      "email-format": "L'indirizzo email non sembra valido. Controlla e riprova.",
-      "email-unreachable": "Non riusciamo a raggiungere questo dominio email. Controlla che sia scritto correttamente.",
-      "message-too-long": "Il messaggio è troppo lungo. Riassumilo in meno di 5000 caratteri.",
-      "rate-limited": "Hai inviato troppe richieste di recente. Riprova tra un'ora o scrivici a info@casainordine.com.",
-      "send-failed": "Non siamo riusciti a inviare il messaggio. Riprova o scrivici a info@casainordine.com."
+      "captcha": "Non siamo riusciti a completare il controllo anti-spam. Attendi un istante e premi di nuovo Invia.",
+      "email-disposable": "Questo è un indirizzo email temporaneo: non potremmo inviarti il preventivo. Usane uno che leggi di solito.",
+      "email-format": "Questo indirizzo email non sembra completo. Controlla che non manchi nulla prima della @ o dopo il punto.",
+      "email-unreachable": "Non troviamo un servizio di posta per questo indirizzo. Controlla che il dominio dopo la @ sia scritto bene.",
+      "message-too-long": "Il messaggio è troppo lungo. Riassumi i punti principali in meno di 5000 caratteri.",
+      "rate-limited": "Hai già inviato diverse richieste. Attendi un'ora oppure scrivici direttamente a info@casainordine.com.",
+      "send-failed": "Qualcosa non ha funzionato e il messaggio non è partito. Riprova tra un istante o scrivici a info@casainordine.com."
     }
   },
   "preventivo": {

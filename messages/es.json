@@ -298,14 +298,14 @@
       "success": "¡Mensaje enviado con éxito! Te responderemos lo antes posible.",
       "error": "Ocurrió un error. Inténtalo de nuevo más tarde.",
       "errors": {
-        "captcha": "La verificación de seguridad ha fallado. Recarga la página e inténtalo de nuevo.",
-        "email-disposable": "Usa una dirección de correo permanente: no podríamos responderte en un buzón temporal.",
-        "email-format": "Esa dirección de correo no parece válida. Revísala e inténtalo de nuevo.",
-        "email-unreachable": "No podemos contactar con ese dominio de correo. Comprueba que esté bien escrito.",
-        "message-too-long": "El mensaje es demasiado largo. Resúmelo en menos de 5000 caracteres.",
-        "message-too-short": "Cuéntanos un poco más sobre cómo podemos ayudarte.",
-        "rate-limited": "Has enviado varias solicitudes recientemente. Inténtalo dentro de una hora o escríbenos a info@casainordine.com.",
-        "send-failed": "No hemos podido enviar tu mensaje. Inténtalo de nuevo o escríbenos a info@casainordine.com."
+        "captcha": "No hemos podido completar el control antispam. Espera un momento y pulsa Enviar otra vez.",
+        "email-disposable": "Es una dirección de correo temporal y no podríamos enviarte el presupuesto. Usa una que consultes habitualmente.",
+        "email-format": "Esta dirección de correo parece incompleta. Comprueba que no falte nada antes de la @ o después del punto.",
+        "email-unreachable": "No encontramos un servicio de correo para esta dirección. Comprueba que el dominio tras la @ esté bien escrito.",
+        "message-too-long": "El mensaje es demasiado largo. Resume los puntos principales en menos de 5000 caracteres.",
+        "message-too-short": "Cuéntanos un poco más: con una o dos frases sobre lo que quieres ordenar es suficiente.",
+        "rate-limited": "Ya has enviado varias solicitudes. Espera una hora o escríbenos directamente a info@casainordine.com.",
+        "send-failed": "Algo ha fallado y el mensaje no se ha enviado. Inténtalo dentro de un momento o escríbenos a info@casainordine.com."
       }
     },
     "info": {
@@ -595,13 +595,13 @@
     "breakdownSubtotal": "Subtotal",
     "editZones": "Editar zonas",
     "errors": {
-      "captcha": "La verificación de seguridad ha fallado. Recarga la página e inténtalo de nuevo.",
-      "email-disposable": "Usa una dirección de correo permanente: no podríamos responderte en un buzón temporal.",
-      "email-format": "Esa dirección de correo no parece válida. Revísala e inténtalo de nuevo.",
-      "email-unreachable": "No podemos contactar con ese dominio de correo. Comprueba que esté bien escrito.",
-      "message-too-long": "El mensaje es demasiado largo. Resúmelo en menos de 5000 caracteres.",
-      "rate-limited": "Has enviado varias solicitudes recientemente. Inténtalo dentro de una hora o escríbenos a info@casainordine.com.",
-      "send-failed": "No hemos podido enviar tu mensaje. Inténtalo de nuevo o escríbenos a info@casainordine.com."
+      "captcha": "No hemos podido completar el control antispam. Espera un momento y pulsa Enviar otra vez.",
+      "email-disposable": "Es una dirección de correo temporal y no podríamos enviarte el presupuesto. Usa una que consultes habitualmente.",
+      "email-format": "Esta dirección de correo parece incompleta. Comprueba que no falte nada antes de la @ o después del punto.",
+      "email-unreachable": "No encontramos un servicio de correo para esta dirección. Comprueba que el dominio tras la @ esté bien escrito.",
+      "message-too-long": "El mensaje es demasiado largo. Resume los puntos principales en menos de 5000 caracteres.",
+      "rate-limited": "Ya has enviado varias solicitudes. Espera una hora o escríbenos directamente a info@casainordine.com.",
+      "send-failed": "Algo ha fallado y el mensaje no se ha enviado. Inténtalo dentro de un momento o escríbenos a info@casainordine.com."
     }
   },
   "preventivo": {

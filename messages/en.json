@@ -298,14 +298,14 @@
       "success": "Message sent successfully! We'll get back to you soon.",
       "error": "An error occurred. Please try again later.",
       "errors": {
-        "captcha": "Security check failed. Please reload the page and try again.",
-        "email-disposable": "Please use a permanent email address — we can't reply to a temporary mailbox.",
-        "email-format": "That email address doesn't look valid. Please check it and try again.",
-        "email-unreachable": "We can't reach that email domain. Please check the spelling.",
-        "message-too-long": "That message is too long. Please keep it under 5000 characters.",
-        "message-too-short": "Please tell us a little more about how we can help.",
-        "rate-limited": "You've sent several requests recently. Please try again in an hour, or email info@casainordine.com.",
-        "send-failed": "We couldn't send your message. Please try again or email us at info@casainordine.com."
+        "captcha": "We couldn't finish the anti-spam check. Wait a moment and press Send again.",
+        "email-disposable": "This is a temporary email address, so we couldn't send you the quote. Please use one you check regularly.",
+        "email-format": "This email address looks incomplete. Check that nothing is missing before the @ or after the dot.",
+        "email-unreachable": "We can't find a mail service for this address. Check that the domain after the @ is spelled correctly.",
+        "message-too-long": "That message is too long. Please sum up the main points in under 5000 characters.",
+        "message-too-short": "Tell us a little more — a sentence or two about what you'd like sorted is plenty.",
+        "rate-limited": "You've already sent several requests. Please wait an hour, or email us directly at info@casainordine.com.",
+        "send-failed": "Something went wrong and your message didn't go through. Try again shortly, or email us at info@casainordine.com."
       }
     },
     "info": {
@@ -595,13 +595,13 @@
     "breakdownSubtotal": "Subtotal",
     "editZones": "Edit areas",
     "errors": {
-      "captcha": "Security check failed. Please reload the page and try again.",
-      "email-disposable": "Please use a permanent email address — we can't reply to a temporary mailbox.",
-      "email-format": "That email address doesn't look valid. Please check it and try again.",
-      "email-unreachable": "We can't reach that email domain. Please check the spelling.",
-      "message-too-long": "That message is too long. Please keep it under 5000 characters.",
-      "rate-limited": "You've sent several requests recently. Please try again in an hour, or email info@casainordine.com.",
-      "send-failed": "We couldn't send your message. Please try again or email us at info@casainordine.com."
+      "captcha": "We couldn't finish the anti-spam check. Wait a moment and press Send again.",
+      "email-disposable": "This is a temporary email address, so we couldn't send you the quote. Please use one you check regularly.",
+      "email-format": "This email address looks incomplete. Check that nothing is missing before the @ or after the dot.",
+      "email-unreachable": "We can't find a mail service for this address. Check that the domain after the @ is spelled correctly.",
+      "message-too-long": "That message is too long. Please sum up the main points in under 5000 characters.",
+      "rate-limited": "You've already sent several requests. Please wait an hour, or email us directly at info@casainordine.com.",
+      "send-failed": "Something went wrong and your message didn't go through. Try again shortly, or email us at info@casainordine.com."
     }
   },
   "preventivo": {
