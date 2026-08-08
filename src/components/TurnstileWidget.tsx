@@ -69,10 +69,21 @@ function loadTurnstile(): Promise<TurnstileApi> {
 interface TurnstileWidgetProps {
   /** Receives the token, or '' when it expires or errors. */
   onVerify: (token: string) => void;
+  /**
+   * Increment to fetch a fresh token. Cloudflare spends a token the first time
+   * it is verified, so anything that follows a submission — a rejected address,
+   * a message the visitor rewrites — needs a new one or the retry fails as a
+   * duplicate and the form becomes impossible to submit.
+   */
+  resetSignal?: number;
   className?: string;
 }
 
-export default function TurnstileWidget({ onVerify, className }: TurnstileWidgetProps) {
+export default function TurnstileWidget({
+  onVerify,
+  resetSignal = 0,
+  className,
+}: TurnstileWidgetProps) {
   const containerRef = useRef<HTMLDivElement>(null);
   const widgetIdRef = useRef<string | null>(null);
   // Kept in a ref so re-rendering the parent never re-mounts the widget.
@@ -116,6 +127,20 @@ export default function TurnstileWidget({ onVerify, className }: TurnstileWidget
       }
     };
   }, [siteKey, locale]);
+
+  // Discard the spent token and ask Cloudflare for another. Skipped on the
+  // first render, where the widget is still issuing its initial one.
+  useEffect(() => {
+    if (resetSignal === 0) return;
+    const id = widgetIdRef.current;
+    if (!id || !window.turnstile) return;
+    onVerifyRef.current('');
+    try {
+      window.turnstile.reset(id);
+    } catch {
+      // The widget went away underneath us; the next mount issues a token.
+    }
+  }, [resetSignal]);
 
   if (!siteKey) return null;
 

@@ -23,6 +23,9 @@ export default function ContactForm() {
   const [status, setStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [reason, setReason] = useState<string>('send-failed');
   const [token, setToken] = useState('');
+  // Bumped after every rejection so the widget issues a token the retry can
+  // actually use; Cloudflare spends the previous one on the first attempt.
+  const [resetSignal, setResetSignal] = useState(0);
   // Controlled so a rejection does not wipe what the visitor wrote. React
   // resets an uncontrolled form once the action settles, which would cost
   // them the whole message over a mistyped address.
@@ -47,9 +50,11 @@ export default function ContactForm() {
       }
       setReason(EXPLAINED_REASONS.has(result.reason) ? result.reason : 'send-failed');
       setStatus('error');
+      setResetSignal((n) => n + 1);
     } catch {
       setReason('send-failed');
       setStatus('error');
+      setResetSignal((n) => n + 1);
     }
   }
 
@@ -138,7 +143,13 @@ export default function ContactForm() {
         />
       </div>
 
-      {isTurnstileEnabled && <TurnstileWidget onVerify={setToken} className="flex justify-center" />}
+      {isTurnstileEnabled && (
+        <TurnstileWidget
+          onVerify={setToken}
+          resetSignal={resetSignal}
+          className="flex justify-center"
+        />
+      )}
 
       {status === 'error' && (
         <p className="text-red-600 text-sm">{t(`errors.${reason}`)}</p>

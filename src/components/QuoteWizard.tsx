@@ -71,6 +71,9 @@ export default function QuoteWizard() {
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
   const [submitReason, setSubmitReason] = useState<string>('send-failed');
   const [captchaToken, setCaptchaToken] = useState('');
+  // Bumped after every rejection so the retry gets a token Cloudflare has
+  // not already spent.
+  const [captchaReset, setCaptchaReset] = useState(0);
   const [trap, setTrap] = useState('');
   const photoInputRef = useRef<HTMLInputElement>(null);
   // Stamped on mount, not during render: reading the clock while rendering
@@ -291,9 +294,11 @@ export default function QuoteWizard() {
       }
       setSubmitReason(EXPLAINED_REASONS.has(result.reason) ? result.reason : 'send-failed');
       setSubmitStatus('error');
+      setCaptchaReset((n) => n + 1);
     } catch {
       setSubmitReason('send-failed');
       setSubmitStatus('error');
+      setCaptchaReset((n) => n + 1);
     }
   }
 
@@ -864,7 +869,11 @@ export default function QuoteWizard() {
           </div>
 
           {isTurnstileEnabled && (
-            <TurnstileWidget onVerify={setCaptchaToken} className="print:hidden flex justify-center" />
+            <TurnstileWidget
+              onVerify={setCaptchaToken}
+              resetSignal={captchaReset}
+              className="print:hidden flex justify-center"
+            />
           )}
 
           {submitStatus === 'error' && (
