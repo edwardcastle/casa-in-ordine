@@ -7,10 +7,15 @@
  * would produce.
  */
 
-const MIN_MESSAGE_LENGTH = 10;
+const MIN_MESSAGE_LENGTH = 6;
+// Counted separately from length: a string of punctuation can be long and
+// still say nothing, and "How much?" is a real enquiry at nine characters.
+const MIN_MESSAGE_LETTERS = 5;
 const MAX_MESSAGE_LENGTH = 5_000;
 const MAX_LINKS = 2;
 const SCORE_THRESHOLD = 3;
+
+import { gibberishScore } from './gibberish';
 
 const URL_PATTERN = /https?:\/\/|www\.|\b[a-z0-9-]+\.(?:com|net|org|ru|cn|xyz|top|info|biz|online|site)\b/gi;
 
@@ -83,6 +88,10 @@ function automationScore(name: string, message: string): number {
   // site serves puts eight consonants together, so this alone is enough.
   if (/[bcdfghjklmnpqrstvwxyz]{8,}/i.test(message)) score += SCORE_THRESHOLD;
 
+  // Shorter mashed tokens slip past that run length — "jkhg kjhg kjhg" never
+  // reaches eight in a row — so judge the text as words as well.
+  score += gibberishScore(message, SCORE_THRESHOLD);
+
   // A wall of one repeated letter or digit. Punctuation is excluded on
   // purpose: an excited "Grazie!!!!!!!!!!" is a real message.
   if (/([a-z0-9])\1{9,}/i.test(message)) score += SCORE_THRESHOLD;
@@ -109,8 +118,13 @@ export function checkMessage(
 ): SpamCheck {
   const trimmed = message.trim();
 
-  if (!optional && trimmed.length < MIN_MESSAGE_LENGTH) {
+  const letterCount = (trimmed.match(/[a-zà-öø-ÿ]/gi) ?? []).length;
+  if (!optional && (trimmed.length < MIN_MESSAGE_LENGTH || letterCount < MIN_MESSAGE_LETTERS)) {
     return { ok: false, problem: 'too-short' };
+  }
+  // Even an optional note has to be words rather than punctuation.
+  if (trimmed.length > 0 && letterCount === 0) {
+    return { ok: false, problem: 'looks-automated' };
   }
   if (trimmed.length > MAX_MESSAGE_LENGTH) return { ok: false, problem: 'too-long' };
 
