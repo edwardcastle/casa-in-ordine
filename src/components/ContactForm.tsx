@@ -17,6 +17,7 @@ const EXPLAINED_REASONS = new Set([
   'message-too-short',
   'message-too-long',
   'message-spam',
+  'message-nonsense',
   'missing-fields',
   'field-too-long',
 ]);

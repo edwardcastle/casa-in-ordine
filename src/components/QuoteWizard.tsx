@@ -47,6 +47,7 @@ const EXPLAINED_REASONS = new Set([
   'email-unreachable',
   'message-too-long',
   'message-spam',
+  'message-nonsense',
   'missing-fields',
   'field-too-long',
 ]);

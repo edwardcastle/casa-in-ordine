@@ -2,6 +2,7 @@ import { headers } from 'next/headers';
 import { checkEmail } from './email';
 import { clientIp, createRateLimiter } from './rate-limit';
 import { checkMessage, FIELD_LIMITS, withinLimit } from './spam';
+import { reviewMessage } from './ai-review';
 import { verifyTurnstile } from './turnstile';
 
 /**
@@ -40,6 +41,7 @@ export type RejectionReason =
   | 'message-too-short'
   | 'message-too-long'
   | 'message-spam'
+  | 'message-nonsense'
   | 'missing-fields'
   | 'field-too-long'
   /** Bot signals only. Stays vague so a script learns nothing. */
@@ -145,7 +147,18 @@ export async function guardSubmission(input: SubmissionInput): Promise<GuardResu
     );
   }
 
-  // 8. Delivery budget, counted last so only submissions that were going to
+  // 8. Read the message for meaning. Last of the content checks because it is
+  //    the only one that costs an API call, so it only ever sees submissions
+  //    that already look real. Character rules cannot separate a blunt real
+  //    enquiry from a fluent sentence that means nothing; this can, in any
+  //    language. An outage returns 'unavailable' and the submission proceeds.
+  if (message !== undefined && message.trim()) {
+    const verdict = await reviewMessage(name, message);
+    if (verdict === 'nonsense') return refuse('message-nonsense');
+    if (verdict === 'spam') return refuse('message-spam', 'AI review');
+  }
+
+  // 9. Delivery budget, counted last so only submissions that were going to
   //    become an email spend it. Everything above this line is free to retry.
   if (sendLimiter.check(ip)) {
     return refuse('rate-limited', `${ip} exceeded the delivery budget`);
