@@ -32,7 +32,11 @@ Decide whether a person was genuinely trying to communicate. Answer with exactly
 
 GENUINE  - a real message from a real person, however short, blunt, misspelled or oddly phrased
 NONSENSE - random characters, keyboard mashing, or words strung together with no meaning
-SPAM     - an unsolicited commercial pitch (SEO, backlinks, crypto, marketing, mass outreach)
+SPAM     - an unsolicited pitch selling something TO this business (SEO, backlinks, web design,
+           marketing services, crypto, mass outreach)
+
+The test that settles SPAM is direction: who is selling to whom. Someone who wants to buy this
+business's service is GENUINE. Only someone trying to sell something to it is SPAM.
 
 Rules that matter more than your instincts:
 - Messages arrive in Italian, English and Spanish, and sometimes in French, German, Portuguese,
@@ -40,6 +44,11 @@ Rules that matter more than your instincts:
 - Very short messages are GENUINE: "Quanto costa?", "How much?", "Info prezzi?", "Precios?"
 - ALL CAPS, missing punctuation, dialect, heavy typos and long rambling are all GENUINE.
 - A sincere message that is off-topic or confused is still GENUINE.
+- Saying they found the business on Instagram, Google or through a friend is GENUINE. That is
+  how most customers arrive.
+- Praising the business, its photos or its before-and-afters is GENUINE, not flattery bait.
+- A customer mentioning their own website, handle or job is GENUINE. People sign off that way.
+  It is only SPAM if the message exists to sell that thing to this business.
 - Someone asking about prices, availability, areas covered, or describing their home is GENUINE.
 - Only answer NONSENSE when the text carries no communicative intent at all.
 - When you are unsure, answer GENUINE. Turning away a real customer costs this business a job;
