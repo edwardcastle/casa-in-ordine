@@ -156,6 +156,13 @@ export async function guardSubmission(input: SubmissionInput): Promise<GuardResu
     const verdict = await reviewMessage(name, message);
     if (verdict === 'nonsense') return refuse('message-nonsense');
     if (verdict === 'spam') return refuse('message-spam', 'AI review');
+    if (verdict === 'not-configured') {
+      // Same reasoning as the captcha above: degrading quietly is how a layer
+      // ends up switched off in production without anyone noticing.
+      console.error(
+        'ANTHROPIC_API_KEY is not set — messages are not being screened for meaning.',
+      );
+    }
   }
 
   // 9. Delivery budget, counted last so only submissions that were going to

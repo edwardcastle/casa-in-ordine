@@ -13,7 +13,14 @@ import Anthropic from '@anthropic-ai/sdk';
  * checks — one short call per genuine-looking message, not per request.
  */
 
-export type MessageVerdict = 'genuine' | 'nonsense' | 'spam' | 'unavailable';
+export type MessageVerdict =
+  | 'genuine'
+  | 'nonsense'
+  | 'spam'
+  /** No API key. A deployment mistake, distinct from the model being down. */
+  | 'not-configured'
+  /** Reachable but no usable answer — outage, timeout, rate limit. */
+  | 'unavailable';
 
 const MODEL = process.env.CHAT_MODEL ?? 'claude-haiku-4-5';
 const TIMEOUT_MS = 6_000;
@@ -45,7 +52,7 @@ export function isAiReviewConfigured(): boolean {
 }
 
 export async function reviewMessage(name: string, message: string): Promise<MessageVerdict> {
-  if (!process.env.ANTHROPIC_API_KEY) return 'unavailable';
+  if (!process.env.ANTHROPIC_API_KEY) return 'not-configured';
 
   try {
     const client = new Anthropic({
