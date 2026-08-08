@@ -33,18 +33,36 @@ interface QuoteRequestData {
   timing: string;
   availability?: { slot1: string; slot2: string; slot3: string };
   notes?: string;
+  /** Turnstile token from the widget on the final step. */
+  token?: string;
+  /** Honeypot value; anything non-empty means a script filled it in. */
+  trap?: string;
+  /** Epoch milliseconds stamped when the wizard mounted. */
+  renderedAt?: number;
 }
 
 export async function submitQuoteRequest(data: QuoteRequestData) {
   const { name, email, phone, zones, subtotal, urgency, total, timing, availability, notes } = data;
 
-  if (!name || !email || zones.length === 0) {
-    return { success: false, error: 'Missing required fields' };
+  if (zones.length === 0) {
+    return { success: false as const, reason: 'invalid' as const };
   }
 
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  if (!emailRegex.test(email)) {
-    return { success: false, error: 'Invalid email address' };
+  const guard = await guardSubmission({
+    name,
+    email,
+    phone,
+    // Notes are optional, so they are scored for spam but exempt from the
+    // minimum length a required message has to meet.
+    message: notes?.trim() ? notes : undefined,
+    messageOptional: true,
+    token: data.token,
+    trap: data.trap,
+    renderedAt: data.renderedAt,
+  });
+
+  if (!guard.ok) {
+    return { success: false as const, reason: guard.reason };
   }
 
   const zoneSections = zones
@@ -132,13 +150,13 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
     if (!response.ok) {
       const error = await response.text();
       console.error('Brevo API error:', error);
-      return { success: false, error: 'Failed to send email' };
+      return { success: false as const, reason: 'send-failed' as const };
     }
 
-    return { success: true };
+    return { success: true as const };
   } catch (error) {
     console.error('Quote request error:', error);
-    return { success: false, error: 'Failed to send email' };
+    return { success: false as const, reason: 'send-failed' as const };
   }
 }
 

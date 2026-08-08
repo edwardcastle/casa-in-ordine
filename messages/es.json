@@ -353,7 +353,6 @@
     "submitting": "Enviando...",
     "successTitle": "¡Solicitud enviada!",
     "successMessage": "¡Gracias {name}! Hemos recibido tu solicitud y te responderemos en 24 horas con un presupuesto detallado.",
-    "submitError": "Ha ocurrido un error. Inténtalo de nuevo o contáctanos por email.",
     "contactStepTitle": "Último paso",
     "contactStepSubtitle": "Déjanos tus datos de contacto para recibir el presupuesto detallado",
     "fullName": "Nombre Completo",
@@ -594,7 +593,16 @@
     "cartSubtitle": "Añade todas las zonas que quieras: al final recibirás un único presupuesto",
     "removeZone": "Quitar {zone} del presupuesto",
     "breakdownSubtotal": "Subtotal",
-    "editZones": "Editar zonas"
+    "editZones": "Editar zonas",
+    "errors": {
+      "captcha": "La verificación de seguridad ha fallado. Recarga la página e inténtalo de nuevo.",
+      "email-disposable": "Usa una dirección de correo permanente: no podríamos responderte en un buzón temporal.",
+      "email-format": "Esa dirección de correo no parece válida. Revísala e inténtalo de nuevo.",
+      "email-unreachable": "No podemos contactar con ese dominio de correo. Comprueba que esté bien escrito.",
+      "message-too-long": "El mensaje es demasiado largo. Resúmelo en menos de 5000 caracteres.",
+      "rate-limited": "Has enviado varias solicitudes recientemente. Inténtalo dentro de una hora o escríbenos a info@casainordine.com.",
+      "send-failed": "No hemos podido enviar tu mensaje. Inténtalo de nuevo o escríbenos a info@casainordine.com."
+    }
   },
   "preventivo": {
     "title": "Presupuesto Gratis – Decluttering y Home Organizing",

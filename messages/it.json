@@ -353,7 +353,6 @@
     "submitting": "Invio in corso...",
     "successTitle": "Richiesta inviata!",
     "successMessage": "Grazie {name}! Abbiamo ricevuto la tua richiesta. Ti risponderemo entro 24 ore con un preventivo dettagliato.",
-    "submitError": "Si è verificato un errore. Riprova o contattaci via email.",
     "contactStepTitle": "Ultimo passo",
     "contactStepSubtitle": "Lasciaci i tuoi contatti per ricevere il preventivo dettagliato",
     "fullName": "Nome e Cognome",
@@ -594,7 +593,16 @@
     "cartSubtitle": "Aggiungi tutte le zone che vuoi: alla fine riceverai un unico preventivo",
     "removeZone": "Rimuovi {zone} dal preventivo",
     "breakdownSubtotal": "Subtotale",
-    "editZones": "Modifica le zone"
+    "editZones": "Modifica le zone",
+    "errors": {
+      "captcha": "Verifica di sicurezza non riuscita. Ricarica la pagina e riprova.",
+      "email-disposable": "Usa un indirizzo email permanente: su una casella temporanea non potremmo risponderti.",
+      "email-format": "L'indirizzo email non sembra valido. Controlla e riprova.",
+      "email-unreachable": "Non riusciamo a raggiungere questo dominio email. Controlla che sia scritto correttamente.",
+      "message-too-long": "Il messaggio è troppo lungo. Riassumilo in meno di 5000 caratteri.",
+      "rate-limited": "Hai inviato troppe richieste di recente. Riprova tra un'ora o scrivici a info@casainordine.com.",
+      "send-failed": "Non siamo riusciti a inviare il messaggio. Riprova o scrivici a info@casainordine.com."
+    }
   },
   "preventivo": {
     "title": "Preventivo Gratuito Decluttering e Home Organizing",

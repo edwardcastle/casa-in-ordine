@@ -93,10 +93,25 @@ function automationScore(name: string, message: string): number {
   return score;
 }
 
-export function checkMessage(name: string, message: string): SpamCheck {
+interface CheckMessageOptions {
+  /**
+   * Set for fields the visitor did not have to fill in. The minimum length is
+   * then skipped: a quote wizard note reading "grazie" is a real note, while a
+   * contact form whose whole message is six characters tells us nothing.
+   */
+  optional?: boolean;
+}
+
+export function checkMessage(
+  name: string,
+  message: string,
+  { optional = false }: CheckMessageOptions = {},
+): SpamCheck {
   const trimmed = message.trim();
 
-  if (trimmed.length < MIN_MESSAGE_LENGTH) return { ok: false, problem: 'too-short' };
+  if (!optional && trimmed.length < MIN_MESSAGE_LENGTH) {
+    return { ok: false, problem: 'too-short' };
+  }
   if (trimmed.length > MAX_MESSAGE_LENGTH) return { ok: false, problem: 'too-long' };
 
   if (automationScore(name, trimmed) >= SCORE_THRESHOLD) {

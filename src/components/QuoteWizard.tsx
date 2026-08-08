@@ -5,6 +5,8 @@ import { useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { submitQuoteRequest } from '@/actions/contact';
 import CategoryIcon from '@/components/CategoryIcon';
+import TurnstileWidget, { isTurnstileEnabled } from '@/components/TurnstileWidget';
+import { HONEYPOT_FIELD } from '@/lib/security/fields';
 import {
   ZONES,
   accumulationLevels,
@@ -35,6 +37,17 @@ type Phase =
 
 const TAIL_PHASES: Phase[] = ['cart', 'timing', 'availability', 'result'];
 
+// Reasons worth explaining. Anything else collapses into the generic error so
+// a script cannot use the response to work out which check caught it.
+const EXPLAINED_REASONS = new Set([
+  'rate-limited',
+  'captcha',
+  'email-format',
+  'email-disposable',
+  'email-unreachable',
+  'message-too-long',
+]);
+
 export default function QuoteWizard() {
   const t = useTranslations('quote');
 
@@ -56,7 +69,16 @@ export default function QuoteWizard() {
   const [photos, setPhotos] = useState<string[]>([]);
   const [contact, setContact] = useState({ name: '', email: '', phone: '' });
   const [submitStatus, setSubmitStatus] = useState<'idle' | 'sending' | 'success' | 'error'>('idle');
+  const [submitReason, setSubmitReason] = useState<string>('send-failed');
+  const [captchaToken, setCaptchaToken] = useState('');
+  const [trap, setTrap] = useState('');
   const photoInputRef = useRef<HTMLInputElement>(null);
+  // Stamped on mount, not during render: reading the clock while rendering
+  // would disagree between the server and hydration.
+  const renderedAt = useRef(0);
+  useEffect(() => {
+    renderedAt.current = Date.now();
+  }, []);
 
   const draftQuestions = draftZone ? questionsFor(draftZone) : [];
   const totals = calculateTotals(entries, timing);
@@ -259,9 +281,18 @@ export default function QuoteWizard() {
         timing: t(`closing.timing.options.${timing}`),
         availability,
         notes: notes.trim() || undefined,
+        token: captchaToken,
+        trap,
+        renderedAt: renderedAt.current,
       });
-      setSubmitStatus(result.success ? 'success' : 'error');
+      if (result.success) {
+        setSubmitStatus('success');
+        return;
+      }
+      setSubmitReason(EXPLAINED_REASONS.has(result.reason) ? result.reason : 'send-failed');
+      setSubmitStatus('error');
     } catch {
+      setSubmitReason('send-failed');
       setSubmitStatus('error');
     }
   }
@@ -818,8 +849,28 @@ export default function QuoteWizard() {
             </div>
           </div>
 
+          {/* Hidden from people, tempting to form-fillers. */}
+          <div aria-hidden="true" className="absolute left-[-9999px] top-0 h-0 w-0 overflow-hidden">
+            <label htmlFor={HONEYPOT_FIELD}>Website</label>
+            <input
+              type="text"
+              id={HONEYPOT_FIELD}
+              name={HONEYPOT_FIELD}
+              tabIndex={-1}
+              autoComplete="off"
+              value={trap}
+              onChange={(e) => setTrap(e.target.value)}
+            />
+          </div>
+
+          {isTurnstileEnabled && (
+            <TurnstileWidget onVerify={setCaptchaToken} className="print:hidden flex justify-center" />
+          )}
+
           {submitStatus === 'error' && (
-            <p className="print:hidden text-red-600 text-sm text-center">{t('submitError')}</p>
+            <p className="print:hidden text-red-600 text-sm text-center">
+              {t(`errors.${submitReason}`)}
+            </p>
           )}
 
           <button

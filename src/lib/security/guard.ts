@@ -47,6 +47,8 @@ export interface SubmissionInput {
   phone?: string;
   /** Free text to score. Omit for forms that have none. */
   message?: string;
+  /** Set when the free text was optional, so a short one is not rejected. */
+  messageOptional?: boolean;
   /** Turnstile token from the widget. */
   token?: string;
   /** Honeypot field: any value at all means a script filled it in. */
@@ -56,7 +58,7 @@ export interface SubmissionInput {
 }
 
 export async function guardSubmission(input: SubmissionInput): Promise<GuardResult> {
-  const { name, email, phone, message, token, trap, renderedAt } = input;
+  const { name, email, phone, message, messageOptional, token, trap, renderedAt } = input;
 
   // 1. Honeypot — hidden from real users, irresistible to form-fillers.
   if (trap && trap.trim() !== '') {
@@ -101,7 +103,7 @@ export async function guardSubmission(input: SubmissionInput): Promise<GuardResu
 
   // 6. Message content, if the form has one.
   if (message !== undefined) {
-    const content = checkMessage(name, message);
+    const content = checkMessage(name, message, { optional: messageOptional });
     if (!content.ok) {
       return {
         ok: false,
