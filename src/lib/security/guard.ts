@@ -13,9 +13,14 @@ import { verifyTurnstile } from './turnstile';
  * round trip, so obvious junk never reaches Cloudflare or a DNS resolver.
  */
 
-// Five submissions an hour is far above what a real visitor needs and far
-// below what makes a form worth automating.
-const submissionLimiter = createRateLimiter({ limit: 5, windowMs: 60 * 60 * 1_000 });
+const HOUR_MS = 60 * 60 * 1_000;
+
+// Two separate budgets, because a rejected attempt and a delivered email are
+// not the same thing. Someone correcting a mistyped address should not be
+// spending the quota that exists to stop bulk mail — a shared office or mobile
+// carrier address makes that mistake easy to hit through no fault of theirs.
+const attemptLimiter = createRateLimiter({ limit: 40, windowMs: HOUR_MS });
+const sendLimiter = createRateLimiter({ limit: 10, windowMs: HOUR_MS });
 
 // A human cannot read the form and fill it in faster than this.
 const MIN_FILL_MS = 3_000;
@@ -81,9 +86,10 @@ export async function guardSubmission(input: SubmissionInput): Promise<GuardResu
     return { ok: false, reason: 'invalid' };
   }
 
-  // 4. Per-address throttle.
+  // 4. Hammering guard. Generous, because everything it counts might still be
+  //    a person getting their own address wrong.
   const ip = clientIp(await headers());
-  if (submissionLimiter.check(ip)) {
+  if (attemptLimiter.check(ip)) {
     return { ok: false, reason: 'rate-limited' };
   }
 
@@ -129,6 +135,12 @@ export async function guardSubmission(input: SubmissionInput): Promise<GuardResu
             ? 'email-disposable'
             : 'email-unreachable',
     };
+  }
+
+  // 8. Delivery budget, counted last so only submissions that were going to
+  //    become an email spend it. Everything above this line is free to retry.
+  if (sendLimiter.check(ip)) {
+    return { ok: false, reason: 'rate-limited' };
   }
 
   return { ok: true, email: address.email };
