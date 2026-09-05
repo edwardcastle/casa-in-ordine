@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from 'next-intl';
 import Hero from '@/components/Hero';
 import ContactForm from '@/components/ContactForm';
 import { breadcrumbLd } from '@/lib/breadcrumb';
+import { GOOGLE_PROFILE_URL } from '@/lib/google-business';
 
 export async function generateMetadata({
   params,
@@ -113,6 +114,24 @@ export default function ContactPage() {
                   </div>
                   <a href={`tel:${t('info.phone')}`} className="font-medium text-primary hover:text-primary-dark transition-colors">
                     {t('info.phone')}
+                  </a>
+                </div>
+
+                {/* Google Business Profile — the highest-intent placement on
+                    the site, where someone is already deciding. */}
+                <div className="flex items-start gap-4">
+                  <div className="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center text-primary shrink-0">
+                    <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5A2.5 2.5 0 1112 6.5a2.5 2.5 0 010 5z" />
+                    </svg>
+                  </div>
+                  <a
+                    href={GOOGLE_PROFILE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-primary hover:text-primary-dark transition-colors"
+                  >
+                    {t('info.google')}
                   </a>
                 </div>
 

@@ -1,3 +1,5 @@
+import { GOOGLE_PROFILE_URL } from '@/lib/google-business';
+
 interface JsonLdProps {
   locale?: string;
 }
@@ -5,7 +7,11 @@ interface JsonLdProps {
 const BASE_URL = 'https://casainordine.com';
 const LOGO_URL = `${BASE_URL}/images/logo/logo_400x150.png`;
 const IMAGE_URL = `${BASE_URL}/images/logo/logo_1200x630.png`;
-const SAME_AS = ['https://www.instagram.com/casainordine_it/'];
+// sameAs is the line that tells Google the site and the Maps listing are one
+// entity — worth more here than for most businesses, since "Casa in Ordine" is
+// two of the commonest words in Italian and collides with every "Casa
+// Generalizia dell'Ordine…" in Rome.
+const SAME_AS = ['https://www.instagram.com/casainordine_it/', GOOGLE_PROFILE_URL];
 
 const descriptions: Record<string, string> = {
   it: 'Servizio professionale di decluttering e home organizing a Roma',
@@ -78,10 +84,24 @@ export default function JsonLd({ locale = 'it' }: JsonLdProps) {
       priceRange: '€€',
       inLanguage: 'it-IT',
       parentOrganization: { '@id': `${BASE_URL}/#organization` },
+      // Locality only, on purpose.
+      //
+      // The Google Business Profile is a service-area business with its address
+      // hidden — work happens in clients' homes, nobody visits ours. Publishing
+      // the street here would expose in machine-readable form exactly what the
+      // profile withholds, and directories and lead aggregators mint citations
+      // straight out of this markup, on sites we do not control.
+      //
+      // The cost is real: `address` is one of only two required LocalBusiness
+      // properties, so this likely forfeits the local-business rich result.
+      // That is the right trade for a residential address.
+      //
+      // `geo` is absent for the same reason and is not an oversight: Google's
+      // structured-data docs ask for 5+ decimal places, which resolves to a
+      // front door. The service area is the honest answer to "where", and
+      // areaServed below carries it.
       address: {
         '@type': 'PostalAddress',
-        streetAddress: 'Via dei Monti Tiburtini, 510',
-        postalCode: '00157',
         addressLocality: 'Roma',
         addressRegion: 'RM',
         addressCountry: 'IT',

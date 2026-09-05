@@ -273,7 +273,8 @@
       "email": "info@casainordine.com",
       "phone": "+39 344 5856 895",
       "hours": "Mon - Fri: 9:00 AM - 6:00 PM",
-      "social": "Follow us on Instagram"
+      "social": "Follow us on Instagram",
+      "google": "Find us on Google"
     },
     "seo": {
       "title": "Get in touch about your organizing project",
@@ -281,7 +282,7 @@
         "Want to transform your home or office with a professional decluttering and home organizing service? Reach us through the form, by email or by phone: we usually reply within 24 working hours.",
         "To help us give you a useful answer, tell us which spaces you want to organize, your area of Rome and the timeframe you have in mind. You’ll get practical advice and, if you wish, a free tailored quote."
       ],
-      "address": "Casa in Ordine · Via dei Monti Tiburtini 510, 00157 Rome (RM), Italy"
+      "address": "Casa in Ordine · Decluttering and home organizing in Rome and nearby comuni · +39 344 585 6895"
     }
   },
   "footer": {
@@ -293,7 +294,8 @@
     "rights": "All rights reserved.",
     "privacy": "Privacy Policy",
     "terms": "Terms & Conditions",
-    "leaveReview": "Leave a review"
+    "leaveReview": "Leave a review",
+    "google": "Casa in Ordine on Google"
   },
   "cookieConsent": {
     "title": "We respect your privacy",

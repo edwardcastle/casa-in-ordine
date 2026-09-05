@@ -107,7 +107,19 @@ export default async function LocaleLayout({
     notFound();
   }
 
-  const messages = await getMessages();
+  // Client components receive everything EXCEPT privacyPolicy.
+  //
+  // NextIntlClientProvider serialises whatever it is given into the payload of
+  // every route, so the GDPR notice — which must name the registered office —
+  // was putting the street address into the HTML of the homepage, the blog and
+  // every service page. The privacy page renders on the server and reads the
+  // namespace there; no client component touches it (Header/nav,
+  // CookieConsent, ChatWidget, ContactForm, QuoteWizard and ReviewForm are the
+  // only ones, and none of them do).
+  const CLIENT_EXCLUDED = ['privacyPolicy'];
+  const messages = Object.fromEntries(
+    Object.entries(await getMessages()).filter(([ns]) => !CLIENT_EXCLUDED.includes(ns)),
+  );
 
   return (
     <html lang={locale}>

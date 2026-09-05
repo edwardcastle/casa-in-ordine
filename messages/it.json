@@ -273,7 +273,8 @@
       "email": "info@casainordine.com",
       "phone": "+39 344 5856 895",
       "hours": "Lun - Ven: 9:00 - 18:00",
-      "social": "Seguici su Instagram"
+      "social": "Seguici su Instagram",
+      "google": "Trovaci su Google"
     },
     "seo": {
       "title": "Contattaci per il tuo progetto di riordino",
@@ -281,7 +282,7 @@
         "Vuoi trasformare la tua casa o il tuo ufficio con un servizio professionale di decluttering e home organizing? Scrivici tramite il modulo, via email o per telefono: rispondiamo in genere entro 24 ore lavorative.",
         "Per prepararti una risposta utile, indica gli ambienti da organizzare, la zona di Roma in cui ti trovi e i tempi che hai in mente. Riceverai consigli concreti e, se lo desideri, un preventivo gratuito su misura."
       ],
-      "address": "Casa in Ordine · Via dei Monti Tiburtini 510, 00157 Roma (RM), Italia"
+      "address": "Casa in Ordine · Decluttering e home organizing a Roma e nei comuni limitrofi · +39 344 585 6895"
     }
   },
   "footer": {
@@ -293,7 +294,8 @@
     "rights": "Tutti i diritti riservati.",
     "privacy": "Privacy Policy",
     "terms": "Termini e Condizioni",
-    "leaveReview": "Lascia una recensione"
+    "leaveReview": "Lascia una recensione",
+    "google": "Casa in Ordine su Google"
   },
   "cookieConsent": {
     "title": "Rispettiamo la tua privacy",
