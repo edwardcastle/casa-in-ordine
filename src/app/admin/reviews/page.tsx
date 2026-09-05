@@ -45,7 +45,7 @@ function Row({ review }: { review: AdminReview }) {
             {dateFmt.format(review.submittedAt)}
             <span className="mx-2">·</span>
             {review.lang.toUpperCase()}
-            {review.service ? <> · {review.service}</> : null}
+            {review.services.length > 0 ? <> · {review.services.join(', ')}</> : null}
             {review.source === 'google' ? <> · da Google</> : null}
           </p>
         </div>

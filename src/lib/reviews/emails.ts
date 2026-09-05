@@ -51,7 +51,7 @@ export async function sendReviewNotification(
         ${review.city ? `<tr><td style="padding:8px;font-weight:bold;">Città:</td><td style="padding:8px;">${esc(review.city)}</td></tr>` : ''}
         <tr><td style="padding:8px;font-weight:bold;">Valutazione:</td><td style="padding:8px;color:#D98A6C;font-size:17px;">${stars}</td></tr>
         <tr><td style="padding:8px;font-weight:bold;">Lingua:</td><td style="padding:8px;">${esc(review.lang)}</td></tr>
-        ${review.service ? `<tr><td style="padding:8px;font-weight:bold;">Servizio:</td><td style="padding:8px;">${esc(review.service)}</td></tr>` : ''}
+        ${review.services.length ? `<tr><td style="padding:8px;font-weight:bold;">Servizi:</td><td style="padding:8px;">${esc(review.services.join(', '))}</td></tr>` : ''}
       </table>
 
       <blockquote style="margin:0 0 24px;padding:14px 18px;background:#f7f8f6;border-left:3px solid ${SAGE};border-radius:0 4px 4px 0;font-style:italic;color:#333;">

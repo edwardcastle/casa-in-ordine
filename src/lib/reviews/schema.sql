@@ -21,10 +21,14 @@ CREATE TABLE IF NOT EXISTS reviews (
   rating          smallint    CHECK (rating BETWEEN 1 AND 5),
   body            text,
   lang            text        NOT NULL CHECK (lang IN ('it', 'en', 'es')),
+  -- A job usually covers more than one room, so this is a set — the quote
+  -- wizard already lets one request span several zones.
+  --
   -- Constrained to the six categories that have message keys. CategoryIcon's
   -- union also carries 'living', but home.services.categories does not, and
   -- next-intl renders the missing key path into the page rather than throwing.
-  service         text        CHECK (service IN ('armadio','cucina','ufficio','bagno','garage','trasloco')),
+  services        text[]      NOT NULL DEFAULT '{}'
+                  CHECK (services <@ ARRAY['armadio','cucina','ufficio','bagno','garage','trasloco']::text[]),
 
   -- Where it came from. 'google' is mirrored with the reviewer's permission and
   -- must deep-link to the review so a reader can verify it; 'direct' is a client

@@ -291,7 +291,8 @@
     "followUs": "Síguenos",
     "rights": "Todos los derechos reservados.",
     "privacy": "Política de Privacidad",
-    "terms": "Términos y Condiciones"
+    "terms": "Términos y Condiciones",
+    "leaveReview": "Deja una reseña"
   },
   "cookieConsent": {
     "title": "Respetamos tu privacidad",
@@ -594,7 +595,7 @@
     "emailHint": "No la publicamos. Nos sirve para reconocerte y para responderte.",
     "city": "Ciudad",
     "service": "De qué nos ocupamos",
-    "servicePlaceholder": "Elige, si quieres",
+    "servicePlaceholder": "Elige todas las que correspondan.",
     "services": {
       "armadio": "Armario",
       "cucina": "Cocina",

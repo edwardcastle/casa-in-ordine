@@ -40,7 +40,7 @@ export async function submitReview(formData: FormData): Promise<ReviewSubmitResu
   const body = ((formData.get('body') as string) ?? '').trim();
   const ratingRaw = Number(formData.get('rating'));
   const lang = (formData.get('lang') as string) ?? 'it';
-  const service = (formData.get('service') as string) ?? '';
+  const services = formData.getAll('services').filter(isReviewService);
   const consentText = ((formData.get('consentText') as string) ?? '').trim();
 
   if (!body) return { success: false, reason: 'invalid' };
@@ -80,7 +80,7 @@ export async function submitReview(formData: FormData): Promise<ReviewSubmitResu
     rating,
     body,
     lang,
-    service: isReviewService(service) ? service : undefined,
+    services,
     consentText,
     consentIp: clientIp(await headers()),
   };

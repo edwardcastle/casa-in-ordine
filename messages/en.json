@@ -291,7 +291,8 @@
     "followUs": "Follow Us",
     "rights": "All rights reserved.",
     "privacy": "Privacy Policy",
-    "terms": "Terms & Conditions"
+    "terms": "Terms & Conditions",
+    "leaveReview": "Leave a review"
   },
   "cookieConsent": {
     "title": "We respect your privacy",
@@ -594,7 +595,7 @@
     "emailHint": "We never publish it. We use it to recognise you and to reply.",
     "city": "City",
     "service": "What we worked on",
-    "servicePlaceholder": "Choose, if you like",
+    "servicePlaceholder": "Pick all the ones that apply.",
     "services": {
       "armadio": "Wardrobe",
       "cucina": "Kitchen",

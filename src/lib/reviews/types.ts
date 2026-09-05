@@ -22,7 +22,7 @@ export interface PublicReview {
   rating: number | null;
   body: string;
   lang: ReviewLang;
-  service: ReviewService | null;
+  services: ReviewService[];
   source: ReviewSource;
   googleUrl: string | null;
   submittedAt: Date;

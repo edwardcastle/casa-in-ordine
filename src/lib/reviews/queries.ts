@@ -17,7 +17,7 @@ interface PublicRow {
   rating: number | null;
   body: string;
   lang: ReviewLang;
-  service: ReviewService | null;
+  services: ReviewService[];
   source: ReviewSource;
   google_url: string | null;
   submitted_at: Date;
@@ -31,7 +31,7 @@ function toPublic(row: PublicRow): PublicReview {
     rating: row.rating,
     body: row.body,
     lang: row.lang,
-    service: row.service,
+    services: row.services,
     source: row.source,
     googleUrl: row.google_url,
     submittedAt: row.submitted_at,
@@ -59,7 +59,7 @@ export async function getPublishedReviews(locale: ReviewLang): Promise<PublicRev
   if (!isReviewsConfigured()) return [];
 
   const rows = await db()<PublicRow[]>`
-    SELECT id, author_name, city, rating, body, lang, service, source,
+    SELECT id, author_name, city, rating, body, lang, services, source,
            google_url, submitted_at
       FROM reviews
      WHERE status = 'approved'
@@ -85,7 +85,7 @@ export interface NewReview {
   rating?: number;
   body: string;
   lang: ReviewLang;
-  service?: ReviewService;
+  services: ReviewService[];
   consentText: string;
   consentIp: string;
 }
@@ -94,12 +94,12 @@ export interface NewReview {
 export async function insertPendingReview(input: NewReview): Promise<string> {
   const [row] = await db()<{ id: string }[]>`
     INSERT INTO reviews (
-      author_name, author_email, city, rating, body, lang, service,
+      author_name, author_email, city, rating, body, lang, services,
       source, status, consent_given, consent_text, consent_at, consent_ip
     ) VALUES (
       ${input.authorName}, ${input.authorEmail}, ${input.city ?? null},
       ${input.rating ?? null}, ${input.body}, ${input.lang},
-      ${input.service ?? null}, 'direct', 'pending',
+      ${db().array(input.services)}, 'direct', 'pending',
       true, ${input.consentText}, now(), ${input.consentIp}
     )
     RETURNING id
@@ -142,7 +142,7 @@ function toAdmin(row: AdminRow): AdminReview {
 /** Everything, newest first — pending at the top, since that is the work. */
 export async function listAllReviews(): Promise<AdminReview[]> {
   const rows = await db()<AdminRow[]>`
-    SELECT id, author_name, author_email, city, rating, body, lang, service,
+    SELECT id, author_name, author_email, city, rating, body, lang, services,
            source, google_url, status, consent_given, consent_text, consent_at,
            invoice_ref, submitted_at, decided_at, decided_by, removed_at
       FROM reviews
@@ -154,7 +154,7 @@ export async function listAllReviews(): Promise<AdminReview[]> {
 
 export async function getReview(id: string): Promise<AdminReview | null> {
   const rows = await db()<AdminRow[]>`
-    SELECT id, author_name, author_email, city, rating, body, lang, service,
+    SELECT id, author_name, author_email, city, rating, body, lang, services,
            source, google_url, status, consent_given, consent_text, consent_at,
            invoice_ref, submitted_at, decided_at, decided_by, removed_at
       FROM reviews
@@ -225,7 +225,7 @@ export async function insertGoogleReview(input: {
   rating: number;
   body: string;
   lang: ReviewLang;
-  service?: ReviewService;
+  services: ReviewService[];
   googleUrl: string;
   consentText: string;
   invoiceRef?: string;
@@ -233,12 +233,12 @@ export async function insertGoogleReview(input: {
 }): Promise<string> {
   const [row] = await db()<{ id: string }[]>`
     INSERT INTO reviews (
-      author_name, city, rating, body, lang, service, source, google_url,
+      author_name, city, rating, body, lang, services, source, google_url,
       status, consent_given, consent_text, consent_at, invoice_ref,
       decided_at, decided_by
     ) VALUES (
       ${input.authorName}, ${input.city ?? null}, ${input.rating}, ${input.body},
-      ${input.lang}, ${input.service ?? null}, 'google', ${input.googleUrl},
+      ${input.lang}, ${db().array(input.services)}, 'google', ${input.googleUrl},
       'approved', true, ${input.consentText}, now(), ${input.invoiceRef ?? null},
       now(), ${input.addedBy}
     )

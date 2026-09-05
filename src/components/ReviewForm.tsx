@@ -38,7 +38,8 @@ export default function ReviewForm() {
   const [rating, setRating] = useState(5);
   // Controlled so a rejection does not wipe what she wrote — losing a
   // considered review over a mistyped address would be unforgivable.
-  const [fields, setFields] = useState({ name: '', email: '', city: '', body: '', service: '' });
+  const [fields, setFields] = useState({ name: '', email: '', city: '', body: '' });
+  const [services, setServices] = useState<string[]>([]);
 
   const renderedAt = useRef(0);
   useEffect(() => {
@@ -53,6 +54,7 @@ export default function ReviewForm() {
     formData.set(RENDERED_AT_FIELD, String(renderedAt.current));
     formData.set('lang', locale);
     formData.set('rating', String(rating));
+    services.forEach((s) => formData.append('services', s));
     // Stored alongside the answer, because this wording will change over time
     // and the record has to show what she actually agreed to.
     formData.set('consentText', consentText);
@@ -131,25 +133,34 @@ export default function ReviewForm() {
         />
       </div>
 
-      <div>
-        <label htmlFor="rv-service" className="mb-1 block text-sm font-medium text-gray-700">
-          {t('service')}
-        </label>
-        <select
-          id="rv-service"
-          name="service"
-          value={fields.service}
-          onChange={(e) => setFields((f) => ({ ...f, service: e.target.value }))}
-          className={FIELD}
-        >
-          <option value="">{t('servicePlaceholder')}</option>
-          {REVIEW_SERVICES.map((s) => (
-            <option key={s} value={s}>
-              {t(`services.${s}`)}
-            </option>
-          ))}
-        </select>
-      </div>
+      <fieldset>
+        <legend className="mb-1 block text-sm font-medium text-gray-700">{t('service')}</legend>
+        <p className="mb-2 text-xs text-gray-500">{t('servicePlaceholder')}</p>
+        <div className="flex flex-wrap gap-2">
+          {REVIEW_SERVICES.map((s) => {
+            const on = services.includes(s);
+            return (
+              <button
+                key={s}
+                type="button"
+                aria-pressed={on}
+                onClick={() =>
+                  setServices((prev) =>
+                    prev.includes(s) ? prev.filter((x) => x !== s) : [...prev, s],
+                  )
+                }
+                className={`rounded-full border px-4 py-1.5 text-sm transition-colors ${
+                  on
+                    ? 'border-primary bg-primary text-white'
+                    : 'border-secondary/60 bg-white text-gray-700 hover:border-primary'
+                }`}
+              >
+                {t(`services.${s}`)}
+              </button>
+            );
+          })}
+        </div>
+      </fieldset>
 
       <fieldset>
         <legend className="mb-1 block text-sm font-medium text-gray-700">{t('rating')}</legend>

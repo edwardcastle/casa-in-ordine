@@ -13,6 +13,10 @@ export default function Footer() {
     { href: `/${locale}/preventivo`, label: t('nav.preventivo') },
     { href: `/${locale}/blog`, label: t('nav.blog') },
     { href: `/${locale}/contact`, label: t('nav.contact') },
+    // The homepage section links here too, but it stays hidden until three
+    // reviews are published — so without this the form is unreachable
+    // exactly while it is most needed.
+    { href: `/${locale}/recensioni/nuova`, label: t('footer.leaveReview') },
     { href: `/${locale}/privacy-policy`, label: t('footer.privacy') },
   ];
 
