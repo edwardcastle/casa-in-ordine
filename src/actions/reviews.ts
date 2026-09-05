@@ -13,7 +13,6 @@ export type ReviewSubmitResult =
   | { success: true }
   | { success: false; reason: string };
 
-const BODY_MIN = 40;
 const BODY_MAX = 1_500;
 
 /**
@@ -43,8 +42,10 @@ export async function submitReview(formData: FormData): Promise<ReviewSubmitResu
   const services = formData.getAll('services').filter(isReviewService);
   const consentText = ((formData.get('consentText') as string) ?? '').trim();
 
+  // No minimum beyond the shared guard's floor of 6 characters and 5 letters.
+  // "Bravissime, tutto perfetto" is a real review from a real client, and a
+  // word count is not a proxy for sincerity — the screening layers judge that.
   if (!body) return { success: false, reason: 'invalid' };
-  if (body.length < BODY_MIN) return { success: false, reason: 'message-too-short' };
   if (body.length > BODY_MAX) return { success: false, reason: 'message-too-long' };
 
   // Consent is not a formality here: it is the lawful basis for publishing a

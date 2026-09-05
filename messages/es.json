@@ -632,7 +632,7 @@
       "email-format": "Esa dirección de email no parece válida.",
       "email-disposable": "Usa una dirección personal, no una temporal.",
       "email-unreachable": "No podemos contactar con esa dirección. Comprueba que esté bien escrita.",
-      "message-too-short": "Escribe alguna línea más: hacen falta al menos 40 caracteres.",
+      "message-too-short": "Escribe alguna palabra más: bastan un par de líneas.",
       "message-too-long": "La reseña es demasiado larga. Máximo 1500 caracteres.",
       "message-spam": "No podemos aceptar este texto. Si es un error, escríbenos a info@casainordine.com.",
       "message-nonsense": "No conseguimos leer este texto. Inténtalo con alguna frase más.",

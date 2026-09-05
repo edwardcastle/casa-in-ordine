@@ -192,7 +192,6 @@ export default function ReviewForm() {
           name="body"
           required
           rows={7}
-          minLength={40}
           maxLength={1500}
           value={fields.body}
           onChange={(e) => setFields((f) => ({ ...f, body: e.target.value }))}
