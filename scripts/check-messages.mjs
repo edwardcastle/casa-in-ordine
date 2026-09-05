@@ -3,9 +3,10 @@
  * Verifies every locale file exposes the same key set as the reference locale,
  * and that each quote zone defines the full question/option tree.
  *
- * next-intl throws at runtime on a missing key, and the wizard builds its keys
- * from the chosen zone — so a gap is invisible until someone picks that zone in
- * that language.
+ * next-intl does not throw on a missing key: it renders the dotted key path
+ * into the page. The wizard builds its keys from the chosen zone, so a gap is
+ * invisible until someone picks that zone in that language — and then it ships
+ * "zones.garage.label" to a customer rather than failing loudly.
  *
  *   node scripts/check-messages.mjs
  */
@@ -15,6 +16,14 @@ const REFERENCE = 'it';
 const LOCALES = ['it', 'en', 'es'];
 const ZONES = ['armadio', 'cucina', 'bagno', 'living', 'trasloco', 'garage'];
 const CLOSING = ['accumulo', 'timing'];
+
+// Namespaces that must never hold customer-supplied or customer-attributed
+// content. src/lib/chat/knowledge.ts flattens every message namespace except a
+// short top-level list into the chat assistant's knowledge base, and the locale
+// layout hands the whole message object to NextIntlClientProvider — so anything
+// added here is asserted to visitors as fact and shipped in every page payload.
+// Client reviews live in typed data under src/content/ for exactly this reason.
+const FORBIDDEN_PATHS = ['home.testimonials', 'home.reviews.items', 'reviews.items'];
 
 function flatten(value, prefix = '') {
   if (Array.isArray(value)) {
@@ -121,6 +130,26 @@ for (const locale of LOCALES) {
       console.error(
         `${locale}.json: quote.closing.${c} options [${options}] ` +
           `do not match ${REFERENCE} [${refOptions}]`,
+      );
+    }
+  }
+}
+
+// Structural check: flatten() collapses an array to a length token, so the key
+// comparison above is blind to what is inside one. These paths are checked by
+// name instead.
+for (const locale of LOCALES) {
+  for (const path of FORBIDDEN_PATHS) {
+    const present = path
+      .split('.')
+      .reduce((node, key) => (node == null ? undefined : node[key]), messages[locale]);
+
+    if (present !== undefined) {
+      failed = true;
+      console.error(
+        `${locale}.json: ${path} is not allowed — the chat assistant ingests ` +
+          `this namespace and would quote it as fact. Put client reviews in ` +
+          `src/content/ instead.`,
       );
     }
   }

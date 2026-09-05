@@ -8,7 +8,6 @@
     "home": "Home",
     "about": "Chi Siamo",
     "services": "Servizi",
-    "gallery": "Galleria",
     "blog": "Blog",
     "contact": "Contatti",
     "preventivo": "Preventivo"
@@ -21,30 +20,6 @@
     "contactCta": "Contattaci"
   },
   "home": {
-    "whatWeDo": {
-      "title": "Cosa Facciamo",
-      "description": "Casa in Ordine è il tuo partner per creare ambienti ordinati, funzionali e armoniosi. Con un approccio personalizzato, ti aiutiamo a liberare i tuoi spazi dal superfluo e a organizzare ogni angolo della tua casa.",
-      "learnMore": "Scopri di più sui nostri servizi di decluttering e organizzazione"
-    },
-    "servicesPreview": {
-      "title": "I Nostri Servizi",
-      "decluttering": {
-        "title": "Decluttering",
-        "description": "Libera i tuoi spazi dal superfluo e riscopri il piacere di vivere in un ambiente leggero e ordinato."
-      },
-      "organizing": {
-        "title": "Home Organizing",
-        "description": "Organizziamo ogni ambiente della tua casa con soluzioni pratiche e personalizzate."
-      },
-      "consulting": {
-        "title": "Consulenza",
-        "description": "Sessioni personalizzate per guidarti nel percorso di riorganizzazione dei tuoi spazi."
-      }
-    },
-    "galleryPreview": {
-      "title": "I Nostri Lavori",
-      "viewAll": "Vedi tutta la galleria"
-    },
     "beforeAfter": {
       "title": "Trasformiamo il tuo <span class=\"text-accent\">caos</span> in un rifugio di <span class=\"text-primary\">pace</span>"
     },
@@ -221,21 +196,6 @@
       "serviceButton": "Richiedi preventivo"
     },
     "relatedGuide": "Guida correlata"
-  },
-  "gallery": {
-    "title": "Galleria",
-    "metaDescription": "Guarda i nostri lavori di decluttering e home organizing a Roma. Before e after delle trasformazioni degli spazi.",
-    "heroTitle": "I Nostri Lavori",
-    "heroSubtitle": "Trasformazioni che parlano da sole",
-    "filters": {
-      "all": "Tutti",
-      "kitchen": "Cucina",
-      "closet": "Armadio",
-      "living": "Soggiorno",
-      "bathroom": "Bagno",
-      "office": "Ufficio"
-    },
-    "noImages": "Nessuna immagine trovata per questa categoria."
   },
   "blog": {
     "title": "Blog",

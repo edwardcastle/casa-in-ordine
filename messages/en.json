@@ -8,7 +8,6 @@
     "home": "Home",
     "about": "About",
     "services": "Services",
-    "gallery": "Gallery",
     "blog": "Blog",
     "contact": "Contact",
     "preventivo": "Quote"
@@ -21,30 +20,6 @@
     "contactCta": "Contact us"
   },
   "home": {
-    "whatWeDo": {
-      "title": "What We Do",
-      "description": "Casa in Ordine is your partner in creating tidy, functional, and harmonious spaces. With a personalized approach, we help you free your spaces from clutter and organize every corner of your home.",
-      "learnMore": "Learn more about our decluttering and organizing services"
-    },
-    "servicesPreview": {
-      "title": "Our Services",
-      "decluttering": {
-        "title": "Decluttering",
-        "description": "Free your spaces from excess and rediscover the joy of living in a light and tidy environment."
-      },
-      "organizing": {
-        "title": "Home Organizing",
-        "description": "We organize every room in your home with practical and personalized solutions."
-      },
-      "consulting": {
-        "title": "Consulting",
-        "description": "Personalized sessions to guide you through the process of reorganizing your spaces."
-      }
-    },
-    "galleryPreview": {
-      "title": "Our Work",
-      "viewAll": "View all gallery"
-    },
     "beforeAfter": {
       "title": "We transform your <span class=\"text-accent\">chaos</span> into a haven of <span class=\"text-primary\">peace</span>"
     },
@@ -221,21 +196,6 @@
       "serviceButton": "Request a quote"
     },
     "relatedGuide": "Related guide"
-  },
-  "gallery": {
-    "title": "Gallery",
-    "metaDescription": "See our decluttering and home organizing work in Rome. Before and after space transformations.",
-    "heroTitle": "Our Work",
-    "heroSubtitle": "Transformations that speak for themselves",
-    "filters": {
-      "all": "All",
-      "kitchen": "Kitchen",
-      "closet": "Closet",
-      "living": "Living Room",
-      "bathroom": "Bathroom",
-      "office": "Office"
-    },
-    "noImages": "No images found for this category."
   },
   "blog": {
     "title": "Blog",
