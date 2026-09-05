@@ -90,7 +90,8 @@
         "it": "Italian",
         "en": "English",
         "es": "Spanish"
-      }
+      },
+      "readAll": "Read all {count} reviews"
     }
   },
   "about": {
@@ -582,6 +583,16 @@
         "We work in Rome and the surrounding area. After your request we get in touch to arrange the survey and define a tailored plan together, with clear timing and costs before we start."
       ]
     }
+  },
+  "reviewsPage": {
+    "metaTitle": "Client reviews",
+    "metaDescription": "What the people who worked with us say. Verified reviews from real clients in Rome, published with their permission.",
+    "breadcrumb": "Reviews",
+    "heroTitle": "What our clients said",
+    "heroSubtitle": "The people who opened their door to us, and how it went",
+    "intro": "{count} reviews from people who genuinely worked with us. We publish them only with their permission, and take them down if they ask.",
+    "disclosure": "Before publishing a review we check that the name matches an invoiced job. This is not everything anyone has ever written to us — the public reviews are on our Google profile.",
+    "cta": "Leave your review"
   },
   "reviewForm": {
     "metaTitle": "Leave a review",

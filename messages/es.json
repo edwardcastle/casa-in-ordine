@@ -90,7 +90,8 @@
         "it": "italiano",
         "en": "inglés",
         "es": "español"
-      }
+      },
+      "readAll": "Lee las {count} reseñas"
     }
   },
   "about": {
@@ -582,6 +583,16 @@
         "Trabajamos en Roma y en los municipios cercanos. Tras tu solicitud te contactamos para concertar la inspección y definir juntos un plan a medida, con tiempos y costes claros antes de empezar."
       ]
     }
+  },
+  "reviewsPage": {
+    "metaTitle": "Reseñas de clientas",
+    "metaDescription": "Lo que dicen las personas que han trabajado con nosotras. Reseñas verificadas de clientas reales de Roma, publicadas con su permiso.",
+    "breadcrumb": "Reseñas",
+    "heroTitle": "Lo que dicen nuestras clientas",
+    "heroSubtitle": "Quienes nos abrieron la puerta de su casa, y cómo fue",
+    "intro": "{count} reseñas de personas que trabajaron de verdad con nosotras. Las publicamos solo con su permiso, y las retiramos si nos lo piden.",
+    "disclosure": "Antes de publicar una reseña comprobamos que el nombre corresponda a un trabajo facturado. No es todo lo que nos han escrito — las reseñas públicas están en nuestro perfil de Google.",
+    "cta": "Deja tu reseña"
   },
   "reviewForm": {
     "metaTitle": "Deja una reseña",

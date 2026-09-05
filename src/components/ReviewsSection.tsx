@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ReviewCard from '@/components/ReviewCard';
-import { getFeaturedReviews } from '@/lib/reviews/queries';
+import { getPublishedReviews, MIN_LISTING, MIN_PUBLISHED } from '@/lib/reviews/queries';
 import type { ReviewLang } from '@/lib/reviews/types';
 
 /**
@@ -15,10 +15,14 @@ import type { ReviewLang } from '@/lib/reviews/types';
  * under art. 23 of the Codice del Consumo, and this list is curated.
  */
 export default async function ReviewsSection({ locale }: { locale: string }) {
-  const reviews = await getFeaturedReviews(locale as ReviewLang);
-  if (reviews.length === 0) return null;
+  const all = await getPublishedReviews(locale as ReviewLang);
+  if (all.length < MIN_PUBLISHED) return null;
 
   const t = await getTranslations({ locale, namespace: 'home.reviews' });
+  const featured = all.slice(0, 3);
+  // The listing route 404s below its own threshold, so the link only appears
+  // once there is a page at the other end of it.
+  const hasListing = all.length >= MIN_LISTING;
 
   return (
     <section className="bg-secondary py-16 md:py-24" id="recensioni">
@@ -33,7 +37,7 @@ export default async function ReviewsSection({ locale }: { locale: string }) {
         </ScrollReveal>
 
         <div className="grid gap-8 md:grid-cols-3">
-          {reviews.map((review, i) => (
+          {featured.map((review, i) => (
             <ScrollReveal key={review.id} animation="fadeInUpShorter" delay={i * 100}>
               <ReviewCard review={review} locale={locale} />
             </ScrollReveal>
@@ -46,7 +50,15 @@ export default async function ReviewsSection({ locale }: { locale: string }) {
           {t('disclosure')}
         </p>
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
+          {hasListing && (
+            <Link
+              href={`/${locale}/recensioni`}
+              className="font-semibold text-primary transition-colors hover:text-primary-dark"
+            >
+              {t('readAll', { count: all.length })} →
+            </Link>
+          )}
           <Link
             href={`/${locale}/recensioni/nuova`}
             className="font-semibold text-primary transition-colors hover:text-primary-dark"

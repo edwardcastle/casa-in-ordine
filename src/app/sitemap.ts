@@ -1,5 +1,16 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts, getPostLocales } from '@/lib/blog';
+import { getPublishedReviews, MIN_LISTING } from '@/lib/reviews/queries';
+
+/**
+ * Rendered per request rather than prerendered at build time.
+ *
+ * The /recensioni entry depends on how many reviews are published, which
+ * changes when a founder approves one — not when the site is deployed. A static
+ * sitemap would keep claiming the page does not exist until the next unrelated
+ * deploy. Crawlers fetch this a handful of times a day, so the query is free.
+ */
+export const dynamic = 'force-dynamic';
 
 const baseUrl = 'https://casainordine.com';
 const locales = ['it', 'en', 'es'];
@@ -15,7 +26,7 @@ const pages = [
   { path: '/privacy-policy', changeFrequency: 'yearly' as const, priority: 0.3 },
 ];
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const entries: MetadataRoute.Sitemap = [];
 
   // Newest post date drives /blog's lastmod (it's the only static page whose
@@ -31,7 +42,19 @@ export default function sitemap(): MetadataRoute.Sitemap {
       )
     : undefined;
 
-  for (const page of pages) {
+  // /recensioni 404s until it has enough reviews to be worth a page, so it is
+  // only listed once it actually resolves. Submitting a URL that returns 404 is
+  // a self-inflicted coverage error in Search Console.
+  const reviewCount = (await getPublishedReviews(defaultLocale as 'it')).length;
+  const routes =
+    reviewCount >= MIN_LISTING
+      ? [
+          ...pages,
+          { path: '/recensioni', changeFrequency: 'weekly' as const, priority: 0.6 },
+        ]
+      : pages;
+
+  for (const page of routes) {
     for (const locale of locales) {
       const lastModified = page.path === '/blog' ? blogLastModified : undefined;
       entries.push({

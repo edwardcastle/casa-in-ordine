@@ -90,7 +90,8 @@
         "it": "italiano",
         "en": "inglese",
         "es": "spagnolo"
-      }
+      },
+      "readAll": "Leggi tutte le {count} recensioni"
     }
   },
   "about": {
@@ -582,6 +583,16 @@
         "Lavoriamo a Roma e nei comuni limitrofi. Dopo la tua richiesta ti contattiamo per fissare il sopralluogo e definire insieme un piano su misura, con tempi e costi chiari prima di iniziare."
       ]
     }
+  },
+  "reviewsPage": {
+    "metaTitle": "Recensioni dei clienti",
+    "metaDescription": "Cosa dicono le persone che hanno lavorato con noi. Recensioni verificate di clienti reali di Roma, pubblicate con il loro consenso.",
+    "breadcrumb": "Recensioni",
+    "heroTitle": "Le parole delle nostre clienti",
+    "heroSubtitle": "Chi ci ha aperto la porta di casa, e com'è andata",
+    "intro": "{count} recensioni di persone che hanno lavorato davvero con noi. Le pubblichiamo solo con il loro consenso, e le togliamo se ce lo chiedono.",
+    "disclosure": "Prima di pubblicare una recensione verifichiamo che il nome corrisponda a un lavoro fatturato. Non è l'elenco completo di tutto ciò che ci è stato scritto — le recensioni pubbliche le trovi sul nostro profilo Google.",
+    "cta": "Lascia la tua recensione"
   },
   "reviewForm": {
     "metaTitle": "Lascia una recensione",

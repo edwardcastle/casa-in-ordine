@@ -10,6 +10,17 @@ import type {
 /** Below this the section renders nothing: two testimonials read worse than none. */
 export const MIN_PUBLISHED = 3;
 
+/**
+ * Below this there is no listing page.
+ *
+ * Three reviews across three locales is a thin, near-duplicate page — the thing
+ * the rest of the site has been kept clear of, and how `nav.gallery` and
+ * GalleryGrid ended up as dead code. The route exists in the codebase from day
+ * one and turns itself on when the corpus justifies it, so nobody has to
+ * remember to build it later.
+ */
+export const MIN_LISTING = 6;
+
 interface PublicRow {
   id: string;
   author_name: string;
@@ -69,14 +80,6 @@ export async function getPublishedReviews(locale: ReviewLang): Promise<PublicRev
   return rows.map(toPublic);
 }
 
-/** The homepage strip. Returns [] below the publication floor. */
-export async function getFeaturedReviews(
-  locale: ReviewLang,
-  limit = 3,
-): Promise<PublicReview[]> {
-  const all = await getPublishedReviews(locale);
-  return all.length < MIN_PUBLISHED ? [] : all.slice(0, limit);
-}
 
 export interface NewReview {
   authorName: string;
