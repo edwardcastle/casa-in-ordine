@@ -100,7 +100,22 @@ export async function submitReview(formData: FormData): Promise<ReviewSubmitResu
 
     return { success: true };
   } catch (error) {
-    console.error('Review submission failed:', error);
+    // Named explicitly, because "send-failed" reads as an email problem and
+    // this is almost never one: sendEmail swallows its own failures and
+    // returns false, so anything reaching here came from the database.
+    const message = error instanceof Error ? error.message : String(error);
+
+    if (/relation .* does not exist/.test(message)) {
+      console.error(
+        'Review submission failed: the reviews tables do not exist. The ' +
+          'migration has not run against this DATABASE_URL — check the build ' +
+          'log for a [migrate] line, and that the connection string is the ' +
+          "provider's PUBLIC one.",
+      );
+    } else {
+      console.error('Review submission failed while writing to the database:', error);
+    }
+
     return { success: false, reason: 'send-failed' };
   }
 }
