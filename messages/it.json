@@ -45,26 +45,6 @@
       "title": "I Nostri Lavori",
       "viewAll": "Vedi tutta la galleria"
     },
-    "testimonials": {
-      "title": "Cosa Dicono i Nostri Clienti",
-      "items": [
-        {
-          "text": "Casa in Ordine ha completamente trasformato la mia casa. Non riesco a credere quanto spazio avessi nascosto sotto tutto quel disordine!",
-          "author": "Maria R.",
-          "location": "Roma, Prati"
-        },
-        {
-          "text": "Professionali, gentili e incredibilmente efficienti. Il mio armadio non è mai stato così organizzato. Consigliatissimi!",
-          "author": "Lucia T.",
-          "location": "Roma, Trastevere"
-        },
-        {
-          "text": "Grazie al servizio di consulenza ho imparato a mantenere l'ordine da sola. Un investimento che vale ogni centesimo.",
-          "author": "Francesca M.",
-          "location": "Roma, EUR"
-        }
-      ]
-    },
     "beforeAfter": {
       "title": "Trasformiamo il tuo <span class=\"text-accent\">caos</span> in un rifugio di <span class=\"text-primary\">pace</span>"
     },

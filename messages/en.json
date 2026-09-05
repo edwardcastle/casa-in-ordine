@@ -45,26 +45,6 @@
       "title": "Our Work",
       "viewAll": "View all gallery"
     },
-    "testimonials": {
-      "title": "What Our Clients Say",
-      "items": [
-        {
-          "text": "Casa in Ordine completely transformed my home. I can't believe how much space I had hidden under all that clutter!",
-          "author": "Maria R.",
-          "location": "Rome, Prati"
-        },
-        {
-          "text": "Professional, kind, and incredibly efficient. My closet has never been this organized. Highly recommended!",
-          "author": "Lucia T.",
-          "location": "Rome, Trastevere"
-        },
-        {
-          "text": "Thanks to the consulting service, I learned how to maintain order on my own. An investment worth every penny.",
-          "author": "Francesca M.",
-          "location": "Rome, EUR"
-        }
-      ]
-    },
     "beforeAfter": {
       "title": "We transform your <span class=\"text-accent\">chaos</span> into a haven of <span class=\"text-primary\">peace</span>"
     },
