@@ -6,7 +6,7 @@ import Hero from '@/components/Hero';
 import ReviewCard from '@/components/ReviewCard';
 import ScrollReveal from '@/components/ScrollReveal';
 import { breadcrumbLd } from '@/lib/breadcrumb';
-import { getPublishedReviews, MIN_LISTING } from '@/lib/reviews/queries';
+import { getPublishedReviews, MIN_LISTING_INDEXED } from '@/lib/reviews/queries';
 import type { ReviewLang } from '@/lib/reviews/types';
 
 export async function generateMetadata({
@@ -16,10 +16,14 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: 'reviewsPage' });
+  const count = (await getPublishedReviews(locale as ReviewLang)).length;
 
   return {
     title: t('metaTitle'),
     description: t('metaDescription'),
+    // Reachable by anyone following the link, but not offered to crawlers
+    // until there is enough here to be worth a page in three languages.
+    robots: { index: count >= MIN_LISTING_INDEXED, follow: true },
     alternates: {
       canonical: `https://casainordine.com/${locale}/recensioni`,
       languages: {
@@ -51,10 +55,10 @@ export async function generateMetadata({
 /**
  * Every published review.
  *
- * 404s below MIN_LISTING rather than rendering a short page. Three reviews
- * across three locales is a thin near-duplicate, and a page that exists but has
- * nothing on it is worse for the site than no page at all — the route simply
- * starts working the day the corpus justifies it.
+ * Resolves as soon as one review is published: the homepage links here, and a
+ * visitor following that link must never hit a 404. It 404s only when there is
+ * genuinely nothing to show. Whether crawlers are invited is a separate
+ * question, handled by the robots tag above.
  *
  * No Review or AggregateRating JSON-LD here, deliberately, and not because it
  * was forgotten: review markup on an entity that controls its own reviews is
@@ -71,7 +75,7 @@ export default async function ReviewsPage({
   const { locale } = await params;
   const reviews = await getPublishedReviews(locale as ReviewLang);
 
-  if (reviews.length < MIN_LISTING) notFound();
+  if (reviews.length === 0) notFound();
 
   const t = await getTranslations({ locale, namespace: 'reviewsPage' });
   const tNav = await getTranslations({ locale, namespace: 'nav' });

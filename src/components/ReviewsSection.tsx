@@ -2,7 +2,7 @@ import { getTranslations } from 'next-intl/server';
 import Link from 'next/link';
 import ScrollReveal from '@/components/ScrollReveal';
 import ReviewCard from '@/components/ReviewCard';
-import { getPublishedReviews, MIN_LISTING, MIN_PUBLISHED } from '@/lib/reviews/queries';
+import { getPublishedReviews, MIN_PUBLISHED } from '@/lib/reviews/queries';
 import type { ReviewLang } from '@/lib/reviews/types';
 
 /**
@@ -20,9 +20,9 @@ export default async function ReviewsSection({ locale }: { locale: string }) {
 
   const t = await getTranslations({ locale, namespace: 'home.reviews' });
   const featured = all.slice(0, 3);
-  // The listing route 404s below its own threshold, so the link only appears
-  // once there is a page at the other end of it.
-  const hasListing = all.length >= MIN_LISTING;
+  // Only worth offering once it leads somewhere the strip does not already
+  // show in full.
+  const hasMore = all.length > featured.length;
 
   return (
     <section className="bg-secondary py-16 md:py-24" id="recensioni">
@@ -58,15 +58,13 @@ export default async function ReviewsSection({ locale }: { locale: string }) {
           {t('disclosure')}
         </p>
 
-        <div className="mt-6 flex flex-wrap items-center justify-center gap-x-8 gap-y-3">
-          {hasListing && (
-            <Link
-              href={`/${locale}/recensioni`}
-              className="font-semibold text-primary transition-colors hover:text-primary-dark"
-            >
-              {t('readAll', { count: all.length })} →
-            </Link>
-          )}
+        <div className="mt-8 flex flex-col items-center gap-4">
+          <Link
+            href={`/${locale}/recensioni`}
+            className="inline-flex items-center justify-center rounded-full bg-primary px-8 py-3 font-bold text-white shadow-lg transition-colors hover:bg-primary-light"
+          >
+            {hasMore ? t('readAll', { count: all.length }) : t('seeAll')}
+          </Link>
           <Link
             href={`/${locale}/recensioni/nuova`}
             className="font-semibold text-primary transition-colors hover:text-primary-dark"

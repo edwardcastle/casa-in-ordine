@@ -91,7 +91,8 @@
         "en": "inglese",
         "es": "spagnolo"
       },
-      "readAll": "Leggi tutte le {count} recensioni"
+      "readAll": "Leggi tutte le {count} recensioni",
+      "seeAll": "Vedi tutte le recensioni"
     }
   },
   "about": {

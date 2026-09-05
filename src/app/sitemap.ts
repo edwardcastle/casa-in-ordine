@@ -1,6 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts, getPostLocales } from '@/lib/blog';
-import { getPublishedReviews, MIN_LISTING } from '@/lib/reviews/queries';
+import { getPublishedReviews, MIN_LISTING_INDEXED } from '@/lib/reviews/queries';
 
 /**
  * Rendered per request rather than prerendered at build time.
@@ -42,12 +42,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       )
     : undefined;
 
-  // /recensioni 404s until it has enough reviews to be worth a page, so it is
-  // only listed once it actually resolves. Submitting a URL that returns 404 is
-  // a self-inflicted coverage error in Search Console.
+  // /recensioni resolves from the first review, but is noindex until it has
+  // enough to be worth a page in three languages — so it is only listed here
+  // once it is actually indexable. Submitting a noindex URL is a self-inflicted
+  // coverage warning in Search Console.
   const reviewCount = (await getPublishedReviews(defaultLocale as 'it')).length;
   const routes =
-    reviewCount >= MIN_LISTING
+    reviewCount >= MIN_LISTING_INDEXED
       ? [
           ...pages,
           { path: '/recensioni', changeFrequency: 'weekly' as const, priority: 0.6 },

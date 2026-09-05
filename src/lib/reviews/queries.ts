@@ -18,15 +18,16 @@ import type {
 export const MIN_PUBLISHED = 1;
 
 /**
- * Below this there is no listing page.
+ * When the listing page becomes indexable and enters the sitemap.
  *
- * Three reviews across three locales is a thin, near-duplicate page — the thing
- * the rest of the site has been kept clear of, and how `nav.gallery` and
- * GalleryGrid ended up as dead code. The route exists in the codebase from day
- * one and turns itself on when the corpus justifies it, so nobody has to
- * remember to build it later.
+ * The page itself resolves as soon as a single review is published — a visitor
+ * following "vedi tutte" must never hit a 404. This threshold is only about
+ * crawlers: one review rendered at /it, /en and /es is three near-duplicate
+ * pages with nothing on them, which is what the rest of the site has been kept
+ * clear of. Below it the page is `noindex, follow` and stays out of the
+ * sitemap; above it, both switch on by themselves.
  */
-export const MIN_LISTING = 6;
+export const MIN_LISTING_INDEXED = 6;
 
 interface PublicRow {
   id: string;

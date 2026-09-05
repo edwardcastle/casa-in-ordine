@@ -91,7 +91,8 @@
         "en": "English",
         "es": "Spanish"
       },
-      "readAll": "Read all {count} reviews"
+      "readAll": "Read all {count} reviews",
+      "seeAll": "See all reviews"
     }
   },
   "about": {
