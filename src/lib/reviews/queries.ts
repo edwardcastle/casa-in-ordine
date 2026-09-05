@@ -7,8 +7,15 @@ import type {
   ReviewSource,
 } from './types';
 
-/** Below this the section renders nothing: two testimonials read worse than none. */
-export const MIN_PUBLISHED = 3;
+/**
+ * How many approved reviews before the homepage section appears.
+ *
+ * Was 3, on the reasoning that two testimonials read worse than none. The
+ * owner's call is to show them from the first one — a real, consented review
+ * from a named client says more than an empty space, and there is no longer a
+ * fabricated one anywhere to be confused with it.
+ */
+export const MIN_PUBLISHED = 1;
 
 /**
  * Below this there is no listing page.

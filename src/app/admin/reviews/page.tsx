@@ -1,7 +1,7 @@
 import { approveReview, rejectReview, signOut, withdrawReview } from '@/actions/admin';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
-import { listAllReviews, MIN_PUBLISHED } from '@/lib/reviews/queries';
+import { listAllReviews } from '@/lib/reviews/queries';
 import type { AdminReview } from '@/lib/reviews/types';
 import SignInForm from './SignInForm';
 
@@ -181,12 +181,8 @@ export default async function AdminReviewsPage({
 
       <p className="mb-8 rounded-lg border border-secondary/50 bg-white px-4 py-3 text-sm">
         <strong>{published}</strong> pubblicate · <strong>{pending}</strong> da decidere.
-        {published < MIN_PUBLISHED && (
-          <>
-            {' '}
-            La sezione sul sito resta nascosta finché non ce ne sono {MIN_PUBLISHED}:
-            due recensioni fanno peggio di nessuna.
-          </>
+        {published === 0 && (
+          <> La sezione sul sito compare appena ne approvi una.</>
         )}
       </p>
 

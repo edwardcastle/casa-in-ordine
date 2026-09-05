@@ -36,7 +36,15 @@ export default async function ReviewsSection({ locale }: { locale: string }) {
           </p>
         </ScrollReveal>
 
-        <div className="grid gap-8 md:grid-cols-3">
+        {/* The column count follows the card count, so one or two reviews sit
+            centred rather than stranded in the left third of a 3-up grid. */}
+        <div className={`mx-auto grid gap-8 ${
+          featured.length === 1
+            ? 'max-w-xl'
+            : featured.length === 2
+              ? 'max-w-4xl md:grid-cols-2'
+              : 'md:grid-cols-3'
+        }`}>
           {featured.map((review, i) => (
             <ScrollReveal key={review.id} animation="fadeInUpShorter" delay={i * 100}>
               <ReviewCard review={review} locale={locale} />
