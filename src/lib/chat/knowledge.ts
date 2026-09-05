@@ -6,12 +6,20 @@ type Locale = (typeof routing.locales)[number];
  * Namespaces from the i18n messages that carry no useful business knowledge
  * for the assistant (pure UI chrome, legal boilerplate, error pages).
  */
+// NOTE: this guard is top-level only. Anything nested under an included
+// namespace — `home.*` in particular — is fed to the assistant as fact under a
+// prompt calling it "your only source of facts". That is why client reviews
+// live in Postgres and never in messages/*.json: `home.reviews` here holds only
+// chrome (the heading and the verification sentence), so the assistant can say
+// reviews exist and how they are checked, but has no client's words to quote.
 const EXCLUDED_NAMESPACES = new Set([
   'cookieConsent',
   'notFound',
   'privacyPolicy',
   'nav',
   'footer',
+  // Form labels and error strings. No business knowledge, 40 lines of noise.
+  'reviewForm',
 ]);
 
 const cache = new Map<Locale, string>();

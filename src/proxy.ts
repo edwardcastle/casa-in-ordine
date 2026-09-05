@@ -4,5 +4,7 @@ import { routing } from './i18n/routing';
 export default createMiddleware(routing);
 
 export const config = {
-  matcher: '/((?!api|trpc|_next|_vercel|.*\\..*).*)',
+  // `admin` joins the exclusions: the moderation pages are internal, have no
+  // translations, and a locale prefix would only break the session cookie path.
+  matcher: '/((?!api|admin|trpc|_next|_vercel|.*\\..*).*)',
 };

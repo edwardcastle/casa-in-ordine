@@ -12,6 +12,7 @@ import BalanceChart from '@/components/BalanceChart';
 import ScrollReveal from '@/components/ScrollReveal';
 import OverlayImage from '@/components/OverlayImage';
 import CategoryIcon from '@/components/CategoryIcon';
+import ReviewsSection from '@/components/ReviewsSection';
 import type { Category } from '@/components/CategoryIcon';
 
 export async function generateMetadata({
@@ -264,6 +265,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Client reviews. Renders nothing until enough are published, so the
+          page below is unchanged until there is something real to show. */}
+      <ReviewsSection locale={locale} />
 
       {/* From the blog — seeds the content cluster from the homepage body */}
       {featuredPosts.length > 0 && (

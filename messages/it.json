@@ -77,6 +77,20 @@
       "title": "Consigli dal blog",
       "subtitle": "Guide pratiche per orientarti prima di iniziare.",
       "cta": "Leggi tutti gli articoli"
+    },
+    "reviews": {
+      "title": "Le parole delle nostre clienti",
+      "subtitle": "Recensioni di clienti reali, pubblicate con il loro consenso.",
+      "disclosure": "Pubblichiamo solo recensioni di persone che hanno davvero lavorato con noi: prima di metterle online verifichiamo che il nome corrisponda a un lavoro fatturato. Non è l'elenco completo — le trovi tutte sul nostro profilo Google.",
+      "cta": "Lascia la tua recensione",
+      "fromGoogle": "Leggi su Google",
+      "fromClient": "Recensione raccolta direttamente",
+      "originalIn": "scritta in {language}",
+      "languages": {
+        "it": "italiano",
+        "en": "inglese",
+        "es": "spagnolo"
+      }
     }
   },
   "about": {
@@ -566,6 +580,52 @@
         "Il costo di un intervento di riordino dipende dalla metratura e dal numero di stanze, dallo stato di partenza degli spazi, dalla quantità di oggetti da selezionare e dall’obiettivo: dal semplice decluttering alla riorganizzazione completa con sistemi di mantenimento nel tempo.",
         "Lavoriamo a Roma e nei comuni limitrofi. Dopo la tua richiesta ti contattiamo per fissare il sopralluogo e definire insieme un piano su misura, con tempi e costi chiari prima di iniziare."
       ]
+    }
+  },
+  "reviewForm": {
+    "metaTitle": "Lascia una recensione",
+    "metaDescription": "Racconta com'è andata. Le recensioni vengono pubblicate solo dopo una verifica e con il tuo consenso.",
+    "heroTitle": "Raccontaci com'è andata",
+    "heroSubtitle": "Le tue parole aiutano chi sta ancora decidendo",
+    "intro": "Ci vogliono due minuti. Leggiamo ogni recensione prima di pubblicarla, quindi non comparirà subito — e se cambi idea la togliamo quando vuoi.",
+    "name": "Come vuoi firmarti",
+    "nameHint": "Di solito il nome e l'iniziale del cognome. Comparirà così sul sito.",
+    "email": "Email",
+    "emailHint": "Non la pubblichiamo. Ci serve per riconoscerti e per rispondere.",
+    "city": "Città",
+    "service": "Di cosa ci siamo occupate",
+    "servicePlaceholder": "Scegli, se vuoi",
+    "services": {
+      "armadio": "Armadio",
+      "cucina": "Cucina",
+      "ufficio": "Ufficio",
+      "bagno": "Bagno",
+      "garage": "Garage",
+      "trasloco": "Trasloco"
+    },
+    "rating": "Valutazione",
+    "body": "La tua recensione",
+    "bodyHint": "Se non sai da dove iniziare: com'era prima, cosa abbiamo fatto insieme, cosa è cambiato da allora.",
+    "consent": "Acconsento alla pubblicazione del mio nome, della mia città e di questa recensione su casainordine.com, anche nelle versioni in inglese e spagnolo. Posso chiederne la rimozione in qualsiasi momento scrivendo a info@casainordine.com.",
+    "submit": "Invia la recensione",
+    "sending": "Invio…",
+    "moderationNote": "Non viene pubblicato nulla finché una di noi non l'ha letta e verificata.",
+    "successTitle": "Grazie di cuore.",
+    "successBody": "L'abbiamo ricevuta. La leggiamo e la pubblichiamo a breve — ti abbiamo mandato una copia via email.",
+    "errors": {
+      "rate-limited": "Hai provato troppe volte. Riprova fra un po'.",
+      "captcha": "La verifica di sicurezza non è andata a buon fine. Riprova.",
+      "email-format": "Questo indirizzo email non sembra valido.",
+      "email-disposable": "Usa un indirizzo email personale, non uno temporaneo.",
+      "email-unreachable": "Non riusciamo a raggiungere questo indirizzo. Controlla che sia scritto bene.",
+      "message-too-short": "Scrivi ancora qualche riga: servono almeno 40 caratteri.",
+      "message-too-long": "La recensione è troppo lunga. Massimo 1500 caratteri.",
+      "message-spam": "Non riusciamo ad accettare questo testo. Se è un errore, scrivici a info@casainordine.com.",
+      "message-nonsense": "Non riusciamo a leggere questo testo. Riprova con qualche frase in più.",
+      "missing-fields": "Manca il nome o l'email.",
+      "field-too-long": "Uno dei campi è troppo lungo.",
+      "consent-required": "Per pubblicare la recensione ci serve il tuo consenso.",
+      "send-failed": "Qualcosa non ha funzionato. Riprova, o scrivici a info@casainordine.com."
     }
   },
   "privacyPolicy": {

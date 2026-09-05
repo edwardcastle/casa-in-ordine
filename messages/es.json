@@ -77,6 +77,20 @@
       "title": "Consejos del blog",
       "subtitle": "Guías prácticas para orientarte antes de empezar.",
       "cta": "Leer todos los artículos"
+    },
+    "reviews": {
+      "title": "Lo que dicen nuestras clientas",
+      "subtitle": "Reseñas de clientas reales, publicadas con su permiso.",
+      "disclosure": "Solo publicamos reseñas de personas que han trabajado de verdad con nosotras: antes de publicarlas comprobamos que el nombre corresponda a un trabajo facturado. No es la lista completa — puedes leerlas todas en nuestro perfil de Google.",
+      "cta": "Deja tu reseña",
+      "fromGoogle": "Léela en Google",
+      "fromClient": "Recogida directamente",
+      "originalIn": "escrita en {language}",
+      "languages": {
+        "it": "italiano",
+        "en": "inglés",
+        "es": "español"
+      }
     }
   },
   "about": {
@@ -566,6 +580,52 @@
         "El coste de un proyecto de organización depende de los metros cuadrados y del número de habitaciones, del estado inicial de los espacios, de la cantidad de objetos que clasificar y del objetivo: desde un simple decluttering hasta una reorganización completa con sistemas de mantenimiento.",
         "Trabajamos en Roma y en los municipios cercanos. Tras tu solicitud te contactamos para concertar la inspección y definir juntos un plan a medida, con tiempos y costes claros antes de empezar."
       ]
+    }
+  },
+  "reviewForm": {
+    "metaTitle": "Deja una reseña",
+    "metaDescription": "Cuéntanos cómo fue. Las reseñas se publican solo tras una verificación y con tu permiso.",
+    "heroTitle": "Cuéntanos cómo fue",
+    "heroSubtitle": "Tus palabras ayudan a quien todavía lo está pensando",
+    "intro": "Son dos minutos. Leemos cada reseña antes de publicarla, así que no aparecerá enseguida — y si cambias de opinión, la retiramos.",
+    "name": "Cómo quieres firmar",
+    "nameHint": "Normalmente el nombre y la inicial del apellido. Así aparecerá en la web.",
+    "email": "Email",
+    "emailHint": "No la publicamos. Nos sirve para reconocerte y para responderte.",
+    "city": "Ciudad",
+    "service": "De qué nos ocupamos",
+    "servicePlaceholder": "Elige, si quieres",
+    "services": {
+      "armadio": "Armario",
+      "cucina": "Cocina",
+      "ufficio": "Oficina",
+      "bagno": "Baño",
+      "garage": "Garaje",
+      "trasloco": "Mudanza"
+    },
+    "rating": "Valoración",
+    "body": "Tu reseña",
+    "bodyHint": "Si no sabes por dónde empezar: cómo era antes, qué hicimos juntas, qué ha cambiado desde entonces.",
+    "consent": "Doy mi consentimiento para que mi nombre, mi ciudad y esta reseña se publiquen en casainordine.com, también en sus versiones en italiano e inglés. Puedo pedir su retirada en cualquier momento escribiendo a info@casainordine.com.",
+    "submit": "Enviar mi reseña",
+    "sending": "Enviando…",
+    "moderationNote": "No se publica nada hasta que una de nosotras lo haya leído y verificado.",
+    "successTitle": "Mil gracias.",
+    "successBody": "Ya la tenemos. La leeremos y la publicaremos en breve — te hemos enviado una copia por email.",
+    "errors": {
+      "rate-limited": "Demasiados intentos. Vuelve a probar dentro de un rato.",
+      "captcha": "La verificación de seguridad no se ha superado. Inténtalo de nuevo.",
+      "email-format": "Esa dirección de email no parece válida.",
+      "email-disposable": "Usa una dirección personal, no una temporal.",
+      "email-unreachable": "No podemos contactar con esa dirección. Comprueba que esté bien escrita.",
+      "message-too-short": "Escribe alguna línea más: hacen falta al menos 40 caracteres.",
+      "message-too-long": "La reseña es demasiado larga. Máximo 1500 caracteres.",
+      "message-spam": "No podemos aceptar este texto. Si es un error, escríbenos a info@casainordine.com.",
+      "message-nonsense": "No conseguimos leer este texto. Inténtalo con alguna frase más.",
+      "missing-fields": "Falta el nombre o el email.",
+      "field-too-long": "Uno de los campos es demasiado largo.",
+      "consent-required": "Necesitamos tu consentimiento para poder publicar la reseña.",
+      "send-failed": "Algo no ha funcionado. Inténtalo de nuevo o escríbenos a info@casainordine.com."
     }
   },
   "privacyPolicy": {

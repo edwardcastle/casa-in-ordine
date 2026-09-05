@@ -77,6 +77,20 @@
       "title": "From the blog",
       "subtitle": "Practical guides to orient you before you begin.",
       "cta": "Read all articles"
+    },
+    "reviews": {
+      "title": "What our clients said",
+      "subtitle": "Reviews from real clients, published with their permission.",
+      "disclosure": "We only publish reviews from people who actually worked with us: before a review goes online we check that the name matches an invoiced job. This is not the full list — you can read them all on our Google profile.",
+      "cta": "Leave your review",
+      "fromGoogle": "Read it on Google",
+      "fromClient": "Collected directly",
+      "originalIn": "written in {language}",
+      "languages": {
+        "it": "Italian",
+        "en": "English",
+        "es": "Spanish"
+      }
     }
   },
   "about": {
@@ -566,6 +580,52 @@
         "The cost of an organizing project depends on the size and number of rooms, the starting condition of the spaces, how many items need sorting, and your goal: from simple decluttering to a complete reorganization with systems to keep things in order over time.",
         "We work in Rome and the surrounding area. After your request we get in touch to arrange the survey and define a tailored plan together, with clear timing and costs before we start."
       ]
+    }
+  },
+  "reviewForm": {
+    "metaTitle": "Leave a review",
+    "metaDescription": "Tell us how it went. Reviews are published only after a check, and only with your permission.",
+    "heroTitle": "Tell us how it went",
+    "heroSubtitle": "Your words help the person still deciding",
+    "intro": "It takes two minutes. We read every review before publishing it, so it will not appear straight away — and if you change your mind, we take it down.",
+    "name": "How you would like to be credited",
+    "nameHint": "Usually a first name and last initial. This is how it appears on the site.",
+    "email": "Email",
+    "emailHint": "We never publish it. We use it to recognise you and to reply.",
+    "city": "City",
+    "service": "What we worked on",
+    "servicePlaceholder": "Choose, if you like",
+    "services": {
+      "armadio": "Wardrobe",
+      "cucina": "Kitchen",
+      "ufficio": "Office",
+      "bagno": "Bathroom",
+      "garage": "Garage",
+      "trasloco": "Moving"
+    },
+    "rating": "Rating",
+    "body": "Your review",
+    "bodyHint": "If you are not sure where to start: what the room was like before, what we did together, what has changed since.",
+    "consent": "I agree to my first name, my city and this review being published on casainordine.com, including its English and Spanish versions. I can ask for it to be removed at any time by writing to info@casainordine.com.",
+    "submit": "Send my review",
+    "sending": "Sending…",
+    "moderationNote": "Nothing is published until one of us has read and verified it.",
+    "successTitle": "Thank you, truly.",
+    "successBody": "We have it. We will read it and publish it shortly — we have emailed you a copy.",
+    "errors": {
+      "rate-limited": "Too many attempts. Please try again a bit later.",
+      "captcha": "The security check did not pass. Please try again.",
+      "email-format": "That email address does not look valid.",
+      "email-disposable": "Please use a personal address, not a temporary one.",
+      "email-unreachable": "We cannot reach that address. Check the spelling.",
+      "message-too-short": "A few more lines, please: at least 40 characters.",
+      "message-too-long": "That review is too long. 1500 characters maximum.",
+      "message-spam": "We cannot accept this text. If that is wrong, write to info@casainordine.com.",
+      "message-nonsense": "We cannot read this text. Try again with a few more sentences.",
+      "missing-fields": "Your name or email is missing.",
+      "field-too-long": "One of the fields is too long.",
+      "consent-required": "We need your permission before we can publish the review.",
+      "send-failed": "Something went wrong. Try again, or write to info@casainordine.com."
     }
   },
   "privacyPolicy": {
