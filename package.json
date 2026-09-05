@@ -4,10 +4,14 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/migrate.mjs && next build",
     "start": "next start",
     "lint": "eslint",
-    "check:messages": "node scripts/check-messages.mjs"
+    "check:messages": "node scripts/check-messages.mjs",
+    "migrate": "node-pg-migrate --migrations-dir migrations --migrations-table schema_migrations",
+    "migrate:up": "pnpm migrate up",
+    "migrate:down": "pnpm migrate down",
+    "migrate:create": "pnpm migrate create -- --migration-file-language sql"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
@@ -28,6 +32,7 @@
     "@types/react-dom": "^19",
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
+    "node-pg-migrate": "^9.0.0",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

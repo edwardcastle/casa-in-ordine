@@ -1,3 +1,4 @@
+-- Up Migration
 -- Client reviews.
 --
 -- Reviews live here rather than in messages/*.json for three reasons:
@@ -88,3 +89,8 @@ CREATE TABLE IF NOT EXISTS auth_tokens (
 );
 
 CREATE INDEX IF NOT EXISTS auth_tokens_expiry_idx ON auth_tokens (expires_at);
+
+-- Down Migration
+
+DROP TABLE IF EXISTS auth_tokens;
+DROP TABLE IF EXISTS reviews;
