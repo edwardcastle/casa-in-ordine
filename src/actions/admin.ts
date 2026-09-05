@@ -3,6 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { headers } from 'next/headers';
 import {
+  adminConfigProblem,
   currentAdmin,
   endSession,
   isAdminConfigured,
@@ -20,7 +21,7 @@ export async function requestSignInLink(formData: FormData) {
   const email = ((formData.get('email') as string) ?? '').trim();
 
   if (!isAdminConfigured()) {
-    console.error('ADMIN_EMAILS / ADMIN_SESSION_SECRET are not set — admin sign-in is disabled.');
+    console.error(`Admin sign-in is disabled: ${adminConfigProblem()}.`);
     return { sent: false as const, reason: 'unavailable' as const };
   }
 

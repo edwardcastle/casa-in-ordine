@@ -36,8 +36,26 @@ export function isAdminEmail(email: string): boolean {
   return adminEmails().includes(email.trim().toLowerCase());
 }
 
+/**
+ * Whether sign-in can work at all.
+ *
+ * The length test matches `secret()` deliberately: without it, a too-short
+ * secret passes this check and then throws when the cookie is signed, turning
+ * a configuration mistake into a 500 instead of a message.
+ */
 export function isAdminConfigured(): boolean {
-  return Boolean(process.env.ADMIN_SESSION_SECRET) && adminEmails().length > 0;
+  return (process.env.ADMIN_SESSION_SECRET ?? '').length >= 32 && adminEmails().length > 0;
+}
+
+/** Names what is wrong, for the server log. Never shown to the visitor. */
+export function adminConfigProblem(): string | null {
+  const value = process.env.ADMIN_SESSION_SECRET ?? '';
+  if (!value) return 'ADMIN_SESSION_SECRET is not set';
+  if (value.length < 32) {
+    return `ADMIN_SESSION_SECRET is only ${value.length} characters; it needs at least 32`;
+  }
+  if (adminEmails().length === 0) return 'ADMIN_EMAILS is not set or is empty';
+  return null;
 }
 
 function sign(payload: string): string {
