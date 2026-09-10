@@ -178,7 +178,7 @@ export default function ServicesPage() {
       {/* Catalogue download. Rendered only when the PDF actually exists, so
           there is never a button that emails a link to a 404. Sits before the
           quote CTA: it is the lighter ask, for someone not ready to commit. */}
-      {isCatalogAvailable() && (
+      {isCatalogAvailable(locale) && (
         <section className="py-16 md:py-24 bg-secondary-light">
           <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <h2 className="text-clamp-section font-normal text-foreground mb-4">

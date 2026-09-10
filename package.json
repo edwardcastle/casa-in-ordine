@@ -8,6 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "check:messages": "node scripts/check-messages.mjs",
+    "build:catalog": "node scripts/build-catalog.mjs",
     "migrate": "node-pg-migrate --migrations-dir migrations --migrations-table schema_migrations",
     "migrate:up": "pnpm migrate up",
     "migrate:down": "pnpm migrate down",
@@ -33,6 +34,7 @@
     "eslint": "^9",
     "eslint-config-next": "16.2.1",
     "node-pg-migrate": "^9.0.0",
+    "sharp": "^0.35.4",
     "tailwindcss": "^4",
     "typescript": "^5"
   },

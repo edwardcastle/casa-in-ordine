@@ -14,7 +14,7 @@ const SAGE = '#7B8F7A';
  */
 export async function sendCatalog(lead: NewCatalogLead): Promise<boolean> {
   const origin = siteOrigin();
-  const href = catalogUrl(origin);
+  const href = catalogUrl(origin, lead.lang);
 
   const copy = {
     it: {

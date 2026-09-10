@@ -1,8 +1,11 @@
-Drop the services catalogue here as `casa-in-ordine-catalogo.pdf`.
+Generated PDFs. Do not edit by hand.
 
-The download section on /services renders only when that exact file exists, so
-the site is safe to deploy without it — the section appears on the first deploy
-after the PDF lands, and there is never a button that emails a link to a 404.
+    pnpm build:catalog
 
-The filename is set in `src/lib/catalog/index.ts`. Keep the file reasonably
-small: it is linked, not attached, but people open it on phones.
+Reads `services.*` and the contact details out of `messages/<locale>.json` and
+renders one PDF per language through headless Chrome. Re-run it whenever a
+service, a feature list or a phone number changes, so the catalogue cannot
+drift from the site.
+
+The download section on /services renders per language, only where that
+language's file exists — so the site is safe to deploy without them.

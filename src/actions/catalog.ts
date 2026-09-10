@@ -25,10 +25,6 @@ export type CatalogResult = { success: true } | { success: false; reason: string
  * consent record.
  */
 export async function requestCatalog(formData: FormData): Promise<CatalogResult> {
-  if (!isCatalogAvailable()) {
-    return { success: false, reason: 'unavailable' };
-  }
-
   if (!isReviewsConfigured()) {
     console.error('DATABASE_URL is not set — catalogue leads cannot be recorded.');
     return { success: false, reason: 'unavailable' };
@@ -37,10 +33,12 @@ export async function requestCatalog(formData: FormData): Promise<CatalogResult>
   const email = ((formData.get('email') as string) ?? '').trim();
   const name = ((formData.get('name') as string) ?? '').trim();
   const lang = (formData.get('lang') as string) ?? 'it';
+
+  if (!isReviewLang(lang) || !isCatalogAvailable(lang)) {
+    return { success: false, reason: 'unavailable' };
+  }
   const marketingConsent = formData.get('marketing') === 'on';
   const consentText = ((formData.get('consentText') as string) ?? '').trim();
-
-  if (!isReviewLang(lang)) return { success: false, reason: 'invalid' };
 
   const guard = await guardSubmission({
     // The guard requires a name; the form does not, because asking for one to
