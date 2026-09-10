@@ -587,6 +587,33 @@
       ]
     }
   },
+  "catalog": {
+    "sectionTitle": "Todos nuestros servicios en un catálogo",
+    "sectionBody": "Un PDF con cada servicio, qué incluye y cómo trabajamos. Te lo enviamos por email, para que lo leas con calma o se lo enseñes a quien decide contigo.",
+    "button": "Descargar el catálogo",
+    "modalTitle": "¿Dónde te lo enviamos?",
+    "modalBody": "Escribe tu email y recibes el catálogo completo al momento.",
+    "email": "Email",
+    "name": "Nombre",
+    "marketingConsent": "También quiero recibir consejos y novedades de Casa in Ordine. (Opcional: el catálogo llega igualmente.)",
+    "submit": "Envíame el catálogo",
+    "sending": "Enviando…",
+    "close": "Cerrar",
+    "successTitle": "Listo, mira tu correo.",
+    "successBody": "Te hemos enviado el catálogo. Si no llega en unos minutos, revisa la carpeta de spam.",
+    "privacyNote": "Usamos tu email solo para enviarte el catálogo. Sin listas, sin spam. Lee la política de privacidad.",
+    "errors": {
+      "rate-limited": "Demasiados intentos. Vuelve a probar dentro de un rato.",
+      "captcha": "La verificación de seguridad no se ha superado. Inténtalo de nuevo.",
+      "email-format": "Esa dirección de email no parece válida.",
+      "email-disposable": "Usa una dirección personal, no una temporal.",
+      "email-unreachable": "No podemos contactar con esa dirección. Comprueba que esté bien escrita.",
+      "missing-fields": "Falta el email.",
+      "field-too-long": "El nombre es demasiado largo.",
+      "unavailable": "El catálogo no está disponible en este momento. Inténtalo más tarde.",
+      "send-failed": "Algo no ha funcionado. Inténtalo de nuevo o escríbenos a info@casainordine.com."
+    }
+  },
   "reviewsPage": {
     "metaTitle": "Reseñas de clientas",
     "metaDescription": "Lo que dicen las personas que han trabajado con nosotras. Reseñas verificadas de clientas reales de Roma, publicadas con su permiso.",

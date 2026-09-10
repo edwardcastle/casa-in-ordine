@@ -587,6 +587,33 @@
       ]
     }
   },
+  "catalog": {
+    "sectionTitle": "Every service, in one catalogue",
+    "sectionBody": "A PDF covering each service, what it includes and how we work. We email it to you, so you can read it properly or show it to whoever decides with you.",
+    "button": "Download the catalogue",
+    "modalTitle": "Where shall we send it?",
+    "modalBody": "Enter your email and the full catalogue arrives straight away.",
+    "email": "Email",
+    "name": "Name",
+    "marketingConsent": "I'd also like tips and news from Casa in Ordine. (Optional — the catalogue arrives either way.)",
+    "submit": "Send me the catalogue",
+    "sending": "Sending…",
+    "close": "Close",
+    "successTitle": "Done — check your inbox.",
+    "successBody": "We've sent you the catalogue. If it hasn't arrived in a few minutes, have a look in spam.",
+    "privacyNote": "We use your email only to send the catalogue. No list, no spam. Read the privacy policy.",
+    "errors": {
+      "rate-limited": "Too many attempts. Please try again a bit later.",
+      "captcha": "The security check did not pass. Please try again.",
+      "email-format": "That email address does not look valid.",
+      "email-disposable": "Please use a personal address, not a temporary one.",
+      "email-unreachable": "We cannot reach that address. Check the spelling.",
+      "missing-fields": "The email is missing.",
+      "field-too-long": "That name is too long.",
+      "unavailable": "The catalogue is not available right now. Please try again later.",
+      "send-failed": "Something went wrong. Try again, or write to info@casainordine.com."
+    }
+  },
   "reviewsPage": {
     "metaTitle": "Client reviews",
     "metaDescription": "What the people who worked with us say. Verified reviews from real clients in Rome, published with their permission.",

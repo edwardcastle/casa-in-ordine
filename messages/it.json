@@ -587,6 +587,33 @@
       ]
     }
   },
+  "catalog": {
+    "sectionTitle": "Tutti i nostri servizi in un catalogo",
+    "sectionBody": "Un PDF con ogni servizio, cosa comprende e come lavoriamo. Te lo mandiamo via email, così puoi leggerlo con calma o mostrarlo a chi decide con te.",
+    "button": "Scarica il catalogo",
+    "modalTitle": "Dove te lo mandiamo?",
+    "modalBody": "Inserisci la tua email e ti arriva subito il catalogo completo.",
+    "email": "Email",
+    "name": "Nome",
+    "marketingConsent": "Voglio ricevere anche consigli e novità da Casa in Ordine. (Facoltativo — il catalogo arriva comunque.)",
+    "submit": "Mandami il catalogo",
+    "sending": "Invio…",
+    "close": "Chiudi",
+    "successTitle": "Fatto, controlla la posta.",
+    "successBody": "Ti abbiamo mandato il catalogo. Se non lo vedi entro qualche minuto, guarda nello spam.",
+    "privacyNote": "Usiamo la tua email solo per mandarti il catalogo. Nessuna lista, nessuno spam. Leggi la privacy policy.",
+    "errors": {
+      "rate-limited": "Hai provato troppe volte. Riprova fra un po'.",
+      "captcha": "La verifica di sicurezza non è andata a buon fine. Riprova.",
+      "email-format": "Questo indirizzo email non sembra valido.",
+      "email-disposable": "Usa un indirizzo email personale, non uno temporaneo.",
+      "email-unreachable": "Non riusciamo a raggiungere questo indirizzo. Controlla che sia scritto bene.",
+      "missing-fields": "Manca l'email.",
+      "field-too-long": "Il nome è troppo lungo.",
+      "unavailable": "Il catalogo non è disponibile in questo momento. Riprova più tardi.",
+      "send-failed": "Qualcosa non ha funzionato. Riprova, o scrivici a info@casainordine.com."
+    }
+  },
   "reviewsPage": {
     "metaTitle": "Recensioni dei clienti",
     "metaDescription": "Cosa dicono le persone che hanno lavorato con noi. Recensioni verificate di clienti reali di Roma, pubblicate con il loro consenso.",

@@ -5,6 +5,8 @@ import Link from 'next/link';
 import Image from 'next/image';
 import Hero from '@/components/Hero';
 import { breadcrumbLd } from '@/lib/breadcrumb';
+import CatalogDownload from '@/components/CatalogDownload';
+import { isCatalogAvailable } from '@/lib/catalog';
 import { getPostMeta } from '@/lib/blog';
 
 export async function generateMetadata({
@@ -59,6 +61,7 @@ const serviceIcons = [
 
 export default function ServicesPage() {
   const t = useTranslations('services');
+  const tCatalog = useTranslations('catalog');
   const tNav = useTranslations('nav');
   const locale = useLocale();
 
@@ -171,6 +174,23 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
+
+      {/* Catalogue download. Rendered only when the PDF actually exists, so
+          there is never a button that emails a link to a 404. Sits before the
+          quote CTA: it is the lighter ask, for someone not ready to commit. */}
+      {isCatalogAvailable() && (
+        <section className="py-16 md:py-24 bg-secondary-light">
+          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h2 className="text-clamp-section font-normal text-foreground mb-4">
+              {tCatalog('sectionTitle')}
+            </h2>
+            <p className="text-lg text-gray-600 leading-relaxed mb-8">
+              {tCatalog('sectionBody')}
+            </p>
+            <CatalogDownload />
+          </div>
+        </section>
+      )}
 
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-foreground">
