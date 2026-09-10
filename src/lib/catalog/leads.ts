@@ -88,3 +88,11 @@ export async function listCatalogLeads(): Promise<CatalogLead[]> {
 export async function deleteCatalogLead(id: string): Promise<void> {
   await db()`DELETE FROM catalog_leads WHERE id = ${id}`;
 }
+
+/** How many times this address has asked. A repeat ask is a warmer lead. */
+export async function countRequestsFor(email: string): Promise<number> {
+  const [row] = await db()<{ n: string }[]>`
+    SELECT count(*)::text AS n FROM catalog_leads WHERE lower(email) = lower(${email})
+  `;
+  return Number(row?.n ?? 0);
+}

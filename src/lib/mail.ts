@@ -12,6 +12,8 @@ export interface MailInput {
   subject: string;
   html: string;
   replyTo?: { email: string; name?: string };
+  /** Base64 file contents. Brevo caps the whole payload, so keep these small. */
+  attachments?: { name: string; content: string }[];
 }
 
 /** Escape values that end up inside an HTML email body. */
@@ -45,6 +47,7 @@ export async function sendEmail(input: MailInput): Promise<boolean> {
         replyTo: input.replyTo,
         subject: input.subject,
         htmlContent: input.html,
+        ...(input.attachments?.length ? { attachment: input.attachments } : {}),
       }),
     });
 
