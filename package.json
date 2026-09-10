@@ -9,10 +9,10 @@
     "lint": "eslint",
     "check:messages": "node scripts/check-messages.mjs",
     "build:catalog": "node scripts/build-catalog.mjs",
-    "migrate": "node-pg-migrate --migrations-dir migrations --migrations-table schema_migrations",
-    "migrate:up": "pnpm migrate up",
-    "migrate:down": "pnpm migrate down",
-    "migrate:create": "pnpm migrate create -- --migration-file-language sql"
+    "migrate": "node scripts/migrate.mjs",
+    "migrate:up": "node scripts/migrate.mjs",
+    "migrate:down": "node scripts/migrate.mjs down",
+    "migrate:create": "node scripts/migrate.mjs create"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",

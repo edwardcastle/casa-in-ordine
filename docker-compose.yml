@@ -1,0 +1,33 @@
+# Local Postgres for development.
+#
+#   docker compose up -d
+#   pnpm migrate up
+#
+# Then put this in .env.local:
+#   DATABASE_URL=postgres://cio:devpass@localhost:55432/casainordine
+#
+# Port 55432 rather than 5432 so it cannot collide with a Postgres already
+# running on the machine. Nothing here is a secret: the container is local,
+# throwaway, and holds test data only.
+
+services:
+  postgres:
+    image: postgres:17-alpine
+    container_name: casa-in-ordine-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cio
+      POSTGRES_PASSWORD: devpass
+      POSTGRES_DB: casainordine
+    ports:
+      - '55432:5432'
+    volumes:
+      - casa-in-ordine-db:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U cio -d casainordine']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  casa-in-ordine-db:

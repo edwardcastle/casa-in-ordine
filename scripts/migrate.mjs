@@ -24,6 +24,40 @@
 
 import { spawnSync } from 'node:child_process';
 import { createRequire } from 'node:module';
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
+/**
+ * Loads .env.local / .env the way Next.js would.
+ *
+ * Next reads those files itself, but this script runs as plain Node before
+ * `next build` — so without this it saw no DATABASE_URL locally and skipped
+ * every migration silently, which is the exact failure the skip logic exists
+ * to make visible. On Vercel it happened to work because the platform injects
+ * the variables into the process.
+ *
+ * Real environment variables win, matching Next's own precedence.
+ */
+function loadEnvFiles() {
+  for (const file of ['.env.local', '.env']) {
+    const path = join(process.cwd(), file);
+    if (!existsSync(path)) continue;
+
+    for (const line of readFileSync(path, 'utf8').split('\n')) {
+      const match = /^\s*([A-Za-z_][A-Za-z0-9_]*)\s*=\s*(.*)$/.exec(line);
+      if (!match) continue;
+
+      const [, key, rawValue] = match;
+      if (process.env[key] !== undefined) continue;
+
+      process.env[key] = rawValue
+        .trim()
+        .replace(/^(['"])(.*)\1$/s, '$2');
+    }
+  }
+}
+
+loadEnvFiles();
 
 const url = process.env.DATABASE_URL;
 const vercelEnv = process.env.VERCEL_ENV;
@@ -57,7 +91,16 @@ try {
 
 const result = spawnSync(
   process.execPath,
-  [bin, 'up', '--migrations-dir', 'migrations', '--migrations-table', 'schema_migrations'],
+  [
+    bin,
+    // Defaults to `up`, so `pnpm migrate` and the build both do the safe thing,
+    // while `pnpm migrate:down` and `migrate create` still reach the CLI.
+    ...(process.argv.slice(2).length ? process.argv.slice(2) : ['up']),
+    '--migrations-dir',
+    'migrations',
+    '--migrations-table',
+    'schema_migrations',
+  ],
   {
     stdio: 'inherit',
     env: {
