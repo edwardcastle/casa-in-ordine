@@ -135,6 +135,7 @@ export default function PrivacyPolicyPage() {
               <p>{t('purposes.lead')}</p>
               <ul className="space-y-3 pl-5 list-disc marker:text-accent">
                 <li>{t('purposes.service')}</li>
+                <li>{highlightBrand(t('purposes.catalog'))}</li>
               </ul>
               <p className="font-medium text-foreground pt-2 text-left">{t('purposes.marketingHeading')}</p>
               <ul className="space-y-3 pl-5 list-disc marker:text-accent">
@@ -183,6 +184,21 @@ export default function PrivacyPolicyPage() {
                 <li>{highlightBrand(t('recipients.item1'))}</li>
                 <li>{highlightBrand(t('recipients.item2'))}</li>
               </ul>
+
+              <p>{t('recipients.processorsLead')}</p>
+              <ul className="space-y-3 pl-5 list-disc marker:text-accent">
+                {(t.raw('recipients.processors') as { name: string; purpose: string }[]).map(
+                  (processor) => (
+                    <li key={processor.name}>
+                      <strong className="font-semibold text-foreground">{processor.name}</strong>
+                      {' — '}
+                      {processor.purpose}
+                    </li>
+                  ),
+                )}
+              </ul>
+
+              <p>{t('recipients.transfers')}</p>
             </div>
           </section>
         </ScrollReveal>
@@ -211,6 +227,23 @@ export default function PrivacyPolicyPage() {
               {highlightBrand(t('commitment'))}
             </p>
           </div>
+        </ScrollReveal>
+
+        <ScrollReveal animation="fadeInUpShorter">
+          <section className="mb-10 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-semibold text-foreground mb-4">
+              {t('testimonials.title')}
+            </h2>
+            <div className="space-y-4 text-gray-700 leading-relaxed text-[1.02rem] text-justify">
+              <p>{t('testimonials.lead')}</p>
+              <ul className="space-y-3 pl-5 list-disc marker:text-accent">
+                <li>{t('testimonials.basis')}</li>
+                <li>{t('testimonials.published')}</li>
+                <li>{t('testimonials.verification')}</li>
+                <li>{t('testimonials.withdrawal')}</li>
+              </ul>
+            </div>
+          </section>
         </ScrollReveal>
 
         <ScrollReveal animation="fadeInUpShorter">

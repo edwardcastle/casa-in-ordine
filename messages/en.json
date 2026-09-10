@@ -690,7 +690,8 @@
       "service": "The provision of Decluttering and Home Organizing services.",
       "marketingHeading": "Direct marketing purposes, subject to the specific consent of the Data Subject:",
       "marketing1": "to send, via email, post and/or SMS and/or telephone, push notifications, commercial communications and/or advertising material concerning products or services offered by the Controller, including remotely, through registration and access to the customer area on the website https://casainordine.com/it",
-      "marketing2": "to send, via email, post and/or SMS and/or telephone, commercial and/or promotional communications from CASA IN ORDINE."
+      "marketing2": "to send, via email, post and/or SMS and/or telephone, commercial and/or promotional communications from CASA IN ORDINE.",
+      "catalog": "Sending the services catalogue: when you request the catalogue, we use your email address to send it to you. This does not require your consent, because it is what you asked for; any consent to receive other communications is separate, optional, and can be withdrawn at any time."
     },
     "sources": {
       "title": "Sources of Personal Data",
@@ -708,7 +709,39 @@
       "title": "Recipients of Personal Data",
       "lead": "Personal data may be made accessible, for the purposes set out in this notice, to:",
       "item1": "employees and collaborators of CASA IN ORDINE, in their capacity as internal processors and/or persons in charge of processing. The up-to-date list of Processors and persons in charge of processing is kept at the registered office of CASA IN ORDINE, indicated above.",
-      "item2": "parties to whom the communication of data is required by law, such as, by way of example: the local health authority (ASL), the Italian Revenue Agency, the Judiciary, and Law Enforcement bodies."
+      "item2": "parties to whom the communication of data is required by law, such as, by way of example: the local health authority (ASL), the Italian Revenue Agency, the Judiciary, and Law Enforcement bodies.",
+      "processorsLead": "In addition, we rely on the following providers to run the site. Each is appointed as a data processor under art. 28 GDPR and handles data only for the stated purpose and on our instructions:",
+      "processors": [
+        {
+          "name": "Vercel Inc.",
+          "purpose": "website hosting and page delivery (United States, with infrastructure also in the European Union)"
+        },
+        {
+          "name": "Railway Corp.",
+          "purpose": "the database holding reviews and catalogue requests (servers in the European Union, Amsterdam)"
+        },
+        {
+          "name": "Brevo (Sendinblue SAS)",
+          "purpose": "sending transactional email: form replies, the catalogue, internal notifications (France)"
+        },
+        {
+          "name": "Cloudflare, Inc.",
+          "purpose": "protecting the forms from automated submissions via Turnstile (United States)"
+        },
+        {
+          "name": "Anthropic PBC",
+          "purpose": "the site's virtual assistant and automated screening of incoming messages (United States)"
+        },
+        {
+          "name": "Google Ireland Ltd.",
+          "purpose": "browsing statistics via Google Analytics, enabled only after cookie consent (Ireland)"
+        },
+        {
+          "name": "Umami Software, Inc.",
+          "purpose": "aggregate, cookie-free browsing statistics (United States)"
+        }
+      ],
+      "transfers": "Some of these providers are established outside the European Economic Area. Where that is the case, the transfer relies on the safeguards set out in art. 44 and following of the GDPR, such as the standard contractual clauses adopted by the European Commission or an adequacy decision."
     },
     "rights": {
       "title": "Rights of Data Subjects",
@@ -720,6 +753,14 @@
       "additional": "Where applicable, the data subject also has the rights set out in Arts. 16-21 of the GDPR (right of rectification, right to be forgotten, right to restriction of processing, right to data portability, right to object), as well as the right to lodge a complaint with the Italian Data Protection Authority (Public Relations Office, Piazza di Monte Citorio n. 121 – 00186 Rome. Telephone: (+39) 06.69677.2917 – Email: urp@gpdp.it)."
     },
     "commitment": "CASA IN ORDINE is committed to ensuring that Personal Data is complete, secure and up to date.",
+    "testimonials": {
+      "title": "Reviews and Testimonials",
+      "lead": "We publish some clients' words on the site. This deserves spelling out, because it involves data that becomes public:",
+      "basis": "Legal basis: your consent, given when you submit the review through a box that is not ticked by default. We keep the exact wording of the notice shown to you, along with the date and time of consent.",
+      "published": "What we publish: the name you chose to be credited under, the city, the rating and the text of the review. We never publish your email address, which we use only to recognise you and to reply.",
+      "verification": "Verification: before publishing we check that the name matches an actually invoiced job. Published reviews are selected by us and are not the complete list of what people write to us.",
+      "withdrawal": "Withdrawal: you may ask for your review to be removed at any time by writing to info@casainordine.com. We take it off the site and delete the text and your email address; we keep only the record that a review existed and was withdrawn at your request."
+    },
     "controller": {
       "title": "Data Controller",
       "name": "CASA IN ORDINE",

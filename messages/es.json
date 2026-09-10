@@ -690,7 +690,8 @@
       "service": "Prestación de servicios de Decluttering y Organización de espacios.",
       "marketingHeading": "Finalidades de Marketing directo previo consentimiento específico del Interesado:",
       "marketing1": "enviar por correo electrónico, postal y/o SMS y/o contactos telefónicos, notificaciones push, comunicaciones comerciales y/o material publicitario sobre productos o servicios ofrecidos por el Titular, incluso a distancia, mediante el registro y el acceso al área reservada para clientes en el sitio https://casainordine.com/it",
-      "marketing2": "enviar por correo electrónico, postal y/o SMS y/o contactos telefónicos comunicaciones comerciales y/o promocionales de la Sociedad CASA IN ORDINE."
+      "marketing2": "enviar por correo electrónico, postal y/o SMS y/o contactos telefónicos comunicaciones comerciales y/o promocionales de la Sociedad CASA IN ORDINE.",
+      "catalog": "Envío del catálogo de servicios: cuando solicitas el catálogo, usamos tu dirección de email para enviártelo. Este tratamiento no requiere tu consentimiento, porque es lo que has pedido; el consentimiento para recibir otras comunicaciones es independiente, opcional y revocable en cualquier momento."
     },
     "sources": {
       "title": "Fuentes de los Datos Personales",
@@ -708,7 +709,39 @@
       "title": "Destinatarios de los Datos Personales",
       "lead": "Los datos personales podrán hacerse accesibles, para las finalidades de la presente información, a:",
       "item1": "empleados y colaboradores de CASA IN ORDINE en su calidad de encargados y/o responsables internos del tratamiento. La lista actualizada de los Responsables y Encargados del tratamiento se conserva en la sede legal de CASA IN ORDINE, ya indicada en los puntos anteriores.",
-      "item2": "sujetos a los que la comunicación de los datos sea obligatoria por ley, como, a título de ejemplo: ASL (autoridad sanitaria local), Agencia Tributaria, Magistratura, Fuerzas del Orden."
+      "item2": "sujetos a los que la comunicación de los datos sea obligatoria por ley, como, a título de ejemplo: ASL (autoridad sanitaria local), Agencia Tributaria, Magistratura, Fuerzas del Orden.",
+      "processorsLead": "Además, para que el sitio funcione recurrimos a los siguientes proveedores, designados Encargados del tratamiento conforme al art. 28 del RGPD. Cada uno trata los datos únicamente para la finalidad indicada y siguiendo nuestras instrucciones:",
+      "processors": [
+        {
+          "name": "Vercel Inc.",
+          "purpose": "alojamiento del sitio y entrega de las páginas (Estados Unidos, con infraestructura también en la Unión Europea)"
+        },
+        {
+          "name": "Railway Corp.",
+          "purpose": "base de datos donde se conservan las reseñas y las solicitudes de catálogo (servidores en la Unión Europea, Ámsterdam)"
+        },
+        {
+          "name": "Brevo (Sendinblue SAS)",
+          "purpose": "envío de emails transaccionales: respuestas a los formularios, catálogo, notificaciones internas (Francia)"
+        },
+        {
+          "name": "Cloudflare, Inc.",
+          "purpose": "protección de los formularios frente a envíos automáticos mediante Turnstile (Estados Unidos)"
+        },
+        {
+          "name": "Anthropic PBC",
+          "purpose": "asistente virtual del sitio y control automático de los mensajes recibidos (Estados Unidos)"
+        },
+        {
+          "name": "Google Ireland Ltd.",
+          "purpose": "estadísticas de navegación mediante Google Analytics, activadas solo tras el consentimiento de cookies (Irlanda)"
+        },
+        {
+          "name": "Umami Software, Inc.",
+          "purpose": "estadísticas de navegación agregadas y sin cookies (Estados Unidos)"
+        }
+      ],
+      "transfers": "Algunos de estos proveedores tienen su sede fuera del Espacio Económico Europeo. En tal caso, la transferencia se basa en las garantías previstas en los arts. 44 y siguientes del RGPD, como las cláusulas contractuales tipo adoptadas por la Comisión Europea o una decisión de adecuación."
     },
     "rights": {
       "title": "Derechos de los Interesados",
@@ -720,6 +753,14 @@
       "additional": "Cuando proceda, el interesado dispone también de los derechos previstos en los arts. 16-21 del RGPD (derecho de rectificación, derecho al olvido, derecho a la limitación del tratamiento, derecho a la portabilidad de los datos, derecho de oposición), así como del derecho a presentar reclamación ante la Autoridad Garante para la Protección de Datos Personales (Oficina de Relaciones con el Público, Piazza di Monte Citorio n. 121 – 00186 Roma. Teléfono: (+39) 06.69677.2917 – Correo electrónico: urp@gpdp.it)."
     },
     "commitment": "CASA IN ORDINE se compromete a que los Datos Personales sean completos, seguros y actualizados.",
+    "testimonials": {
+      "title": "Reseñas y Testimonios",
+      "lead": "En la web publicamos las palabras de algunas clientas. Conviene detallarlo, porque afecta a datos que se hacen públicos:",
+      "basis": "Base jurídica: tu consentimiento, prestado al enviar la reseña mediante una casilla que no está marcada por defecto. Conservamos el texto exacto de la información que se te mostró, junto con la fecha y la hora del consentimiento.",
+      "published": "Qué publicamos: el nombre con el que has elegido firmar, la ciudad, la valoración y el texto de la reseña. Nunca publicamos tu dirección de email, que usamos solo para reconocerte y responderte.",
+      "verification": "Verificación: antes de publicar comprobamos que el nombre corresponda a un trabajo realmente facturado. Las reseñas publicadas están seleccionadas por nosotras y no son la lista completa de lo que nos escriben.",
+      "withdrawal": "Revocación: puedes solicitar la retirada de tu reseña en cualquier momento escribiendo a info@casainordine.com. La quitamos de la web y borramos el texto y tu dirección de email; conservamos únicamente la prueba de que una reseña existió y fue retirada a petición tuya."
+    },
     "controller": {
       "title": "Responsable del Tratamiento",
       "name": "CASA IN ORDINE",

@@ -690,7 +690,8 @@
       "service": "Finalità di erogazione dei servizi di Decluttering e Organizzazione degli spazi.",
       "marketingHeading": "Finalità di Marketing diretto previo consenso specifico dell’Interessato:",
       "marketing1": "inviare via e-mail, posta e/o sms e/o contatti telefonici, notifiche push, comunicazioni commerciali e/o materiale pubblicitario su prodotti o servizi offerti dal Titolare anche a distanza, attraverso la registrazione e l’accesso all’area riservata ai clienti sul sito https://casainordine.com/it",
-      "marketing2": "inviare via e-mail, posta e/o sms e/o contatti telefonici comunicazioni commerciali e/o promozionali della Società CASA IN ORDINE interessata."
+      "marketing2": "inviare via e-mail, posta e/o sms e/o contatti telefonici comunicazioni commerciali e/o promozionali della Società CASA IN ORDINE interessata.",
+      "catalog": "Finalità di invio del catalogo dei servizi: quando richiedi il catalogo, usiamo il tuo indirizzo email per inviartelo. Questo trattamento non richiede il tuo consenso, perché è ciò che hai chiesto; l’eventuale consenso a ricevere altre comunicazioni è separato, facoltativo e revocabile in ogni momento."
     },
     "sources": {
       "title": "Fonti dei Dati Personali",
@@ -708,7 +709,39 @@
       "title": "Destinatari dei Dati Personali",
       "lead": "I dati personali potranno essere resi accessibili, per le finalità di cui alla presente informativa, a:",
       "item1": "dipendenti e collaboratori di CASA IN ORDINE nella loro qualità di incaricati e/o responsabili interni del trattamento. L’elenco aggiornato dei Responsabili e degli Incaricati al trattamento è custodito presso la sede legale di CASA IN ORDINE, già indicata nei precedenti punti.",
-      "item2": "soggetti nei cui confronti la comunicazione dei dati è obbligatoria per legge, quali, a titolo esemplificativo: ASL, Agenzia delle Entrate, Magistratura, Forze dell’Ordine."
+      "item2": "soggetti nei cui confronti la comunicazione dei dati è obbligatoria per legge, quali, a titolo esemplificativo: ASL, Agenzia delle Entrate, Magistratura, Forze dell’Ordine.",
+      "processorsLead": "Inoltre, per far funzionare il sito ci avvaliamo dei seguenti fornitori, nominati Responsabili del trattamento ai sensi dell’art. 28 GDPR. Ciascuno tratta i dati solo per le finalità indicate e secondo le nostre istruzioni:",
+      "processors": [
+        {
+          "name": "Vercel Inc.",
+          "purpose": "hosting del sito e consegna delle pagine (Stati Uniti, con infrastruttura anche nell’Unione Europea)"
+        },
+        {
+          "name": "Railway Corp.",
+          "purpose": "database in cui sono conservate le recensioni e le richieste di catalogo (server nell’Unione Europea, Amsterdam)"
+        },
+        {
+          "name": "Brevo (Sendinblue SAS)",
+          "purpose": "invio delle email transazionali: risposte ai moduli, catalogo, notifiche interne (Francia)"
+        },
+        {
+          "name": "Cloudflare, Inc.",
+          "purpose": "protezione dei moduli dagli invii automatici tramite Turnstile (Stati Uniti)"
+        },
+        {
+          "name": "Anthropic PBC",
+          "purpose": "assistente virtuale del sito e controllo automatico dei messaggi ricevuti (Stati Uniti)"
+        },
+        {
+          "name": "Google Ireland Ltd.",
+          "purpose": "statistiche di navigazione tramite Google Analytics, attivate solo previo consenso ai cookie (Irlanda)"
+        },
+        {
+          "name": "Umami Software, Inc.",
+          "purpose": "statistiche di navigazione aggregate e senza cookie (Stati Uniti)"
+        }
+      ],
+      "transfers": "Alcuni di questi fornitori hanno sede fuori dallo Spazio Economico Europeo. In tal caso il trasferimento avviene sulla base delle garanzie previste dagli artt. 44 e seguenti del GDPR, quali le clausole contrattuali standard adottate dalla Commissione Europea o una decisione di adeguatezza."
     },
     "rights": {
       "title": "I Diritti degli Interessati",
@@ -720,6 +753,14 @@
       "additional": "Ove applicabili, ha altresì i diritti di cui agli artt. 16-21 GDPR (Diritto di rettifica, diritto all’oblio, diritto di limitazione di trattamento, diritto alla portabilità dei dati, diritto di opposizione), nonché il diritto di reclamo all’Autorità Garante per la Protezione dei Dati Personali (Ufficio Relazioni con il Pubblico, Piazza di Monte Citorio n. 121 – 00186 Roma. Telefono: (+39) 06.69677.2917 – E-mail: urp@gpdp.it)."
     },
     "commitment": "CASA IN ORDINE si impegna affinché i Dati Personali siano completi, al sicuro e aggiornati.",
+    "testimonials": {
+      "title": "Recensioni e Testimonianze",
+      "lead": "Sul sito pubblichiamo le parole di alcune clienti. Questo trattamento merita qualche precisazione, perché riguarda dati che diventano pubblici:",
+      "basis": "Base giuridica: il tuo consenso, prestato al momento dell’invio della recensione tramite una casella che non è selezionata per impostazione predefinita. Conserviamo il testo esatto dell’informativa che ti è stata mostrata, la data e l’ora del consenso.",
+      "published": "Cosa pubblichiamo: il nome con cui hai scelto di firmarti, la città, la valutazione e il testo della recensione. Non pubblichiamo mai il tuo indirizzo email, che usiamo solo per riconoscerti e per risponderti.",
+      "verification": "Verifica: prima di pubblicare controlliamo che il nome corrisponda a un lavoro effettivamente fatturato. Le recensioni pubblicate sono selezionate da noi e non costituiscono l’elenco completo di quanto ci viene scritto.",
+      "withdrawal": "Revoca: puoi chiedere in qualsiasi momento la rimozione della tua recensione scrivendo a info@casainordine.com. La rimuoviamo dal sito e cancelliamo il testo e il tuo indirizzo email; conserviamo unicamente la prova che una recensione è esistita ed è stata ritirata su tua richiesta."
+    },
     "controller": {
       "title": "Titolare del Trattamento",
       "name": "CASA IN ORDINE",
