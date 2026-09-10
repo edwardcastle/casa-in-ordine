@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import { approveReview, rejectReview, signOut, withdrawReview } from '@/actions/admin';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
@@ -174,9 +175,14 @@ export default async function AdminReviewsPage({
           <h1 className="text-2xl font-semibold">Recensioni</h1>
           <p className="text-sm text-gray-500">{admin}</p>
         </div>
-        <form action={signOut}>
-          <button className="text-sm text-gray-600 underline hover:text-foreground">Esci</button>
-        </form>
+        <div className="flex items-center gap-4">
+          <Link href="/admin/leads" className="text-sm text-primary underline hover:text-primary-dark">
+            Richieste di catalogo →
+          </Link>
+          <form action={signOut}>
+            <button className="text-sm text-gray-600 underline hover:text-foreground">Esci</button>
+          </form>
+        </div>
       </header>
 
       <p className="mb-8 rounded-lg border border-secondary/50 bg-white px-4 py-3 text-sm">

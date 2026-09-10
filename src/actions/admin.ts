@@ -11,6 +11,7 @@ import {
 } from '@/lib/reviews/admin-session';
 import { sendSignInLink } from '@/lib/reviews/emails';
 import { decideReview, removeReview } from '@/lib/reviews/queries';
+import { deleteCatalogLead } from '@/lib/catalog/leads';
 import { clientIp, createRateLimiter } from '@/lib/security/rate-limit';
 
 // Sign-in links are emailed, so an unthrottled form is a way to flood an
@@ -71,4 +72,10 @@ export async function withdrawReview(formData: FormData) {
   const admin = await requireAdmin();
   await removeReview(formData.get('id') as string, admin);
   revalidatePath('/admin/reviews');
+}
+
+export async function removeCatalogLead(formData: FormData) {
+  await requireAdmin();
+  await deleteCatalogLead(formData.get('id') as string);
+  revalidatePath('/admin/leads');
 }
