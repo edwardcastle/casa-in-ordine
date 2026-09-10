@@ -588,8 +588,8 @@
     }
   },
   "catalog": {
-    "sectionTitle": "Todos nuestros servicios en un catálogo",
-    "sectionBody": "Un PDF con cada servicio, qué incluye y cómo trabajamos. Te lo enviamos por email, para que lo leas con calma o se lo enseñes a quien decide contigo.",
+    "sectionTitle": "¿Prefieres leerlo con calma?",
+    "sectionBody": "Te enviamos el catálogo completo por email: todos los servicios, qué incluyen y cómo trabajamos. Para leerlo cuando quieras o enseñárselo a quien decide contigo.",
     "button": "Descargar el catálogo",
     "modalTitle": "¿Dónde te lo enviamos?",
     "modalBody": "Escribe tu email y recibes el catálogo completo al momento.",

@@ -588,8 +588,8 @@
     }
   },
   "catalog": {
-    "sectionTitle": "Every service, in one catalogue",
-    "sectionBody": "A PDF covering each service, what it includes and how we work. We email it to you, so you can read it properly or show it to whoever decides with you.",
+    "sectionTitle": "Rather read it later?",
+    "sectionBody": "We'll email you the full catalogue: every service, what it covers and how we work. Read it whenever suits, or show it to whoever decides with you.",
     "button": "Download the catalogue",
     "modalTitle": "Where shall we send it?",
     "modalBody": "Enter your email and the full catalogue arrives straight away.",

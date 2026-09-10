@@ -112,6 +112,28 @@ export default function ServicesPage() {
       />
       <Hero title={t('heroTitle')} subtitle={t('heroSubtitle')} backgroundImage="/images/backgrounds/kitchen-bg.jpg" />
 
+      {/* Directly under the hero, before the services are laid out.
+          At the foot of the page this was asking for an email to send
+          someone what they had just finished reading. Here it is an
+          alternative to reading it: take it away, or show it to whoever
+          decides with you. Rendered only when the PDF for this language
+          exists, so there is never a button that emails a link to a 404. */}
+      {isCatalogAvailable(locale) && (
+        <section className="border-b border-secondary/40 bg-secondary-light py-8 md:py-10">
+          <div className="mx-auto flex max-w-5xl flex-col items-center gap-5 px-4 sm:px-6 lg:flex-row lg:justify-between lg:gap-10 lg:px-8">
+            <div className="text-center lg:text-left">
+              <h2 className="text-xl font-semibold text-foreground md:text-2xl">
+                {tCatalog('sectionTitle')}
+              </h2>
+              <p className="mt-1 text-base text-gray-600">{tCatalog('sectionBody')}</p>
+            </div>
+            <div className="flex-none">
+              <CatalogDownload />
+            </div>
+          </div>
+        </section>
+      )}
+
       {/* Services */}
       <section className="py-16 md:py-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -174,23 +196,6 @@ export default function ServicesPage() {
           </div>
         </div>
       </section>
-
-      {/* Catalogue download. Rendered only when the PDF actually exists, so
-          there is never a button that emails a link to a 404. Sits before the
-          quote CTA: it is the lighter ask, for someone not ready to commit. */}
-      {isCatalogAvailable(locale) && (
-        <section className="py-16 md:py-24 bg-secondary-light">
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 className="text-clamp-section font-normal text-foreground mb-4">
-              {tCatalog('sectionTitle')}
-            </h2>
-            <p className="text-lg text-gray-600 leading-relaxed mb-8">
-              {tCatalog('sectionBody')}
-            </p>
-            <CatalogDownload />
-          </div>
-        </section>
-      )}
 
       {/* CTA Section */}
       <section className="py-16 md:py-24 bg-foreground">
