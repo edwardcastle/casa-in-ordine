@@ -1,5 +1,5 @@
 import { esc, sendEmail, siteOrigin } from '@/lib/mail';
-import { adminEmails } from './admin-session';
+import { notifyEmails } from './admin-session';
 import { encodeDecision, issueToken } from './tokens';
 import type { NewReview } from './queries';
 
@@ -21,9 +21,9 @@ export async function sendReviewNotification(
   reviewId: string,
   review: NewReview,
 ): Promise<boolean> {
-  const to = adminEmails().map((email) => ({ email }));
+  const to = notifyEmails().map((email) => ({ email }));
   if (to.length === 0) {
-    console.error('ADMIN_EMAILS is not set — nobody was told about the new review.');
+    console.error('Neither NOTIFY_EMAILS nor ADMIN_EMAILS is set — nobody was told about the new review.');
     return false;
   }
 

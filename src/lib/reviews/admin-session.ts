@@ -24,12 +24,31 @@ function secret(): string {
   return value;
 }
 
-/** The addresses allowed to sign in. Compared lowercased and trimmed. */
-export function adminEmails(): string[] {
-  return (process.env.ADMIN_EMAILS ?? '')
+function parseList(value: string | undefined): string[] {
+  return (value ?? '')
     .split(',')
     .map((e) => e.trim().toLowerCase())
     .filter(Boolean);
+}
+
+/** The addresses allowed to sign in to /admin. Compared lowercased and trimmed. */
+export function adminEmails(): string[] {
+  return parseList(process.env.ADMIN_EMAILS);
+}
+
+/**
+ * Who receives the notification emails — new reviews, catalogue requests.
+ *
+ * Separate from ADMIN_EMAILS because they answer different questions. Being
+ * able to moderate the site is not the same as wanting every lead in your
+ * inbox: a developer needs the first and not the second, and a founder may
+ * want the second without ever opening the admin.
+ *
+ * Falls back to ADMIN_EMAILS when unset, so leaving it out changes nothing.
+ */
+export function notifyEmails(): string[] {
+  const explicit = parseList(process.env.NOTIFY_EMAILS);
+  return explicit.length > 0 ? explicit : adminEmails();
 }
 
 export function isAdminEmail(email: string): boolean {

@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { esc, sendEmail, siteOrigin } from '@/lib/mail';
-import { adminEmails } from '@/lib/reviews/admin-session';
+import { notifyEmails } from '@/lib/reviews/admin-session';
 import { catalogFile, catalogUrl } from '.';
 import { countRequestsFor, type NewCatalogLead } from './leads';
 
@@ -119,9 +119,9 @@ export async function sendCatalog(lead: NewCatalogLead): Promise<boolean> {
  * personal reply the same day.
  */
 export async function notifyCatalogLead(lead: NewCatalogLead): Promise<boolean> {
-  const to = adminEmails().map((email) => ({ email }));
+  const to = notifyEmails().map((email) => ({ email }));
   if (to.length === 0) {
-    console.error('ADMIN_EMAILS is not set — nobody was told about the catalogue lead.');
+    console.error('Neither NOTIFY_EMAILS nor ADMIN_EMAILS is set — nobody was told about the catalogue lead.');
     return false;
   }
 
