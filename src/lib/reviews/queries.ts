@@ -77,15 +77,27 @@ function toPublic(row: PublicRow): PublicReview {
 export async function getPublishedReviews(locale: ReviewLang): Promise<PublicReview[]> {
   if (!isReviewsConfigured()) return [];
 
-  const rows = await db()<PublicRow[]>`
-    SELECT id, author_name, city, rating, body, lang, services, source,
-           google_url, submitted_at
-      FROM reviews
-     WHERE status = 'approved'
-     ORDER BY (lang = ${locale}) DESC, submitted_at DESC, id
-  `;
+  try {
+    const rows = await db()<PublicRow[]>`
+      SELECT id, author_name, city, rating, body, lang, services, source,
+             google_url, submitted_at
+        FROM reviews
+       WHERE status = 'approved'
+       ORDER BY (lang = ${locale}) DESC, submitted_at DESC, id
+    `;
 
-  return rows.map(toPublic);
+    return rows.map(toPublic);
+  } catch (error) {
+    // The homepage renders this. An unreachable database — an outage, a
+    // rotated password, connections exhausted — used to take the whole page
+    // down with a 500, which is an absurd price for a decorative strip of
+    // testimonials. It now degrades to showing none, loudly.
+    //
+    // Deliberately not applied to the admin queries: there, a database error
+    // is the answer to the question being asked and must surface.
+    console.error('Could not load published reviews; rendering without them.', error);
+    return [];
+  }
 }
 
 
