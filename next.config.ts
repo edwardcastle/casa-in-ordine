@@ -14,7 +14,13 @@ const nextConfig: NextConfig = {
     {
       // All content routes except the /api namespace (POST-only JSON endpoints
       // that should not be tagged indexable) and /admin, handled above.
-      source: '/((?!api/|admin).*)',
+      // `_next/` is excluded because this header was telling Google to index
+      // the build output: every chunk and stylesheet was served
+      // `index, follow`, and Search Console duly reported .js and .css files
+      // as crawled-not-indexed, on a site where real pages are going
+      // uncrawled. They must still not be blocked in robots.txt — Google needs
+      // them to render — they simply should not be advertised as pages.
+      source: '/((?!api/|admin|_next/).*)',
       headers: [
         {
           key: 'X-Robots-Tag',
