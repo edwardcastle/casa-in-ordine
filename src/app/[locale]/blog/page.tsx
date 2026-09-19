@@ -65,6 +65,25 @@ export default async function BlogPage({
         backgroundImage="/images/backgrounds/bg-3.jpg"
       />
 
+      {/* The hub's own words.
+          Everything else on this page is borrowed: post titles and excerpts
+          that also appear on the posts themselves and in the homepage strip.
+          Google crawled it in August and declined to index it, while
+          /preventivo and /contact — which got exactly this treatment in the
+          June pass — are both indexed. This is the page that pass missed. */}
+      <section className="bg-secondary-light py-14 md:py-16">
+        <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8">
+          <h2 className="mb-5 text-2xl font-semibold text-foreground md:text-3xl">
+            {t('seo.title')}
+          </h2>
+          <div className="flex flex-col gap-4 text-[1.02rem] leading-relaxed text-gray-600">
+            {(t.raw('seo.paragraphs') as string[]).map((paragraph, i) => (
+              <p key={i}>{paragraph}</p>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-16 md:py-24">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           {posts.length === 0 ? (

@@ -217,7 +217,7 @@
     "title": "Blog",
     "metaTitle": "Consigli di Decluttering e Home Organizing",
     "metaDescription": "Consigli pratici, guide passo-passo e ispirazioni di decluttering e home organizing per riordinare casa e ritrovare ordine, spazio e serenità.",
-    "heroTitle": "Il Nostro Blog",
+    "heroTitle": "Consigli di Decluttering e Home Organizing",
     "heroSubtitle": "Consigli e ispirazioni per vivere meglio",
     "comingSoon": "Nuovi articoli in arrivo!",
     "comingSoonDescription": "Stiamo preparando contenuti interessanti per aiutarti a organizzare la tua casa. Torna a trovarci presto!",
@@ -226,7 +226,15 @@
       "button": "Richiedi un preventivo"
     },
     "relatedTitle": "Articoli correlati",
-    "readMore": "Leggi l'articolo"
+    "readMore": "Leggi l'articolo",
+    "seo": {
+      "title": "Da dove iniziare",
+      "paragraphs": [
+        "Riordinare casa raramente fallisce per mancanza di volontà: fallisce perché si comincia dal punto sbagliato. Qui raccogliamo quello che abbiamo imparato entrando in decine di case a Roma — cosa funziona davvero, cosa fa perdere tempo, e come mantenere l’ordine quando la vita ricomincia a correre.",
+        "Le guide sono divise per ambiente: armadio, cucina, bagno, ufficio, cameretta, cantina. Se non sai da dove partire, la guida completa al decluttering mette tutto in ordine e ti indica il primo passo in base a come vivi gli spazi, non a come dovrebbero essere.",
+        "Sono consigli pensati per case vere, con poco tempo e spazi che non si possono ampliare. Nessun metodo miracoloso: solo scelte pratiche, spiegate passo per passo, che puoi applicare anche un cassetto alla volta."
+      ]
+    }
   },
   "contact": {
     "title": "Contatti – Home Organizing e Decluttering a Roma",

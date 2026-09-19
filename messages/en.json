@@ -217,7 +217,7 @@
     "title": "Blog",
     "metaTitle": "Decluttering & Home Organizing Tips",
     "metaDescription": "Practical tips, step-by-step guides and inspiration on decluttering and home organizing to tidy your home and regain order, space and calm.",
-    "heroTitle": "Our Blog",
+    "heroTitle": "Decluttering and Home Organizing Advice",
     "heroSubtitle": "Tips and inspiration for better living",
     "comingSoon": "New articles coming soon!",
     "comingSoonDescription": "We're preparing interesting content to help you organize your home. Come back soon!",
@@ -226,7 +226,15 @@
       "button": "Request a quote"
     },
     "relatedTitle": "Related articles",
-    "readMore": "Read the article"
+    "readMore": "Read the article",
+    "seo": {
+      "title": "Where to start",
+      "paragraphs": [
+        "Tidying a home rarely fails for lack of willpower: it fails because people start in the wrong place. This is what we have learned walking into dozens of homes in Rome — what genuinely works, what wastes an afternoon, and how to keep order once life speeds up again.",
+        "The guides are grouped by room: wardrobe, kitchen, bathroom, office, children’s room, cellar. If you are not sure where to begin, the complete decluttering guide pulls it together and points you at the first step based on how you actually live in the space, not how it ought to look.",
+        "This is advice for real homes, with little time and rooms that cannot be made bigger. No miracle method: practical choices, explained step by step, that work even one drawer at a time."
+      ]
+    }
   },
   "contact": {
     "title": "Contact – Home Organizing & Decluttering in Rome",
