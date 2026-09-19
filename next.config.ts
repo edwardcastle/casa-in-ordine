@@ -6,6 +6,14 @@ const withNextIntl = createNextIntlPlugin('./src/i18n/request.ts');
 const nextConfig: NextConfig = {
   headers: async () => [
     {
+      // The catalogue PDFs are the thing the email form exists to hand over.
+      // Indexed, Google would serve them straight from search results and the
+      // address capture would be decoration. `follow` is kept so the links
+      // inside the PDF back to the site still count.
+      source: '/catalogo/:path*',
+      headers: [{ key: 'X-Robots-Tag', value: 'noindex, follow' }],
+    },
+    {
       // The moderation pages are behind a session, but a blanket
       // `index, follow` on every route would still invite a crawler to try.
       source: '/admin/:path*',
@@ -20,7 +28,7 @@ const nextConfig: NextConfig = {
       // as crawled-not-indexed, on a site where real pages are going
       // uncrawled. They must still not be blocked in robots.txt — Google needs
       // them to render — they simply should not be advertised as pages.
-      source: '/((?!api/|admin|_next/).*)',
+      source: '/((?!api/|admin|_next/|catalogo/).*)',
       headers: [
         {
           key: 'X-Robots-Tag',
