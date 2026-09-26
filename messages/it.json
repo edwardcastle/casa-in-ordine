@@ -622,6 +622,19 @@
       "send-failed": "Qualcosa non ha funzionato. Riprova, o scrivici a info@casainordine.com."
     }
   },
+  "withdrawReview": {
+    "title": "Rimuovere la tua recensione",
+    "intro": "Questa è la recensione collegata al link che hai aperto. Se la rimuovi, sparisce dal sito e cancelliamo il testo e il tuo indirizzo email. Non serve chiedercelo: fa tutto questo pulsante.",
+    "confirm": "Rimuovi la mia recensione",
+    "removing": "Rimozione…",
+    "keepNote": "L'operazione è definitiva: non possiamo recuperare il testo dopo.",
+    "doneTitle": "Fatto, l'abbiamo tolta.",
+    "doneBody": "La recensione non è più sul sito e il testo è stato cancellato. Grazie comunque per il tempo che ci hai dedicato.",
+    "errors": {
+      "gone": "Questo link non è più valido: la recensione è già stata rimossa, oppure il link non è corretto. Se hai bisogno di aiuto scrivici a info@casainordine.com.",
+      "rate-limited": "Troppi tentativi. Riprova fra un quarto d'ora."
+    }
+  },
   "reviewsPage": {
     "metaTitle": "Recensioni dei clienti",
     "metaDescription": "Cosa dicono le persone che hanno lavorato con noi. Recensioni verificate di clienti reali di Roma, pubblicate con il loro consenso.",

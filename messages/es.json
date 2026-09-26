@@ -622,6 +622,19 @@
       "send-failed": "Algo no ha funcionado. Inténtalo de nuevo o escríbenos a info@casainordine.com."
     }
   },
+  "withdrawReview": {
+    "title": "Retirar tu reseña",
+    "intro": "Esta es la reseña vinculada al enlace que has abierto. Si la retiras, desaparece de la web y borramos el texto y tu dirección de email. No hace falta que nos lo pidas: lo hace este botón.",
+    "confirm": "Retirar mi reseña",
+    "removing": "Retirando…",
+    "keepNote": "La operación es definitiva: después no podemos recuperar el texto.",
+    "doneTitle": "Listo, la hemos quitado.",
+    "doneBody": "La reseña ya no está en la web y el texto se ha borrado. Gracias igualmente por el tiempo que nos dedicaste.",
+    "errors": {
+      "gone": "Este enlace ya no es válido: la reseña ya se ha retirado, o el enlace no es correcto. Si necesitas ayuda escríbenos a info@casainordine.com.",
+      "rate-limited": "Demasiados intentos. Vuelve a probar dentro de un cuarto de hora."
+    }
+  },
   "reviewsPage": {
     "metaTitle": "Reseñas de clientas",
     "metaDescription": "Lo que dicen las personas que han trabajado con nosotras. Reseñas verificadas de clientas reales de Roma, publicadas con su permiso.",

@@ -81,23 +81,45 @@ export async function sendReviewNotification(
   });
 }
 
-/** Confirms to the client that her words are held, not published. */
-export async function sendSubmissionReceipt(review: NewReview): Promise<boolean> {
+/**
+ * Confirms to the client that her words are held, not published — and carries
+ * the link that lets her take them back.
+ *
+ * Consent was a checkbox; withdrawing it should not be writing to us and
+ * hoping. The link never expires and needs nothing from us, which is what
+ * art. 7(3) asks for when it says withdrawal must be as easy as consent.
+ */
+export async function sendSubmissionReceipt(
+  review: NewReview,
+  withdrawToken: string,
+): Promise<boolean> {
+  const origin = siteOrigin();
+  const href = `${origin}/${review.lang}/recensioni/rimuovi?token=${withdrawToken}`;
+
   const copy = {
     it: {
       subject: 'Grazie per la tua recensione',
       lead: 'Grazie di cuore per le tue parole.',
-      body: 'La leggeremo prima di pubblicarla sul sito, quindi non comparirà subito. Se cambi idea, in qualsiasi momento, scrivici a questo indirizzo e la togliamo.',
+      body: 'La leggeremo prima di pubblicarla sul sito, quindi non comparirà subito.',
+      remove: 'Hai cambiato idea? Puoi rimuoverla tu stessa, quando vuoi:',
+      link: 'Rimuovi la mia recensione',
+      keep: 'Conserva questa email: il link resta valido anche fra mesi.',
     },
     en: {
       subject: 'Thank you for your review',
       lead: 'Thank you so much for your words.',
-      body: 'We read every review before it goes on the site, so it will not appear straight away. If you change your mind at any point, write to this address and we will take it down.',
+      body: 'We read every review before it goes on the site, so it will not appear straight away.',
+      remove: 'Changed your mind? You can remove it yourself, whenever you like:',
+      link: 'Remove my review',
+      keep: 'Keep this email — the link still works months from now.',
     },
     es: {
       subject: 'Gracias por tu reseña',
       lead: 'Muchas gracias por tus palabras.',
-      body: 'La leeremos antes de publicarla en la web, así que no aparecerá de inmediato. Si cambias de opinión en cualquier momento, escríbenos a esta dirección y la retiramos.',
+      body: 'La leeremos antes de publicarla en la web, así que no aparecerá de inmediato.',
+      remove: '¿Has cambiado de opinión? Puedes retirarla tú misma cuando quieras:',
+      link: 'Retirar mi reseña',
+      keep: 'Guarda este email: el enlace sigue siendo válido dentro de meses.',
     },
   }[review.lang];
 
@@ -110,7 +132,34 @@ export async function sendSubmissionReceipt(review: NewReview): Promise<boolean>
       <blockquote style="margin:20px 0;padding:14px 18px;background:#f7f8f6;border-left:3px solid ${SAGE};font-style:italic;color:#333;">
         ${esc(review.body).replace(/\n/g, '<br>')}
       </blockquote>
-      <p style="color:#888;font-size:13px;">Casa in Ordine · casainordine.com</p>
+      <p style="color:#555;font-size:14px;margin-top:26px;">${esc(copy.remove)}</p>
+      <p style="margin:10px 0 0;">
+        <a href="${href}" style="color:${SAGE};font-weight:bold;">${esc(copy.link)}</a>
+      </p>
+      <p style="color:#999;font-size:12px;margin-top:18px;">${esc(copy.keep)}</p>
+      <p style="color:#888;font-size:13px;margin-top:26px;">Casa in Ordine · casainordine.com</p>
+    `,
+  });
+}
+
+/** Tells the founders the author removed her own review. */
+export async function notifyAuthorWithdrawal(authorName: string): Promise<boolean> {
+  const to = notifyEmails().map((email) => ({ email }));
+  if (to.length === 0) return false;
+
+  return sendEmail({
+    to,
+    subject: `Recensione ritirata da ${authorName}`,
+    html: `
+      <h2 style="color:${SAGE};margin:0 0 12px;">Una recensione è stata ritirata</h2>
+      <p style="color:#444;">
+        <strong>${esc(authorName)}</strong> ha rimosso la propria recensione dal sito,
+        usando il link nella sua email. Non serve fare nulla: è già sparita.
+      </p>
+      <p style="color:#888;font-size:12px;margin-top:22px;">
+        Il testo e il suo indirizzo email sono stati cancellati. Resta solo la
+        traccia che la recensione è esistita ed è stata ritirata su sua richiesta.
+      </p>
     `,
   });
 }

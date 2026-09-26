@@ -87,7 +87,7 @@ export async function submitReview(formData: FormData): Promise<ReviewSubmitResu
   };
 
   try {
-    const id = await insertPendingReview(review);
+    const { id, withdrawToken } = await insertPendingReview(review);
 
     // The review is safely stored before either email is attempted, so a Brevo
     // outage loses the notification, never the client's words.
@@ -96,7 +96,7 @@ export async function submitReview(formData: FormData): Promise<ReviewSubmitResu
       console.error(`Review ${id} was stored but no notification was sent.`);
     }
 
-    await sendSubmissionReceipt(review);
+    await sendSubmissionReceipt(review, withdrawToken);
 
     return { success: true };
   } catch (error) {

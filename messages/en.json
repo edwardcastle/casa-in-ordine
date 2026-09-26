@@ -622,6 +622,19 @@
       "send-failed": "Something went wrong. Try again, or write to info@casainordine.com."
     }
   },
+  "withdrawReview": {
+    "title": "Remove your review",
+    "intro": "This is the review linked to the address you opened. If you remove it, it disappears from the site and we delete the text and your email address. You do not need to ask us — this button does it.",
+    "confirm": "Remove my review",
+    "removing": "Removing…",
+    "keepNote": "This cannot be undone: we cannot recover the text afterwards.",
+    "doneTitle": "Done — it's gone.",
+    "doneBody": "The review is no longer on the site and the text has been deleted. Thank you all the same for the time you gave us.",
+    "errors": {
+      "gone": "This link is no longer valid: the review has already been removed, or the link is wrong. If you need help, write to info@casainordine.com.",
+      "rate-limited": "Too many attempts. Please try again in about fifteen minutes."
+    }
+  },
   "reviewsPage": {
     "metaTitle": "Client reviews",
     "metaDescription": "What the people who worked with us say. Verified reviews from real clients in Rome, published with their permission.",

@@ -1,3 +1,4 @@
+import { createHash, randomBytes } from 'node:crypto';
 import { db, isReviewsConfigured } from './db';
 import type {
   AdminReview,
@@ -113,22 +114,86 @@ export interface NewReview {
   consentIp: string;
 }
 
-/** Records a submission as `pending`. Nothing here reaches the public site. */
-export async function insertPendingReview(input: NewReview): Promise<string> {
+function hashToken(token: string): string {
+  return createHash('sha256').update(token).digest('hex');
+}
+
+/**
+ * Records a submission as `pending`, and returns the withdrawal token.
+ *
+ * Only the hash is stored. The raw token goes into the client's email and
+ * nowhere else, so it cannot be recovered from the database — which is the
+ * point: a leak must not hand anyone the ability to delete other people's
+ * reviews.
+ */
+export async function insertPendingReview(
+  input: NewReview,
+): Promise<{ id: string; withdrawToken: string }> {
+  const withdrawToken = randomBytes(32).toString('base64url');
+
   const [row] = await db()<{ id: string }[]>`
     INSERT INTO reviews (
       author_name, author_email, city, rating, body, lang, services,
-      source, status, consent_given, consent_text, consent_at, consent_ip
+      source, status, consent_given, consent_text, consent_at, consent_ip,
+      withdraw_token_hash
     ) VALUES (
       ${input.authorName}, ${input.authorEmail}, ${input.city ?? null},
       ${input.rating ?? null}, ${input.body}, ${input.lang},
       ${input.services}::text[], 'direct', 'pending',
-      true, ${input.consentText}, now(), ${input.consentIp}
+      true, ${input.consentText}, now(), ${input.consentIp},
+      ${hashToken(withdrawToken)}
     )
     RETURNING id
   `;
 
-  return row.id;
+  return { id: row.id, withdrawToken };
+}
+
+/**
+ * Looks a review up by its withdrawal token WITHOUT spending it.
+ *
+ * The link opens a confirmation page, so it has to survive being followed —
+ * including by a mail client that prefetches links, which must never delete
+ * anything on its own.
+ */
+export async function findByWithdrawToken(token: string): Promise<PublicReview | null> {
+  if (!token) return null;
+
+  const rows = await db()<PublicRow[]>`
+    SELECT id, author_name, city, rating, body, lang, services, source,
+           google_url, submitted_at
+      FROM reviews
+     WHERE withdraw_token_hash = ${hashToken(token)}
+       AND status <> 'removed'
+       AND body IS NOT NULL
+  `;
+
+  return rows[0] ? toPublic(rows[0]) : null;
+}
+
+export type WithdrawOutcome = 'withdrawn' | 'not-found';
+
+/**
+ * The author removing her own review (GDPR art. 7(3)).
+ *
+ * Same shape as an admin withdrawal — the words and the address go, the row
+ * and its consent record stay as proof the review existed and was withdrawn.
+ * The token is cleared too, so the link stops working afterwards.
+ */
+export async function withdrawByToken(token: string): Promise<WithdrawOutcome> {
+  if (!token) return 'not-found';
+
+  const rows = await db()<{ id: string }[]>`
+    UPDATE reviews
+       SET status = 'removed', body = NULL, author_email = NULL,
+           removed_at = now(), decided_by = 'author',
+           withdraw_token_hash = NULL
+     WHERE withdraw_token_hash = ${hashToken(token)}
+       AND status <> 'removed'
+    RETURNING id
+  `;
+
+  return rows.length > 0 ? 'withdrawn' : 'not-found';
 }
 
 // `body` widens to null here: a withdrawn review keeps its row and its consent
