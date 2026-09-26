@@ -122,7 +122,7 @@ export async function insertPendingReview(input: NewReview): Promise<string> {
     ) VALUES (
       ${input.authorName}, ${input.authorEmail}, ${input.city ?? null},
       ${input.rating ?? null}, ${input.body}, ${input.lang},
-      ${db().array(input.services)}, 'direct', 'pending',
+      ${input.services}::text[], 'direct', 'pending',
       true, ${input.consentText}, now(), ${input.consentIp}
     )
     RETURNING id
@@ -261,7 +261,7 @@ export async function insertGoogleReview(input: {
       decided_at, decided_by
     ) VALUES (
       ${input.authorName}, ${input.city ?? null}, ${input.rating}, ${input.body},
-      ${input.lang}, ${db().array(input.services)}, 'google', ${input.googleUrl},
+      ${input.lang}, ${input.services}::text[], 'google', ${input.googleUrl},
       'approved', true, ${input.consentText}, now(), ${input.invoiceRef ?? null},
       now(), ${input.addedBy}
     )
