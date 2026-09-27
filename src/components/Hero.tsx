@@ -193,14 +193,20 @@ export default function Hero({
       {hasCarousel && (
         <div className="absolute bottom-24 left-1/2 -translate-x-1/2 z-10 flex gap-2">
           {slides.map((_, i) => (
+            // The bar is 4px tall, which no thumb can hit. The button is the
+            // touch target and the bar is drawn inside it.
             <button
               key={i}
               onClick={() => setActiveIdx(i)}
               aria-label={`Slide ${i + 1}`}
-              className={`h-1 rounded-full transition-all duration-500 ${
-                i === activeIdx ? 'bg-white w-10' : 'bg-white/40 w-4 hover:bg-white/70'
-              }`}
-            />
+              className="group flex h-6 min-w-6 items-center justify-center"
+            >
+              <span
+                className={`block h-1 rounded-full transition-all duration-500 ${
+                  i === activeIdx ? 'bg-white w-10' : 'bg-white/40 w-4 group-hover:bg-white/70'
+                }`}
+              />
+            </button>
           ))}
         </div>
       )}

@@ -289,7 +289,7 @@ export default function HomePage({
                     />
                   </div>
                   <div>
-                    <h4 className="font-bold text-foreground mb-1">{t('home.whyUs.chartTitle')}</h4>
+                    <h3 className="font-bold text-foreground mb-1">{t('home.whyUs.chartTitle')}</h3>
                     <p className="text-sm text-gray-500">60% {t('home.whyUs.chartTechnique')} / 40% {t('home.whyUs.chartWarmth')}</p>
                   </div>
                 </div>
