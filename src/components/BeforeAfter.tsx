@@ -12,6 +12,11 @@ interface BeforeAfterProps {
   afterLabel: string;
 }
 
+// The slider sits in one column of a two-column grid capped at max-w-5xl, so
+// on desktop it is never wider than ~480px. `100vw` had the browser fetch a
+// full-viewport image for it.
+const SIZES = '(max-width: 768px) 100vw, 512px';
+
 export default function BeforeAfter({
   beforeSrc,
   afterSrc,
@@ -62,7 +67,7 @@ export default function BeforeAfter({
         alt={afterAlt}
         fill
         className="object-cover"
-        sizes="100vw"
+        sizes={SIZES}
         draggable={false}
       />
 
@@ -76,7 +81,7 @@ export default function BeforeAfter({
           alt={beforeAlt}
           fill
           className="object-cover"
-          sizes="100vw"
+          sizes={SIZES}
           draggable={false}
         />
       </div>
