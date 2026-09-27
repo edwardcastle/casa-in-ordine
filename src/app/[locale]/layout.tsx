@@ -112,7 +112,7 @@ export default async function LocaleLayout({
   // Next can render a page and its layout independently.
   setRequestLocale(locale);
 
-  // Client components receive everything EXCEPT privacyPolicy.
+  // Client components receive only the namespaces they read.
   //
   // NextIntlClientProvider serialises whatever it is given into the payload of
   // every route, so the GDPR notice — which must name the registered office —
@@ -121,7 +121,26 @@ export default async function LocaleLayout({
   // namespace there; no client component touches it (Header/nav,
   // CookieConsent, ChatWidget, ContactForm, QuoteWizard and ReviewForm are the
   // only ones, and none of them do).
-  const CLIENT_EXCLUDED = ['privacyPolicy'];
+  //
+  // The rest of the list is there for weight rather than privacy: these
+  // namespaces are read only by server components, which get their strings
+  // without the provider, so shipping them repeated the copy of every page
+  // inside the HTML of every other page. A namespace missing from this list
+  // is merely heavier; one listed here by mistake prints its key path into a
+  // client component, so add to it only after checking who reads it.
+  const CLIENT_EXCLUDED = [
+    'privacyPolicy',
+    'metadata',
+    'hero',
+    'home',
+    'about',
+    'services',
+    'blog',
+    'footer',
+    'preventivo',
+    'reviewsPage',
+    'notFound',
+  ];
   const messages = Object.fromEntries(
     Object.entries(await getMessages()).filter(([ns]) => !CLIENT_EXCLUDED.includes(ns)),
   );
