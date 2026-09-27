@@ -7,6 +7,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { routing } from '@/i18n/routing';
 import { getPost, getPostLocales, getPostSlugs, getRelatedPosts } from '@/lib/blog';
 import { mdxComponents } from '@/components/MdxContent';
+import { getAreaForPost } from '@/lib/areas';
 
 const baseUrl = 'https://casainordine.com';
 
@@ -128,6 +129,9 @@ export default async function BlogPostPage({
 
   const t = await getTranslations({ locale, namespace: 'blog' });
   const tNav = await getTranslations({ locale, namespace: 'nav' });
+  const tAreas = await getTranslations({ locale, namespace: 'areas' });
+  // The service this guide is the do-it-yourself version of, if there is one.
+  const area = getAreaForPost(slug);
   const canonicalUrl = `${baseUrl}/${locale}/blog/${slug}`;
 
   const formattedDate = new Date(post.date).toLocaleDateString(locale, {
@@ -280,6 +284,17 @@ export default async function BlogPostPage({
 
         {/* Lead-in CTA to the quote flow */}
         <div className="mt-12 rounded-2xl bg-secondary-light p-8 text-center">
+          {area && (
+            <p className="mb-4 text-sm text-gray-600">
+              <span className="font-semibold text-foreground">{tAreas('common.relatedService')}:</span>{' '}
+              <Link
+                href={`/${locale}/services/${area.slug}`}
+                className="text-primary underline underline-offset-2 hover:text-accent"
+              >
+                {tAreas(`${area.zone}.heroTitle`)}
+              </Link>
+            </p>
+          )}
           <p className="mb-4 text-lg font-semibold text-foreground">
             {t('cta.title')}
           </p>
