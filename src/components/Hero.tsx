@@ -107,6 +107,10 @@ export default function Hero({
                   className="object-cover object-center"
                   sizes="100vw"
                   priority={i === 0}
+                  // `priority` preloads the image but does not rank it: without
+                  // this the largest element on the page is fetched at the same
+                  // priority as the logo and the fonts.
+                  fetchPriority={i === 0 ? 'high' : undefined}
                 />
               </div>
             );

@@ -245,6 +245,7 @@ export default async function BlogPostPage({
           alt={post.coverAlt ?? post.title}
           fill
           priority
+          fetchPriority="high"
           sizes="100vw"
           className="object-cover object-center"
         />

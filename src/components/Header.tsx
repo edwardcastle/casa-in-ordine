@@ -54,7 +54,10 @@ export default function Header() {
                 alt="Casa in Ordine"
                 width={250}
                 height={75}
-                priority
+                // Loaded straight away, but not preloaded: a preload here was
+                // racing the hero image, which is the one that decides how
+                // fast the page is judged to be.
+                loading="eager"
                 className={`w-auto transition-all duration-300 py-2 brightness-0 invert ${scrolled ? 'h-16 md:h-26' : 'h-16 md:h-26'}`}
               />
             </Link>
