@@ -117,7 +117,7 @@ export default async function BlogPage({
                       <div className="relative h-48">
                         <Image
                           src={post.coverImage}
-                          alt={post.title}
+                          alt={post.coverAlt ?? post.title}
                           fill
                           sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover"

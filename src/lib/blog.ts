@@ -16,6 +16,7 @@ export interface PostFrontmatter {
   category: string;
   keywords: string[];
   coverImage: string;
+  coverAlt?: string; // what the cover shows, in the post's language; falls back to the title
   author: string;
   readingMinutes?: number;
 }

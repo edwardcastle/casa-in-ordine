@@ -9,6 +9,7 @@
     "lint": "eslint",
     "check:messages": "node scripts/check-messages.mjs",
     "build:catalog": "node scripts/build-catalog.mjs",
+    "build:covers": "node scripts/build-covers.mjs",
     "migrate": "node scripts/migrate.mjs",
     "migrate:up": "node scripts/migrate.mjs",
     "migrate:down": "node scripts/migrate.mjs down",

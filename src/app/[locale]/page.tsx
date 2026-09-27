@@ -315,7 +315,7 @@ export default function HomePage({
                     <div className="relative h-44">
                       <Image
                         src={post.coverImage}
-                        alt={post.title}
+                        alt={post.coverAlt ?? post.title}
                         fill
                         sizes="(max-width: 768px) 100vw, 33vw"
                         className="object-cover"

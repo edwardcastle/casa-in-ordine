@@ -10,6 +10,12 @@ import { mdxComponents } from '@/components/MdxContent';
 
 const baseUrl = 'https://casainordine.com';
 
+// Covers cut by scripts/build-covers.mjs are all this size, so it can be stated
+// for them. A cover from anywhere else has its size left out rather than
+// guessed: a wrong og:image:width is worse than none.
+const GENERATED_COVERS = '/images/blog/';
+const COVER_SIZE = { width: 1600, height: 840 };
+
 // Extract numbered "## N. Heading" sections into HowTo steps (name + lead text)
 // in the post's own locale. Used to emit HowTo structured data only for genuine
 // step-by-step guides, mirroring the visible content (no fabricated steps).
@@ -92,7 +98,13 @@ export async function generateMetadata({
       publishedTime: post.date,
       modifiedTime: post.updated ?? post.date,
       authors: [post.author],
-      images: [{ url: post.coverImage, alt: post.title }],
+      images: [
+        {
+          url: post.coverImage,
+          alt: post.coverAlt ?? post.title,
+          ...(post.coverImage.startsWith(GENERATED_COVERS) ? COVER_SIZE : {}),
+        },
+      ],
     },
     twitter: {
       card: 'summary_large_image',
@@ -226,7 +238,7 @@ export default async function BlogPostPage({
       >
         <Image
           src={post.coverImage}
-          alt={post.title}
+          alt={post.coverAlt ?? post.title}
           fill
           priority
           sizes="100vw"
@@ -296,7 +308,7 @@ export default async function BlogPostPage({
                 <div className="relative h-36">
                   <Image
                     src={p.coverImage}
-                    alt={p.title}
+                    alt={p.coverAlt ?? p.title}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     className="object-cover"
