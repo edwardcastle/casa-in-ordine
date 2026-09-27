@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useTranslations, useLocale } from 'next-intl';
 import { GOOGLE_PROFILE_URL } from '@/lib/google-business';
+import { AREAS } from '@/lib/areas';
 
 export default function Footer() {
   const t = useTranslations();
@@ -24,7 +25,7 @@ export default function Footer() {
   return (
     <footer className="bg-black/95 text-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Brand */}
           <div>
             <Image
@@ -50,6 +51,24 @@ export default function Footer() {
                   className="text-sm text-white/80 hover:text-white transition-colors"
                 >
                   {link.label}
+                </Link>
+              ))}
+            </nav>
+          </div>
+
+          {/* One link per area of the home, on every page of the site: these
+              are the pages the business wants found, and a page linked only
+              from /services reads as a minor one. */}
+          <div>
+            <h3 className="text-lg font-semibold mb-4">{t('footer.areas')}</h3>
+            <nav className="flex flex-col gap-2">
+              {AREAS.map((area) => (
+                <Link
+                  key={area.zone}
+                  href={`/${locale}/services/${area.slug}`}
+                  className="text-sm text-white/80 hover:text-white transition-colors"
+                >
+                  {t(`areas.${area.zone}.name`)}
                 </Link>
               ))}
             </nav>
