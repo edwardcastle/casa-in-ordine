@@ -29,16 +29,19 @@ export default async function WithdrawReviewPage({
     <main className="mx-auto min-h-screen max-w-2xl px-4 py-20 sm:px-6 lg:px-8">
       <h1 className="mb-3 text-3xl font-semibold text-foreground">{t('title')}</h1>
 
-      {review ? (
-        <>
-          <p className="mb-8 text-gray-600">{t('intro')}</p>
-          <WithdrawConfirm token={token} authorName={review.authorName} body={review.body} />
-        </>
-      ) : (
-        <p className="rounded-md border border-secondary/60 bg-secondary-light px-5 py-4 text-gray-700">
-          {t('errors.gone')}
-        </p>
-      )}
+      {review ? <p className="mb-8 text-gray-600">{t('intro')}</p> : null}
+
+      {/* Rendered whether or not the review was found, and always in the same
+          place. Withdrawing clears the cached homepage, which makes Next
+          render this page again inside the same response — by which time the
+          review is gone. Were the component swapped out for a "not found"
+          message here, the client who had just removed her review would be
+          told her link was invalid instead of that it worked. Kept mounted, it
+          still remembers that it succeeded. */}
+      <WithdrawConfirm
+        token={token}
+        review={review ? { authorName: review.authorName, body: review.body } : null}
+      />
     </main>
   );
 }

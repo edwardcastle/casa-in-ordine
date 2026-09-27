@@ -6,12 +6,11 @@ import { withdrawOwnReview, type WithdrawResult } from '@/actions/withdraw';
 
 export default function WithdrawConfirm({
   token,
-  authorName,
-  body,
+  review,
 }: {
   token: string;
-  authorName: string;
-  body: string;
+  /** Null when the link matches nothing — or no longer does. */
+  review: { authorName: string; body: string } | null;
 }) {
   const t = useTranslations('withdrawReview');
   const [state, action, pending] = useActionState<WithdrawResult | null, FormData>(
@@ -27,6 +26,16 @@ export default function WithdrawConfirm({
       </div>
     );
   }
+
+  if (!review) {
+    return (
+      <p className="rounded-md border border-secondary/60 bg-secondary-light px-5 py-4 text-gray-700">
+        {t('errors.gone')}
+      </p>
+    );
+  }
+
+  const { authorName, body } = review;
 
   return (
     <>
