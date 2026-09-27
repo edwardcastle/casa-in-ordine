@@ -3,8 +3,9 @@ import postgres from 'postgres';
 /**
  * The Postgres connection.
  *
- * Reads are cached (see `queries.ts`), so a normal page render never reaches
- * this. The pool is deliberately small: serverless instances do not share one,
+ * The homepage is served from a cached build, so most visits never reach
+ * this; /recensioni, the sitemap and the admin pages query on every request
+ * (see `queries.ts`). The pool is deliberately small: serverless instances do not share one,
  * so the real ceiling is `max × instances` and Postgres counts connections, not
  * instances.
  *

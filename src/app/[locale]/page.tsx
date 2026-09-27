@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { useTranslations, useLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { use } from 'react';
+import { useTranslations } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getPostMeta } from '@/lib/blog';
@@ -16,14 +17,19 @@ import ReviewsSection from '@/components/ReviewsSection';
 import type { Category } from '@/components/CategoryIcon';
 
 /**
- * Rendered per request, on purpose.
+ * Built once and served from the cache, not rendered per request.
  *
- * The reviews strip reads the database, and a review its author has withdrawn
- * has to be gone on the next request — see getPublishedReviews. The layout now
- * sets the request locale, which would otherwise let Next prerender this page
- * at build time and freeze whatever reviews existed at the last deploy.
+ * The only thing on this page that changes between deploys is the reviews
+ * strip. Approving or withdrawing a review throws the cached page away (see
+ * refreshPublishedReviews), so the next visitor gets one built from the table
+ * as it stands — a withdrawn review is still gone on the next request.
+ *
+ * The timer is the second line of defence, for a change that reaches the
+ * table without going through the site: a row edited by hand, or a cache that
+ * could not be cleared. Five minutes is how long such a change can take to
+ * show.
  */
-export const dynamic = 'force-dynamic';
+export const revalidate = 300;
 
 export async function generateMetadata({
   params,
@@ -71,9 +77,14 @@ export async function generateMetadata({
   };
 }
 
-export default function HomePage() {
+export default function HomePage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = use(params);
+  setRequestLocale(locale);
   const t = useTranslations();
-  const locale = useLocale();
 
   const serviceCategories: Category[] = ['armadio', 'cucina', 'ufficio', 'bagno', 'garage', 'trasloco'];
 

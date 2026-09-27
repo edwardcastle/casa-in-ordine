@@ -1,5 +1,6 @@
 import { createHash, randomBytes } from 'node:crypto';
 import { db, isReviewsConfigured } from './db';
+import { refreshPublishedReviews } from './refresh';
 import type {
   AdminReview,
   PublicReview,
@@ -61,19 +62,21 @@ function toPublic(row: PublicRow): PublicReview {
 /**
  * Approved reviews, ordered so the reader's own language comes first.
  *
- * Deliberately uncached. The obvious move is `unstable_cache` with a tag
- * invalidated on approval — but in Next 16 `revalidateTag` takes a cache
- * profile and drives the `'use cache'` tag system, and it does not invalidate
- * `unstable_cache` entries at all. Verified against a production build: after
- * an approval, the page kept serving the old list indefinitely. The `'use
- * cache'` directive would fix that, at the price of turning on
- * `cacheComponents` for the entire site — far too much blast radius for one
- * section.
+ * The query itself is deliberately uncached. The obvious move is
+ * `unstable_cache` with a tag invalidated on approval — but in Next 16
+ * `revalidateTag` takes a cache profile and drives the `'use cache'` tag
+ * system, and it does not invalidate `unstable_cache` entries at all. Verified
+ * against a production build: after an approval, the page kept serving the old
+ * list indefinitely. The `'use cache'` directive would fix that, at the price
+ * of turning on `cacheComponents` for the entire site — far too much blast
+ * radius for one section.
  *
- * So it queries every render. That is one lookup on a partial index over a
- * table that will hold tens of rows, on a page already rendered on demand, and
- * it buys the property that matters most here: when a client withdraws her
- * review, it is gone on the next request rather than whenever a cache decides.
+ * What is cached is the page around it. /recensioni and the sitemap render per
+ * request and run this every time. The homepage is built once and kept, which
+ * is where its speed comes from, and every write below that changes what is
+ * public calls `refreshPublishedReviews` to throw that copy away. The property
+ * that matters most is unchanged: when a client withdraws her review, it is
+ * gone on the next request rather than whenever a cache decides.
  */
 export async function getPublishedReviews(locale: ReviewLang): Promise<PublicReview[]> {
   if (!isReviewsConfigured()) return [];
@@ -193,7 +196,10 @@ export async function withdrawByToken(token: string): Promise<WithdrawOutcome> {
     RETURNING id
   `;
 
-  return rows.length > 0 ? 'withdrawn' : 'not-found';
+  if (rows.length === 0) return 'not-found';
+
+  refreshPublishedReviews();
+  return 'withdrawn';
 }
 
 // `body` widens to null here: a withdrawn review keeps its row and its consent
@@ -277,6 +283,7 @@ export async function decideReview(
              invoice_ref = COALESCE(${invoiceRef ?? null}, invoice_ref)
        WHERE id = ${id} AND status = 'pending'
     `;
+    refreshPublishedReviews();
   } else {
     // A rejected review is withdrawn outright: someone we could not match to a
     // client has no reason to stay on file with their words in it.
@@ -304,6 +311,7 @@ export async function removeReview(id: string, removedBy: string): Promise<void>
            removed_at = now(), decided_by = ${removedBy}
      WHERE id = ${id}
   `;
+  refreshPublishedReviews();
 }
 
 /** Mirror a Google review the reviewer has given written permission to reproduce. */
@@ -333,5 +341,6 @@ export async function insertGoogleReview(input: {
     RETURNING id
   `;
 
+  refreshPublishedReviews();
   return row.id;
 }
