@@ -93,6 +93,10 @@ export function getArea(slug: string): Area | undefined {
 }
 
 /** The area a blog post belongs to, if any — for the link from post to service. */
+export function getAreaForZone(zone: Zone): Area | undefined {
+  return AREAS.find((area) => area.zone === zone);
+}
+
 export function getAreaForPost(postSlug: string): Area | undefined {
   return AREAS.find((area) => area.guides.includes(postSlug));
 }

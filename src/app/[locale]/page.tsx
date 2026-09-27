@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getPostMeta } from '@/lib/blog';
+import { getAreaForZone } from '@/lib/areas';
 import type { PostMeta } from '@/lib/blog';
 import Hero from '@/components/Hero';
 import BeforeAfter from '@/components/BeforeAfter';
@@ -87,6 +88,15 @@ export default function HomePage({
   const t = useTranslations();
 
   const serviceCategories: Category[] = ['armadio', 'cucina', 'ufficio', 'bagno', 'garage', 'trasloco'];
+
+  // Each tile leads to the page for that room. They all used to open the quote
+  // form, which asked the visitor to choose the room a second time and told
+  // her nothing about it first. `ufficio` has no page of its own: the home
+  // office is part of the living area, as it is in the quote wizard.
+  const tileHref = (category: Category) => {
+    const area = getAreaForZone(category === 'ufficio' ? 'living' : category);
+    return area ? `/${locale}/services/${area.slug}` : `/${locale}/services`;
+  };
 
   // Hand-picked guides surfaced from the homepage body so equity flows from the
   // top-authority page into the content cluster (the pillar + two entry-points).
@@ -215,7 +225,7 @@ export default function HomePage({
             {serviceCategories.map((key, i) => (
               <ScrollReveal key={key} animation="fadeInUpShorter" delay={i * 100}>
                 <Link
-                  href={`/${locale}/preventivo`}
+                  href={tileHref(key)}
                   className="block bg-white rounded-2xl py-10 px-6 shadow-sm hover:shadow-lg transition-all duration-300 text-center group"
                 >
                   <div className="mx-auto mb-4 flex items-center justify-center group-hover:text-accent transition-colors">
