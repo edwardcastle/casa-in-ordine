@@ -7,7 +7,7 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: 'Casa in Ordine',
     short_name: 'Casa in Ordine',
-    description: 'Decluttering e Home Organizing a Roma',
+    description: 'Professional organizer a Roma: decluttering e riordino casa',
     start_url: '/it',
     display: 'standalone',
     background_color: '#ffffff',

@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Casa in Ordine',
-  description: 'Decluttering & Home Organizing a Roma',
+  description: 'Professional organizer a Roma: decluttering e riordino casa',
 };
 
 // Android Chrome / Chromium: shrink the LAYOUT viewport when the on-screen

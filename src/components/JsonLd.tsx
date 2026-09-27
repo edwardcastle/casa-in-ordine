@@ -13,10 +13,14 @@ const IMAGE_URL = `${BASE_URL}/images/logo/logo_1200x630.png`;
 // Generalizia dell'Ordine…" in Rome.
 const SAME_AS = ['https://www.instagram.com/casainordine_it/', GOOGLE_PROFILE_URL];
 
+// Named by the profession as well as by the activity: "professional organizer"
+// is what the trade is called in Italy and what people look for when they want
+// someone to come, where "decluttering" is what they look for when they mean
+// to do it themselves.
 const descriptions: Record<string, string> = {
-  it: 'Servizio professionale di decluttering e home organizing a Roma',
-  en: 'Professional decluttering and home organizing service in Rome',
-  es: 'Servicio profesional de decluttering y home organizing en Roma',
+  it: 'Professional organizer a Roma: decluttering, riordino casa e home organizing',
+  en: 'Professional organizers in Rome, Italy: decluttering and home organizing',
+  es: 'Organizadoras profesionales en Roma: decluttering, orden en casa y home organizing',
 };
 
 const ogLocales: Record<string, string> = {
