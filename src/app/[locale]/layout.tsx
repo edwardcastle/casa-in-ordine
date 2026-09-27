@@ -136,6 +136,7 @@ export default async function LocaleLayout({
     'home',
     'about',
     'services',
+    'areas',
     'blog',
     'footer',
     'preventivo',

@@ -9,6 +9,7 @@ import { breadcrumbLd } from '@/lib/breadcrumb';
 import CatalogDownload from '@/components/CatalogDownload';
 import { isCatalogAvailable } from '@/lib/catalog';
 import { getPostMeta } from '@/lib/blog';
+import { AREAS } from '@/lib/areas';
 
 export async function generateMetadata({
   params,
@@ -70,6 +71,7 @@ export default function ServicesPage({
   setRequestLocale(locale);
   const t = useTranslations('services');
   const tCatalog = useTranslations('catalog');
+  const tAreas = useTranslations('areas');
   const tNav = useTranslations('nav');
 
   const breadcrumbSchema = breadcrumbLd(locale, [
@@ -199,6 +201,46 @@ export default function ServicesPage({
                   />
                 </div>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* By area of the home: the way into the pages under /services */}
+      <section className="py-16 md:py-24 bg-secondary-light">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-3">
+              {tAreas('common.sectionTitle')}
+            </h2>
+            <p className="text-lg text-gray-600 max-w-2xl mx-auto">{tAreas('common.sectionBody')}</p>
+          </div>
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {AREAS.map((area) => (
+              <Link
+                key={area.zone}
+                href={`/${locale}/services/${area.slug}`}
+                className="group block overflow-hidden rounded-2xl bg-white shadow-sm transition-shadow hover:shadow-lg"
+              >
+                <div className="relative aspect-[16/9]">
+                  <Image
+                    src={area.image}
+                    alt={tAreas(`${area.zone}.imageAlt`)}
+                    fill
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                    className="object-cover"
+                  />
+                </div>
+                <div className="p-6">
+                  <h3 className="text-lg font-semibold text-foreground group-hover:text-primary">
+                    {tAreas(`${area.zone}.name`)}
+                  </h3>
+                  <p className="mt-2 text-sm text-gray-600">{tAreas(`${area.zone}.heroSubtitle`)}</p>
+                  <span className="mt-4 inline-block text-sm font-medium text-accent">
+                    {tAreas('common.discover')} →
+                  </span>
+                </div>
+              </Link>
             ))}
           </div>
         </div>

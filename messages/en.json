@@ -223,6 +223,250 @@
     },
     "relatedGuide": "Related guide"
   },
+  "areas": {
+    "common": {
+      "signsTitle": "When to call us",
+      "includesTitle": "What it covers",
+      "faqTitle": "Frequently asked questions",
+      "guidesTitle": "Guides from the blog",
+      "othersTitle": "Other areas of the home",
+      "ctaTitle": "Want to know what it costs?",
+      "ctaBody": "The digital survey takes a few minutes: choose the area, answer a few questions and get an estimate straight away. Free, with no obligation.",
+      "ctaButton": "Request a free quote",
+      "sectionTitle": "A service for every room",
+      "sectionBody": "Every room has its own problems and its own method. Choose the one you want to start from.",
+      "relatedService": "Related service",
+      "discover": "See the service"
+    },
+    "armadio": {
+      "name": "Closets and walk-in closets",
+      "metaTitle": "Closet & Walk-in Closet Organizing in Rome",
+      "metaDescription": "We reorganize closets, wardrobes and walk-in closets in Rome: sorting your clothes, a folding system, seasonal changeover and labeling. Free quote.",
+      "heroTitle": "Closet and walk-in closet organizing in Rome",
+      "heroSubtitle": "A wardrobe where you find everything, and get dressed in minutes.",
+      "introTitle": "A wardrobe that works every morning",
+      "intro": [
+        "The closet is where clutter is felt first: in the morning, when you are in a hurry. Clothes you cannot find, doors that will not close, and the feeling of having nothing to wear in front of a full wardrobe.",
+        "We reorganize standard closets, large closets and full walk-in closets, in Rome and the surrounding area. We work on individual wardrobes, couples' wardrobes and kids' and teens' wardrobes: we sort what to keep together with you, and give every garment a place that stays easy to maintain."
+      ],
+      "imageAlt": "Organized wardrobe with folded clothes, baskets and hanging garments",
+      "signs": [
+        "You can't find your clothes and waste too much time getting dressed.",
+        "The closet is full but you feel you have nothing to wear.",
+        "Your clothes get creased and there is no effective folding system."
+      ],
+      "includes": [
+        "Sorting your clothes together with you, without judgment and without rushing",
+        "Grouping by category, and a folding system that does not crease",
+        "Full seasonal changeover and basket labeling, if you want it",
+        "Responsible donation or disposal of what you decide to let go"
+      ],
+      "faq": [
+        {
+          "question": "How much does it cost to reorganize a closet?",
+          "answer": "It depends on the type of wardrobe — standard closet, large closet or walk-in closet — on who uses it and on how much has built up. The digital survey gives you an indicative estimate straight away; within 24 hours our team prepares a tailored quote, free and with no obligation."
+        },
+        {
+          "question": "Do I have to throw my clothes away?",
+          "answer": "No. You always decide what stays: we help you choose with a clear method, and we stay with you when parting with something is hard."
+        },
+        {
+          "question": "Do you also do the seasonal changeover?",
+          "answer": "Yes. You can include it in the job, with basket labeling, or leave it to us periodically through our maintenance service."
+        }
+      ]
+    },
+    "cucina": {
+      "name": "Kitchen and pantry",
+      "metaTitle": "Kitchen & Pantry Organizing in Rome",
+      "metaDescription": "We reorganize kitchens and pantries in Rome: food you can see, clear countertops, working cabinets and drawers, containers and labels. Free quote.",
+      "heroTitle": "Kitchen and pantry organizing in Rome",
+      "heroSubtitle": "Food in sight, clear countertops, everything within reach.",
+      "introTitle": "A kitchen where you can see what you have",
+      "intro": [
+        "The kitchen is the most used room in the home, and the one where clutter costs the most: food expiring at the back of a cabinet, countertops taken up, containers you cannot find when you need them.",
+        "We work on the pantry alone, on wall cabinets and drawers — pots, utensils, dishes — or on the full kitchen, in Rome and the surrounding area. The aim is a kitchen where you can see what you have, and where everything goes back to its place without a second thought."
+      ],
+      "imageAlt": "Tidy kitchen with a clear worktop and open shelves",
+      "signs": [
+        "Food expires or piles up because you can't see what you have.",
+        "There is not enough space on the countertops.",
+        "There is visual clutter, and no suitable containers or labels."
+      ],
+      "includes": [
+        "Sorting food and utensils, checking expiry dates as we go",
+        "Working zones for the pantry, wall cabinets and drawers",
+        "Labels, so you find everything at a glance",
+        "Advice on buying containers and airtight jars, if you want it"
+      ],
+      "faq": [
+        {
+          "question": "Do I need to buy new containers?",
+          "answer": "You don't have to. We can work with the ones you already own; if you want a complete result in both looks and function, we advise you on which containers and airtight jars to choose."
+        },
+        {
+          "question": "Can you reorganize just the pantry?",
+          "answer": "Yes. You can choose the pantry alone, the wall cabinets and drawers, or the full kitchen."
+        },
+        {
+          "question": "How much does it cost to reorganize a kitchen?",
+          "answer": "It depends on the areas we work on and on how much has built up. The digital survey gives you an indicative estimate straight away; within 24 hours our team prepares a tailored quote, free and with no obligation."
+        }
+      ]
+    },
+    "bagno": {
+      "name": "Bathroom and personal care",
+      "metaTitle": "Bathroom Organizing in Rome",
+      "metaDescription": "We reorganize bathrooms in Rome: expired cosmetics and medicines cleared out, supplies in clear categories, working drawers and cabinets. Free quote.",
+      "heroTitle": "Bathroom organizing in Rome",
+      "heroSubtitle": "Cosmetics, medicines and supplies, each in its place.",
+      "introTitle": "A small space, used well",
+      "intro": [
+        "The bathroom is often the smallest room in the home and the one holding the most things: cosmetics opened and never finished, expired medicines, supplies bought twice because nobody could find them.",
+        "We reorganize one or more bathrooms, in Rome and the surrounding area, starting from how the space is built: deep drawers under the sink, a tall unit or open shelves, a mirrored cabinet and wall cabinets."
+      ],
+      "imageAlt": "Tidy bathroom with folded towels on shelves",
+      "signs": [
+        "You have cosmetics or medicines that have expired, or that you no longer use.",
+        "You don't know which supplies you have, and end up buying them again.",
+        "There are no clear categories for your personal hygiene products."
+      ],
+      "includes": [
+        "Sorting and clearing out expired or unused cosmetics and medicines",
+        "Clear categories for personal hygiene supplies",
+        "Organizing deep drawers, tall units, shelves and cabinets",
+        "A simple system you can keep up every day"
+      ],
+      "faq": [
+        {
+          "question": "My bathroom is very small: is it worth reorganizing?",
+          "answer": "Yes. Small spaces are where a system makes the most difference: we find space where you thought there was none."
+        },
+        {
+          "question": "Can you reorganize more than one bathroom?",
+          "answer": "Yes, we can work on the main bathroom or on two or more bathrooms."
+        },
+        {
+          "question": "How much does it cost to reorganize a bathroom?",
+          "answer": "It depends on the number of bathrooms and on how much has built up. The digital survey gives you an indicative estimate straight away; within 24 hours our team prepares a tailored quote, free and with no obligation."
+        }
+      ]
+    },
+    "living": {
+      "name": "Living room and home office",
+      "metaTitle": "Living Room & Home Office Organizing in Rome",
+      "metaDescription": "We organize living rooms, home offices and play areas in Rome: a fixed place for documents, cables, toys and objects. Free quote.",
+      "heroTitle": "Living room and home office organizing in Rome",
+      "heroSubtitle": "The spaces you share, free of what you don't need.",
+      "introTitle": "A fixed place for everything",
+      "intro": [
+        "The living room, the desk, the play corner: these are the spaces the whole household passes through, and where everything without a place comes to rest. Documents and cables, toys, objects accumulated over time.",
+        "We organize the living room and lounge area, the home office corner or work desk, and the kids' play area, in Rome and the surrounding area. We give every object a fixed place, so that tidying up becomes a gesture and not a project."
+      ],
+      "imageAlt": "Tidy work desk with a keyboard and desk organizers",
+      "signs": [
+        "Documents, cables and office supplies keep building up.",
+        "Toys and objects have no fixed place.",
+        "There are too many decorative pieces, or objects accumulated over time."
+      ],
+      "includes": [
+        "Sorting what stays and what can go",
+        "A fixed place for documents, cables and office supplies",
+        "Filing systems for household documents",
+        "A play area children can tidy up by themselves"
+      ],
+      "faq": [
+        {
+          "question": "I work from home: can you organize just the desk?",
+          "answer": "Yes. We can work on the home office corner or work desk alone, or on the whole living area."
+        },
+        {
+          "question": "Do you also organize children's rooms and toys?",
+          "answer": "Yes: organizing children's rooms and play areas is part of our home organizing service."
+        },
+        {
+          "question": "How much does it cost to reorganize a living room or home office?",
+          "answer": "It depends on the area we work on and on how much has built up. The digital survey gives you an indicative estimate straight away; within 24 hours our team prepares a tailored quote, free and with no obligation."
+        }
+      ]
+    },
+    "trasloco": {
+      "name": "Moving and new home",
+      "metaTitle": "Decluttering & Organizing for Your Move in Rome",
+      "metaDescription": "We support your move in Rome: decluttering before you pack, packing room by room, unpacking and organizing the new home. Free quote.",
+      "heroTitle": "Decluttering and organizing for your move in Rome",
+      "heroSubtitle": "Take to the new home only what you really want.",
+      "introTitle": "Fewer boxes, a home ready sooner",
+      "intro": [
+        "A move is the best moment to decide what to keep: every object you do not pack is one less to transport, unpack and put away.",
+        "We support you at the stage you need, in Rome and the surrounding area: decluttering and sorting before you pack, systematic packing organized room by room, unpacking and organizing the new home from day one — or total management, from home to home."
+      ],
+      "imageAlt": "Tidy entryway with a bench, wall hooks and baskets",
+      "signs": [
+        "You are about to move and don't know where to start.",
+        "You don't want to take what you no longer use to the new home.",
+        "You want a home that is organized from day one, not boxes to open for months."
+      ],
+      "includes": [
+        "Pre-move: decluttering and sorting before you pack",
+        "Packing: systematic boxing up, organized room by room",
+        "Unpacking and setup: unpacking and organizing the new home",
+        "Full service: total management, from home to home"
+      ],
+      "faq": [
+        {
+          "question": "Can I ask you for just one stage of the move?",
+          "answer": "Yes: the pre-move alone, the packing alone, the unpacking and setup of the new home alone, or the full service."
+        },
+        {
+          "question": "Do you work with homes of any size?",
+          "answer": "Yes, from a studio to a villa: the estimate takes into account the number of rooms in the new home."
+        },
+        {
+          "question": "How much does it cost?",
+          "answer": "It depends on the stage we support you in, on the size of the home and on how much has built up. The digital survey gives you an indicative estimate straight away; within 24 hours our team prepares a tailored quote, free and with no obligation."
+        }
+      ]
+    },
+    "garage": {
+      "name": "Garage, cellar and storage room",
+      "metaTitle": "Garage, Cellar & Storage Room Organizing in Rome",
+      "metaDescription": "We reorganize garages, cellars and storage rooms in Rome: sorting, zones by category, shelving and, if you want, donations and disposal. Free quote.",
+      "heroTitle": "Garage, cellar and storage room organizing in Rome",
+      "heroSubtitle": "Storage spaces become useful spaces again.",
+      "introTitle": "From dumping ground to useful space",
+      "intro": [
+        "Garages, cellars and storage rooms are where everything without a place in the home ends up: tools, supplies, suitcases, seasonal items, boxes never opened again.",
+        "We reorganize cellars and storage rooms, single garages, double garages and large storerooms, in Rome and the surrounding area. We sort what to keep together with you, divide the space by category and, if you want, we take care of donations and disposal."
+      ],
+      "imageAlt": "Shelving with boxes and containers arranged shelf by shelf",
+      "signs": [
+        "You can no longer park the car in the garage.",
+        "Tools, supplies and seasonal items are all mixed together.",
+        "There are things you no longer need and you don't know how to dispose of them."
+      ],
+      "includes": [
+        "Sorting what you need from what you no longer need",
+        "Shelving and dedicated zones by category",
+        "Space freed up, including to park the car again",
+        "Donations and disposal handled by us, if you want it"
+      ],
+      "faq": [
+        {
+          "question": "Do you take care of disposal?",
+          "answer": "If you want us to, yes: we handle the disposal or the donations. Otherwise you can take care of it yourself."
+        },
+        {
+          "question": "Do you also reorganize large garages and storerooms?",
+          "answer": "Yes: cellars and storage rooms, single garages, double garages and large storerooms."
+        },
+        {
+          "question": "How much does it cost to reorganize a garage or a cellar?",
+          "answer": "It depends on the type of space, on what it holds and on how much has built up. The digital survey gives you an indicative estimate straight away; within 24 hours our team prepares a tailored quote, free and with no obligation."
+        }
+      ]
+    }
+  },
   "blog": {
     "title": "Blog",
     "metaTitle": "Decluttering & Home Organizing Tips",

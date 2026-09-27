@@ -223,6 +223,250 @@
     },
     "relatedGuide": "Guía relacionada"
   },
+  "areas": {
+    "common": {
+      "signsTitle": "Cuándo llamarnos",
+      "includesTitle": "Qué incluye",
+      "faqTitle": "Preguntas frecuentes",
+      "guidesTitle": "Guías del blog",
+      "othersTitle": "Otros espacios de la casa",
+      "ctaTitle": "¿Quieres saber cuánto cuesta?",
+      "ctaBody": "La inspección digital lleva pocos minutos: elige la zona, responde a unas preguntas y recibe una estimación al momento. Gratis y sin compromiso.",
+      "ctaButton": "Solicita un presupuesto gratuito",
+      "sectionTitle": "Un servicio para cada espacio",
+      "sectionBody": "Cada habitación tiene sus problemas y su método. Elige el espacio por el que quieres empezar.",
+      "relatedService": "Servicio relacionado",
+      "discover": "Ver el servicio"
+    },
+    "armadio": {
+      "name": "Armarios y vestidores",
+      "metaTitle": "Organización de Armarios y Vestidores en Roma",
+      "metaDescription": "Reorganizamos armarios, guardarropas y vestidores en Roma: selección de la ropa, sistema de doblado, cambio de temporada y etiquetado. Presupuesto gratis.",
+      "heroTitle": "Organización de armarios y vestidores en Roma",
+      "heroSubtitle": "Un guardarropa donde lo encuentras todo y te vistes en minutos.",
+      "introTitle": "Un guardarropa que funciona cada mañana",
+      "intro": [
+        "El armario es donde el desorden se nota primero: por la mañana, cuando tienes prisa. Ropa que no encuentras, puertas que no cierran, y la sensación de no tener nada que ponerte delante de un guardarropa lleno.",
+        "Reorganizamos armarios estándar, armarios grandes y vestidores completos, en Roma y en los municipios cercanos. Trabajamos con guardarropas individuales, de pareja y de niños y adolescentes: seleccionamos contigo qué conservar, y damos a cada prenda un sitio fácil de mantener."
+      ],
+      "imageAlt": "Armario organizado con ropa doblada, cestas y prendas colgadas",
+      "signs": [
+        "No encuentras la ropa y pierdes demasiado tiempo vistiéndote.",
+        "El armario está lleno pero sientes que no tienes nada que ponerte.",
+        "La ropa se arruga y falta un sistema de doblado eficaz."
+      ],
+      "includes": [
+        "Selección de la ropa contigo, sin juicios y sin prisas",
+        "División por categorías y un sistema de doblado que no arruga",
+        "Cambio de temporada completo y etiquetado de las cestas, si lo deseas",
+        "Donación o eliminación responsable de lo que decidas dejar ir"
+      ],
+      "faq": [
+        {
+          "question": "¿Cuánto cuesta reorganizar un armario?",
+          "answer": "Depende del tipo de guardarropa — armario estándar, armario grande o vestidor —, de quién lo usa y del nivel de acumulación. Con la inspección digital recibes al momento una estimación orientativa; en 24 horas nuestro equipo te prepara un presupuesto a medida, gratuito y sin compromiso."
+        },
+        {
+          "question": "¿Tengo que tirar mi ropa?",
+          "answer": "No. Siempre decides tú qué se queda: te ayudamos a elegir con criterio, y te acompañamos cuando separarse de algo es difícil."
+        },
+        {
+          "question": "¿Hacéis también el cambio de temporada?",
+          "answer": "Sí. Puedes incluirlo en el trabajo, con el etiquetado de las cestas, o encargárnoslo periódicamente con el servicio de mantenimiento."
+        }
+      ]
+    },
+    "cucina": {
+      "name": "Cocina y despensa",
+      "metaTitle": "Organización de Cocina y Despensa en Roma",
+      "metaDescription": "Reorganizamos cocina y despensa en Roma: alimentos a la vista, encimeras despejadas, muebles y cajones funcionales, etiquetas. Presupuesto gratis.",
+      "heroTitle": "Organización de cocina y despensa en Roma",
+      "heroSubtitle": "Alimentos a la vista, encimeras despejadas, todo a mano.",
+      "introTitle": "Una cocina donde ves lo que tienes",
+      "intro": [
+        "La cocina es la habitación que más se usa, y en la que el desorden sale más caro: alimentos que caducan al fondo de un mueble, encimeras ocupadas, contenedores que no aparecen cuando hacen falta.",
+        "Intervenimos solo en la despensa, en muebles altos y cajones — ollas, utensilios, vajilla — o en la cocina completa, en Roma y en los municipios cercanos. El objetivo es una cocina donde ves lo que tienes, y donde cada cosa vuelve a su sitio sin pensarlo."
+      ],
+      "imageAlt": "Cocina ordenada con encimera despejada y estantes abiertos",
+      "signs": [
+        "Los alimentos caducan o se acumulan porque no hay visibilidad.",
+        "Falta espacio en las encimeras.",
+        "Hay desorden visual y faltan contenedores y etiquetas adecuados."
+      ],
+      "includes": [
+        "Selección de alimentos y utensilios, con control de las fechas de caducidad",
+        "Zonas funcionales para despensa, muebles altos y cajones",
+        "Etiquetas, para encontrarlo todo de un vistazo",
+        "Asesoramiento para comprar contenedores y tarros herméticos, si lo deseas"
+      ],
+      "faq": [
+        {
+          "question": "¿Tengo que comprar contenedores nuevos?",
+          "answer": "No es necesario. Podemos trabajar con los que ya tienes; si quieres un resultado estético y funcional completo, te aconsejamos qué contenedores y tarros herméticos elegir."
+        },
+        {
+          "question": "¿Podéis reorganizar solo la despensa?",
+          "answer": "Sí. Puedes elegir solo la despensa, los muebles altos y los cajones, o la cocina completa."
+        },
+        {
+          "question": "¿Cuánto cuesta reorganizar una cocina?",
+          "answer": "Depende de las zonas en las que intervenimos y del nivel de acumulación. Con la inspección digital recibes al momento una estimación orientativa; en 24 horas nuestro equipo te prepara un presupuesto a medida, gratuito y sin compromiso."
+        }
+      ]
+    },
+    "bagno": {
+      "name": "Baño y cuidado personal",
+      "metaTitle": "Organización del Baño en Roma",
+      "metaDescription": "Reorganizamos el baño en Roma: fuera cosméticos y medicamentos caducados, reservas en categorías claras, cajones y muebles funcionales. Presupuesto gratis.",
+      "heroTitle": "Organización del baño en Roma",
+      "heroSubtitle": "Cosméticos, medicamentos y reservas, cada cosa en su sitio.",
+      "introTitle": "Poco espacio, bien aprovechado",
+      "intro": [
+        "El baño suele ser la habitación más pequeña de la casa y la que más objetos guarda: cosméticos empezados y nunca terminados, medicamentos caducados, reservas compradas dos veces porque no aparecían.",
+        "Reorganizamos uno o más baños, en Roma y en los municipios cercanos, partiendo de cómo es el espacio: cajones grandes bajo el lavabo, mueble columna o estantes a la vista, mueble con espejo y muebles colgantes."
+      ],
+      "imageAlt": "Baño ordenado con toallas dobladas en estantes",
+      "signs": [
+        "Tienes cosméticos o medicamentos caducados, o que ya no usas.",
+        "No sabes qué reservas tienes, y acabas comprándolas otra vez.",
+        "Faltan categorías claras para los productos de higiene personal."
+      ],
+      "includes": [
+        "Selección y eliminación de cosméticos y medicamentos caducados o sin usar",
+        "Categorías claras para las reservas de higiene personal",
+        "Organización de cajones, columnas, estantes y muebles",
+        "Un sistema sencillo, para mantener cada día"
+      ],
+      "faq": [
+        {
+          "question": "Mi baño es muy pequeño: ¿merece la pena reorganizarlo?",
+          "answer": "Sí. Es en los espacios pequeños donde un sistema marca más la diferencia: encontramos espacio donde pensabas que no había."
+        },
+        {
+          "question": "¿Podéis reorganizar más de un baño?",
+          "answer": "Sí, podemos intervenir en el baño principal o en dos o más baños."
+        },
+        {
+          "question": "¿Cuánto cuesta reorganizar un baño?",
+          "answer": "Depende del número de baños y del nivel de acumulación. Con la inspección digital recibes al momento una estimación orientativa; en 24 horas nuestro equipo te prepara un presupuesto a medida, gratuito y sin compromiso."
+        }
+      ]
+    },
+    "living": {
+      "name": "Salón y home office",
+      "metaTitle": "Organización de Salón y Home Office en Roma",
+      "metaDescription": "Ordenamos salón, home office y zona de juegos en Roma: un sitio fijo para documentos, cables, juguetes y objetos. Presupuesto gratis.",
+      "heroTitle": "Organización de salón y home office en Roma",
+      "heroSubtitle": "Los espacios que compartes, libres de lo que no hace falta.",
+      "introTitle": "Un sitio fijo para cada cosa",
+      "intro": [
+        "El salón, el escritorio, el rincón de juegos: son los espacios por los que pasa toda la casa, y donde se queda todo lo que no tiene sitio. Documentos y cables, juguetes, objetos acumulados con el tiempo.",
+        "Ordenamos el salón y la zona de estar, el rincón home office o el escritorio de trabajo, y la zona de juegos infantil, en Roma y en los municipios cercanos. Damos a cada objeto un sitio fijo, para que recoger sea un gesto y no un proyecto."
+      ],
+      "imageAlt": "Escritorio de trabajo ordenado con teclado y organizadores",
+      "signs": [
+        "Se acumulan documentos, cables y material de oficina.",
+        "Los juguetes y los objetos no tienen un sitio fijo.",
+        "Hay demasiados elementos decorativos, u objetos acumulados con el tiempo."
+      ],
+      "includes": [
+        "Selección de lo que se queda y de lo que puede irse",
+        "Un sitio fijo para documentos, cables y material de oficina",
+        "Sistemas de archivo para los documentos de casa",
+        "Una zona de juegos que los niños pueden recoger solos"
+      ],
+      "faq": [
+        {
+          "question": "Trabajo desde casa: ¿podéis organizar solo el escritorio?",
+          "answer": "Sí. Podemos intervenir solo en el rincón home office o el escritorio de trabajo, o en toda la zona de estar."
+        },
+        {
+          "question": "¿Ordenáis también la habitación y los juguetes de los niños?",
+          "answer": "Sí: la organización de habitaciones infantiles y zonas de juego forma parte de nuestro servicio de home organizing."
+        },
+        {
+          "question": "¿Cuánto cuesta reorganizar el salón o el home office?",
+          "answer": "Depende de la zona en la que intervenimos y del nivel de acumulación. Con la inspección digital recibes al momento una estimación orientativa; en 24 horas nuestro equipo te prepara un presupuesto a medida, gratuito y sin compromiso."
+        }
+      ]
+    },
+    "trasloco": {
+      "name": "Mudanza y casa nueva",
+      "metaTitle": "Decluttering y Organización de Mudanzas en Roma",
+      "metaDescription": "Te acompañamos en tu mudanza en Roma: decluttering antes de embalar, embalaje por habitaciones, desembalaje y organización de la casa nueva. Presupuesto gratis.",
+      "heroTitle": "Decluttering y organización de tu mudanza en Roma",
+      "heroSubtitle": "A la casa nueva llevas solo lo que quieres de verdad.",
+      "introTitle": "Menos cajas, una casa lista antes",
+      "intro": [
+        "Una mudanza es el mejor momento para decidir qué conservar: cada objeto que no embalas es un objeto menos que transportar, desembalar y colocar.",
+        "Te acompañamos en la fase que necesites, en Roma y en los municipios cercanos: decluttering y selección antes de embalar, embalaje sistemático y organizado por habitaciones, desembalaje y organización en la casa nueva desde el primer día — o la gestión completa, de casa a casa."
+      ],
+      "imageAlt": "Recibidor ordenado con banco, ganchos de pared y cestas",
+      "signs": [
+        "Estás a punto de mudarte y no sabes por dónde empezar.",
+        "No quieres llevar a la casa nueva lo que ya no usas.",
+        "Quieres una casa organizada desde el primer día, no cajas que abrir durante meses."
+      ],
+      "includes": [
+        "Pre-mudanza: decluttering y selección antes de embalar",
+        "Embalaje: empaquetado sistemático, organizado por habitaciones",
+        "Unpacking y setup: desembalaje y organización en la casa nueva",
+        "Servicio completo: gestión total, de casa a casa"
+      ],
+      "faq": [
+        {
+          "question": "¿Puedo pediros una sola fase de la mudanza?",
+          "answer": "Sí: solo la pre-mudanza, solo el embalaje, solo el desembalaje y el setup de la casa nueva, o el servicio completo."
+        },
+        {
+          "question": "¿Trabajáis con casas de cualquier tamaño?",
+          "answer": "Sí, desde un estudio hasta un chalet: la estimación tiene en cuenta el número de habitaciones de la nueva vivienda."
+        },
+        {
+          "question": "¿Cuánto cuesta?",
+          "answer": "Depende de la fase en la que te acompañamos, del tamaño de la casa y del nivel de acumulación. Con la inspección digital recibes al momento una estimación orientativa; en 24 horas nuestro equipo te prepara un presupuesto a medida, gratuito y sin compromiso."
+        }
+      ]
+    },
+    "garage": {
+      "name": "Garaje, sótano y trastero",
+      "metaTitle": "Organización de Garaje, Sótano y Trastero en Roma",
+      "metaDescription": "Reorganizamos garajes, sótanos y trasteros en Roma: selección, zonas por categoría, estanterías y, si quieres, donaciones y retirada. Presupuesto gratis.",
+      "heroTitle": "Organización de garaje, sótano y trastero en Roma",
+      "heroSubtitle": "Los espacios de almacenaje vuelven a ser espacios útiles.",
+      "introTitle": "De almacén a espacio útil",
+      "intro": [
+        "Garajes, sótanos y trasteros son los espacios donde acaba todo lo que en casa no tiene sitio: herramientas, provisiones, maletas, objetos de temporada, cajas que nunca se volvieron a abrir.",
+        "Reorganizamos sótanos y trasteros, garajes para un coche, garajes dobles y almacenes, en Roma y en los municipios cercanos. Seleccionamos contigo qué conservar, dividimos el espacio por categorías y, si lo deseas, nos ocupamos nosotras de las donaciones y de la retirada."
+      ],
+      "imageAlt": "Estantería con cajas y contenedores ordenados por estante",
+      "signs": [
+        "Ya no puedes aparcar el coche en el garaje.",
+        "Herramientas, provisiones y objetos de temporada están mezclados, sin una división clara.",
+        "Hay cosas que ya no necesitas y no sabes cómo deshacerte de ellas."
+      ],
+      "includes": [
+        "Selección de lo que necesitas y de lo que ya no",
+        "Estanterías y zonas dedicadas por categoría",
+        "Espacio liberado, también para volver a aparcar el coche",
+        "Donaciones y retirada de residuos gestionadas por nosotras, si lo deseas"
+      ],
+      "faq": [
+        {
+          "question": "¿Os ocupáis vosotras de la retirada?",
+          "answer": "Si lo deseas, sí: gestionamos nosotras la retirada de residuos o las donaciones. Si lo prefieres, puedes encargarte tú personalmente."
+        },
+        {
+          "question": "¿Reorganizáis también garajes y almacenes grandes?",
+          "answer": "Sí: sótanos y trasteros, garajes para un coche, garajes dobles y almacenes."
+        },
+        {
+          "question": "¿Cuánto cuesta reorganizar un garaje o un sótano?",
+          "answer": "Depende del tipo de espacio, de lo que contiene y del nivel de acumulación. Con la inspección digital recibes al momento una estimación orientativa; en 24 horas nuestro equipo te prepara un presupuesto a medida, gratuito y sin compromiso."
+        }
+      ]
+    }
+  },
   "blog": {
     "title": "Blog",
     "metaTitle": "Consejos de Decluttering y Home Organizing",

@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { getAllPosts, getPostLocales } from '@/lib/blog';
 import { getPublishedReviews, MIN_LISTING_INDEXED } from '@/lib/reviews/queries';
+import { AREAS } from '@/lib/areas';
 
 /**
  * Rendered per request rather than prerendered at build time.
@@ -20,6 +21,11 @@ const pages = [
   { path: '', changeFrequency: 'weekly' as const, priority: 1.0 },
   { path: '/about', changeFrequency: 'monthly' as const, priority: 0.8 },
   { path: '/services', changeFrequency: 'monthly' as const, priority: 0.9 },
+  ...AREAS.map((area) => ({
+    path: `/services/${area.slug}`,
+    changeFrequency: 'monthly' as const,
+    priority: 0.8,
+  })),
   { path: '/blog', changeFrequency: 'weekly' as const, priority: 0.7 },
   { path: '/preventivo', changeFrequency: 'monthly' as const, priority: 0.8 },
   { path: '/contact', changeFrequency: 'monthly' as const, priority: 0.8 },

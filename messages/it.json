@@ -223,6 +223,250 @@
     },
     "relatedGuide": "Guida correlata"
   },
+  "areas": {
+    "common": {
+      "signsTitle": "Quando chiamarci",
+      "includesTitle": "Cosa comprende",
+      "faqTitle": "Domande frequenti",
+      "guidesTitle": "Guide dal blog",
+      "othersTitle": "Altri ambienti",
+      "ctaTitle": "Vuoi sapere quanto costa?",
+      "ctaBody": "Il sopralluogo digitale richiede pochi minuti: scegli la zona, rispondi a poche domande e ricevi subito una stima. Gratuito e senza impegno.",
+      "ctaButton": "Richiedi un preventivo gratuito",
+      "sectionTitle": "Un servizio per ogni ambiente",
+      "sectionBody": "Ogni stanza ha i suoi problemi e il suo metodo. Scegli l'ambiente da cui vuoi partire.",
+      "relatedService": "Servizio correlato",
+      "discover": "Scopri il servizio"
+    },
+    "armadio": {
+      "name": "Armadio e cabina armadio",
+      "metaTitle": "Organizzazione Armadio e Cabina Armadio a Roma",
+      "metaDescription": "Riorganizziamo armadi, guardaroba e cabine armadio a Roma: selezione dei capi, sistema di piegatura, cambio stagione ed etichettatura. Preventivo gratuito.",
+      "heroTitle": "Organizzazione armadio e cabina armadio a Roma",
+      "heroSubtitle": "Un guardaroba in cui trovi tutto, e in cui ti vesti in pochi minuti.",
+      "introTitle": "Un guardaroba che funziona ogni mattina",
+      "intro": [
+        "L'armadio è il posto in cui il disordine si sente prima: la mattina, quando hai fretta. Capi che non trovi, ante che non si chiudono, e la sensazione di non avere niente da mettere davanti a un guardaroba pieno.",
+        "Riorganizziamo armadi standard, armadi grandi e cabine armadio complete, a Roma e nei comuni limitrofi. Lavoriamo su guardaroba individuali, di coppia e di bambini e ragazzi: selezioniamo insieme a te cosa tenere, e diamo a ogni capo un posto che resti facile da mantenere."
+      ],
+      "imageAlt": "Armadio organizzato con capi piegati, cesti e abiti appesi",
+      "signs": [
+        "Non trovi i capi e perdi troppo tempo a vestirti.",
+        "L'armadio è pieno ma senti di non avere niente da mettere.",
+        "I vestiti si sgualciscono e manca un sistema di piegatura efficace."
+      ],
+      "includes": [
+        "Selezione dei capi insieme a te, senza giudizi e senza fretta",
+        "Suddivisione per categorie e un sistema di piegatura che non sgualcisce",
+        "Cambio stagione completo ed etichettatura delle ceste, se lo desideri",
+        "Donazione o smaltimento responsabile di ciò che decidi di lasciare andare"
+      ],
+      "faq": [
+        {
+          "question": "Quanto costa riorganizzare un armadio?",
+          "answer": "Dipende dalla tipologia del guardaroba — armadio standard, armadio grande o cabina armadio — da chi lo usa e dal livello di accumulo. Con il sopralluogo digitale ricevi subito una stima indicativa; entro 24 ore il nostro team ti prepara un preventivo su misura, gratuito e senza impegno."
+        },
+        {
+          "question": "Devo buttare via i miei vestiti?",
+          "answer": "No. Decidi sempre tu cosa resta: noi ti aiutiamo a scegliere con criterio, e ti accompagniamo quando separarsi da qualcosa è difficile."
+        },
+        {
+          "question": "Fate anche il cambio di stagione?",
+          "answer": "Sì. Puoi includerlo nell'intervento, con l'etichettatura delle ceste, oppure affidarcelo periodicamente con il servizio di mantenimento."
+        }
+      ]
+    },
+    "cucina": {
+      "name": "Cucina e dispensa",
+      "metaTitle": "Organizzazione Cucina e Dispensa a Roma",
+      "metaDescription": "Riorganizziamo cucina e dispensa a Roma: alimenti in vista, piani di lavoro liberi, pensili e cassetti funzionali, etichette. Preventivo gratuito.",
+      "heroTitle": "Organizzazione cucina e dispensa a Roma",
+      "heroSubtitle": "Alimenti in vista, piani liberi, tutto a portata di mano.",
+      "introTitle": "Una cucina in cui vedi quello che hai",
+      "intro": [
+        "La cucina è la stanza che si usa di più, e quella in cui il disordine costa di più: alimenti che scadono in fondo a un pensile, piani di lavoro occupati, contenitori che non si trovano quando servono.",
+        "Interveniamo sulla sola dispensa, su pensili e cassetti — pentole, utensili, stoviglie — oppure sulla cucina completa, a Roma e nei comuni limitrofi. L'obiettivo è una cucina in cui vedi quello che hai, e in cui ogni cosa torna al suo posto senza pensarci."
+      ],
+      "imageAlt": "Cucina ordinata con piano di lavoro libero e mensole a giorno",
+      "signs": [
+        "Gli alimenti scadono o si accumulano perché non c'è visibilità.",
+        "Manca spazio sui piani di lavoro.",
+        "C'è disordine visivo e mancano contenitori ed etichette adatte."
+      ],
+      "includes": [
+        "Selezione degli alimenti e degli utensili, con controllo delle scadenze",
+        "Zone funzionali per dispensa, pensili e cassetti",
+        "Etichette, per ritrovare tutto a colpo d'occhio",
+        "Consulenza per l'acquisto di contenitori e barattoli ermetici, se lo desideri"
+      ],
+      "faq": [
+        {
+          "question": "Devo comprare contenitori nuovi?",
+          "answer": "Non è necessario. Possiamo lavorare con quelli che possiedi già; se desideri un risultato estetico e funzionale completo, ti consigliamo noi quali contenitori e barattoli ermetici scegliere."
+        },
+        {
+          "question": "Potete riorganizzare solo la dispensa?",
+          "answer": "Sì. Puoi scegliere la sola dispensa, i pensili e i cassetti, oppure la cucina completa."
+        },
+        {
+          "question": "Quanto costa riorganizzare una cucina?",
+          "answer": "Dipende dalle aree su cui interveniamo e dal livello di accumulo. Con il sopralluogo digitale ricevi subito una stima indicativa; entro 24 ore il nostro team ti prepara un preventivo su misura, gratuito e senza impegno."
+        }
+      ]
+    },
+    "bagno": {
+      "name": "Bagno e cura personale",
+      "metaTitle": "Organizzazione del Bagno a Roma",
+      "metaDescription": "Riorganizziamo il bagno a Roma: via cosmetici e farmaci scaduti, scorte suddivise con chiarezza, cassetti e pensili funzionali. Preventivo gratuito.",
+      "heroTitle": "Organizzazione del bagno a Roma",
+      "heroSubtitle": "Cosmetici, farmaci e scorte, ciascuno al suo posto.",
+      "introTitle": "Poco spazio, usato bene",
+      "intro": [
+        "Il bagno è spesso la stanza più piccola della casa e quella con più oggetti: cosmetici iniziati e mai finiti, farmaci scaduti, scorte comprate due volte perché non si trovavano.",
+        "Riorganizziamo uno o più bagni, a Roma e nei comuni limitrofi, partendo da come è fatto lo spazio: cassettoni sotto il lavabo, mobile a colonna o scaffali a vista, armadietto a specchio e pensili."
+      ],
+      "imageAlt": "Bagno ordinato con asciugamani piegati sulle mensole",
+      "signs": [
+        "Hai cosmetici o farmaci scaduti, o che non usi più.",
+        "Non sai quali scorte hai, e finisci per ricomprarle.",
+        "Manca una suddivisione chiara dei prodotti per l'igiene personale."
+      ],
+      "includes": [
+        "Selezione ed eliminazione di cosmetici e farmaci scaduti o inutilizzati",
+        "Suddivisione chiara delle scorte per l'igiene personale",
+        "Organizzazione di cassettoni, colonne, scaffali, armadietti e pensili",
+        "Un sistema semplice, da mantenere ogni giorno"
+      ],
+      "faq": [
+        {
+          "question": "Il mio bagno è molto piccolo: ha senso riorganizzarlo?",
+          "answer": "Sì. È negli spazi piccoli che un sistema fa più differenza: troviamo spazio dove pensavi non ce ne fosse."
+        },
+        {
+          "question": "Potete riorganizzare più bagni?",
+          "answer": "Sì, possiamo intervenire sul bagno principale oppure su due o più bagni."
+        },
+        {
+          "question": "Quanto costa riorganizzare un bagno?",
+          "answer": "Dipende dal numero di bagni e dal livello di accumulo. Con il sopralluogo digitale ricevi subito una stima indicativa; entro 24 ore il nostro team ti prepara un preventivo su misura, gratuito e senza impegno."
+        }
+      ]
+    },
+    "living": {
+      "name": "Soggiorno e home office",
+      "metaTitle": "Organizzazione Soggiorno e Home Office a Roma",
+      "metaDescription": "Riordiniamo soggiorno, home office e area giochi a Roma: una collocazione fissa per documenti, cavi, giocattoli e oggetti. Preventivo gratuito.",
+      "heroTitle": "Organizzazione di soggiorno e home office a Roma",
+      "heroSubtitle": "Gli spazi che condividi, liberi da ciò che non serve.",
+      "introTitle": "Un posto fisso per ogni cosa",
+      "intro": [
+        "Il soggiorno, la scrivania, l'angolo dei giochi: sono gli spazi da cui passa tutta la casa, e in cui si ferma tutto ciò che non ha un posto. Documenti e cavi, giocattoli, oggetti accumulati nel tempo.",
+        "Riordiniamo il soggiorno e la zona living, l'angolo home office o la scrivania da lavoro, e l'area giochi dei bambini, a Roma e nei comuni limitrofi. Diamo a ogni oggetto una collocazione fissa, così rimettere in ordine diventa un gesto e non un progetto."
+      ],
+      "imageAlt": "Postazione di lavoro ordinata con tastiera e portaoggetti",
+      "signs": [
+        "Documenti, cavi e materiale da ufficio si accumulano.",
+        "Giocattoli e oggetti non hanno una collocazione fissa.",
+        "Ci sono troppi elementi decorativi, o oggetti accumulati nel tempo."
+      ],
+      "includes": [
+        "Selezione di ciò che resta e di ciò che può andare",
+        "Una collocazione fissa per documenti, cavi e materiale da ufficio",
+        "Sistemi di archiviazione per i documenti di casa",
+        "Un'area giochi che i bambini riescono a riordinare da soli"
+      ],
+      "faq": [
+        {
+          "question": "Lavoro da casa: potete organizzare solo la scrivania?",
+          "answer": "Sì. Possiamo intervenire sul solo angolo home office o sulla scrivania da lavoro, oppure sull'intera zona living."
+        },
+        {
+          "question": "Riordinate anche la cameretta e i giochi dei bambini?",
+          "answer": "Sì: l'organizzazione delle camerette e dell'area giochi fa parte del nostro servizio di home organizing."
+        },
+        {
+          "question": "Quanto costa riorganizzare il soggiorno o l'home office?",
+          "answer": "Dipende dall'area su cui interveniamo e dal livello di accumulo. Con il sopralluogo digitale ricevi subito una stima indicativa; entro 24 ore il nostro team ti prepara un preventivo su misura, gratuito e senza impegno."
+        }
+      ]
+    },
+    "trasloco": {
+      "name": "Trasloco e nuova casa",
+      "metaTitle": "Decluttering e Organizzazione del Trasloco a Roma",
+      "metaDescription": "Ti affianchiamo nel trasloco a Roma: decluttering prima di inscatolare, imballaggio per ambienti, organizzazione della nuova casa. Preventivo gratuito.",
+      "heroTitle": "Decluttering e organizzazione del trasloco a Roma",
+      "heroSubtitle": "Nella casa nuova porti solo quello che vuoi davvero.",
+      "introTitle": "Meno scatole, una casa pronta prima",
+      "intro": [
+        "Un trasloco è il momento migliore per decidere cosa tenere: ogni oggetto che non inscatoli è un oggetto in meno da trasportare, disimballare e sistemare.",
+        "Ti affianchiamo nella fase che ti serve, a Roma e nei comuni limitrofi: decluttering e selezione prima di inscatolare, imballaggio sistematico e suddiviso per ambienti, disimballaggio e organizzazione nella nuova casa fin dal primo giorno — oppure la gestione completa, da casa a casa."
+      ],
+      "imageAlt": "Ingresso ordinato con panca, ganci a parete e cesti",
+      "signs": [
+        "Stai per traslocare e non sai da dove cominciare.",
+        "Non vuoi portare nella casa nuova quello che non usi più.",
+        "Vuoi una casa organizzata dal primo giorno, non scatole da aprire per mesi."
+      ],
+      "includes": [
+        "Pre-trasloco: decluttering e selezione prima di inscatolare",
+        "Imballaggio: inscatolamento sistematico, suddiviso per ambienti",
+        "Unpacking e setup: disimballaggio e organizzazione nella nuova casa",
+        "Servizio completo: gestione totale, da casa a casa"
+      ],
+      "faq": [
+        {
+          "question": "Posso chiedervi una sola fase del trasloco?",
+          "answer": "Sì: solo il pre-trasloco, solo l'imballaggio, solo il disimballaggio e il setup della nuova casa, oppure il servizio completo."
+        },
+        {
+          "question": "Seguite case di ogni dimensione?",
+          "answer": "Sì, dal monolocale alla villa: la stima tiene conto del numero di vani della nuova abitazione."
+        },
+        {
+          "question": "Quanto costa?",
+          "answer": "Dipende dalla fase in cui ti affianchiamo, dalle dimensioni della casa e dal livello di accumulo. Con il sopralluogo digitale ricevi subito una stima indicativa; entro 24 ore il nostro team ti prepara un preventivo su misura, gratuito e senza impegno."
+        }
+      ]
+    },
+    "garage": {
+      "name": "Garage, cantina e ripostiglio",
+      "metaTitle": "Organizzazione Garage, Cantina e Ripostiglio a Roma",
+      "metaDescription": "Riorganizziamo garage, box, cantine e ripostigli a Roma: selezione, zone per categoria, scaffalature e, se vuoi, donazioni e smaltimento. Preventivo gratuito.",
+      "heroTitle": "Organizzazione di garage, cantina e ripostiglio a Roma",
+      "heroSubtitle": "Gli spazi di stoccaggio tornano a essere spazi utili.",
+      "introTitle": "Da deposito a spazio utile",
+      "intro": [
+        "Garage, cantine e ripostigli sono gli spazi in cui finisce tutto quello che in casa non ha un posto: attrezzi, scorte, valigie, oggetti stagionali, scatole mai riaperte.",
+        "Riorganizziamo cantine e ripostigli, box auto, garage doppi e magazzini, a Roma e nei comuni limitrofi. Selezioniamo insieme a te cosa tenere, dividiamo lo spazio per categorie e, se lo desideri, ci occupiamo noi di donazioni e smaltimento."
+      ],
+      "imageAlt": "Scaffalatura con scatole e contenitori ordinati per ripiano",
+      "signs": [
+        "Non riesci più a parcheggiare l'auto nel box.",
+        "Attrezzi, scorte e oggetti stagionali sono mescolati, senza una divisione precisa.",
+        "Ci sono cose che non servono più e non sai come smaltirle."
+      ],
+      "includes": [
+        "Selezione di ciò che serve e di ciò che non serve più",
+        "Scaffalature e zone dedicate per categoria",
+        "Spazio liberato, anche per tornare a parcheggiare l'auto",
+        "Donazioni e conferimento in discarica gestiti da noi, se lo desideri"
+      ],
+      "faq": [
+        {
+          "question": "Vi occupate voi dello smaltimento?",
+          "answer": "Se lo desideri, sì: gestiamo noi il conferimento in discarica o le donazioni. In alternativa puoi occupartene personalmente."
+        },
+        {
+          "question": "Riorganizzate anche box e magazzini grandi?",
+          "answer": "Sì: cantine e ripostigli, box auto, garage doppi e magazzini."
+        },
+        {
+          "question": "Quanto costa riorganizzare un garage o una cantina?",
+          "answer": "Dipende dalla tipologia dello spazio, da quello che contiene e dal livello di accumulo. Con il sopralluogo digitale ricevi subito una stima indicativa; entro 24 ore il nostro team ti prepara un preventivo su misura, gratuito e senza impegno."
+        }
+      ]
+    }
+  },
   "blog": {
     "title": "Blog",
     "metaTitle": "Consigli di Decluttering e Home Organizing",
