@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { routing } from '@/i18n/routing';
 import { getPost, getPostLocales, getPostSlugs, getRelatedPosts } from '@/lib/blog';
@@ -107,6 +107,8 @@ export default async function BlogPostPage({
   params: Promise<{ locale: string; slug: string }>;
 }) {
   const { locale, slug } = await params;
+  // Lets the post be prerendered instead of rendered on every request.
+  setRequestLocale(locale);
   const post = getPost(slug, locale);
   if (!post) notFound();
 

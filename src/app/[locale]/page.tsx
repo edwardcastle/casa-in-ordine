@@ -15,6 +15,16 @@ import CategoryIcon from '@/components/CategoryIcon';
 import ReviewsSection from '@/components/ReviewsSection';
 import type { Category } from '@/components/CategoryIcon';
 
+/**
+ * Rendered per request, on purpose.
+ *
+ * The reviews strip reads the database, and a review its author has withdrawn
+ * has to be gone on the next request — see getPublishedReviews. The layout now
+ * sets the request locale, which would otherwise let Next prerender this page
+ * at build time and freeze whatever reviews existed at the last deploy.
+ */
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({
   params,
 }: {

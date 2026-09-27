@@ -9,6 +9,10 @@ import { breadcrumbLd } from '@/lib/breadcrumb';
 import { getPublishedReviews, MIN_LISTING_INDEXED } from '@/lib/reviews/queries';
 import type { ReviewLang } from '@/lib/reviews/types';
 
+// Rendered per request: the listing, and whether it is indexable, both follow
+// the reviews table rather than the last deploy.
+export const dynamic = 'force-dynamic';
+
 export async function generateMetadata({
   params,
 }: {

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { useTranslations, useLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { use } from 'react';
+import { useTranslations } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Image from 'next/image';
 import Hero from '@/components/Hero';
@@ -59,11 +60,17 @@ const serviceIcons = [
   </svg>,
 ];
 
-export default function ServicesPage() {
+export default function ServicesPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = use(params);
+  // Lets the page be prerendered instead of rendered on every request.
+  setRequestLocale(locale);
   const t = useTranslations('services');
   const tCatalog = useTranslations('catalog');
   const tNav = useTranslations('nav');
-  const locale = useLocale();
 
   const breadcrumbSchema = breadcrumbLd(locale, [
     { name: tNav('home'), path: '' },

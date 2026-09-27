@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
-import { useTranslations, useLocale } from 'next-intl';
+import { use } from 'react';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
 import Hero from '@/components/Hero';
 import ContactForm from '@/components/ContactForm';
 import { breadcrumbLd } from '@/lib/breadcrumb';
@@ -37,10 +38,16 @@ export async function generateMetadata({
   };
 }
 
-export default function ContactPage() {
+export default function ContactPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = use(params);
+  // Lets the page be prerendered instead of rendered on every request.
+  setRequestLocale(locale);
   const t = useTranslations('contact');
   const tNav = useTranslations('nav');
-  const locale = useLocale();
 
   const breadcrumbSchema = breadcrumbLd(locale, [
     { name: tNav('home'), path: '' },

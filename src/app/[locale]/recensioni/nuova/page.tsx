@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
-import { getTranslations } from 'next-intl/server';
+import { use } from 'react';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { useTranslations } from 'next-intl';
 import Hero from '@/components/Hero';
 import ReviewForm from '@/components/ReviewForm';
@@ -32,7 +33,14 @@ export async function generateMetadata({
   };
 }
 
-export default function NewReviewPage() {
+export default function NewReviewPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = use(params);
+  // Lets the page be prerendered instead of rendered on every request.
+  setRequestLocale(locale);
   const t = useTranslations('reviewForm');
 
   return (

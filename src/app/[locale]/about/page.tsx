@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
-import { useTranslations, useLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { use } from 'react';
+import { useTranslations } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Link from 'next/link';
 import Hero from '@/components/Hero';
 import ScrollReveal from '@/components/ScrollReveal';
@@ -39,10 +40,16 @@ export async function generateMetadata({
   };
 }
 
-export default function AboutPage() {
+export default function AboutPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = use(params);
+  // Lets the page be prerendered instead of rendered on every request.
+  setRequestLocale(locale);
   const t = useTranslations('about');
   const tNav = useTranslations();
-  const locale = useLocale();
 
   const breadcrumbSchema = breadcrumbLd(locale, [
     { name: tNav('nav.home'), path: '' },

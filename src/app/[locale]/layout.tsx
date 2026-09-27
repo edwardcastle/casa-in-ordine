@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { Montserrat } from 'next/font/google';
 import { NextIntlClientProvider, hasLocale } from 'next-intl';
-import { getMessages } from 'next-intl/server';
+import { getMessages, setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
 import Script from 'next/script';
@@ -106,6 +106,11 @@ export default async function LocaleLayout({
   if (!hasLocale(routing.locales, locale)) {
     notFound();
   }
+
+  // Without this next-intl reads the locale from the request headers, which
+  // opts every route below into per-request rendering. Each page calls it too:
+  // Next can render a page and its layout independently.
+  setRequestLocale(locale);
 
   // Client components receive everything EXCEPT privacyPolicy.
   //

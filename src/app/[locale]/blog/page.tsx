@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getTranslations } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Hero from '@/components/Hero';
 import { getAllPosts } from '@/lib/blog';
 
@@ -54,6 +54,8 @@ export default async function BlogPage({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  // Lets the page be prerendered instead of rendered on every request.
+  setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: 'blog' });
   const posts = getAllPosts(locale);
 

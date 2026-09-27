@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import type { ReactNode } from 'react';
+import { use, type ReactNode } from 'react';
 import Link from 'next/link';
-import { useTranslations, useLocale } from 'next-intl';
-import { getTranslations } from 'next-intl/server';
+import { useTranslations } from 'next-intl';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import ScrollReveal from '@/components/ScrollReveal';
 
 const BRAND = 'CASA IN ORDINE';
@@ -56,10 +56,16 @@ export async function generateMetadata({
   };
 }
 
-export default function PrivacyPolicyPage() {
+export default function PrivacyPolicyPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const { locale } = use(params);
+  // Lets the page be prerendered instead of rendered on every request.
+  setRequestLocale(locale);
   const t = useTranslations('privacyPolicy');
   const tNotFound = useTranslations('notFound');
-  const locale = useLocale();
 
   return (
     <article className="py-10 md:py-16 bg-white min-h-screen">
