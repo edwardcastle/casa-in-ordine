@@ -19,6 +19,16 @@
     "cta": "Prenota ora",
     "contactCta": "Contattaci"
   },
+  "images": {
+    "beforeLabel": "Prima",
+    "afterLabel": "Dopo",
+    "beforeAlt": "Cabina armadio in disordine, con abiti ammassati, prima del riordino",
+    "afterAlt": "La stessa cabina armadio dopo il riordino, con abiti e contenitori in ordine",
+    "atWork": "Le fondatrici di Casa in Ordine riorganizzano un armadio",
+    "founders": "Dalia e Surinay, fondatrici di Casa in Ordine",
+    "planning": "Le fondatrici di Casa in Ordine pianificano un progetto di riordino",
+    "shoes": "Riorganizzazione di una scarpiera durante un intervento di home organizing"
+  },
   "home": {
     "beforeAfter": {
       "title": "Trasformiamo il tuo <span class=\"text-accent\">caos</span> in un rifugio di <span class=\"text-primary\">pace</span>"

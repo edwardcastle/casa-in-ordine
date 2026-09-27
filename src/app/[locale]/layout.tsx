@@ -132,6 +132,7 @@ export default async function LocaleLayout({
     'privacyPolicy',
     'metadata',
     'hero',
+    'images',
     'home',
     'about',
     'services',

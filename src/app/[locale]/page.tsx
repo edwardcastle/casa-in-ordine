@@ -117,8 +117,10 @@ export default function HomePage() {
               <BeforeAfter
                 beforeSrc="/images/backgrounds/casa-in-ordine-sec2-before.webp"
                 afterSrc="/images/backgrounds/casa-in-ordine-sec2-after.webp"
-                beforeAlt="Before - spazio disordinato"
-                afterAlt="After - spazio organizzato"
+                beforeAlt={t('images.beforeAlt')}
+                afterAlt={t('images.afterAlt')}
+                beforeLabel={t('images.beforeLabel')}
+                afterLabel={t('images.afterLabel')}
               />
             </ScrollReveal>
           </div>
@@ -227,7 +229,7 @@ export default function HomePage() {
                 <div className="absolute -top-5 -left-5 w-32 h-32 bg-accent/15 rounded-full blur-xl" />
                 <OverlayImage
                   src="/images/backgrounds/why-choose-us.JPG"
-                  alt="Casa in Ordine team"
+                  alt={t('images.atWork')}
                 />
                 <blockquote className="mt-6 text-center italic text-gray-600">
                   &ldquo;{t('home.whyUs.quote')}&rdquo;

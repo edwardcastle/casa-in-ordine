@@ -83,7 +83,7 @@ export default function AboutPage({
             <ScrollReveal animation="fadeInRight" delay={150}>
               <OverlayImage
                 src="/images/backgrounds/our-story.JPG"
-                alt="Dalia e Surinay - Fondatrici Casa in Ordine"
+                alt={tNav('images.founders')}
                 objectPosition="object-[center_17%]"
               />
             </ScrollReveal>
@@ -98,7 +98,7 @@ export default function AboutPage({
             <ScrollReveal animation="fadeInRight" className="order-2 md:order-1">
               <OverlayImage
                 src="/images/backgrounds/come-nasce.JPG"
-                alt="Casa in Ordine - Come nasce"
+                alt={tNav('images.planning')}
               />
             </ScrollReveal>
             <ScrollReveal animation="fadeInLeft" delay={150} className="order-1 md:order-2">
@@ -150,7 +150,7 @@ export default function AboutPage({
             <ScrollReveal animation="fadeInRight" delay={150}>
               <OverlayImage
                 src="/images/backgrounds/cosa-offriamo.JPG"
-                alt="Casa in Ordine - Cosa offriamo"
+                alt={tNav('images.shoes')}
                 objectPosition="object-[center_1%]"
               />
             </ScrollReveal>

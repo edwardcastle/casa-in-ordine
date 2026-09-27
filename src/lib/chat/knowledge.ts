@@ -20,6 +20,9 @@ const EXCLUDED_NAMESPACES = new Set([
   'footer',
   // Form labels and error strings. No business knowledge, 40 lines of noise.
   'reviewForm',
+  // Image descriptions and slider labels: what a photo shows, not what the
+  // business does.
+  'images',
 ]);
 
 const cache = new Map<Locale, string>();

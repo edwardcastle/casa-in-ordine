@@ -8,9 +8,18 @@ interface BeforeAfterProps {
   afterSrc: string;
   beforeAlt: string;
   afterAlt: string;
+  beforeLabel: string;
+  afterLabel: string;
 }
 
-export default function BeforeAfter({ beforeSrc, afterSrc, beforeAlt, afterAlt }: BeforeAfterProps) {
+export default function BeforeAfter({
+  beforeSrc,
+  afterSrc,
+  beforeAlt,
+  afterAlt,
+  beforeLabel,
+  afterLabel,
+}: BeforeAfterProps) {
   const [position, setPosition] = useState(50);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const isDragging = useRef(false);
@@ -86,11 +95,11 @@ export default function BeforeAfter({ beforeSrc, afterSrc, beforeAlt, afterAlt }
       </div>
 
       {/* Labels */}
-      <div className="absolute top-4 left-4 bg-foreground/70 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">
-        BEFORE
+      <div className="absolute top-4 left-4 bg-foreground/70 text-white text-xs font-semibold uppercase px-3 py-1 rounded-full z-10">
+        {beforeLabel}
       </div>
-      <div className="absolute top-4 right-4 bg-primary/70 text-white text-xs font-semibold px-3 py-1 rounded-full z-10">
-        AFTER
+      <div className="absolute top-4 right-4 bg-primary/70 text-white text-xs font-semibold uppercase px-3 py-1 rounded-full z-10">
+        {afterLabel}
       </div>
     </div>
   );

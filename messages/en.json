@@ -19,6 +19,16 @@
     "cta": "Book now",
     "contactCta": "Contact us"
   },
+  "images": {
+    "beforeLabel": "Before",
+    "afterLabel": "After",
+    "beforeAlt": "Cluttered walk-in closet with clothes piled up, before organizing",
+    "afterAlt": "The same walk-in closet after organizing, with clothes and boxes in order",
+    "atWork": "The founders of Casa in Ordine reorganizing a wardrobe",
+    "founders": "Dalia and Surinay, founders of Casa in Ordine",
+    "planning": "The founders of Casa in Ordine planning an organizing project",
+    "shoes": "Reorganizing a shoe rack during a home organizing session"
+  },
   "home": {
     "beforeAfter": {
       "title": "We transform your <span class=\"text-accent\">chaos</span> into a haven of <span class=\"text-primary\">peace</span>"

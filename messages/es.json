@@ -19,6 +19,16 @@
     "cta": "Reserva ahora",
     "contactCta": "Contáctanos"
   },
+  "images": {
+    "beforeLabel": "Antes",
+    "afterLabel": "Después",
+    "beforeAlt": "Vestidor desordenado, con ropa amontonada, antes de ordenarlo",
+    "afterAlt": "El mismo vestidor después de ordenarlo, con ropa y cajas en su sitio",
+    "atWork": "Las fundadoras de Casa in Ordine reorganizan un armario",
+    "founders": "Dalia y Surinay, fundadoras de Casa in Ordine",
+    "planning": "Las fundadoras de Casa in Ordine planifican un proyecto de orden",
+    "shoes": "Reorganización de un zapatero durante una sesión de home organizing"
+  },
   "home": {
     "beforeAfter": {
       "title": "Transformamos tu <span class=\"text-accent\">caos</span> en un refugio de <span class=\"text-primary\">paz</span>"
