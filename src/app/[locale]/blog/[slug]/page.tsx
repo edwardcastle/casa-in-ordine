@@ -7,7 +7,7 @@ import { MDXRemote } from 'next-mdx-remote/rsc';
 import { routing } from '@/i18n/routing';
 import { getPost, getPostLocales, getPostSlugs, getRelatedPosts } from '@/lib/blog';
 import { mdxComponents } from '@/components/MdxContent';
-import { getAreaForPost } from '@/lib/areas';
+import { getAreaForPost, quoteHref } from '@/lib/areas';
 
 const baseUrl = 'https://casainordine.com';
 
@@ -299,7 +299,7 @@ export default async function BlogPostPage({
             {t('cta.title')}
           </p>
           <Link
-            href={`/${locale}/preventivo`}
+            href={quoteHref(locale, area)}
             className="inline-block rounded-full bg-accent px-6 py-3 font-medium text-white transition-opacity hover:opacity-90"
           >
             {t('cta.button')}

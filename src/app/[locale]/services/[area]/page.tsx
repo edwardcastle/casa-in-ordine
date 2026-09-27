@@ -6,7 +6,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import Hero from '@/components/Hero';
 import OverlayImage from '@/components/OverlayImage';
 import { routing } from '@/i18n/routing';
-import { AREAS, getArea } from '@/lib/areas';
+import { AREAS, getArea, quoteHref } from '@/lib/areas';
 import { breadcrumbLd } from '@/lib/breadcrumb';
 import { getPostMeta } from '@/lib/blog';
 import type { PostMeta } from '@/lib/blog';
@@ -126,7 +126,7 @@ export default async function AreaPage({
       <Hero
         title={t('heroTitle')}
         subtitle={t('heroSubtitle')}
-        cta={{ text: tCommon('ctaButton'), href: `/${locale}/preventivo` }}
+        cta={{ text: tCommon('ctaButton'), href: quoteHref(locale, area) }}
         backgroundImage={area.hero}
       />
 
@@ -278,7 +278,7 @@ export default async function AreaPage({
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">{tCommon('ctaTitle')}</h2>
           <p className="text-lg text-white/90 mb-8">{tCommon('ctaBody')}</p>
           <Link
-            href={`/${locale}/preventivo`}
+            href={quoteHref(locale, area)}
             className="inline-flex items-center justify-center px-8 py-3 bg-white text-primary font-semibold rounded-lg hover:bg-secondary-light transition-colors duration-200 shadow-lg"
           >
             {tCommon('ctaButton')}

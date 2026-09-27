@@ -80,6 +80,14 @@ export const AREAS: Area[] = [
   },
 ];
 
+/**
+ * The quote page, opened on this area's first question. See QuoteWizard for
+ * why the zone is a fragment and not a query string.
+ */
+export function quoteHref(locale: string, area?: Area): string {
+  return `/${locale}/preventivo${area ? `#zona-${area.zone}` : ''}`;
+}
+
 export function getArea(slug: string): Area | undefined {
   return AREAS.find((area) => area.slug === slug);
 }

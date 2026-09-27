@@ -52,6 +52,12 @@ const EXPLAINED_REASONS = new Set([
   'field-too-long',
 ]);
 
+/** `#zona-armadio` -> 'armadio'; anything that is not a zone -> null. */
+function zoneFromHash(hash: string): Zone | null {
+  const requested = hash.replace(/^#zona-/, '');
+  return ZONES.find((zone) => zone === requested) ?? null;
+}
+
 export default function QuoteWizard() {
   const t = useTranslations('quote');
 
@@ -85,6 +91,27 @@ export default function QuoteWizard() {
   const renderedAt = useRef(0);
   useEffect(() => {
     renderedAt.current = Date.now();
+  }, []);
+
+  // A link from one of the area pages arrives as /preventivo#zona-armadio, and
+  // the visitor has already said which room she means: start at its first
+  // question instead of asking again. Back still leads to the picker.
+  //
+  // The zone travels in the fragment, not in a query string, so that it never
+  // reaches the server: the page stays a single cached URL, and crawlers are
+  // not handed six more addresses for the same form.
+  const root = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const requested = zoneFromHash(window.location.hash);
+    if (!requested) return;
+    // After hydration, so the server and the first client render agree.
+    const frame = requestAnimationFrame(() => {
+      setDraftZone(requested);
+      setQuestionIndex(0);
+      setPhase('questions');
+      root.current?.scrollIntoView({ block: 'start' });
+    });
+    return () => cancelAnimationFrame(frame);
   }, []);
 
   const draftQuestions = draftZone ? questionsFor(draftZone) : [];
@@ -962,7 +989,11 @@ export default function QuoteWizard() {
   const isDone = submitStatus === 'success';
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg border border-secondary-dark overflow-hidden">
+    // scroll-mt clears the fixed header when a room link scrolls here.
+    <div
+      ref={root}
+      className="scroll-mt-28 bg-white rounded-3xl shadow-lg border border-secondary-dark overflow-hidden"
+    >
       {/* Logo */}
       <div className="flex justify-center pt-6">
         <Image
