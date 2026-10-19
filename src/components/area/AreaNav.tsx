@@ -17,7 +17,7 @@ export default function AreaNav() {
   ];
 
   return (
-    <nav className="flex items-center gap-1 md:flex-col md:items-stretch">
+    <nav aria-label={t('label')} className="flex items-center gap-1 md:flex-col md:items-stretch">
       {links.map((link) => (
         <Link
           key={link.href}

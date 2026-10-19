@@ -1091,7 +1091,8 @@
     },
     "nav": {
       "overview": "Your projects",
-      "tips": "Tips"
+      "tips": "Tips",
+      "label": "Your area navigation"
     },
     "status": {
       "planned": "Planned",

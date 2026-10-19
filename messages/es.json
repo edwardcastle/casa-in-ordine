@@ -1091,7 +1091,8 @@
     },
     "nav": {
       "overview": "Tus proyectos",
-      "tips": "Consejos"
+      "tips": "Consejos",
+      "label": "Navegación de tu área"
     },
     "status": {
       "planned": "Planificado",

@@ -16,8 +16,8 @@ export default function TipList({ tips, locale }: { tips: Tip[]; locale: string 
               <ZoneLabel zone={tip.zone} />
             </p>
           )}
-          <h3 className="mb-2 text-lg font-semibold text-foreground">{tip.title}</h3>
-          <p className="whitespace-pre-line text-sm leading-relaxed text-gray-600">{tip.body}</p>
+          <h3 className="mb-2 break-words text-lg font-semibold text-foreground">{tip.title}</h3>
+          <p className="whitespace-pre-line break-words text-sm leading-relaxed text-gray-600">{tip.body}</p>
           {tip.blogSlug && (
             <Link
               href={`/${locale}/blog/${encodeURIComponent(tip.blogSlug)}`}
