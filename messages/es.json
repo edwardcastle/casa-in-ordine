@@ -1077,6 +1077,12 @@
         "limited": "Demasiados intentos. Inténtalo de nuevo dentro de un cuarto de hora.",
         "unavailable": "El acceso al área privada no está disponible en este momento. Escríbenos a info@casainordine.com y te ayudamos."
       }
+    },
+    "confirm": {
+      "title": "Confirma tu acceso",
+      "body": "Pulsa el botón para entrar en tu área privada. El enlace sirve una sola vez.",
+      "submit": "Continuar a tu área",
+      "metaTitle": "Confirma tu acceso"
     }
   }
 }

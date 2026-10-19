@@ -1,8 +1,14 @@
 'use server';
 
 import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
+import { after } from 'next/server';
+import { hasLocale } from 'next-intl';
 import { sendClientSignInLink } from '@/lib/area/emails';
-import { findClientByEmail } from '@/lib/area/queries';
+import { findActiveClient, findClientByEmail } from '@/lib/area/queries';
+import { endClientSession, startClientSession } from '@/lib/area/session';
+import { routing } from '@/i18n/routing';
+import { consumeToken } from '@/lib/reviews/tokens';
 import { clientIp, createRateLimiter } from '@/lib/security/rate-limit';
 import { verifyTurnstile } from '@/lib/security/turnstile';
 
@@ -52,12 +58,59 @@ export async function requestClientSignIn(
   );
   if (captcha === 'fail') return { status: 'invalid' };
 
-  const client = await findClientByEmail(email);
-  if (client) {
-    await sendClientSignInLink(client);
-  } else {
-    console.warn('[area] Sign-in link requested for an address that is not an active client.');
-  }
+  // The lookup and the send happen after the response. A known address would
+  // otherwise take longer to answer (a database write and a call to the mail
+  // API) than an unknown one, and the delay alone would say who our clients are.
+  after(async () => {
+    try {
+      const client = await findClientByEmail(email);
+      if (client) {
+        await sendClientSignInLink(client);
+      } else {
+        console.warn('[area] Sign-in link requested for an address that is not an active client.');
+      }
+    } catch (error) {
+      console.error('[area] Could not send a sign-in link', error);
+    }
+  });
 
   return { status: 'sent' };
+}
+
+/** The locale field comes from a form, so it is checked before it builds a URL. */
+function localeFrom(formData: FormData): (typeof routing.locales)[number] {
+  const value = formData.get('locale');
+  return typeof value === 'string' && hasLocale(routing.locales, value)
+    ? value
+    : routing.defaultLocale;
+}
+
+/**
+ * Spends a sign-in link and opens the session.
+ *
+ * This runs only from the button on the confirm page, never from opening the
+ * link: mail scanners and link previewers fetch URLs in emails, and a GET that
+ * spent the token would leave the client with a dead link.
+ */
+export async function confirmClientSignIn(formData: FormData): Promise<void> {
+  const locale = localeFrom(formData);
+  const token = (formData.get('token') as string | null) ?? '';
+
+  const clientId = await consumeToken('client_signin', token);
+
+  // Checked after the token is spent: a link issued before a client was
+  // deactivated must not still let them in.
+  const client = clientId ? await findActiveClient(clientId) : null;
+  if (!client) redirect(`/${locale}/area/accedi?error=link`);
+
+  await startClientSession(client.id);
+  redirect(`/${locale}/area`);
+}
+
+/** Ends the session. A POST, so a prefetched or hotlinked URL cannot sign anyone out. */
+export async function signOutClient(formData: FormData): Promise<void> {
+  const locale = localeFrom(formData);
+
+  await endClientSession();
+  redirect(`/${locale}`);
 }

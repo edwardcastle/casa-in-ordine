@@ -1077,6 +1077,12 @@
         "limited": "Troppi tentativi. Riprova fra un quarto d'ora.",
         "unavailable": "L'accesso all'area riservata non è disponibile al momento. Scrivici a info@casainordine.com e ti aiutiamo."
       }
+    },
+    "confirm": {
+      "title": "Conferma l'accesso",
+      "body": "Premi il pulsante per entrare nella tua area riservata. Il link vale una volta sola.",
+      "submit": "Continua verso la tua area",
+      "metaTitle": "Conferma l'accesso"
     }
   }
 }

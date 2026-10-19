@@ -1077,6 +1077,12 @@
         "limited": "Too many attempts. Please try again in a quarter of an hour.",
         "unavailable": "Signing in to the private area is not available right now. Write to us at info@casainordine.com and we will help."
       }
+    },
+    "confirm": {
+      "title": "Confirm your sign-in",
+      "body": "Press the button to enter your private area. The link works only once.",
+      "submit": "Continue to your area",
+      "metaTitle": "Confirm your sign-in"
     }
   }
 }
