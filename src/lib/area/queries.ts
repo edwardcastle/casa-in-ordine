@@ -369,7 +369,7 @@ export async function createProject(
 
   const rows = await db()<ProjectSummary[]>`
     INSERT INTO client_projects (client_id, title, zone, summary, visit_date)
-    SELECT c.id, ${input.title.trim()}, ${input.zone ?? null}, ${input.summary?.trim() || null},
+    SELECT c.id, ${input.title.trim()}, ${input.zone?.trim() || null}, ${input.summary?.trim() || null},
            ${input.visitDate || null}
     FROM clients c
     WHERE c.id = ${clientId}

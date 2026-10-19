@@ -4,11 +4,11 @@ import { useActionState, useEffect, useRef, useTransition } from 'react';
 import type { ActionState } from './clients/state';
 
 const ERRORS: Record<string, string> = {
-  duplicate: 'Esiste già un cliente con questa email.',
+  duplicate: 'Esiste già: un cliente con questa email, o questo file è già allegato.',
   name: 'Inserisci il nome.',
   email: 'Email non valida.',
   lang: 'Scegli la lingua.',
-  title: 'Inserisci un titolo (massimo 200 caratteri).',
+  title: 'Il titolo è obbligatorio e al massimo di 200 caratteri.',
   zone: 'Zona non valida.',
   date: 'Data non valida.',
   body: 'Testo mancante o troppo lungo.',

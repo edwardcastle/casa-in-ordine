@@ -36,12 +36,13 @@ export async function upsertTipAction(_prev: ActionState, formData: FormData): P
     titleEs: text(formData, 'titleEs'),
     bodyEs: text(formData, 'bodyEs'),
   };
-  const zone = text(formData, 'zone');
-  const blogSlug = text(formData, 'blogSlug');
+  const zone = text(formData, 'zone') || null;
+  const blogSlug = text(formData, 'blogSlug') || null;
 
   if (!fields.titleIt || !fields.bodyIt) return { error: 'required' };
   for (const [key, value] of Object.entries(fields)) {
-    if (value.length > (key.startsWith('title') ? MAX_TITLE : MAX_BODY)) return { error: 'body' };
+    const isTitle = key.startsWith('title');
+    if (value.length > (isTitle ? MAX_TITLE : MAX_BODY)) return { error: isTitle ? 'title' : 'body' };
   }
   if (zone && !(PROJECT_ZONES as readonly string[]).includes(zone)) return { error: 'zone' };
   if (blogSlug && !getPostSlugs().includes(blogSlug)) return { error: 'slug' };

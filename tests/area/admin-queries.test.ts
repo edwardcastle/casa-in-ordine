@@ -67,6 +67,9 @@ describe.skipIf(!hasTestDb())('admin write queries', () => {
       visitDate: '2026-11-03',
     });
     expect(await createProject(MISSING, { title: 'X' })).toBeNull();
+
+    // An empty zone is "no zone", not an invalid one.
+    expect(await createProject(client.id, { title: 'Y', zone: '' })).toMatchObject({ zone: null });
   });
 
   it('updateProjectStatus changes the status and rejects unknown values', async () => {

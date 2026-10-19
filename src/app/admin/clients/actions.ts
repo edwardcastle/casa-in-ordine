@@ -133,7 +133,8 @@ export async function createProjectAction(
   if (!clientId) return { error: 'notfound' };
 
   const title = text(formData, 'title');
-  const zone = text(formData, 'zone');
+  // "nessuna" submits an empty string; the column accepts a zone or null.
+  const zone = text(formData, 'zone') || null;
   const summary = text(formData, 'summary');
   const visitDate = text(formData, 'visitDate');
 
@@ -254,13 +255,20 @@ export async function attachUploadedFile(
   const stored = await confirmUpload(projectId, String(key));
   if (!stored) return { error: 'upload' };
 
-  const added = await addMaterial(projectId, {
-    kind: 'file',
-    title: String(title ?? '').trim().slice(0, MAX_TITLE) || 'Documento',
-    fileKey: key,
-    fileType: stored.type,
-    fileSize: stored.size,
-  });
+  let added;
+  try {
+    added = await addMaterial(projectId, {
+      kind: 'file',
+      title: String(title ?? '').trim().slice(0, MAX_TITLE) || 'Documento',
+      fileKey: key,
+      fileType: stored.type,
+      fileSize: stored.size,
+    });
+  } catch (error) {
+    // The same upload attached twice would let one delete remove the other's blob.
+    if ((error as { code?: string })?.code === '23505') return { error: 'duplicate' };
+    throw error;
+  }
   if (!added) return { error: 'notfound' };
 
   refresh();

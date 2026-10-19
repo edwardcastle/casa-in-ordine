@@ -26,12 +26,19 @@ import {
   addTextMaterialAction,
   attachUploadedFile,
   createClientAction,
+  createProjectAction,
   deleteClientAction,
   deleteMaterialAction,
   notifyClientAction,
   requestUploadUrl,
+  setClientActiveAction,
+  updateProjectStatusAction,
 } from '@/app/admin/clients/actions';
-import { upsertTipAction } from '@/app/admin/tips/actions';
+import {
+  deleteTipAction,
+  setTipPublishedAction,
+  upsertTipAction,
+} from '@/app/admin/tips/actions';
 import { addMaterial, createClient, createProject } from '@/lib/area/queries';
 
 function form(fields: Record<string, string>): FormData {
@@ -60,12 +67,45 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
   it('every action throws without an admin session', async () => {
     session.currentAdmin.mockResolvedValue(null);
     const id = '00000000-0000-4000-8000-000000000000';
-    await expect(createClientAction(null, form({}))).rejects.toThrow();
-    await expect(deleteClientAction(null, form({ clientId: id, confirm: 'on' }))).rejects.toThrow();
-    await expect(requestUploadUrl(id, { type: 'application/pdf', size: 1 })).rejects.toThrow();
-    await expect(attachUploadedFile(id, 'k', 't')).rejects.toThrow();
-    await expect(notifyClientAction(null, form({}))).rejects.toThrow();
-    await expect(upsertTipAction(null, form({}))).rejects.toThrow();
+    const data = form({ clientId: id, projectId: id, materialId: id, id, confirm: 'on' });
+    const calls = {
+      createClientAction: () => createClientAction(null, data),
+      setClientActiveAction: () => setClientActiveAction(null, data),
+      deleteClientAction: () => deleteClientAction(null, data),
+      createProjectAction: () => createProjectAction(null, data),
+      updateProjectStatusAction: () => updateProjectStatusAction(null, data),
+      addTextMaterialAction: () => addTextMaterialAction(null, data),
+      deleteMaterialAction: () => deleteMaterialAction(null, data),
+      notifyClientAction: () => notifyClientAction(null, data),
+      requestUploadUrl: () => requestUploadUrl(id, { type: 'application/pdf', size: 1 }),
+      attachUploadedFile: () => attachUploadedFile(id, 'k', 't'),
+      upsertTipAction: () => upsertTipAction(null, data),
+      setTipPublishedAction: () => setTipPublishedAction(null, data),
+      deleteTipAction: () => deleteTipAction(null, data),
+    };
+    expect(Object.keys(calls)).toHaveLength(13);
+    for (const [name, call] of Object.entries(calls)) {
+      await expect(call(), name).rejects.toThrow('Not signed in.');
+    }
+    expect(files.createUploadUrl).not.toHaveBeenCalled();
+    expect(await testDb()`SELECT id FROM clients`).toHaveLength(0);
+  });
+
+  it('createProjectAction accepts an empty zone and stores null', async () => {
+    const { client } = await seed('a@example.com');
+    const fields = { clientId: client.id, title: 'Senza zona', zone: '', summary: '', visitDate: '' };
+
+    expect(await createProjectAction(null, form(fields))).toEqual({ ok: true });
+    const [row] = await testDb()`
+      SELECT zone, summary, visit_date FROM client_projects WHERE title = 'Senza zona'`;
+    expect(row).toEqual({ zone: null, summary: null, visit_date: null });
+
+    expect(await createProjectAction(null, form({ ...fields, zone: 'attic' }))).toEqual({
+      error: 'zone',
+    });
+    expect(await createProjectAction(null, form({ ...fields, zone: 'bagno' }))).toEqual({
+      ok: true,
+    });
   });
 
   it('createClientAction stores a lowercased email and reports a duplicate', async () => {
@@ -196,6 +236,16 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
     });
   });
 
+  it('attachUploadedFile refuses a key that is already attached', async () => {
+    const { project } = await seed('a@example.com');
+    const key = `area/${project.id}/x.pdf`;
+    files.confirmUpload.mockResolvedValue({ type: 'application/pdf', size: 10 });
+
+    expect(await attachUploadedFile(project.id, key, 'First')).toEqual({ ok: true });
+    expect(await attachUploadedFile(project.id, key, 'Second')).toEqual({ error: 'duplicate' });
+    expect(await testDb()`SELECT id FROM project_materials`).toHaveLength(1);
+  });
+
   it('requestUploadUrl reports the rejection reason before asking for a URL', async () => {
     const { project } = await seed('a@example.com');
     expect(await requestUploadUrl(project.id, { type: 'text/html', size: 10 })).toEqual({
@@ -259,8 +309,24 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
     expect(
       await upsertTipAction(null, form({ titleIt: 'T', bodyIt: 'B', zone: 'attic' })),
     ).toEqual({ error: 'zone' });
-    expect(await upsertTipAction(null, form({ titleIt: 'T', bodyIt: 'B', zone: 'cucina', published: 'on' }))).toMatchObject({ ok: true });
+    expect(
+      await upsertTipAction(null, form({ titleIt: 'T'.repeat(201), bodyIt: 'B' })),
+    ).toEqual({ error: 'title' });
+    expect(
+      await upsertTipAction(null, form({ titleIt: 'T', bodyIt: 'B'.repeat(10_001) })),
+    ).toEqual({ error: 'body' });
+    expect(
+      await upsertTipAction(
+        null,
+        form({ titleIt: 'T', bodyIt: 'B', zone: 'cucina', published: 'on' }),
+      ),
+    ).toMatchObject({ ok: true });
     const [row] = await testDb()`SELECT zone, published FROM area_tips`;
     expect(row).toEqual({ zone: 'cucina', published: true });
+
+    // Blank selects ("nessuna" / "nessuno") are stored as null.
+    await upsertTipAction(null, form({ titleIt: 'U', bodyIt: 'B', zone: '', blogSlug: '' }));
+    const [blank] = await testDb()`SELECT zone, blog_slug FROM area_tips WHERE title_it = 'U'`;
+    expect(blank).toEqual({ zone: null, blog_slug: null });
   });
 });
