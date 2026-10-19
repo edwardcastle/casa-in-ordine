@@ -1,12 +1,13 @@
 'use server';
 
-import { headers } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { after } from 'next/server';
 import { hasLocale } from 'next-intl';
 import { sendClientSignInLink } from '@/lib/area/emails';
 import { findActiveClient, findClientByEmail } from '@/lib/area/queries';
 import { endClientSession, startClientSession } from '@/lib/area/session';
+import { SIGNIN_TOKEN_COOKIE } from '@/lib/area/signin-cookie';
 import { routing } from '@/i18n/routing';
 import { consumeToken } from '@/lib/reviews/tokens';
 import { clientIp, createRateLimiter } from '@/lib/security/rate-limit';
@@ -90,11 +91,16 @@ function localeFrom(formData: FormData): (typeof routing.locales)[number] {
  *
  * This runs only from the button on the confirm page, never from opening the
  * link: mail scanners and link previewers fetch URLs in emails, and a GET that
- * spent the token would leave the client with a dead link.
+ * spent the token would leave the client with a dead link. The token comes from
+ * the cookie the link's route set, not from the form, so it never appears in a
+ * URL or in the page's HTML.
  */
 export async function confirmClientSignIn(formData: FormData): Promise<void> {
   const locale = localeFrom(formData);
-  const token = (formData.get('token') as string | null) ?? '';
+  const store = await cookies();
+  const token = store.get(SIGNIN_TOKEN_COOKIE)?.value ?? '';
+  // Gone whatever happens next: a spent or refused token is no use to keep.
+  store.delete({ name: SIGNIN_TOKEN_COOKIE, path: '/' });
 
   const clientId = await consumeToken('client_signin', token);
 

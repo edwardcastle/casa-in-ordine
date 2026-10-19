@@ -1,12 +1,14 @@
 import type { Metadata } from 'next';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { cookies } from 'next/headers';
 import { notFound, redirect } from 'next/navigation';
 import { confirmClientSignIn } from '@/actions/area';
 import AreaTopBand from '@/components/area/AreaTopBand';
 import { routing } from '@/i18n/routing';
+import { SIGNIN_TOKEN_COOKIE } from '@/lib/area/signin-cookie';
 
-// The token is in the URL, so this must never be cached or indexed.
+// Depends on the sign-in cookie, so it is rendered per request and never indexed.
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({
@@ -26,25 +28,25 @@ export async function generateMetadata({
 }
 
 /**
- * The landing page of the emailed link.
+ * The page the emailed link continues to, after the route at `../conferma`
+ * has moved the token into a cookie.
  *
- * Opening it only reads. The token is spent by the form below, because mail
- * scanners and link previews open every URL in an email, and spending it here
- * would leave the client with a link that has already been used.
+ * Opening it only reads, and its URL and HTML carry no token. The token is
+ * spent by the form below (which reads the cookie on the server), because mail
+ * scanners and link previews open every URL in an email, and spending it
+ * earlier would leave the client with a link that has already been used.
  */
 export default async function ConfirmSignInPage({
   params,
-  searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ token?: string }>;
 }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  const { token = '' } = await searchParams;
-  if (!token) redirect(`/${locale}/area/accedi?error=link`);
+  // Only checks that a link was opened in this browser; the value stays out of the page.
+  if (!(await cookies()).get(SIGNIN_TOKEN_COOKIE)?.value) redirect(`/${locale}/area/accedi?error=link`);
 
   const t = await getTranslations({ locale, namespace: 'area.confirm' });
 
@@ -56,7 +58,6 @@ export default async function ConfirmSignInPage({
         <p className="mb-8 text-gray-600">{t('body')}</p>
 
         <form action={confirmClientSignIn}>
-          <input type="hidden" name="token" value={token} />
           <input type="hidden" name="locale" value={locale} />
           <button
             type="submit"

@@ -6,7 +6,8 @@ import {
   signOutClient,
   type SignInState,
 } from '@/actions/area';
-import ConfirmSignInPage, { generateMetadata } from '@/app/[locale]/area/accedi/conferma/page';
+import ConfirmSignInPage, { generateMetadata } from '@/app/[locale]/area/accedi/continua/page';
+import { GET as openLink } from '@/app/[locale]/area/accedi/conferma/route';
 import { consumeToken } from '@/lib/reviews/tokens';
 import { sendEmail } from '@/lib/mail';
 import { endClientSession, startClientSession } from '@/lib/area/session';
@@ -57,8 +58,15 @@ vi.mock('@/lib/security/turnstile', () => ({
 // Each test comes from its own address, so the in-memory rate limiter (which
 // outlives a test) does not leak one test's requests into the next.
 let ip = 0;
+// The browser's cookie jar: what the link route set and the confirm action reads.
+const jar = new Map<string, string>();
 vi.mock('next/headers', () => ({
   headers: async () => new Headers({ 'x-forwarded-for': `10.0.0.${ip}` }),
+  cookies: async () => ({
+    get: (name: string) => (jar.has(name) ? { name, value: jar.get(name) } : undefined),
+    delete: (options: string | { name: string }) =>
+      void jar.delete(typeof options === 'string' ? options : options.name),
+  }),
 }));
 
 const IDLE: SignInState = { status: 'idle' };
@@ -81,9 +89,21 @@ async function redirectedTo(action: Promise<unknown>): Promise<string> {
   throw new Error('The action did not redirect.');
 }
 
+/** The browser opens the emailed link: what the route answers, and its cookie lands in the jar. */
+async function openEmailedLink(token: string, locale = 'it') {
+  const response = await openLink(
+    new Request(`http://localhost/${locale}/area/accedi/conferma?token=${token}`),
+    { params: Promise.resolve({ locale }) },
+  );
+  const cookie = response.cookies.get('cio_signin_token');
+  if (cookie) jar.set(cookie.name, cookie.value);
+  return response;
+}
+
+/** The click on the confirm page's button, after the link was opened. */
 function confirmForm(token: string, locale?: string) {
+  jar.set('cio_signin_token', token);
   const data = new FormData();
-  data.set('token', token);
   if (locale !== undefined) data.set('locale', locale);
   return data;
 }
@@ -119,6 +139,7 @@ describe.skipIf(!hasTestDb())('client sign-in by emailed link', () => {
     delete process.env.TURNSTILE_SECRET_KEY;
     ip += 1;
     vi.clearAllMocks();
+    jar.clear();
     // Unknown addresses are logged on purpose; keep that out of the test output.
     vi.spyOn(console, 'warn').mockImplementation(() => {});
     vi.mocked(verifyTurnstile).mockResolvedValue('not-configured');
@@ -227,37 +248,98 @@ describe.skipIf(!hasTestDb())('client sign-in by emailed link', () => {
     expect(await redirectedTo(signOutClient(confirmForm('', '../evil')))).toBe('/it');
   });
 
-  it('opening the link page leaves the token unspent', async () => {
+  it('opening the emailed link stores the token in a cookie and redirects without spending it', async () => {
     const id = await insertClient();
     await requestLink('anna@example.com');
     const token = lastToken();
 
-    await ConfirmSignInPage({
-      params: Promise.resolve({ locale: 'it' }),
-      searchParams: Promise.resolve({ token }),
-    });
-    // What a scanner does: fetch the page again and again.
-    await ConfirmSignInPage({
-      params: Promise.resolve({ locale: 'it' }),
-      searchParams: Promise.resolve({ token }),
-    });
+    // What a scanner does: fetch the link again and again.
+    const first = await openEmailedLink(token, 'en');
+    await openEmailedLink(token, 'en');
 
+    expect(first.status).toBe(303);
+    // No query string, so nothing for page analytics to record.
+    expect(first.headers.get('location')).toBe('/en/area/accedi/continua');
+    expect(first.headers.get('cache-control')).toBe('private, no-store');
+    const cookie = first.cookies.get('cio_signin_token');
+    expect(cookie).toMatchObject({ value: token, httpOnly: true, sameSite: 'lax', path: '/', maxAge: 1800 });
+    expect(startClientSession).not.toHaveBeenCalled();
+    const rows = await testDb()`SELECT 1 FROM auth_tokens WHERE purpose = 'client_signin'`;
+    expect(rows).toHaveLength(1);
+    expect(await consumeToken('client_signin', token)).toBe(id);
+  });
+
+  it('the cookie is secure in production', async () => {
+    vi.stubEnv('NODE_ENV', 'production');
+    try {
+      const res = await openEmailedLink('a'.repeat(43));
+      expect(res.cookies.get('cio_signin_token')?.secure).toBe(true);
+    } finally {
+      vi.unstubAllEnvs();
+    }
+  });
+
+  it('a link without a usable token goes back to sign-in and sets no cookie', async () => {
+    for (const token of ['', 'short', 'x'.repeat(500), 'a b'.padEnd(30, 'c')]) {
+      const res = await openEmailedLink(encodeURIComponent(token));
+      expect(res.status).toBe(303);
+      expect(res.headers.get('location')).toBe('/it/area/accedi?error=link');
+      expect(res.cookies.get('cio_signin_token')).toBeUndefined();
+    }
+    const res = await openLink(new Request('http://localhost/xx/area/accedi/conferma?token=' + 'a'.repeat(43)), {
+      params: Promise.resolve({ locale: 'xx' }),
+    });
+    expect(res.status).toBe(404);
+  });
+
+  it('the confirm page leaves the token unspent and shows it nowhere', async () => {
+    const id = await insertClient();
+    await requestLink('anna@example.com');
+    const token = lastToken();
+    await openEmailedLink(token);
+
+    const page = await ConfirmSignInPage({ params: Promise.resolve({ locale: 'it' }) });
+    await ConfirmSignInPage({ params: Promise.resolve({ locale: 'it' }) });
+
+    expect(JSON.stringify(page)).not.toContain(token);
     const rows = await testDb()`SELECT 1 FROM auth_tokens WHERE purpose = 'client_signin'`;
     expect(rows).toHaveLength(1);
     expect(startClientSession).not.toHaveBeenCalled();
     expect(await consumeToken('client_signin', token)).toBe(id);
   });
 
-  it('the link page is not indexable and sends a missing token back to sign-in', async () => {
+  it('the confirm action spends the token from the cookie and clears it', async () => {
+    const id = await insertClient();
+    await requestLink('anna@example.com');
+    await openEmailedLink(lastToken());
+
+    // Whatever the form says, only the cookie counts.
+    const data = new FormData();
+    data.set('locale', 'it');
+    data.set('token', 'forged');
+    const to = await redirectedTo(confirmClientSignIn(data));
+
+    expect(to).toBe('/it/area');
+    expect(startClientSession).toHaveBeenCalledWith(id);
+    expect(jar.has('cio_signin_token')).toBe(false);
+  });
+
+  it('confirming without the cookie fails and starts no session', async () => {
+    await insertClient();
+    await requestLink('anna@example.com');
+    const data = new FormData();
+    data.set('locale', 'it');
+    data.set('token', lastToken());
+
+    expect(await redirectedTo(confirmClientSignIn(data))).toBe('/it/area/accedi?error=link');
+    expect(startClientSession).not.toHaveBeenCalled();
+  });
+
+  it('the confirm page is not indexable and sends a missing cookie back to sign-in', async () => {
     const meta = await generateMetadata({ params: Promise.resolve({ locale: 'it' }) });
     expect(meta.robots).toMatchObject({ index: false, follow: false });
 
-    const to = await redirectedTo(
-      ConfirmSignInPage({
-        params: Promise.resolve({ locale: 'it' }),
-        searchParams: Promise.resolve({}),
-      }),
-    );
+    const to = await redirectedTo(ConfirmSignInPage({ params: Promise.resolve({ locale: 'it' }) }));
     expect(to).toBe('/it/area/accedi?error=link');
   });
 
