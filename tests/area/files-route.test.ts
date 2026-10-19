@@ -42,8 +42,8 @@ async function insertClientWithFile(email: string) {
   return { clientId: client.id, materialId: file.id, fileKey: `area/${project.id}/x.pdf` };
 }
 
-function call(id: string) {
-  return GET(new Request(`http://localhost/api/area/files/${id}`) as never, {
+function call(id: string, headers: Record<string, string> = {}) {
+  return GET(new Request(`http://localhost/api/area/files/${id}`, { headers }) as never, {
     params: Promise.resolve({ id }),
   });
 }
@@ -63,12 +63,20 @@ describe.skipIf(!hasTestDb())('file download route', () => {
 
   afterAll(closeTestDb);
 
-  it('answers 401 when signed out', async () => {
+  it('sends a signed-out visitor to sign-in, uncached', async () => {
     const res = await call(a.materialId);
-    expect(res.status).toBe(401);
+    expect(res.status).toBe(303);
+    expect(res.headers.get('location')).toBe('/it/area/accedi');
     expect(res.headers.get('cache-control')).toBe('private, no-store');
     expect(issueSignedToken).not.toHaveBeenCalled();
-    expect(res.headers.get('location')).toBeNull();
+  });
+
+  it('picks the sign-in language from Accept-Language', async () => {
+    const es = await call(a.materialId, { 'accept-language': 'fr;q=1, es-MX;q=0.9, en;q=0.5' });
+    expect(es.headers.get('location')).toBe('/es/area/accedi');
+
+    const none = await call(a.materialId, { 'accept-language': 'fr-FR, de;q=0.8' });
+    expect(none.headers.get('location')).toBe('/it/area/accedi');
   });
 
   it("answers 404 for another client's material", async () => {
