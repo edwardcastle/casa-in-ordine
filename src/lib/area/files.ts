@@ -35,8 +35,8 @@ const DOWNLOAD_TTL_MS = 5 * 60_000;
 
 const UUID_SOURCE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
 const UUID = new RegExp(`^${UUID_SOURCE}$`, 'i');
-// Exactly the shape `createUploadUrl` issues; anything else is not ours.
-const KEY = new RegExp(`^area/${UUID_SOURCE}/${UUID_SOURCE}\\.(pdf|jpg|png|webp)$`, 'i');
+// The file part of a key, exactly as `createUploadUrl` issues it.
+const KEY_FILE = new RegExp(`^${UUID_SOURCE}\\.(pdf|jpg|png|webp)$`, 'i');
 
 type FileInfo = { type: string; size: number };
 
@@ -90,10 +90,14 @@ export async function createUploadUrl(
 /**
  * The stored object's type and size, or null if it is missing or would not have
  * passed `validateUpload`. This is the completion check: the key arrives from
- * the browser, so it is trusted only if it has the shape we issue.
+ * the browser, so it is trusted only if it sits under this project's prefix and
+ * has the shape we issue. A key from another project is refused without
+ * touching storage.
  */
-export async function confirmUpload(key: string): Promise<FileInfo | null> {
-  if (!KEY.test(key)) return null;
+export async function confirmUpload(projectId: string, key: string): Promise<FileInfo | null> {
+  if (!UUID.test(projectId)) return null;
+  const prefix = `area/${projectId}/`;
+  if (!key.startsWith(prefix) || !KEY_FILE.test(key.slice(prefix.length))) return null;
 
   let stored;
   try {

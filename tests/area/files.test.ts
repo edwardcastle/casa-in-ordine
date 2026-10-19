@@ -20,6 +20,7 @@ import {
 
 const MB = 1024 * 1024;
 const PROJECT = '3f1c2a52-8f6e-4d49-9a6b-0d3b1f0c7a11';
+const OTHER_PROJECT = '7a0d5e19-2c3b-4f6a-b1d8-4e9c0a1b2c3d';
 const KEY = `area/${PROJECT}/9b2f1c64-1a2b-4c3d-8e4f-5a6b7c8d9e0f.pdf`;
 const TOKEN = { delegationToken: 'delegation', clientSigningToken: 'secret', validUntil: 0 };
 
@@ -81,34 +82,51 @@ describe('validateUpload', () => {
 describe('confirmUpload', () => {
   it('returns null when the object is missing', async () => {
     blob.head.mockRejectedValue(new blob.BlobNotFoundError('missing'));
-    expect(await confirmUpload(KEY)).toBeNull();
+    expect(await confirmUpload(PROJECT, KEY)).toBeNull();
   });
 
   it('returns null for a stored object of 20 MB', async () => {
     blob.head.mockResolvedValue({ contentType: 'application/pdf', size: 20 * MB });
-    expect(await confirmUpload(KEY)).toBeNull();
+    expect(await confirmUpload(PROJECT, KEY)).toBeNull();
   });
 
   it('returns null for stored text/html', async () => {
     blob.head.mockResolvedValue({ contentType: 'text/html', size: 100 });
-    expect(await confirmUpload(KEY)).toBeNull();
+    expect(await confirmUpload(PROJECT, KEY)).toBeNull();
   });
 
   it('returns type and size for a valid PDF', async () => {
     blob.head.mockResolvedValue({ contentType: 'application/pdf', size: 12 * MB });
-    expect(await confirmUpload(KEY)).toEqual({ type: 'application/pdf', size: 12 * MB });
+    expect(await confirmUpload(PROJECT, KEY)).toEqual({ type: 'application/pdf', size: 12 * MB });
     expect(blob.head).toHaveBeenCalledWith(KEY);
   });
 
   it('lets unexpected storage errors through instead of calling the file missing', async () => {
     blob.head.mockRejectedValue(new Error('storage down'));
-    await expect(confirmUpload(KEY)).rejects.toThrow('storage down');
+    await expect(confirmUpload(PROJECT, KEY)).rejects.toThrow('storage down');
   });
 
   it('returns null for a key this module would never have issued', async () => {
-    expect(await confirmUpload('area/other/evil.pdf')).toBeNull();
-    expect(await confirmUpload('../etc/passwd')).toBeNull();
+    expect(await confirmUpload(PROJECT, 'area/other/evil.pdf')).toBeNull();
+    expect(await confirmUpload(PROJECT, '../etc/passwd')).toBeNull();
+    expect(await confirmUpload(PROJECT, `${KEY}/../x.pdf`)).toBeNull();
     expect(blob.head).not.toHaveBeenCalled();
+  });
+
+  it("returns null, without calling storage, for another project's key", async () => {
+    blob.head.mockResolvedValue({ contentType: 'application/pdf', size: MB });
+    expect(await confirmUpload(OTHER_PROJECT, KEY)).toBeNull();
+    expect(blob.head).not.toHaveBeenCalled();
+  });
+
+  it('returns null for a project id that is not a uuid', async () => {
+    expect(await confirmUpload('area', KEY)).toBeNull();
+    expect(blob.head).not.toHaveBeenCalled();
+  });
+
+  it("confirms a valid PDF under the same project's prefix", async () => {
+    blob.head.mockResolvedValue({ contentType: 'application/pdf', size: MB });
+    expect(await confirmUpload(PROJECT, KEY)).toEqual({ type: 'application/pdf', size: MB });
   });
 });
 

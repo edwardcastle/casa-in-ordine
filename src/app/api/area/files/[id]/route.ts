@@ -12,20 +12,22 @@ import { createDownloadUrl } from '@/lib/area/files';
 
 export const dynamic = 'force-dynamic';
 
+const NO_STORE = { 'Cache-Control': 'private, no-store' };
+
 export async function GET(_request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   const client = await currentClient();
-  if (!client) return new NextResponse(null, { status: 401 });
+  if (!client) return new NextResponse(null, { status: 401, headers: NO_STORE });
 
   const { id } = await params;
   const file = await getMaterialFile(client.id, id);
-  if (!file) return new NextResponse(null, { status: 404 });
+  if (!file) return new NextResponse(null, { status: 404, headers: NO_STORE });
 
   const url = await createDownloadUrl(file.fileKey);
   return new NextResponse(null, {
     status: 302,
     headers: {
       Location: url,
-      'Cache-Control': 'private, no-store',
+      ...NO_STORE,
       'X-Content-Type-Options': 'nosniff',
     },
   });

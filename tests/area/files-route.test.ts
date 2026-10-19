@@ -26,6 +26,7 @@ vi.mock('next/headers', () => ({
 
 import { GET } from '@/app/api/area/files/[id]/route';
 import { signClientCookie } from '@/lib/area/session';
+import { issueSignedToken } from '@vercel/blob';
 
 async function insertClientWithFile(email: string) {
   const sql = testDb();
@@ -38,7 +39,7 @@ async function insertClientWithFile(email: string) {
     INSERT INTO project_materials (project_id, kind, title, file_key, file_type, file_size)
     VALUES (${project.id}, 'file', 'Plan', ${`area/${project.id}/x.pdf`}, 'application/pdf', 10)
     RETURNING id`;
-  return { clientId: client.id, materialId: file.id };
+  return { clientId: client.id, materialId: file.id, fileKey: `area/${project.id}/x.pdf` };
 }
 
 function call(id: string) {
@@ -48,12 +49,13 @@ function call(id: string) {
 }
 
 describe.skipIf(!hasTestDb())('file download route', () => {
-  let a: { clientId: string; materialId: string };
-  let b: { clientId: string; materialId: string };
+  let a: { clientId: string; materialId: string; fileKey: string };
+  let b: { clientId: string; materialId: string; fileKey: string };
 
   beforeEach(async () => {
     process.env.CLIENT_SESSION_SECRET = SECRET;
     cookieValue = undefined;
+    vi.mocked(issueSignedToken).mockClear();
     await resetAreaTables();
     a = await insertClientWithFile('a@example.com');
     b = await insertClientWithFile('b@example.com');
@@ -64,6 +66,8 @@ describe.skipIf(!hasTestDb())('file download route', () => {
   it('answers 401 when signed out', async () => {
     const res = await call(a.materialId);
     expect(res.status).toBe(401);
+    expect(res.headers.get('cache-control')).toBe('private, no-store');
+    expect(issueSignedToken).not.toHaveBeenCalled();
     expect(res.headers.get('location')).toBeNull();
   });
 
@@ -72,12 +76,15 @@ describe.skipIf(!hasTestDb())('file download route', () => {
     const res = await call(b.materialId);
     expect(res.status).toBe(404);
     expect(res.headers.get('location')).toBeNull();
+    expect(res.headers.get('cache-control')).toBe('private, no-store');
+    expect(issueSignedToken).not.toHaveBeenCalled();
   });
 
   it('answers 404 for a malformed id, same as a foreign one', async () => {
     cookieValue = signClientCookie(a.clientId, Date.now() + 60_000, SECRET);
     const res = await call('not-a-uuid');
     expect(res.status).toBe(404);
+    expect(issueSignedToken).not.toHaveBeenCalled();
   });
 
   it('redirects the owner to the signed URL, uncached', async () => {
@@ -87,5 +94,8 @@ describe.skipIf(!hasTestDb())('file download route', () => {
     expect(res.headers.get('location')).toBe(SIGNED);
     expect(res.headers.get('cache-control')).toBe('private, no-store');
     expect(res.headers.get('x-content-type-options')).toBe('nosniff');
+    expect(issueSignedToken).toHaveBeenCalledWith(
+      expect.objectContaining({ pathname: a.fileKey, operations: ['get'] }),
+    );
   });
 });
