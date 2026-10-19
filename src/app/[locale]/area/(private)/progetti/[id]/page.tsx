@@ -7,6 +7,7 @@ import StatusBadge from '@/components/area/StatusBadge';
 import ZoneLabel from '@/components/area/ZoneLabel';
 import { formatAddedDate, formatFileSize, formatVisitDate, isHttpUrl } from '@/lib/area/format';
 import { getProject, type Material } from '@/lib/area/queries';
+import { signInPath } from '@/lib/area/next-path';
 import { currentClient } from '@/lib/area/session';
 import { routing } from '@/i18n/routing';
 
@@ -86,7 +87,7 @@ export default async function AreaProjectPage({
   setRequestLocale(locale);
 
   const client = await currentClient();
-  if (!client) redirect(`/${locale}/area/accedi`);
+  if (!client) redirect(signInPath(locale, `/${locale}/area/progetti/${id}`));
 
   // Scoped to the client inside the query: someone else's project, a project
   // that does not exist and a malformed id all come back null, and all get

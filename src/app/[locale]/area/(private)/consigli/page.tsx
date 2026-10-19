@@ -5,6 +5,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import TipList from '@/components/area/TipList';
 import { listTips } from '@/lib/area/queries';
+import { signInPath } from '@/lib/area/next-path';
 import { currentClient } from '@/lib/area/session';
 import { routing } from '@/i18n/routing';
 
@@ -28,7 +29,7 @@ export default async function AreaTipsPage({ params }: { params: Promise<{ local
   setRequestLocale(locale);
 
   const client = await currentClient();
-  if (!client) redirect(`/${locale}/area/accedi`);
+  if (!client) redirect(signInPath(locale, `/${locale}/area/consigli`));
 
   const t = await getTranslations({ locale, namespace: 'area.tips' });
   const tips = await listTips(locale, 50);

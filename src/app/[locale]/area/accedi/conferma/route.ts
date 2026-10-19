@@ -1,7 +1,12 @@
 import { NextResponse } from 'next/server';
 import { hasLocale } from 'next-intl';
 import { routing } from '@/i18n/routing';
-import { SIGNIN_TOKEN_COOKIE, SIGNIN_TOKEN_MAX_AGE_S } from '@/lib/area/signin-cookie';
+import { safeNextPath } from '@/lib/area/next-path';
+import {
+  SIGNIN_NEXT_COOKIE,
+  SIGNIN_TOKEN_COOKIE,
+  SIGNIN_TOKEN_MAX_AGE_S,
+} from '@/lib/area/signin-cookie';
 
 /**
  * Where the emailed link lands.
@@ -22,7 +27,7 @@ export const dynamic = 'force-dynamic';
 // What `issueToken` produces: 32 random bytes as base64url, 43 characters.
 const TOKEN = /^[\w-]{16,128}$/;
 
-function redirectTo(location: string, token?: string) {
+function redirectTo(location: string, token?: string, next?: string | null) {
   const response = new NextResponse(null, {
     status: 303,
     headers: {
@@ -34,15 +39,17 @@ function redirectTo(location: string, token?: string) {
     },
   });
 
-  if (token) {
-    response.cookies.set(SIGNIN_TOKEN_COOKIE, token, {
-      httpOnly: true,
-      sameSite: 'lax',
-      secure: process.env.NODE_ENV === 'production',
-      path: '/',
-      maxAge: SIGNIN_TOKEN_MAX_AGE_S,
-    });
-  }
+  const options = {
+    httpOnly: true,
+    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    path: '/',
+    maxAge: SIGNIN_TOKEN_MAX_AGE_S,
+  } as const;
+
+  if (token) response.cookies.set(SIGNIN_TOKEN_COOKIE, token, options);
+  // Checked here and again when it is used: it came out of an email link.
+  if (token && next) response.cookies.set(SIGNIN_NEXT_COOKIE, next, options);
   return response;
 }
 
@@ -50,8 +57,9 @@ export async function GET(request: Request, { params }: { params: Promise<{ loca
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) return new NextResponse(null, { status: 404 });
 
-  const token = new URL(request.url).searchParams.get('token') ?? '';
+  const query = new URL(request.url).searchParams;
+  const token = query.get('token') ?? '';
   if (!TOKEN.test(token)) return redirectTo(`/${locale}/area/accedi?error=link`);
 
-  return redirectTo(`/${locale}/area/accedi/continua`, token);
+  return redirectTo(`/${locale}/area/accedi/continua`, token, safeNextPath(query.get('next')));
 }

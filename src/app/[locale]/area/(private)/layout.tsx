@@ -1,3 +1,4 @@
+import { headers } from 'next/headers';
 import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
@@ -5,6 +6,7 @@ import { signOutClient } from '@/actions/area';
 import AreaNav from '@/components/area/AreaNav';
 import AreaTopBand from '@/components/area/AreaTopBand';
 import { currentClient } from '@/lib/area/session';
+import { PATH_HEADER, signInPath } from '@/lib/area/next-path';
 import { routing } from '@/i18n/routing';
 
 // The guard and the shell read the session cookie.
@@ -29,7 +31,8 @@ export default async function PrivateAreaLayout({
   setRequestLocale(locale);
 
   const client = await currentClient();
-  if (!client) redirect(`/${locale}/area/accedi`);
+  // The layout cannot see the page's path, so the proxy passes it along.
+  if (!client) redirect(signInPath(locale, (await headers()).get(PATH_HEADER)));
 
   const t = await getTranslations({ locale, namespace: 'area.shell' });
 

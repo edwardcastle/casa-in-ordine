@@ -8,6 +8,7 @@ import TipList from '@/components/area/TipList';
 import ZoneLabel from '@/components/area/ZoneLabel';
 import { formatVisitDate } from '@/lib/area/format';
 import { listProjects, listTips } from '@/lib/area/queries';
+import { signInPath } from '@/lib/area/next-path';
 import { currentClient } from '@/lib/area/session';
 import { routing } from '@/i18n/routing';
 
@@ -37,7 +38,7 @@ export default async function AreaDashboardPage({
   // The layout checks too, but a layout is not re-run on every in-app
   // navigation, and this page cannot show anything without a client.
   const client = await currentClient();
-  if (!client) redirect(`/${locale}/area/accedi`);
+  if (!client) redirect(signInPath(locale, `/${locale}/area`));
 
   const t = await getTranslations({ locale, namespace: 'area.dashboard' });
   const [projects, tips] = await Promise.all([listProjects(client.id), listTips(locale as 'it' | 'en' | 'es', 3)]);

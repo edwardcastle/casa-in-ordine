@@ -90,19 +90,23 @@ async function redirectedTo(action: Promise<unknown>): Promise<string> {
 }
 
 /** The browser opens the emailed link: what the route answers, and its cookie lands in the jar. */
-async function openEmailedLink(token: string, locale = 'it') {
+async function openEmailedLink(token: string, locale = 'it', next?: string) {
+  const query = `token=${token}${next === undefined ? '' : `&next=${encodeURIComponent(next)}`}`;
   const response = await openLink(
-    new Request(`http://localhost/${locale}/area/accedi/conferma?token=${token}`),
+    new Request(`http://localhost/${locale}/area/accedi/conferma?${query}`),
     { params: Promise.resolve({ locale }) },
   );
-  const cookie = response.cookies.get('cio_signin_token');
-  if (cookie) jar.set(cookie.name, cookie.value);
+  for (const name of ['cio_signin_token', 'cio_signin_next']) {
+    const cookie = response.cookies.get(name);
+    if (cookie) jar.set(cookie.name, cookie.value);
+  }
   return response;
 }
 
 /** The click on the confirm page's button, after the link was opened. */
-function confirmForm(token: string, locale?: string) {
+function confirmForm(token: string, locale?: string, next?: string) {
   jar.set('cio_signin_token', token);
+  if (next !== undefined) jar.set('cio_signin_next', next);
   const data = new FormData();
   if (locale !== undefined) data.set('locale', locale);
   return data;
@@ -333,6 +337,77 @@ describe.skipIf(!hasTestDb())('client sign-in by emailed link', () => {
 
     expect(await redirectedTo(confirmClientSignIn(data))).toBe('/it/area/accedi?error=link');
     expect(startClientSession).not.toHaveBeenCalled();
+  });
+
+  describe('returning to the page the client asked for', () => {
+    const PROJECT = '/en/area/progetti/3f1c2a9e-7b4d-4c6e-9a10-5d2b8e7f6a41';
+
+    it('the sign-in form passes a safe next path into the emailed link', async () => {
+      await insertClient({ lang: 'en' });
+
+      await requestLink('anna@example.com', { next: PROJECT });
+
+      const { html } = vi.mocked(sendEmail).mock.calls[0][0];
+      expect(html).toContain(`conferma?token=${lastToken()}&next=${encodeURIComponent(PROJECT)}`);
+    });
+
+    it('drops a next path that is not inside the private area', async () => {
+      await insertClient();
+
+      for (const next of ['//evil.com', 'https://x', '/it/area/../../x', '/it/admin']) {
+        vi.mocked(sendEmail).mockClear();
+        await requestLink('anna@example.com', { next });
+        const { html } = vi.mocked(sendEmail).mock.calls[0][0];
+        expect(html, next).not.toContain('next=');
+      }
+    });
+
+    it('opening the link keeps next in a cookie, not in the redirect URL', async () => {
+      const res = await openEmailedLink('a'.repeat(43), 'en', PROJECT);
+
+      expect(res.headers.get('location')).toBe('/en/area/accedi/continua');
+      expect(res.cookies.get('cio_signin_next')).toMatchObject({
+        value: PROJECT,
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        maxAge: 1800,
+      });
+    });
+
+    it('opening the link with an unsafe next sets no next cookie', async () => {
+      const res = await openEmailedLink('a'.repeat(43), 'it', '//evil.com');
+
+      expect(res.status).toBe(303);
+      expect(res.cookies.get('cio_signin_token')).toBeDefined();
+      expect(res.cookies.get('cio_signin_next')).toBeUndefined();
+    });
+
+    it('confirming lands on the requested page and clears both cookies', async () => {
+      await insertClient({ lang: 'en' });
+      await requestLink('anna@example.com', { next: PROJECT });
+
+      const to = await redirectedTo(confirmClientSignIn(confirmForm(lastToken(), 'en', PROJECT)));
+
+      expect(to).toBe(PROJECT);
+      expect(jar.has('cio_signin_token')).toBe(false);
+      expect(jar.has('cio_signin_next')).toBe(false);
+    });
+
+    it('a tampered next cookie is ignored on confirm', async () => {
+      await insertClient();
+      await requestLink('anna@example.com');
+
+      const to = await redirectedTo(confirmClientSignIn(confirmForm(lastToken(), 'it', '//evil.com')));
+
+      expect(to).toBe('/it/area');
+    });
+
+    it('a failed confirm does not send the client to next', async () => {
+      const to = await redirectedTo(confirmClientSignIn(confirmForm('nope', 'it', PROJECT)));
+
+      expect(to).toBe('/it/area/accedi?error=link');
+    });
   });
 
   it('the confirm page is not indexable and sends a missing cookie back to sign-in', async () => {

@@ -1,5 +1,6 @@
 import { esc, sendEmail, siteOrigin } from '@/lib/mail';
 import { issueToken } from '@/lib/reviews/tokens';
+import { safeNextPath } from './next-path';
 import { findActiveClient, getProject, type Client } from './queries';
 
 const SAGE = '#7B8F7A';
@@ -32,11 +33,15 @@ const COPY = {
  * The client's magic link, in the language stored on their record.
  *
  * The link lands on the same locale's confirm route, so the page they arrive
- * on speaks the language the email did.
+ * on speaks the language the email did. `next`, when it is a safe path inside
+ * the area, rides along so the client lands on the page they asked for.
  */
-export async function sendClientSignInLink(client: Client): Promise<boolean> {
+export async function sendClientSignInLink(client: Client, next?: string | null): Promise<boolean> {
   const token = await issueToken('client_signin', client.id);
-  const href = `${siteOrigin()}/${client.lang}/area/accedi/conferma?token=${token}`;
+  const safeNext = safeNextPath(next);
+  const href =
+    `${siteOrigin()}/${client.lang}/area/accedi/conferma?token=${token}` +
+    (safeNext ? `&next=${encodeURIComponent(safeNext)}` : '');
   const copy = COPY[client.lang];
 
   return sendEmail({

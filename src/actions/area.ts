@@ -7,7 +7,8 @@ import { hasLocale } from 'next-intl';
 import { sendClientSignInLink } from '@/lib/area/emails';
 import { findActiveClient, findClientByEmail } from '@/lib/area/queries';
 import { endClientSession, startClientSession } from '@/lib/area/session';
-import { SIGNIN_TOKEN_COOKIE } from '@/lib/area/signin-cookie';
+import { safeNextPath } from '@/lib/area/next-path';
+import { SIGNIN_NEXT_COOKIE, SIGNIN_TOKEN_COOKIE } from '@/lib/area/signin-cookie';
 import { routing } from '@/i18n/routing';
 import { consumeToken } from '@/lib/reviews/tokens';
 import { clientIp, createRateLimiter } from '@/lib/security/rate-limit';
@@ -50,6 +51,10 @@ export async function requestClientSignIn(
   const email = ((formData.get('email') as string | null) ?? '').trim().toLowerCase();
   if (!email || email.length > EMAIL_MAX || !EMAIL.test(email)) return { status: 'invalid' };
 
+  // Where the client was headed before they were sent to sign in. Anything
+  // that is not a path inside the private area is dropped.
+  const next = safeNextPath(formData.get('next'));
+
   // Not configured counts as a pass, so local development works without a
   // Cloudflare account; in production the secret is set and a script that
   // skips the widget is turned away here.
@@ -66,7 +71,7 @@ export async function requestClientSignIn(
     try {
       const client = await findClientByEmail(email);
       if (client) {
-        await sendClientSignInLink(client);
+        await sendClientSignInLink(client, next);
       } else {
         console.warn('[area] Sign-in link requested for an address that is not an active client.');
       }
@@ -101,6 +106,8 @@ export async function confirmClientSignIn(formData: FormData): Promise<void> {
   const token = store.get(SIGNIN_TOKEN_COOKIE)?.value ?? '';
   // Gone whatever happens next: a spent or refused token is no use to keep.
   store.delete({ name: SIGNIN_TOKEN_COOKIE, path: '/' });
+  const next = safeNextPath(store.get(SIGNIN_NEXT_COOKIE)?.value);
+  store.delete({ name: SIGNIN_NEXT_COOKIE, path: '/' });
 
   const clientId = await consumeToken('client_signin', token);
 
@@ -110,7 +117,7 @@ export async function confirmClientSignIn(formData: FormData): Promise<void> {
   if (!client) redirect(`/${locale}/area/accedi?error=link`);
 
   await startClientSession(client.id);
-  redirect(`/${locale}/area`);
+  redirect(next ?? `/${locale}/area`);
 }
 
 /** Ends the session. A POST, so a prefetched or hotlinked URL cannot sign anyone out. */

@@ -11,7 +11,7 @@ const FIELD =
 const IDLE: SignInState = { status: 'idle' };
 
 /** Asks for an email address and reports that a link is on its way. */
-export default function ClientSignInForm() {
+export default function ClientSignInForm({ next }: { next?: string | null }) {
   const t = useTranslations('area.signin');
   const [state, action, pending] = useActionState(requestClientSignIn, IDLE);
   const [token, setToken] = useState('');
@@ -41,6 +41,7 @@ export default function ClientSignInForm() {
 
   return (
     <form action={submit} className="space-y-5">
+      {next && <input type="hidden" name="next" value={next} />}
       <div>
         <label htmlFor="area-email" className="mb-1 block text-sm font-medium text-gray-700">
           {t('emailLabel')}

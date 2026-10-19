@@ -3,6 +3,7 @@ import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import ClientSignInForm from '@/components/ClientSignInForm';
+import { safeNextPath } from '@/lib/area/next-path';
 import { currentClient } from '@/lib/area/session';
 import AreaTopBand from '@/components/area/AreaTopBand';
 import { routing } from '@/i18n/routing';
@@ -33,16 +34,18 @@ export default async function ClientSignInPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; next?: string }>;
 }) {
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
 
-  // Someone who is already in has no use for this page.
-  if (await currentClient()) redirect(`/${locale}/area`);
+  const { error, next: requested } = await searchParams;
+  const next = safeNextPath(requested);
 
-  const { error } = await searchParams;
+  // Someone who is already in has no use for this page.
+  if (await currentClient()) redirect(next ?? `/${locale}/area`);
+
   const t = await getTranslations({ locale, namespace: 'area.signin' });
 
   return (
@@ -61,7 +64,7 @@ export default async function ClientSignInPage({
           </p>
         )}
 
-        <ClientSignInForm />
+        <ClientSignInForm next={next} />
       </section>
     </>
   );
