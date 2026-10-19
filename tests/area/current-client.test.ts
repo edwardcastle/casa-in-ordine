@@ -1,9 +1,15 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from 'vitest';
 import { closeTestDb, hasTestDb, resetAreaTables, testDb } from '../helpers/db';
 import { currentClient, signClientCookie } from '@/lib/area/session';
-import { findActiveClient } from '@/lib/area/queries';
+import { findActiveClient, touchClient } from '@/lib/area/queries';
 
 const SECRET = 's'.repeat(32);
+
+// Passes straight through to the real queries; one test makes `touchClient` fail.
+vi.mock('@/lib/area/queries', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@/lib/area/queries')>();
+  return { ...actual, touchClient: vi.fn(actual.touchClient) };
+});
 
 let cookieValue: string | undefined;
 vi.mock('next/headers', () => ({
@@ -78,11 +84,34 @@ describe.skipIf(!hasTestDb())('current client', () => {
     const id = await insertClient();
     cookieValue = cookieFor(id);
 
-    delete process.env.CLIENT_SESSION_SECRET;
-    expect(await currentClient()).toBeNull();
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+    try {
+      delete process.env.CLIENT_SESSION_SECRET;
+      expect(await currentClient()).toBeNull();
 
-    process.env.CLIENT_SESSION_SECRET = 'short';
-    expect(await currentClient()).toBeNull();
+      process.env.CLIENT_SESSION_SECRET = 'short';
+      expect(await currentClient()).toBeNull();
+
+      // Logged once, not once per request.
+      expect(logged).toHaveBeenCalledTimes(1);
+      expect(logged.mock.calls[0][0]).toContain('CLIENT_SESSION_SECRET');
+    } finally {
+      logged.mockRestore();
+    }
+  });
+
+  it('still returns the client when recording the visit fails', async () => {
+    const id = await insertClient();
+    cookieValue = cookieFor(id);
+    vi.mocked(touchClient).mockRejectedValueOnce(new Error('connection reset'));
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    try {
+      expect(await currentClient()).toMatchObject({ id, name: 'Anna' });
+      expect(logged).toHaveBeenCalledTimes(1);
+    } finally {
+      logged.mockRestore();
+    }
   });
 
   it('finds an active client by id', async () => {

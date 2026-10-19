@@ -100,7 +100,8 @@ let warnedAboutConfig = false;
  * days. A missing or too-short secret is a deployment mistake, and like
  * `currentAdmin()` this answers "nobody is signed in" rather than throwing,
  * so the area shows its sign-in page instead of a 500. The problem is logged
- * once.
+ * once. Recording the visit is best effort for the same reason: if that write
+ * fails the client is still signed in.
  */
 export async function currentClient(): Promise<Client | null> {
   if ((process.env.CLIENT_SESSION_SECRET ?? '').length < 32) {
@@ -117,6 +118,12 @@ export async function currentClient(): Promise<Client | null> {
   const client = await findActiveClient(id);
   if (!client) return null;
 
-  await touchClient(client.id);
+  // Bookkeeping only. A failed write must not sign the client out of a page
+  // they are otherwise allowed to see.
+  try {
+    await touchClient(client.id);
+  } catch (error) {
+    console.error('[area] could not record client visit', error);
+  }
   return client;
 }

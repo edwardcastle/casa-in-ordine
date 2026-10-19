@@ -5,6 +5,8 @@ export default defineConfig({
   test: {
     environment: 'node',
     include: ['tests/**/*.test.ts'],
+    // Several suites share one test database and truncate it between tests.
+    fileParallelism: false,
   },
   resolve: {
     alias: {
