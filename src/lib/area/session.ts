@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
+import { findActiveClient, touchClient, type Client } from './queries';
 
 /**
  * Client-area sessions.
@@ -87,4 +88,35 @@ export async function readClientCookie(): Promise<string | null> {
   const raw = (await cookies()).get(COOKIE)?.value;
   if (!raw) return null;
   return verifyClientCookie(raw, secret(), Date.now());
+}
+
+let warnedAboutConfig = false;
+
+/**
+ * The signed-in client, or null.
+ *
+ * Asks the database on every call, not just the cookie: deactivating or
+ * deleting a client must lock them out on their next request, not in thirty
+ * days. A missing or too-short secret is a deployment mistake, and like
+ * `currentAdmin()` this answers "nobody is signed in" rather than throwing,
+ * so the area shows its sign-in page instead of a 500. The problem is logged
+ * once.
+ */
+export async function currentClient(): Promise<Client | null> {
+  if ((process.env.CLIENT_SESSION_SECRET ?? '').length < 32) {
+    if (!warnedAboutConfig) {
+      warnedAboutConfig = true;
+      console.error('[area] CLIENT_SESSION_SECRET is missing or shorter than 32 characters');
+    }
+    return null;
+  }
+
+  const id = await readClientCookie();
+  if (!id) return null;
+
+  const client = await findActiveClient(id);
+  if (!client) return null;
+
+  await touchClient(client.id);
+  return client;
 }
