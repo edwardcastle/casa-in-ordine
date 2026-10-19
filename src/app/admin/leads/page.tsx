@@ -1,8 +1,8 @@
-import Link from 'next/link';
 import { removeCatalogLead } from '@/actions/admin';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import { listCatalogLeads } from '@/lib/catalog/leads';
+import AdminNav from '../AdminNav';
 import SignInForm from '../reviews/SignInForm';
 
 export const dynamic = 'force-dynamic';
@@ -40,14 +40,12 @@ export default async function AdminLeadsPage({
 
   return (
     <main className="mx-auto max-w-4xl px-5 py-10">
+      <AdminNav current="leads" />
       <header className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-secondary pb-4">
         <div>
           <h1 className="text-2xl font-semibold">Richieste di catalogo</h1>
           <p className="text-sm text-gray-500">{admin}</p>
         </div>
-        <Link href="/admin/reviews" className="text-sm text-primary underline hover:text-primary-dark">
-          Recensioni →
-        </Link>
       </header>
 
       <p className="mb-8 rounded-lg border border-secondary/50 bg-white px-4 py-3 text-sm">

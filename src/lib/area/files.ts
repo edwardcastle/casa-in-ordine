@@ -1,5 +1,8 @@
 import { randomUUID } from 'node:crypto';
 import { BlobNotFoundError, del, head, issueSignedToken, presignUrl } from '@vercel/blob';
+import { EXTENSIONS, MAX_BYTES, validateUpload, type FileInfo } from './upload-rules';
+
+export { MAX_BYTES, validateUpload };
 
 /**
  * Private client files.
@@ -19,17 +22,6 @@ import { BlobNotFoundError, del, head, issueSignedToken, presignUrl } from '@ver
  * trade away that scoping.
  */
 
-export const MAX_BYTES = 15 * 1024 * 1024;
-
-const EXTENSIONS = {
-  'application/pdf': 'pdf',
-  'image/jpeg': 'jpg',
-  'image/png': 'png',
-  'image/webp': 'webp',
-} as const;
-
-const ALLOWED_TYPES = Object.keys(EXTENSIONS);
-
 const UPLOAD_TTL_MS = 10 * 60_000;
 const DOWNLOAD_TTL_MS = 5 * 60_000;
 
@@ -37,14 +29,6 @@ const UUID_SOURCE = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12
 const UUID = new RegExp(`^${UUID_SOURCE}$`, 'i');
 // The file part of a key, exactly as `createUploadUrl` issues it.
 const KEY_FILE = new RegExp(`^${UUID_SOURCE}\\.(pdf|jpg|png|webp)$`, 'i');
-
-type FileInfo = { type: string; size: number };
-
-export function validateUpload(file: FileInfo): { ok: true } | { ok: false; reason: 'type' | 'size' } {
-  if (!ALLOWED_TYPES.includes(file.type)) return { ok: false, reason: 'type' };
-  if (!(file.size > 0) || file.size > MAX_BYTES) return { ok: false, reason: 'size' };
-  return { ok: true };
-}
 
 /**
  * A signed PUT URL for one new file in the project, and the key it will be

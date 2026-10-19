@@ -1,9 +1,9 @@
-import Link from 'next/link';
 import { approveReview, rejectReview, signOut, withdrawReview } from '@/actions/admin';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import { listAllReviews } from '@/lib/reviews/queries';
 import type { AdminReview } from '@/lib/reviews/types';
+import AdminNav from '../AdminNav';
 import SignInForm from './SignInForm';
 
 export const dynamic = 'force-dynamic';
@@ -170,15 +170,13 @@ export default async function AdminReviewsPage({
 
   return (
     <main className="mx-auto max-w-3xl px-5 py-10">
+      <AdminNav current="reviews" />
       <header className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-secondary pb-4">
         <div>
           <h1 className="text-2xl font-semibold">Recensioni</h1>
           <p className="text-sm text-gray-500">{admin}</p>
         </div>
         <div className="flex items-center gap-4">
-          <Link href="/admin/leads" className="text-sm text-primary underline hover:text-primary-dark">
-            Richieste di catalogo →
-          </Link>
           <form action={signOut}>
             <button className="text-sm text-gray-600 underline hover:text-foreground">Esci</button>
           </form>
