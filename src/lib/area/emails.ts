@@ -1,6 +1,6 @@
 import { esc, sendEmail, siteOrigin } from '@/lib/mail';
 import { issueToken } from '@/lib/reviews/tokens';
-import type { Client } from './queries';
+import { findActiveClient, getProject, type Client } from './queries';
 
 const SAGE = '#7B8F7A';
 
@@ -49,4 +49,69 @@ export async function sendClientSignInLink(client: Client): Promise<boolean> {
       <p style="color:#888;font-size:13px;margin-top:26px;">Casa in Ordine · casainordine.com</p>
     `,
   });
+}
+
+const MATERIAL_COPY = {
+  it: {
+    subject: 'Nuovo materiale nella tua area',
+    hello: (name: string) => `Ciao ${name},`,
+    lead: (project: string) => `abbiamo aggiunto nuovo materiale al progetto «${project}».`,
+    button: 'Apri il progetto',
+    note: 'Per entrare ti basta la tua email: ti mandiamo un link di accesso.',
+  },
+  en: {
+    subject: 'New material in your area',
+    hello: (name: string) => `Hello ${name},`,
+    lead: (project: string) => `we have added new material to the project “${project}”.`,
+    button: 'Open the project',
+    note: 'To sign in you only need your email: we send you an access link.',
+  },
+  es: {
+    subject: 'Material nuevo en tu área',
+    hello: (name: string) => `Hola ${name},`,
+    lead: (project: string) => `hemos añadido material nuevo al proyecto «${project}».`,
+    button: 'Abrir el proyecto',
+    note: 'Para entrar solo necesitas tu email: te enviamos un enlace de acceso.',
+  },
+} as const;
+
+/**
+ * Tells the client there is something new in a project, in their language.
+ * Sent only when an organizer presses the button, never per upload: a batch
+ * of ten files should be one email, not ten.
+ */
+export async function sendMaterialNotice(
+  client: Client,
+  project: { id: string; title: string },
+): Promise<boolean> {
+  const href = `${siteOrigin()}/${client.lang}/area/progetti/${project.id}`;
+  const copy = MATERIAL_COPY[client.lang];
+
+  return sendEmail({
+    to: [{ email: client.email }],
+    subject: copy.subject,
+    html: `
+      <p style="font-size:16px;">${esc(copy.hello(client.name))}<br>${esc(copy.lead(project.title))}</p>
+      <p style="margin:24px 0;"><a href="${href}" style="display:inline-block;padding:12px 22px;border-radius:6px;background:${SAGE};color:#fff;text-decoration:none;font-weight:bold;font-size:15px;">${esc(copy.button)}</a></p>
+      <p style="color:#888;font-size:13px;">${esc(copy.note)}</p>
+      <p style="color:#888;font-size:13px;margin-top:26px;">Casa in Ordine · casainordine.com</p>
+    `,
+  });
+}
+
+/**
+ * Sends the "new material" email for one of the client's projects.
+ *
+ * Refuses (returns false) unless the client is active and the project belongs
+ * to that client: the ids come from a form, and a mismatched pair must not
+ * email one client a link into another's project.
+ */
+export async function notifyClient(clientId: string, projectId: string): Promise<boolean> {
+  const client = await findActiveClient(clientId);
+  if (!client) return false;
+
+  const project = await getProject(client.id, projectId);
+  if (!project) return false;
+
+  return sendMaterialNotice(client, project);
 }
