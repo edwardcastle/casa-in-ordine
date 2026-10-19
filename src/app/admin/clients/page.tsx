@@ -28,7 +28,7 @@ export default async function AdminClientsPage({
   const { error } = await searchParams;
   const admin = await currentAdmin();
 
-  if (!admin) return <SignInForm linkError={error === 'link'} />;
+  if (!admin) return <SignInForm linkError={error === 'link'} title="Area clienti" />;
 
   if (!isReviewsConfigured()) {
     return (

@@ -103,7 +103,7 @@ export default async function AdminTipsPage({
   const { error, edit } = await searchParams;
   const admin = await currentAdmin();
 
-  if (!admin) return <SignInForm linkError={error === 'link'} />;
+  if (!admin) return <SignInForm linkError={error === 'link'} title="Consigli" />;
 
   if (!isReviewsConfigured()) {
     return (

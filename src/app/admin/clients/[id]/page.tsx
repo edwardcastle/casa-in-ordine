@@ -203,7 +203,7 @@ export default async function AdminClientPage({
   const [{ id }, { error }] = await Promise.all([params, searchParams]);
   const admin = await currentAdmin();
 
-  if (!admin) return <SignInForm linkError={error === 'link'} />;
+  if (!admin) return <SignInForm linkError={error === 'link'} title="Area clienti" />;
 
   if (!isReviewsConfigured()) {
     return (
