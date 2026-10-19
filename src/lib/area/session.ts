@@ -1,5 +1,6 @@
 import { createHmac, timingSafeEqual } from 'node:crypto';
 import { cookies } from 'next/headers';
+import { cache } from 'react';
 import { findActiveClient, touchClient, type Client } from './queries';
 
 /**
@@ -102,8 +103,11 @@ let warnedAboutConfig = false;
  * so the area shows its sign-in page instead of a 500. The problem is logged
  * once. Recording the visit is best effort for the same reason: if that write
  * fails the client is still signed in.
+ *
+ * Wrapped in React's `cache()`, so the layout and the page of one request share
+ * a single lookup instead of asking the database twice.
  */
-export async function currentClient(): Promise<Client | null> {
+export const currentClient = cache(async (): Promise<Client | null> => {
   if ((process.env.CLIENT_SESSION_SECRET ?? '').length < 32) {
     if (!warnedAboutConfig) {
       warnedAboutConfig = true;
@@ -126,4 +130,4 @@ export async function currentClient(): Promise<Client | null> {
     console.error('[area] could not record client visit', error);
   }
   return client;
-}
+});
