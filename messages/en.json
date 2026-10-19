@@ -10,7 +10,8 @@
     "services": "Services",
     "blog": "Blog",
     "contact": "Contact",
-    "preventivo": "Quote"
+    "preventivo": "Quote",
+    "clientArea": "Client area"
   },
   "hero": {
     "title": "Decluttering & Home Organizing in Rome",
@@ -1083,6 +1084,55 @@
       "body": "Press the button to enter your private area. The link works only once.",
       "submit": "Continue to your area",
       "metaTitle": "Confirm your sign-in"
+    },
+    "shell": {
+      "label": "Your area",
+      "signOut": "Sign out"
+    },
+    "nav": {
+      "overview": "Your projects",
+      "tips": "Tips"
+    },
+    "status": {
+      "planned": "Planned",
+      "in_progress": "In progress",
+      "done": "Done"
+    },
+    "dashboard": {
+      "metaTitle": "Your area",
+      "greeting": "Hello, {name}",
+      "intro": "Here you will find your projects and everything we have prepared for you.",
+      "projectsTitle": "Your projects",
+      "noProjects": "There are no projects in your area yet. As soon as we start one you will find it here; in the meantime you can write to us from the contact page.",
+      "contactCta": "Get in touch",
+      "visit": "Visit: {date}",
+      "noVisit": "Visit to be scheduled",
+      "materials": "{count, plural, =0 {No materials} one {# item} other {# items}}",
+      "open": "Open project",
+      "tipsTitle": "Latest tips",
+      "noTips": "There are no tips yet. In the meantime, read the guides on our blog.",
+      "allTips": "All tips",
+      "blogCta": "Go to the blog"
+    },
+    "project": {
+      "metaTitle": "Your project",
+      "back": "Back to projects",
+      "summaryTitle": "Summary",
+      "noSummary": "The summary for this project is not ready yet.",
+      "visit": "Visit: {date}",
+      "materialsTitle": "Materials",
+      "noMaterials": "There are no materials for this project yet. As soon as we upload one you will find it here.",
+      "openFile": "Open file",
+      "openLink": "Open link",
+      "added": "Added on {date}"
+    },
+    "tips": {
+      "metaTitle": "Tips",
+      "title": "Tips for your home",
+      "intro": "Practical ideas from our work, picked for our clients.",
+      "empty": "There are no tips yet. In the meantime, read the guides on our blog.",
+      "blogCta": "Go to the blog",
+      "readGuide": "Read the guide"
     }
   }
 }

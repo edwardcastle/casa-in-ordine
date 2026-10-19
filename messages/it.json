@@ -10,7 +10,8 @@
     "services": "Servizi",
     "blog": "Blog",
     "contact": "Contatti",
-    "preventivo": "Preventivo"
+    "preventivo": "Preventivo",
+    "clientArea": "Area clienti"
   },
   "hero": {
     "title": "Decluttering e Home Organizing a Roma",
@@ -1083,6 +1084,55 @@
       "body": "Premi il pulsante per entrare nella tua area riservata. Il link vale una volta sola.",
       "submit": "Continua verso la tua area",
       "metaTitle": "Conferma l'accesso"
+    },
+    "shell": {
+      "label": "La tua area",
+      "signOut": "Esci"
+    },
+    "nav": {
+      "overview": "I tuoi progetti",
+      "tips": "Consigli"
+    },
+    "status": {
+      "planned": "In programma",
+      "in_progress": "In corso",
+      "done": "Completato"
+    },
+    "dashboard": {
+      "metaTitle": "La tua area",
+      "greeting": "Ciao, {name}",
+      "intro": "Qui trovi i tuoi progetti e tutto il materiale che abbiamo preparato per te.",
+      "projectsTitle": "I tuoi progetti",
+      "noProjects": "Non ci sono ancora progetti nella tua area. Appena ne avviamo uno lo troverai qui; nel frattempo puoi scriverci dalla pagina dei contatti.",
+      "contactCta": "Scrivici",
+      "visit": "Sopralluogo: {date}",
+      "noVisit": "Sopralluogo da fissare",
+      "materials": "{count, plural, =0 {Nessun materiale} one {# materiale} other {# materiali}}",
+      "open": "Apri il progetto",
+      "tipsTitle": "Gli ultimi consigli",
+      "noTips": "Non ci sono ancora consigli. Nel frattempo leggi le guide del nostro blog.",
+      "allTips": "Tutti i consigli",
+      "blogCta": "Vai al blog"
+    },
+    "project": {
+      "metaTitle": "Il tuo progetto",
+      "back": "Torna ai progetti",
+      "summaryTitle": "Riepilogo",
+      "noSummary": "Il riepilogo di questo progetto non è ancora pronto.",
+      "visit": "Sopralluogo: {date}",
+      "materialsTitle": "Materiali",
+      "noMaterials": "Non ci sono ancora materiali per questo progetto. Appena ne carichiamo uno lo troverai qui.",
+      "openFile": "Apri il file",
+      "openLink": "Apri il link",
+      "added": "Aggiunto il {date}"
+    },
+    "tips": {
+      "metaTitle": "Consigli",
+      "title": "Consigli per la tua casa",
+      "intro": "Idee pratiche dal nostro lavoro, scelte per i nostri clienti.",
+      "empty": "Non ci sono ancora consigli. Nel frattempo leggi le guide del nostro blog.",
+      "blogCta": "Vai al blog",
+      "readGuide": "Leggi la guida"
     }
   }
 }

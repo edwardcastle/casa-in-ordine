@@ -20,6 +20,12 @@ const nextConfig: NextConfig = {
       headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
     },
     {
+      // The client area is private. Its pages say noindex in a meta tag too,
+      // but the blanket header below would otherwise contradict them.
+      source: '/:locale(it|en|es)/area/:path*',
+      headers: [{ key: 'X-Robots-Tag', value: 'noindex, nofollow' }],
+    },
+    {
       // All content routes except the /api namespace (POST-only JSON endpoints
       // that should not be tagged indexable) and /admin, handled above.
       // `_next/` is excluded because this header was telling Google to index
@@ -28,7 +34,7 @@ const nextConfig: NextConfig = {
       // as crawled-not-indexed, on a site where real pages are going
       // uncrawled. They must still not be blocked in robots.txt — Google needs
       // them to render — they simply should not be advertised as pages.
-      source: '/((?!api/|admin|_next/|catalogo/).*)',
+      source: '/((?!api/|admin|_next/|catalogo/|(?:it|en|es)/area(?:/|$)).*)',
       headers: [
         {
           key: 'X-Robots-Tag',

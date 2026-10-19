@@ -4,6 +4,7 @@ import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
 import ClientSignInForm from '@/components/ClientSignInForm';
 import { currentClient } from '@/lib/area/session';
+import AreaTopBand from '@/components/area/AreaTopBand';
 import { routing } from '@/i18n/routing';
 
 // Depends on the session cookie and on `?error=`, so it is rendered per request.
@@ -45,20 +46,23 @@ export default async function ClientSignInPage({
   const t = await getTranslations({ locale, namespace: 'area.signin' });
 
   return (
-    <main id="main" className="mx-auto min-h-screen max-w-xl px-4 py-20 sm:px-6 lg:px-8">
-      <h1 className="mb-3 text-3xl font-semibold text-foreground">{t('title')}</h1>
-      <p className="mb-8 text-gray-600">{t('intro')}</p>
+    <>
+      <AreaTopBand />
+      <section className="mx-auto max-w-xl px-4 py-12 sm:px-6 md:py-16 lg:px-8">
+        <h1 className="mb-3 text-3xl font-semibold text-foreground">{t('title')}</h1>
+        <p className="mb-8 text-gray-600">{t('intro')}</p>
 
-      {error === 'link' && (
-        <p
-          role="alert"
-          className="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
-        >
-          {t('errors.link')}
-        </p>
-      )}
+        {error === 'link' && (
+          <p
+            role="alert"
+            className="mb-6 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-800"
+          >
+            {t('errors.link')}
+          </p>
+        )}
 
-      <ClientSignInForm />
-    </main>
+        <ClientSignInForm />
+      </section>
+    </>
   );
 }
