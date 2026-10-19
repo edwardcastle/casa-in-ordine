@@ -1060,5 +1060,23 @@
     "error": "Vaya, algo salió mal. Inténtalo de nuevo o usa el formulario de contacto.",
     "poweredBy": "Asistente IA",
     "privacy": "Las conversaciones pueden revisarse para mejorar el servicio."
+  },
+  "area": {
+    "signin": {
+      "metaTitle": "Accede a tu área",
+      "title": "Tu área privada",
+      "intro": "Introduce la dirección de email que nos diste y te enviaremos un enlace para entrar, sin contraseña.",
+      "emailLabel": "Email",
+      "submit": "Envíame el enlace",
+      "sending": "Enviando…",
+      "sentTitle": "Revisa tu bandeja de entrada",
+      "sentBody": "Si esta dirección está registrada, te hemos enviado un enlace para acceder. Sirve una sola vez y caduca en 30 minutos. ¿No lo ves? Mira también en la carpeta de spam.",
+      "errors": {
+        "link": "Este enlace no es válido o ha caducado. Pide uno nuevo más abajo.",
+        "invalid": "No hemos podido verificar la solicitud. Comprueba la dirección de email e inténtalo de nuevo.",
+        "limited": "Demasiados intentos. Inténtalo de nuevo dentro de un cuarto de hora.",
+        "unavailable": "El acceso al área privada no está disponible en este momento. Escríbenos a info@casainordine.com y te ayudamos."
+      }
+    }
   }
 }

@@ -1060,5 +1060,23 @@
     "error": "Oops, something went wrong. Please try again or use the contact form.",
     "poweredBy": "AI assistant",
     "privacy": "Conversations may be reviewed to improve our service."
+  },
+  "area": {
+    "signin": {
+      "metaTitle": "Sign in to your area",
+      "title": "Your private area",
+      "intro": "Enter the email address we have on file for you and we will send you a link to sign in, no password needed.",
+      "emailLabel": "Email",
+      "submit": "Email me the link",
+      "sending": "Sending…",
+      "sentTitle": "Check your inbox",
+      "sentBody": "If this address is registered, we have sent you a sign-in link. It works once and expires in 30 minutes. Cannot see it? Check your spam folder too.",
+      "errors": {
+        "link": "This link is not valid or has expired. Ask for a new one below.",
+        "invalid": "We could not verify the request. Check the email address and try again.",
+        "limited": "Too many attempts. Please try again in a quarter of an hour.",
+        "unavailable": "Signing in to the private area is not available right now. Write to us at info@casainordine.com and we will help."
+      }
+    }
   }
 }

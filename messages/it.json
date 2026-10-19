@@ -1060,5 +1060,23 @@
     "error": "Ops, qualcosa è andato storto. Riprova o usa il modulo di contatto.",
     "poweredBy": "Assistente AI",
     "privacy": "Le conversazioni possono essere riviste per migliorare il servizio."
+  },
+  "area": {
+    "signin": {
+      "metaTitle": "Accedi alla tua area",
+      "title": "La tua area riservata",
+      "intro": "Inserisci l'indirizzo email che ci hai dato: ti mandiamo un link per entrare, senza password.",
+      "emailLabel": "Email",
+      "submit": "Inviami il link",
+      "sending": "Invio…",
+      "sentTitle": "Controlla la tua casella",
+      "sentBody": "Se questo indirizzo è registrato, ti abbiamo inviato un link per accedere. Vale una volta sola e scade fra 30 minuti. Non lo vedi? Guarda anche nella posta indesiderata.",
+      "errors": {
+        "link": "Questo link non è valido o è scaduto. Chiedine uno nuovo qui sotto.",
+        "invalid": "Non siamo riusciti a verificare la richiesta. Controlla l'indirizzo email e riprova.",
+        "limited": "Troppi tentativi. Riprova fra un quarto d'ora.",
+        "unavailable": "L'accesso all'area riservata non è disponibile al momento. Scrivici a info@casainordine.com e ti aiutiamo."
+      }
+    }
   }
 }

@@ -28,6 +28,27 @@ export async function findActiveClient(id: string): Promise<Client | null> {
 }
 
 /**
+ * The active client with this email address, or null.
+ *
+ * The address is trimmed and lowercased before matching, and compared against
+ * the stored one lowercased too, so "Anna@Example.com " finds
+ * "anna@example.com" whichever way it was typed when the client was added.
+ * Deactivated clients are "no such client": they cannot be sent a sign-in link.
+ */
+export async function findClientByEmail(email: string): Promise<Client | null> {
+  const wanted = email.trim().toLowerCase();
+  if (!wanted) return null;
+
+  const rows = await db()<Client[]>`
+    SELECT id, email, name, lang
+    FROM clients
+    WHERE lower(email) = ${wanted} AND active
+    LIMIT 1
+  `;
+  return rows[0] ?? null;
+}
+
+/**
  * Records that the client was here, at most once an hour.
  *
  * The condition lives in the UPDATE, so a busy page does not write on every
