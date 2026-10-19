@@ -246,6 +246,50 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
     expect(await testDb()`SELECT id FROM project_materials`).toHaveLength(1);
   });
 
+  it('attachUploadedFile deletes the stored blob when the project is gone', async () => {
+    const { project } = await seed('a@example.com');
+    const key = `area/${project.id}/x.pdf`;
+    files.confirmUpload.mockResolvedValue({ type: 'application/pdf', size: 10 });
+    await testDb()`DELETE FROM client_projects WHERE id = ${project.id}`;
+
+    expect(await attachUploadedFile(project.id, key, 'Plan')).toEqual({ error: 'notfound' });
+    expect(files.deleteFiles).toHaveBeenCalledWith([key]);
+  });
+
+  it('attachUploadedFile logs, and still answers, when deleting the stray blob fails', async () => {
+    const { project } = await seed('a@example.com');
+    files.confirmUpload.mockResolvedValue({ type: 'application/pdf', size: 10 });
+    files.deleteFiles.mockRejectedValue(new Error('blob down'));
+    await testDb()`DELETE FROM client_projects WHERE id = ${project.id}`;
+    const logged = vi.spyOn(console, 'error').mockImplementation(() => {});
+
+    try {
+      expect(await attachUploadedFile(project.id, 'k', 'Plan')).toEqual({ error: 'notfound' });
+      expect(logged).toHaveBeenCalled();
+    } finally {
+      logged.mockRestore();
+    }
+  });
+
+  it('attachUploadedFile keeps the blob on the duplicate path', async () => {
+    const { project } = await seed('a@example.com');
+    const key = `area/${project.id}/x.pdf`;
+    files.confirmUpload.mockResolvedValue({ type: 'application/pdf', size: 10 });
+
+    await attachUploadedFile(project.id, key, 'First');
+    expect(await attachUploadedFile(project.id, key, 'Second')).toEqual({ error: 'duplicate' });
+    expect(files.deleteFiles).not.toHaveBeenCalled();
+  });
+
+  it('requestUploadUrl refuses a project that does not exist, issuing no URL', async () => {
+    const gone = '00000000-0000-4000-8000-000000000000';
+
+    expect(await requestUploadUrl(gone, { type: 'application/pdf', size: 10 })).toEqual({
+      error: 'project',
+    });
+    expect(files.createUploadUrl).not.toHaveBeenCalled();
+  });
+
   it('requestUploadUrl reports the rejection reason before asking for a URL', async () => {
     const { project } = await seed('a@example.com');
     expect(await requestUploadUrl(project.id, { type: 'text/html', size: 10 })).toEqual({

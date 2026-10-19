@@ -394,6 +394,14 @@ export async function updateProjectStatus(projectId: string, status: Status): Pr
   return rows.length > 0;
 }
 
+/** Whether a project with this id exists, for any client. Admin use only. */
+export async function projectExists(projectId: string): Promise<boolean> {
+  if (!UUID.test(projectId)) return false;
+
+  const rows = await db()`SELECT 1 FROM client_projects WHERE id = ${projectId}`;
+  return rows.length > 0;
+}
+
 export type NewMaterial =
   | { kind: 'note' | 'link'; title: string; body: string }
   | { kind: 'file'; title: string; fileKey: string; fileType: string; fileSize: number };

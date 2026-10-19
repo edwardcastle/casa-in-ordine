@@ -12,6 +12,7 @@ import {
   createProject,
   deleteClient,
   deleteMaterial,
+  projectExists,
   setClientActive,
   updateProjectStatus,
 } from '@/lib/area/queries';
@@ -229,12 +230,16 @@ export async function notifyClientAction(
 export async function requestUploadUrl(
   projectId: string,
   file: { type: string; size: number },
-): Promise<{ uploadUrl: string; key: string } | { error: 'type' | 'size' | 'notfound' }> {
+): Promise<{ uploadUrl: string; key: string } | { error: 'type' | 'size' | 'notfound' | 'project' }> {
   await requireAdmin();
 
   if (!uuid(projectId)) return { error: 'notfound' };
   const check = validateUpload({ type: String(file?.type), size: Number(file?.size) });
   if (!check.ok) return { error: check.reason };
+
+  // A signed URL for a project that is gone would let a stray blob be written
+  // that no material will ever point at.
+  if (!(await projectExists(projectId))) return { error: 'project' };
 
   return createUploadUrl(projectId, { type: file.type, size: file.size });
 }
@@ -269,7 +274,13 @@ export async function attachUploadedFile(
     if ((error as { code?: string })?.code === '23505') return { error: 'duplicate' };
     throw error;
   }
-  if (!added) return { error: 'notfound' };
+  if (!added) {
+    // The project was deleted between the upload and now: the blob is in
+    // storage but nothing will ever reference it. (Not so on 'duplicate',
+    // where the key belongs to the material that already holds it.)
+    await removeBlobs([key]);
+    return { error: 'notfound' };
+  }
 
   refresh();
   return { ok: true };

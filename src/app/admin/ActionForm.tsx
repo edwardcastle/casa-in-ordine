@@ -15,6 +15,7 @@ const ERRORS: Record<string, string> = {
   url: 'Il link deve iniziare con http:// o https://.',
   kind: 'Tipo di materiale non valido.',
   status: 'Stato non valido.',
+  project: 'Il progetto non esiste più: ricarica la pagina.',
   notfound: 'Elemento non trovato: ricarica la pagina.',
   confirm: "Spunta «Confermo l'eliminazione» per procedere.",
   notify: "Email non inviata: il cliente non è attivo, il progetto non è suo, oppure l'invio è fallito.",
