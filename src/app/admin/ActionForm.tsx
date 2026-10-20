@@ -38,13 +38,16 @@ type Props = {
   /** Clear the fields after a successful submit. */
   resetOnSuccess?: boolean;
   /** Visual weight of the button. */
-  tone?: 'primary' | 'quiet' | 'danger';
+  tone?: 'primary' | 'quiet' | 'danger' | 'subtle';
+  /** Extra classes for the submit button, e.g. to align it in a stacked form. */
+  buttonClassName?: string;
 };
 
 const TONES = {
   primary: 'rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-light',
   quiet: 'rounded-full border border-secondary px-4 py-1.5 text-sm font-semibold hover:bg-white',
   danger: 'rounded-full border border-red-300 px-4 py-1.5 text-sm font-semibold text-red-800 hover:bg-red-50',
+  subtle: 'rounded-full px-2 py-1 text-xs font-semibold text-gray-600 hover:bg-red-50 hover:text-red-800',
 } as const;
 
 /**
@@ -62,6 +65,7 @@ export default function ActionForm({
   className,
   resetOnSuccess = true,
   tone = 'primary',
+  buttonClassName = '',
 }: Props) {
   const [state, dispatch, pending] = useActionState(action, null);
   const [, startTransition] = useTransition();
@@ -82,7 +86,7 @@ export default function ActionForm({
       }}
     >
       {children}
-      <button type="submit" disabled={pending} className={`${TONES[tone]} disabled:opacity-60`}>
+      <button type="submit" disabled={pending} className={`${TONES[tone]} ${buttonClassName} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60`}>
         {pending ? 'Un attimo…' : submit}
       </button>
       <span role="status" aria-live="polite" className="text-sm">

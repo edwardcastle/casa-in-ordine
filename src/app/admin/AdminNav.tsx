@@ -16,21 +16,27 @@ export type AdminSection = (typeof LINKS)[number]['key'];
  */
 export default function AdminNav({ current }: { current: AdminSection }) {
   return (
-    <nav aria-label="Amministrazione" className="mb-6 flex flex-wrap gap-x-5 gap-y-2 text-sm">
-      {LINKS.map((link) => (
-        <Link
-          key={link.key}
-          href={link.href}
-          aria-current={link.key === current ? 'page' : undefined}
-          className={
-            link.key === current
-              ? 'font-semibold text-foreground underline decoration-primary decoration-2 underline-offset-4'
-              : 'text-primary underline hover:text-primary-dark'
-          }
-        >
-          {link.label}
-        </Link>
-      ))}
+    <nav aria-label="Amministrazione" className="mb-8 flex justify-center">
+      <ul className="inline-flex max-w-full flex-wrap justify-center gap-1 rounded-full bg-secondary p-1 text-sm">
+        {LINKS.map((link) => {
+          const active = link.key === current;
+          return (
+            <li key={link.key}>
+              <Link
+                href={link.href}
+                aria-current={active ? 'page' : undefined}
+                className={`block rounded-full px-4 py-1.5 font-semibold transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+                  active
+                    ? 'bg-white text-foreground shadow-[0_1px_3px_rgba(45,45,45,0.12)]'
+                    : 'text-gray-600 hover:text-foreground'
+                }`}
+              >
+                {link.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
     </nav>
   );
 }
