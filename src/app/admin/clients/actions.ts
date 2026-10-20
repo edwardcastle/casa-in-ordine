@@ -15,9 +15,11 @@ import {
   deleteProject,
   projectExists,
   setClientActive,
+  updateNote,
   updateProject,
   updateProjectStatus,
 } from '@/lib/area/queries';
+import { docToText, parseDoc, type RichDoc } from '@/lib/area/rich-text';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import type { ActionState } from './state';
 
@@ -53,6 +55,19 @@ function isRealDate(value: string): boolean {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const date = new Date(`${value}T00:00:00Z`);
   return !Number.isNaN(date.getTime()) && date.toISOString().startsWith(value);
+}
+
+/**
+ * A note's text from the editor: its document, cleaned on the server, plus the
+ * plain text kept alongside it. An empty document is refused, as an empty
+ * plain note was.
+ */
+function noteFromForm(formData: FormData): { body: string; doc: RichDoc } | { error: string } {
+  const doc = parseDoc(text(formData, 'doc'));
+  if (!doc) return { error: 'body' };
+  const body = docToText(doc);
+  if (!body) return { error: 'body' };
+  return { body: body.slice(0, MAX_BODY), doc };
 }
 
 function refresh(clientId?: string) {
@@ -226,18 +241,46 @@ export async function addTextMaterialAction(
   const projectId = uuid(text(formData, 'projectId'));
   const kind = text(formData, 'kind');
   const title = text(formData, 'title');
-  const body = text(formData, 'body');
 
   if (!projectId) return { error: 'notfound' };
   if (kind !== 'note' && kind !== 'link') return { error: 'kind' };
   if (!title || title.length > MAX_TITLE) return { error: 'title' };
+
+  if (kind === 'note') {
+    const note = noteFromForm(formData);
+    if ('error' in note) return note;
+    if (!(await addMaterial(projectId, { kind, title, ...note }))) return { error: 'notfound' };
+    refresh();
+    return { ok: true };
+  }
+
+  const body = text(formData, 'body');
   if (!body || body.length > MAX_BODY) return { error: 'body' };
-  if (kind === 'link' && !/^https?:\/\/\S+$/i.test(body)) return { error: 'url' };
+  if (!/^https?:\/\/\S+$/i.test(body)) return { error: 'url' };
 
   if (!(await addMaterial(projectId, { kind, title, body }))) return { error: 'notfound' };
 
   refresh();
   return { ok: true };
+}
+
+export async function updateNoteAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  await requireAdmin();
+
+  const materialId = uuid(text(formData, 'materialId'));
+  const title = text(formData, 'title');
+  if (!materialId) return { error: 'notfound' };
+  if (!title || title.length > MAX_TITLE) return { error: 'title' };
+
+  const note = noteFromForm(formData);
+  if ('error' in note) return note;
+
+  if (!(await updateNote(materialId, { title, ...note }))) return { error: 'notfound' };
+  refresh();
+  return { ok: true, message: 'Nota salvata' };
 }
 
 export async function deleteMaterialAction(

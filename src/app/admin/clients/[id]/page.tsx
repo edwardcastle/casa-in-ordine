@@ -25,6 +25,7 @@ import {
 } from '../actions';
 import { FileIcon, LinkIcon, MailIcon, NoteIcon, PlusIcon } from '../icons';
 import AddMaterial, { fieldClass, labelClass } from './AddMaterial';
+import NoteTile from './NoteTile';
 import ProjectHeader from './ProjectHeader';
 
 export const dynamic = 'force-dynamic';
@@ -276,7 +277,11 @@ function ProjectPane({ client, project }: { client: AdminClient; project: Projec
         {project.materials.length > 0 ? (
           <ul className="mt-4 grid gap-3 sm:grid-cols-2">
             {project.materials.map((material) => (
-              <MaterialTile key={material.id} material={material} />
+              material.kind === 'note' ? (
+                <NoteTile key={material.id} material={material} />
+              ) : (
+                <MaterialTile key={material.id} material={material} />
+              )
             ))}
           </ul>
         ) : (

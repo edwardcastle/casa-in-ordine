@@ -5,6 +5,7 @@ import ActionForm from '../../ActionForm';
 import { addTextMaterialAction } from '../actions';
 import { FileIcon, LinkIcon, NoteIcon } from '../icons';
 import UploadForm from '../UploadForm';
+import RichTextEditor from './RichTextEditor';
 
 type Kind = 'file' | 'note' | 'link';
 
@@ -57,17 +58,10 @@ export default function AddMaterial({ projectId, clientName }: { projectId: stri
               Titolo
               <input name="title" required maxLength={200} placeholder="Cosa comprare per l'armadio" className={fieldClass} />
             </label>
-            <label className={labelClass}>
+            <div className={labelClass}>
               Testo
-              <textarea
-                name="body"
-                required
-                rows={5}
-                maxLength={10000}
-                placeholder={`Quello che ${clientName} deve ricordare.`}
-                className={fieldClass}
-              />
-            </label>
+              <RichTextEditor placeholder={`Quello che ${clientName} deve sapere: titoli, elenchi, link…`} />
+            </div>
           </ActionForm>
         )}
 

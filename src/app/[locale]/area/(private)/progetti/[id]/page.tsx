@@ -1,3 +1,4 @@
+import RichText from '@/components/area/RichText';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { hasLocale, useTranslations } from 'next-intl';
@@ -52,11 +53,17 @@ function MaterialItem({ material, locale }: { material: Material; locale: string
         </a>
       )}
 
-      {/* Notes are text. They are never rendered as HTML. */}
-      {material.kind === 'note' && material.body && (
-        <p className="whitespace-pre-line break-words text-sm leading-relaxed text-gray-700">
-          {material.body}
-        </p>
+      {/* Notes are never rendered as HTML: a formatted note is built element by
+          element from its cleaned document, an older note is plain text. */}
+      {material.kind === 'note' && material.doc ? (
+        <RichText doc={material.doc} />
+      ) : (
+        material.kind === 'note' &&
+        material.body && (
+          <p className="whitespace-pre-line break-words text-sm leading-relaxed text-gray-700">
+            {material.body}
+          </p>
+        )
       )}
 
       {material.kind === 'link' &&

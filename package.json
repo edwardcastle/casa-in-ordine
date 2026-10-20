@@ -18,6 +18,9 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
+    "@tiptap/pm": "3.31.4",
+    "@tiptap/react": "3.31.4",
+    "@tiptap/starter-kit": "3.31.4",
     "@vercel/blob": "^2.8.2",
     "chart.js": "^4.5.1",
     "gray-matter": "^4.0.3",
