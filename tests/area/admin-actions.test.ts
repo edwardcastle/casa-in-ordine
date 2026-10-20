@@ -29,9 +29,11 @@ import {
   createProjectAction,
   deleteClientAction,
   deleteMaterialAction,
+  deleteProjectAction,
   notifyClientAction,
   requestUploadUrl,
   setClientActiveAction,
+  updateProjectAction,
   updateProjectStatusAction,
 } from '@/app/admin/clients/actions';
 import {
@@ -74,6 +76,8 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
       deleteClientAction: () => deleteClientAction(null, data),
       createProjectAction: () => createProjectAction(null, data),
       updateProjectStatusAction: () => updateProjectStatusAction(null, data),
+      updateProjectAction: () => updateProjectAction(null, data),
+      deleteProjectAction: () => deleteProjectAction(null, data),
       addTextMaterialAction: () => addTextMaterialAction(null, data),
       deleteMaterialAction: () => deleteMaterialAction(null, data),
       notifyClientAction: () => notifyClientAction(null, data),
@@ -83,12 +87,56 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
       setTipPublishedAction: () => setTipPublishedAction(null, data),
       deleteTipAction: () => deleteTipAction(null, data),
     };
-    expect(Object.keys(calls)).toHaveLength(13);
+    expect(Object.keys(calls)).toHaveLength(15);
     for (const [name, call] of Object.entries(calls)) {
       await expect(call(), name).rejects.toThrow('Not signed in.');
     }
     expect(files.createUploadUrl).not.toHaveBeenCalled();
     expect(await testDb()`SELECT id FROM clients`).toHaveLength(0);
+  });
+
+  it('updateProjectAction changes name, room, date and summary', async () => {
+    const { project } = await seed('a@example.com');
+    const result = await updateProjectAction(
+      null,
+      form({ projectId: project.id, title: 'Armadio camera', zone: 'armadio', visitDate: '2026-11-03', summary: 'Due ante' }),
+    );
+    expect(result).toMatchObject({ ok: true });
+    const [row] = await testDb()`
+      SELECT title, zone, summary, to_char(visit_date, 'YYYY-MM-DD') AS visit_date FROM client_projects WHERE id = ${project.id}`;
+    expect(row).toEqual({ title: 'Armadio camera', zone: 'armadio', summary: 'Due ante', visit_date: '2026-11-03' });
+
+    // Clearing the optional fields stores nulls.
+    await updateProjectAction(null, form({ projectId: project.id, title: 'Armadio camera', zone: '', visitDate: '', summary: '' }));
+    const [cleared] = await testDb()`SELECT zone, summary, visit_date FROM client_projects WHERE id = ${project.id}`;
+    expect(cleared).toEqual({ zone: null, summary: null, visit_date: null });
+  });
+
+  it('updateProjectAction rejects bad input and unknown projects', async () => {
+    const { project } = await seed('a@example.com');
+    const base = { projectId: project.id, title: 'T', zone: '', visitDate: '', summary: '' };
+    expect(await updateProjectAction(null, form({ ...base, title: '' }))).toEqual({ error: 'title' });
+    expect(await updateProjectAction(null, form({ ...base, zone: 'attic' }))).toEqual({ error: 'zone' });
+    expect(await updateProjectAction(null, form({ ...base, visitDate: '2026-02-31' }))).toEqual({ error: 'date' });
+    expect(
+      await updateProjectAction(null, form({ ...base, projectId: '00000000-0000-4000-8000-000000000000' })),
+    ).toEqual({ error: 'notfound' });
+  });
+
+  it('deleteProjectAction needs confirmation, then removes the project, its materials and files', async () => {
+    const { client, project } = await seed('a@example.com');
+    const other = (await createProject(client.id, { title: 'Keep me' }))!;
+    await addMaterial(project.id, { kind: 'file', title: 'Plan', fileKey: `area/${project.id}/a.pdf`, fileType: 'application/pdf', fileSize: 10 });
+    await addMaterial(project.id, { kind: 'note', title: 'Note', body: 'x' });
+
+    expect(await deleteProjectAction(null, form({ projectId: project.id }))).toEqual({ error: 'confirm' });
+    expect(await testDb()`SELECT id FROM client_projects`).toHaveLength(2);
+
+    const result = await deleteProjectAction(null, form({ projectId: project.id, confirm: 'on' }));
+    expect(result).toEqual({ ok: true, redirectTo: `/admin/clients/${client.id}` });
+    expect((await testDb()`SELECT id FROM client_projects`).map((r) => r.id)).toEqual([other.id]);
+    expect(await testDb()`SELECT id FROM project_materials`).toHaveLength(0);
+    expect(files.deleteFiles).toHaveBeenCalledWith([`area/${project.id}/a.pdf`]);
   });
 
   it('createProjectAction accepts an empty zone and stores null', async () => {

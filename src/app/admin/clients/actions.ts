@@ -12,8 +12,10 @@ import {
   createProject,
   deleteClient,
   deleteMaterial,
+  deleteProject,
   projectExists,
   setClientActive,
+  updateProject,
   updateProjectStatus,
 } from '@/lib/area/queries';
 import { currentAdmin } from '@/lib/reviews/admin-session';
@@ -150,6 +152,50 @@ export async function createProjectAction(
   refresh(clientId);
   // Open the new project, so the next thing on screen is where its material goes.
   return { ok: true, redirectTo: `/admin/clients/${clientId}?progetto=${project.id}` };
+}
+
+export async function updateProjectAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  await requireAdmin();
+
+  const projectId = uuid(text(formData, 'projectId'));
+  if (!projectId) return { error: 'notfound' };
+
+  const title = text(formData, 'title');
+  const zone = text(formData, 'zone') || null;
+  const summary = text(formData, 'summary');
+  const visitDate = text(formData, 'visitDate');
+
+  if (!title || title.length > MAX_TITLE) return { error: 'title' };
+  if (zone && !(PROJECT_ZONES as readonly string[]).includes(zone)) return { error: 'zone' };
+  if (summary.length > MAX_BODY) return { error: 'body' };
+  if (visitDate && !isRealDate(visitDate)) return { error: 'date' };
+
+  const saved = await updateProject(projectId, { title, zone, summary, visitDate: visitDate || null });
+  if (!saved) return { error: 'notfound' };
+
+  refresh();
+  return { ok: true, message: 'Modifiche salvate' };
+}
+
+export async function deleteProjectAction(
+  _prev: ActionState,
+  formData: FormData,
+): Promise<ActionState> {
+  await requireAdmin();
+
+  const projectId = uuid(text(formData, 'projectId'));
+  if (!projectId) return { error: 'notfound' };
+  if (formData.get('confirm') !== 'on') return { error: 'confirm' };
+
+  const deleted = await deleteProject(projectId);
+  if (!deleted) return { error: 'notfound' };
+  await removeBlobs(deleted.fileKeys);
+
+  refresh(deleted.clientId);
+  return { ok: true, redirectTo: `/admin/clients/${deleted.clientId}` };
 }
 
 export async function updateProjectStatusAction(

@@ -383,6 +383,51 @@ export async function createProject(
   return rows[0] ?? null;
 }
 
+/** Changes a project's name, room, visit date and summary. */
+export async function updateProject(
+  projectId: string,
+  input: { title: string; zone: string | null; summary: string | null; visitDate: string | null },
+): Promise<boolean> {
+  if (!UUID.test(projectId)) return false;
+
+  const rows = await db()`
+    UPDATE client_projects
+       SET title = ${input.title.trim()},
+           zone = ${input.zone?.trim() || null},
+           summary = ${input.summary?.trim() || null},
+           visit_date = ${input.visitDate || null},
+           updated_at = now()
+     WHERE id = ${projectId}
+    RETURNING id
+  `;
+  return rows.length > 0;
+}
+
+/**
+ * Deletes a project and its materials. Returns the owning client, so the
+ * caller can go back to it, and the stored file keys, so their blobs can be
+ * removed. Null when there was no such project.
+ */
+export async function deleteProject(
+  projectId: string,
+): Promise<{ clientId: string; fileKeys: string[] } | null> {
+  if (!UUID.test(projectId)) return null;
+
+  const rows = await db()<{ clientId: string; fileKeys: string[] }[]>`
+    WITH keys AS (
+      SELECT file_key FROM project_materials
+       WHERE project_id = ${projectId} AND file_key IS NOT NULL
+    ),
+    gone AS (
+      DELETE FROM client_projects WHERE id = ${projectId} RETURNING client_id
+    )
+    SELECT gone.client_id AS "clientId",
+           coalesce((SELECT array_agg(file_key) FROM keys), '{}') AS "fileKeys"
+      FROM gone
+  `;
+  return rows[0] ?? null;
+}
+
 export async function updateProjectStatus(projectId: string, status: Status): Promise<boolean> {
   if (!UUID.test(projectId) || !PROJECT_STATUSES.includes(status)) return false;
 

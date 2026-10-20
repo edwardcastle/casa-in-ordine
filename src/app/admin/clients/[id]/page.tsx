@@ -23,9 +23,9 @@ import {
   notifyClientAction,
   setClientActiveAction,
 } from '../actions';
-import { CalendarIcon, FileIcon, LinkIcon, MailIcon, NoteIcon, PlusIcon } from '../icons';
+import { FileIcon, LinkIcon, MailIcon, NoteIcon, PlusIcon } from '../icons';
 import AddMaterial, { fieldClass, labelClass } from './AddMaterial';
-import StatusPicker from './StatusPicker';
+import ProjectHeader from './ProjectHeader';
 
 export const dynamic = 'force-dynamic';
 
@@ -260,30 +260,13 @@ function ProjectPane({ client, project }: { client: AdminClient; project: Projec
 
   return (
     <article aria-labelledby="project-title" className={`${panel} overflow-hidden`}>
-      <header className="flex flex-col gap-4 border-b border-[#E2E5DE] px-6 py-6 sm:flex-row sm:items-start sm:justify-between sm:px-8">
-        <div className="min-w-0">
-          <h2 id="project-title" className="break-words text-[26px] font-semibold leading-tight tracking-[-0.015em]">
-            {project.title}
-          </h2>
-          {(zone || project.visitDate) && (
-            <p className="mt-2 flex flex-wrap items-center gap-x-5 gap-y-1 text-sm text-[#5C6A5B]">
-              {zone && <span>{zone}</span>}
-              {project.visitDate && (
-                <span className="inline-flex items-center gap-1.5">
-                  <CalendarIcon className="h-4 w-4 text-primary" />
-                  Sopralluogo il {visitFmt.format(new Date(`${project.visitDate}T00:00:00Z`))}
-                </span>
-              )}
-            </p>
-          )}
-          {project.summary && (
-            <p className="mt-4 max-w-prose whitespace-pre-line break-words text-[15px] leading-relaxed text-[#4A5649]">
-              {project.summary}
-            </p>
-          )}
-        </div>
-        <StatusPicker projectId={project.id} status={project.status} />
-      </header>
+      <ProjectHeader
+        key={`${project.id}-${project.title}-${project.zone}-${project.visitDate}-${project.summary}`}
+        project={project}
+        zoneLabel={zone}
+        visitLabel={project.visitDate ? visitFmt.format(new Date(`${project.visitDate}T00:00:00Z`)) : null}
+        firstName={firstName}
+      />
 
       <section aria-labelledby="client-view" className="bg-[#F3F5F0] px-6 py-6 sm:px-8">
         <h3 id="client-view" className="text-sm font-semibold text-[#4A5649]">
