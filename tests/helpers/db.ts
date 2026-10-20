@@ -40,7 +40,7 @@ export function testDb() {
 /** Empties the client-area tables (and client sign-in tokens). Test database only. */
 export async function resetAreaTables(): Promise<void> {
   const q = testDb();
-  await q`TRUNCATE area_tips, project_materials, client_projects, clients CASCADE`;
+  await q`TRUNCATE quote_requests, area_tips, project_materials, client_projects, clients CASCADE`;
   await q`DELETE FROM auth_tokens WHERE purpose = 'client_signin'`;
 }
 

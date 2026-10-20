@@ -10,6 +10,7 @@ import {
   type ProjectDetail,
   type ProjectSummary,
 } from '@/lib/area/queries';
+import { ZONE_LABEL_IT, zoneLabelIt } from '@/lib/quote/zone-labels';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import ActionForm from '../../ActionForm';
@@ -38,15 +39,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 const seenFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
 const visitFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
-/** The same rooms the visitor picks from in the quote wizard. */
-const ZONE_LABEL: Record<(typeof PROJECT_ZONES)[number], string> = {
-  armadio: 'Armadi e cabine armadio',
-  cucina: 'Cucina e dispensa',
-  bagno: 'Bagno e cura personale',
-  living: 'Living e home office',
-  trasloco: 'Trasloco',
-  garage: 'Garage, cantina e ripostiglio',
-};
+const ZONE_LABEL = ZONE_LABEL_IT;
 
 const STATUS = {
   planned: { label: 'Programmato', dot: 'bg-[#B9BFB4]' },
@@ -59,9 +52,7 @@ const LANG_LABEL = { it: 'Italiano', en: 'Inglese', es: 'Spagnolo' } as const;
 const panel = 'rounded-2xl border border-[#E2E5DE] bg-white';
 const focusRing = 'focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 
-function zoneLabel(zone: string | null): string | null {
-  return zone && zone in ZONE_LABEL ? ZONE_LABEL[zone as keyof typeof ZONE_LABEL] : null;
-}
+const zoneLabel = zoneLabelIt;
 
 function formatSize(bytes: number | null): string {
   if (bytes === null) return '';
