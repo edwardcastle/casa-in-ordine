@@ -38,7 +38,7 @@ export default async function PrivateAreaLayout({
   return (
     <div className="bg-secondary-light">
       <AreaTopBand />
-      <div className="mx-auto max-w-4xl px-4 pb-16 pt-6 sm:px-6 md:pt-10">
+      <div className="mx-auto max-w-5xl px-4 pb-16 pt-6 sm:px-6 md:pt-10">
         <div className="mb-6 flex justify-end">
           {/* A POST: a link would be prefetched, and a prefetch must not sign anyone out. */}
           <form action={signOutClient}>

@@ -25,6 +25,7 @@ import {
 } from '../actions';
 import { FileIcon, LinkIcon, MailIcon, NoteIcon, PlusIcon } from '../icons';
 import AddMaterial, { fieldClass, labelClass } from './AddMaterial';
+import NoteTile from './NoteTile';
 import ProjectHeader from './ProjectHeader';
 
 export const dynamic = 'force-dynamic';
@@ -232,7 +233,7 @@ function MaterialTile({ material }: { material: Material }) {
           <Icon className="h-[18px] w-[18px]" />
         </span>
         <div className="min-w-0 flex-1 pr-14">
-          <p className="break-words text-[15px] font-semibold leading-snug">{material.title}</p>
+          <p className="min-w-0 [overflow-wrap:anywhere] text-[15px] font-semibold leading-snug">{material.title}</p>
           <p className="mt-0.5 truncate text-xs text-[#7A8578]">{caption}</p>
         </div>
       </div>
@@ -276,7 +277,11 @@ function ProjectPane({ client, project }: { client: AdminClient; project: Projec
         {project.materials.length > 0 ? (
           <ul className="mt-4 grid gap-3 sm:grid-cols-2">
             {project.materials.map((material) => (
-              <MaterialTile key={material.id} material={material} />
+              material.kind === 'note' ? (
+                <NoteTile key={material.id} material={material} />
+              ) : (
+                <MaterialTile key={material.id} material={material} />
+              )
             ))}
           </ul>
         ) : (

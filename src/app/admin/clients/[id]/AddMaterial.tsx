@@ -5,6 +5,8 @@ import ActionForm from '../../ActionForm';
 import { addTextMaterialAction } from '../actions';
 import { FileIcon, LinkIcon, NoteIcon } from '../icons';
 import UploadForm from '../UploadForm';
+import { fieldClass, labelClass } from './formStyles';
+import NewNoteForm from './NewNoteForm';
 
 type Kind = 'file' | 'note' | 'link';
 
@@ -14,9 +16,7 @@ const CHOICES = [
   { key: 'link', label: 'Link', Icon: LinkIcon },
 ] as const;
 
-export const fieldClass =
-  'mt-1.5 w-full rounded-lg border border-[#DCE0D8] bg-white px-3 py-2.5 text-[15px] font-normal text-[#2F3A2E] placeholder:text-[#9AA197] focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15';
-export const labelClass = 'block text-sm font-medium text-[#4A5649]';
+export { fieldClass, labelClass } from './formStyles';
 
 /**
  * Adding material starts closed: three plain choices. Picking one opens just
@@ -49,27 +49,7 @@ export default function AddMaterial({ projectId, clientName }: { projectId: stri
 
         {kind === 'file' && <UploadForm projectId={projectId} initialFile={dropped} />}
 
-        {kind === 'note' && (
-          <ActionForm action={addTextMaterialAction} submit="Aggiungi la nota" onSuccess={() => setKind(null)} className="flex flex-col gap-4" buttonClassName="self-start">
-            <input type="hidden" name="projectId" value={projectId} />
-            <input type="hidden" name="kind" value="note" />
-            <label className={labelClass}>
-              Titolo
-              <input name="title" required maxLength={200} placeholder="Cosa comprare per l'armadio" className={fieldClass} />
-            </label>
-            <label className={labelClass}>
-              Testo
-              <textarea
-                name="body"
-                required
-                rows={5}
-                maxLength={10000}
-                placeholder={`Quello che ${clientName} deve ricordare.`}
-                className={fieldClass}
-              />
-            </label>
-          </ActionForm>
-        )}
+        {kind === 'note' && <NewNoteForm projectId={projectId} clientName={clientName} onDone={() => setKind(null)} />}
 
         {kind === 'link' && (
           <ActionForm action={addTextMaterialAction} submit="Aggiungi il link" onSuccess={() => setKind(null)} className="flex flex-col gap-4" buttonClassName="self-start">

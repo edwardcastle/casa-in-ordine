@@ -33,6 +33,7 @@ import {
   notifyClientAction,
   requestUploadUrl,
   setClientActiveAction,
+  updateNoteAction,
   updateProjectAction,
   updateProjectStatusAction,
 } from '@/app/admin/clients/actions';
@@ -78,6 +79,7 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
       updateProjectStatusAction: () => updateProjectStatusAction(null, data),
       updateProjectAction: () => updateProjectAction(null, data),
       deleteProjectAction: () => deleteProjectAction(null, data),
+      updateNoteAction: () => updateNoteAction(null, data),
       addTextMaterialAction: () => addTextMaterialAction(null, data),
       deleteMaterialAction: () => deleteMaterialAction(null, data),
       notifyClientAction: () => notifyClientAction(null, data),
@@ -87,12 +89,61 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
       setTipPublishedAction: () => setTipPublishedAction(null, data),
       deleteTipAction: () => deleteTipAction(null, data),
     };
-    expect(Object.keys(calls)).toHaveLength(15);
+    expect(Object.keys(calls)).toHaveLength(16);
     for (const [name, call] of Object.entries(calls)) {
       await expect(call(), name).rejects.toThrow('Not signed in.');
     }
     expect(files.createUploadUrl).not.toHaveBeenCalled();
     expect(await testDb()`SELECT id FROM clients`).toHaveLength(0);
+  });
+
+  const richDoc = (href = 'https://example.com/scatole') =>
+    JSON.stringify({
+      type: 'doc',
+      content: [
+        { type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Cosa comprare' }] },
+        {
+          type: 'paragraph',
+          content: [
+            { type: 'text', text: 'Sei scatole', marks: [{ type: 'bold' }] },
+            { type: 'text', text: ' qui', marks: [{ type: 'link', attrs: { href } }] },
+          ],
+        },
+      ],
+    });
+
+  it('a note is saved with its formatted document and its plain text', async () => {
+    const { project } = await seed('a@example.com');
+    expect(
+      await addTextMaterialAction(null, form({ projectId: project.id, kind: 'note', title: 'Spesa', doc: richDoc() })),
+    ).toEqual({ ok: true });
+    const [row] = await testDb()`SELECT title, body, body_doc FROM project_materials`;
+    expect(row.title).toBe('Spesa');
+    expect(row.body).toBe('Cosa comprare\n\nSei scatole qui');
+    expect(row.body_doc.content[0]).toEqual({ type: 'heading', attrs: { level: 2 }, content: [{ type: 'text', text: 'Cosa comprare' }] });
+  });
+
+  it('a note refuses an empty or broken document, and stores links only if safe', async () => {
+    const { project } = await seed('a@example.com');
+    const empty = JSON.stringify({ type: 'doc', content: [{ type: 'paragraph' }] });
+    expect(await addTextMaterialAction(null, form({ projectId: project.id, kind: 'note', title: 'T', doc: empty }))).toEqual({ error: 'body' });
+    expect(await addTextMaterialAction(null, form({ projectId: project.id, kind: 'note', title: 'T', doc: '{nope' }))).toEqual({ error: 'body' });
+
+    await addTextMaterialAction(null, form({ projectId: project.id, kind: 'note', title: 'T', doc: richDoc('javascript:alert(1)') }));
+    const [row] = await testDb()`SELECT body_doc FROM project_materials`;
+    expect(JSON.stringify(row.body_doc)).not.toContain('javascript');
+  });
+
+  it('updateNoteAction rewrites a note, and only a note', async () => {
+    const { project } = await seed('a@example.com');
+    const note = (await addMaterial(project.id, { kind: 'note', title: 'Old', body: 'old text' }))!;
+    const link = (await addMaterial(project.id, { kind: 'link', title: 'L', body: 'https://example.com' }))!;
+
+    expect(await updateNoteAction(null, form({ materialId: note.id, title: 'New', doc: richDoc() }))).toMatchObject({ ok: true });
+    const [row] = await testDb()`SELECT title, body FROM project_materials WHERE id = ${note.id}`;
+    expect(row).toEqual({ title: 'New', body: 'Cosa comprare\n\nSei scatole qui' });
+
+    expect(await updateNoteAction(null, form({ materialId: link.id, title: 'X', doc: richDoc() }))).toEqual({ error: 'notfound' });
   });
 
   it('updateProjectAction changes name, room, date and summary', async () => {

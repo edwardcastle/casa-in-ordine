@@ -1,4 +1,5 @@
 import { db } from '@/lib/reviews/db';
+import type { RichDoc } from './rich-text';
 
 export type Client = {
   id: string;
@@ -79,6 +80,8 @@ export type Material = {
   title: string;
   /** The note text, or the link's URL. */
   body: string | null;
+  /** A formatted note's document; null for links, files and older plain notes. */
+  doc: RichDoc | null;
   fileType: string | null;
   fileSize: number | null;
   createdAt: Date;
@@ -156,6 +159,7 @@ export async function getProject(
            m.kind,
            m.title,
            m.body,
+           m.body_doc AS "doc",
            m.file_type AS "fileType",
            m.file_size AS "fileSize",
            m.created_at AS "createdAt"
@@ -448,8 +452,24 @@ export async function projectExists(projectId: string): Promise<boolean> {
 }
 
 export type NewMaterial =
-  | { kind: 'note' | 'link'; title: string; body: string }
+  | { kind: 'note'; title: string; body: string; doc?: RichDoc | null }
+  | { kind: 'link'; title: string; body: string }
   | { kind: 'file'; title: string; fileKey: string; fileType: string; fileSize: number };
+
+/** Rewrites a note's title and text. Only notes: links and files are not edited here. */
+export async function updateNote(
+  materialId: string,
+  input: { title: string; body: string; doc: RichDoc },
+): Promise<boolean> {
+  if (!UUID.test(materialId)) return false;
+  const rows = await db()`
+    UPDATE project_materials
+       SET title = ${input.title.trim()}, body = ${input.body}, body_doc = ${db().json(input.doc as never)}
+     WHERE id = ${materialId} AND kind = 'note'
+    RETURNING id
+  `;
+  return rows.length > 0;
+}
 
 /** Adds a material to the project; null if the project does not exist. */
 export async function addMaterial(
@@ -460,11 +480,12 @@ export async function addMaterial(
 
   const isFile = input.kind === 'file';
   const rows = await db()<{ id: string }[]>`
-    INSERT INTO project_materials (project_id, kind, title, body, file_key, file_type, file_size)
+    INSERT INTO project_materials (project_id, kind, title, body, body_doc, file_key, file_type, file_size)
     SELECT p.id,
            ${input.kind},
            ${input.title.trim()},
            ${isFile ? null : input.body},
+           ${input.kind === 'note' && input.doc ? db().json(input.doc as never) : null},
            ${isFile ? input.fileKey : null},
            ${isFile ? input.fileType : null},
            ${isFile ? input.fileSize : null}

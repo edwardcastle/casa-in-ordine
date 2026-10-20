@@ -7,9 +7,14 @@ import { errorText } from '../ActionForm';
 import { attachUploadedFile, requestUploadUrl } from './actions';
 import { UploadIcon } from './icons';
 
-/** "Piano cucina.final.pdf" -> "Piano cucina.final", at most 200 characters. */
+/** "Guida_Organizzazione-IT.pdf" -> "Guida Organizzazione IT", at most 200 characters. */
 function defaultTitle(filename: string): string {
-  return filename.replace(/\.[^.]+$/, '').trim().slice(0, 200);
+  return filename
+    .replace(/\.[^.]+$/, '')
+    .replace(/[_-]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 200);
 }
 
 /** PUTs the file with XMLHttpRequest, because `fetch` cannot report upload progress. */

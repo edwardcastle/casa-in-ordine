@@ -84,7 +84,7 @@ export default async function AreaDashboardPage({
                       </span>
                     )}
                   </div>
-                  <h3 className="mb-2 break-words text-lg font-semibold text-foreground">
+                  <h3 className="mb-2 min-w-0 [overflow-wrap:anywhere] text-lg font-semibold text-foreground">
                     {project.title}
                   </h3>
                   <p className="text-sm text-gray-600">

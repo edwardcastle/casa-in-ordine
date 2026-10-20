@@ -1116,9 +1116,13 @@
       "visit": "Sopralluogo: {date}",
       "materialsTitle": "Materiali",
       "noMaterials": "Non ci sono ancora materiali per questo progetto. Appena ne carichiamo uno lo troverai qui.",
-      "openFile": "Apri il file",
       "openLink": "Apri il link",
-      "added": "Aggiunto il {date}"
+      "added": "Aggiunto il {date}",
+      "download": "Scarica",
+      "loadingDocument": "Caricamento del documento…",
+      "documentError": "Non riusciamo a mostrare il documento in questa pagina. Puoi scaricarlo e aprirlo dal tuo dispositivo.",
+      "pageOf": "Pagina {n} di {total}",
+      "linksTitle": "Link e allegati"
     },
     "tips": {
       "readGuide": "Leggi la guida"
