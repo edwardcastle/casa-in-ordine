@@ -5,6 +5,9 @@ import type { PDFDocumentProxy } from 'pdfjs-dist/legacy/build/pdf.mjs';
 
 type Labels = { loading: string; error: string; page: string };
 
+/** Matches the client area's background (`secondary-light`). */
+const PAGE_BACKGROUND = '#FDFBF7';
+
 /**
  * Shows a PDF inside the page, as the client would see it printed: every page
  * drawn with its own layout, pictures, colours and charts, at the width of the
@@ -77,13 +80,13 @@ export default function PdfDocument({ src, labels }: { src: string; labels: Labe
       {failed ? (
         <p className="rounded-lg bg-secondary-light px-4 py-3 text-sm text-gray-700">{labels.error}</p>
       ) : !pdf || width === 0 ? (
-        <div className="flex aspect-[1/1.414] w-full items-center justify-center rounded-lg bg-secondary-light">
+        <div className="flex aspect-[1/1.414] w-full items-center justify-center">
           <p role="status" className="text-sm text-gray-600">
             {labels.loading}
           </p>
         </div>
       ) : (
-        <ol className="flex flex-col gap-4">
+        <ol className="flex flex-col">
           {Array.from({ length: pdf.numPages }, (_, i) => (
             <li key={i}>
               <PdfPage
@@ -150,6 +153,11 @@ function PdfPage({ pdf, number, width, label }: { pdf: PDFDocumentProxy; number:
       const task = page.render({
         canvas,
         viewport,
+        // The area's own background instead of white paper, so the page reads
+        // as part of this page rather than a sheet laid on top. Not
+        // transparent: pdf.js draws on an opaque canvas, where "transparent"
+        // comes out black.
+        background: PAGE_BACKGROUND,
         transform: dpr === 1 ? undefined : [dpr, 0, 0, dpr, 0, 0],
       });
       render = task;
@@ -178,7 +186,7 @@ function PdfPage({ pdf, number, width, label }: { pdf: PDFDocumentProxy; number:
       ref={frameRef}
       role="img"
       aria-label={label}
-      className="relative w-full overflow-hidden rounded-md bg-white shadow-[0_1px_3px_rgba(45,45,45,0.10),0_8px_24px_-16px_rgba(45,45,45,0.25)]"
+      className="relative w-full overflow-hidden"
       style={{ aspectRatio: `1 / ${ratio}` }}
     >
       <canvas ref={canvasRef} className="absolute inset-0 block" />
