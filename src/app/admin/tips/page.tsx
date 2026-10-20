@@ -4,7 +4,7 @@ import { getPostSlugs } from '@/lib/blog';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import ActionForm from '../ActionForm';
-import AdminNav from '../AdminNav';
+import AdminShell from '../AdminShell';
 import SignInForm from '../reviews/SignInForm';
 import { deleteTipAction, setTipPublishedAction, upsertTipAction } from './actions';
 
@@ -28,6 +28,7 @@ function TipForm({ tip, slugs }: { tip?: AdminTip; slugs: string[] }) {
       submit={tip ? 'Salva modifiche' : 'Crea consiglio'}
       resetOnSuccess={!tip}
       className="flex flex-col gap-4"
+      buttonClassName="self-start"
     >
       {tip && <input type="hidden" name="id" value={tip.id} />}
 
@@ -119,12 +120,12 @@ export default async function AdminTipsPage({
   const editing = edit ? tips.find((t) => t.id === edit) : undefined;
 
   return (
-    <main className="mx-auto max-w-5xl px-5 py-10">
-      <AdminNav current="tips" />
-      <header className="mb-8 border-b border-secondary pb-4">
-        <h1 className="text-2xl font-semibold">Consigli</h1>
-        <p className="text-sm text-gray-500">{admin}</p>
-      </header>
+    <AdminShell
+      current="tips"
+      admin={admin}
+      title="Consigli"
+      description="I consigli che ogni cliente trova nella sua area, in tre lingue."
+    >
 
       <section aria-labelledby="tip-form" className="mb-10 rounded-lg border border-secondary/50 bg-white p-5">
         <div className="mb-3 flex items-baseline justify-between gap-3">
@@ -195,6 +196,6 @@ export default async function AdminTipsPage({
           ))}
         </ul>
       )}
-    </main>
+    </AdminShell>
   );
 }

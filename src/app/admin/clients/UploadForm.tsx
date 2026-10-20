@@ -152,7 +152,7 @@ export default function UploadForm({
         <button
           type="submit"
           disabled={busy}
-          className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
+          className="rounded-lg bg-[#3F4D3E] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#2F3A2E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
         >
           {busy ? 'Caricamento…' : 'Carica il file'}
         </button>

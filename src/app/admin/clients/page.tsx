@@ -3,138 +3,196 @@ import { listClients } from '@/lib/area/queries';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import ActionForm from '../ActionForm';
-import AdminNav from '../AdminNav';
+import AdminShell from '../AdminShell';
 import SignInForm from '../reviews/SignInForm';
-import { createClientAction, setClientActiveAction } from './actions';
+import { createClientAction } from './actions';
+import { fieldClass, labelClass } from './[id]/AddMaterial';
 
 export const dynamic = 'force-dynamic';
 
-const dateFmt = new Intl.DateTimeFormat('it-IT', {
-  day: 'numeric',
-  month: 'short',
-  year: 'numeric',
-  hour: '2-digit',
-  minute: '2-digit',
-});
+const seenFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
+const LANG = { it: 'Italiano', en: 'Inglese', es: 'Spagnolo' } as const;
 
-const inputClass =
-  'mt-1 rounded-md border border-secondary/60 bg-white px-2 py-1.5 text-sm font-normal';
+const buttonPrimary =
+  'inline-flex items-center gap-2 rounded-lg bg-[#3F4D3E] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#2F3A2E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary';
 
 export default async function AdminClientsPage({
   searchParams,
 }: {
-  searchParams: Promise<{ error?: string }>;
+  searchParams: Promise<{ error?: string; nuovo?: string; q?: string }>;
 }) {
-  const { error } = await searchParams;
+  const { error, nuovo, q } = await searchParams;
   const admin = await currentAdmin();
 
   if (!admin) return <SignInForm linkError={error === 'link'} title="Area clienti" />;
 
   if (!isReviewsConfigured()) {
     return (
-      <main className="mx-auto max-w-2xl px-5 py-16">
-        <h1 className="mb-3 text-2xl font-semibold">Clienti</h1>
-        <p className="text-gray-600">DATABASE_URL non è configurato.</p>
-      </main>
+      <AdminShell current="clients" admin={admin} title="Clienti">
+        <p className="text-[#5C6A5B]">DATABASE_URL non è configurato.</p>
+      </AdminShell>
     );
   }
 
-  const clients = await listClients();
+  const all = await listClients();
+  const query = (q ?? '').trim().toLowerCase();
+  const clients = query
+    ? all.filter((c) => c.name.toLowerCase().includes(query) || c.email.includes(query))
+    : all;
+  const showForm = nuovo === '1' || all.length === 0;
+  const active = all.filter((c) => c.active).length;
 
   return (
-    <main className="mx-auto max-w-4xl px-5 py-10">
-      <AdminNav current="clients" />
-      <header className="mb-8 border-b border-secondary pb-4">
-        <h1 className="text-2xl font-semibold">Clienti</h1>
-        <p className="text-sm text-gray-500">{admin}</p>
-      </header>
-
-      <section aria-labelledby="new-client" className="mb-8 rounded-lg border border-secondary/50 bg-white p-5">
-        <h2 id="new-client" className="mb-3 text-lg font-semibold">
-          Nuovo cliente
-        </h2>
-        <ActionForm action={createClientAction} submit="Aggiungi cliente" className="flex flex-wrap items-end gap-3">
-          <label className="flex flex-col text-xs font-semibold text-gray-600">
-            Nome
-            <input name="name" required maxLength={200} className={`${inputClass} w-48`} />
-          </label>
-          <label className="flex flex-col text-xs font-semibold text-gray-600">
-            Email
-            <input name="email" type="email" required className={`${inputClass} w-64`} />
-          </label>
-          <label className="flex flex-col text-xs font-semibold text-gray-600">
-            Lingua
-            <select name="lang" defaultValue="it" className={inputClass}>
-              <option value="it">Italiano</option>
-              <option value="en">English</option>
-              <option value="es">Español</option>
-            </select>
-          </label>
-        </ActionForm>
-        <p className="mt-3 text-xs text-gray-500">
-          Il cliente entra con un link mandato alla sua email: non c&apos;è una password e non
-          esiste un&apos;iscrizione pubblica.
-        </p>
-      </section>
-
-      {clients.length === 0 ? (
-        <p className="text-gray-600">Ancora nessun cliente.</p>
-      ) : (
-        <div className="overflow-x-auto rounded-lg border border-secondary/50 bg-white">
-          <table className="w-full text-sm">
-            <thead className="border-b border-secondary/50 bg-secondary-light/60 text-left">
-              <tr>
-                <th className="px-4 py-3 font-semibold">Cliente</th>
-                <th className="px-4 py-3 font-semibold">Progetti</th>
-                <th className="px-4 py-3 font-semibold">Ultimo accesso</th>
-                <th className="px-4 py-3 font-semibold">Accesso</th>
-              </tr>
-            </thead>
-            <tbody>
-              {clients.map((client) => (
-                <tr key={client.id} className="border-b border-secondary/30 align-top last:border-0">
-                  <td className="px-4 py-3">
-                    <Link
-                      href={`/admin/clients/${client.id}`}
-                      className="font-semibold text-primary underline hover:text-primary-dark"
-                    >
-                      {client.name}
-                    </Link>
-                    <span className="block break-all text-xs text-gray-500">
-                      {client.email} · {client.lang.toUpperCase()}
-                    </span>
-                  </td>
-                  <td className="px-4 py-3">{client.projectCount}</td>
-                  <td className="whitespace-nowrap px-4 py-3 text-gray-600">
-                    {client.lastSeenAt ? dateFmt.format(client.lastSeenAt) : <span className="text-gray-400">mai</span>}
-                  </td>
-                  <td className="px-4 py-3">
-                    <ActionForm
-                      action={setClientActiveAction}
-                      submit={client.active ? 'Disattiva' : 'Riattiva'}
-                      tone={client.active ? 'quiet' : 'primary'}
-                      resetOnSuccess={false}
-                      className="flex flex-wrap items-center gap-2"
-                    >
-                      <input type="hidden" name="clientId" value={client.id} />
-                      <input type="hidden" name="active" value={String(!client.active)} />
-                      <span
-                        className={
-                          client.active
-                            ? 'rounded-full bg-primary/10 px-2 py-0.5 text-xs font-semibold'
-                            : 'rounded-full bg-red-50 px-2 py-0.5 text-xs font-semibold text-red-800'
-                        }
-                      >
-                        {client.active ? 'Attivo' : 'Disattivato'}
-                      </span>
-                    </ActionForm>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+    <AdminShell
+      current="clients"
+      admin={admin}
+      title="Clienti"
+      description="Le persone che hanno un'area riservata sul sito."
+      actions={
+        !showForm && (
+          <Link href="/admin/clients?nuovo=1" className={buttonPrimary}>
+            <span aria-hidden="true" className="text-base leading-none">+</span>
+            Nuovo cliente
+          </Link>
+        )
+      }
+    >
+      {showForm && (
+        <section
+          aria-labelledby="new-client"
+          className="mb-8 rounded-xl border border-[#E2E5DE] bg-white p-6 shadow-[0_1px_2px_rgba(47,58,46,0.04)]"
+        >
+          <div className="mb-5 flex items-start justify-between gap-4">
+            <div>
+              <h2 id="new-client" className="text-lg font-semibold">
+                Nuovo cliente
+              </h2>
+              <p className="mt-1 max-w-prose text-sm text-[#5C6A5B]">
+                Il cliente entra con un link mandato alla sua email. Non c&apos;è una password da dargli.
+              </p>
+            </div>
+            {all.length > 0 && (
+              <Link href="/admin/clients" className="rounded-md px-2 py-1 text-sm text-[#5C6A5B] hover:bg-[#F0F2EC]">
+                Annulla
+              </Link>
+            )}
+          </div>
+          <ActionForm
+            action={createClientAction}
+            submit="Crea il cliente"
+            className="grid gap-4 sm:grid-cols-[1fr_1.4fr_10rem] sm:items-end"
+            buttonClassName="justify-self-start sm:col-span-3"
+          >
+            <label className={labelClass}>
+              Nome e cognome
+              <input name="name" required maxLength={200} placeholder="Giulia Rossi" className={fieldClass} />
+            </label>
+            <label className={labelClass}>
+              Email
+              <input name="email" type="email" required placeholder="giulia@esempio.it" className={fieldClass} />
+            </label>
+            <label className={labelClass}>
+              Lingua delle email
+              <select name="lang" defaultValue="it" className={fieldClass}>
+                <option value="it">Italiano</option>
+                <option value="en">Inglese</option>
+                <option value="es">Spagnolo</option>
+              </select>
+            </label>
+          </ActionForm>
+        </section>
       )}
-    </main>
+
+      {all.length > 0 && (
+        <section aria-labelledby="client-list" className="overflow-hidden rounded-xl border border-[#E2E5DE] bg-white">
+          <div className="flex flex-col gap-3 border-b border-[#E2E5DE] px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <h2 id="client-list" className="text-sm font-semibold">
+              {all.length === 1 ? '1 cliente' : `${all.length} clienti`}
+              <span className="ml-2 font-normal text-[#6B7769]">{active} con accesso attivo</span>
+            </h2>
+            <form role="search" className="w-full sm:w-72">
+              <label className="sr-only" htmlFor="client-search">
+                Cerca un cliente
+              </label>
+              <input
+                id="client-search"
+                name="q"
+                type="search"
+                defaultValue={q ?? ''}
+                placeholder="Cerca per nome o email"
+                className="w-full rounded-lg border border-[#DCE0D8] bg-[#FAFBF8] px-3 py-2 text-sm placeholder:text-[#9AA197] focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15"
+              />
+            </form>
+          </div>
+
+          {clients.length === 0 ? (
+            <p className="px-5 py-10 text-center text-sm text-[#5C6A5B]">
+              Nessun cliente corrisponde a «{q}».{' '}
+              <Link href="/admin/clients" className="font-semibold text-[#3F4D3E] underline">
+                Mostra tutti
+              </Link>
+            </p>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full min-w-[640px] text-left text-sm">
+                <thead className="bg-[#FAFBF8] text-[#5C6A5B]">
+                  <tr>
+                    <th scope="col" className="px-5 py-3 font-medium">Cliente</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Progetti</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Lingua</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Ultima visita</th>
+                    <th scope="col" className="px-5 py-3 font-medium">Accesso</th>
+                    <th scope="col" className="px-5 py-3"><span className="sr-only">Apri</span></th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#EEF0EB]">
+                  {clients.map((client) => (
+                    <tr key={client.id} className="group relative hover:bg-[#FAFBF8]">
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <span
+                            aria-hidden="true"
+                            className="flex h-9 w-9 flex-none items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-[#3F4D3E]"
+                          >
+                            {client.name.trim().charAt(0).toUpperCase()}
+                          </span>
+                          <div className="min-w-0">
+                            <Link
+                              href={`/admin/clients/${client.id}`}
+                              className="font-semibold text-[#2F3A2E] after:absolute after:inset-0 focus-visible:outline-2 focus-visible:outline-primary"
+                            >
+                              {client.name}
+                            </Link>
+                            <p className="truncate text-xs text-[#6B7769]">{client.email}</p>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-5 py-3.5 tabular-nums">{client.projectCount}</td>
+                      <td className="px-5 py-3.5 text-[#4A5649]">{LANG[client.lang]}</td>
+                      <td className="whitespace-nowrap px-5 py-3.5 text-[#4A5649]">
+                        {client.lastSeenAt ? seenFmt.format(client.lastSeenAt) : <span className="text-[#9AA197]">Mai</span>}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <span
+                          className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold ${
+                            client.active ? 'bg-primary/12 text-[#3F4D3E]' : 'bg-[#F6E3E0] text-[#8A3B31]'
+                          }`}
+                        >
+                          <span aria-hidden="true" className={`h-1.5 w-1.5 rounded-full ${client.active ? 'bg-primary' : 'bg-[#C9584A]'}`} />
+                          {client.active ? 'Attivo' : 'Sospeso'}
+                        </span>
+                      </td>
+                      <td className="px-5 py-3.5 text-right text-[#9AA197] group-hover:text-[#3F4D3E]" aria-hidden="true">
+                        ›
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </section>
+      )}
+    </AdminShell>
   );
 }

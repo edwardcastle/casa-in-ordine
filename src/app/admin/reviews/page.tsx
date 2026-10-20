@@ -1,9 +1,9 @@
-import { approveReview, rejectReview, signOut, withdrawReview } from '@/actions/admin';
+import { approveReview, rejectReview, withdrawReview } from '@/actions/admin';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import { listAllReviews } from '@/lib/reviews/queries';
 import type { AdminReview } from '@/lib/reviews/types';
-import AdminNav from '../AdminNav';
+import AdminShell from '../AdminShell';
 import SignInForm from './SignInForm';
 
 export const dynamic = 'force-dynamic';
@@ -169,19 +169,13 @@ export default async function AdminReviewsPage({
   const published = reviews.filter((r) => r.status === 'approved').length;
 
   return (
-    <main className="mx-auto max-w-3xl px-5 py-10">
-      <AdminNav current="reviews" />
-      <header className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-secondary pb-4">
-        <div>
-          <h1 className="text-2xl font-semibold">Recensioni</h1>
-          <p className="text-sm text-gray-500">{admin}</p>
-        </div>
-        <div className="flex items-center gap-4">
-          <form action={signOut}>
-            <button className="text-sm text-gray-600 underline hover:text-foreground">Esci</button>
-          </form>
-        </div>
-      </header>
+    <AdminShell
+      current="reviews"
+      admin={admin}
+      title="Recensioni"
+      description="Le recensioni dei clienti, da approvare prima che compaiano sul sito."
+    >
+      <div className="max-w-3xl">
 
       <p className="mb-8 rounded-lg border border-secondary/50 bg-white px-4 py-3 text-sm">
         <strong>{published}</strong> pubblicate · <strong>{pending}</strong> da decidere.
@@ -199,6 +193,7 @@ export default async function AdminReviewsPage({
           ))}
         </div>
       )}
-    </main>
+      </div>
+    </AdminShell>
   );
 }

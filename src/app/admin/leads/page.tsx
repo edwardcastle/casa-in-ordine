@@ -2,7 +2,7 @@ import { removeCatalogLead } from '@/actions/admin';
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import { listCatalogLeads } from '@/lib/catalog/leads';
-import AdminNav from '../AdminNav';
+import AdminShell from '../AdminShell';
 import SignInForm from '../reviews/SignInForm';
 
 export const dynamic = 'force-dynamic';
@@ -39,14 +39,12 @@ export default async function AdminLeadsPage({
   const unsent = leads.filter((l) => !l.sentAt).length;
 
   return (
-    <main className="mx-auto max-w-4xl px-5 py-10">
-      <AdminNav current="leads" />
-      <header className="mb-8 flex flex-wrap items-baseline justify-between gap-3 border-b border-secondary pb-4">
-        <div>
-          <h1 className="text-2xl font-semibold">Richieste di catalogo</h1>
-          <p className="text-sm text-gray-500">{admin}</p>
-        </div>
-      </header>
+    <AdminShell
+      current="leads"
+      admin={admin}
+      title="Richieste di catalogo"
+      description="Chi ha chiesto il catalogo dei servizi, e chi ha accettato di ricevere novità."
+    >
 
       <p className="mb-8 rounded-lg border border-secondary/50 bg-white px-4 py-3 text-sm">
         <strong>{leads.length}</strong> richieste · <strong>{contactable}</strong> hanno
@@ -130,6 +128,6 @@ export default async function AdminLeadsPage({
         nessuna lista e non ricontattarla per vendere. &ldquo;Cancella&rdquo; rimuove
         definitivamente la riga — usalo quando qualcuno chiede la cancellazione dei propri dati.
       </p>
-    </main>
+    </AdminShell>
   );
 }

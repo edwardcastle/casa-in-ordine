@@ -13,7 +13,7 @@ import {
 import { currentAdmin } from '@/lib/reviews/admin-session';
 import { isReviewsConfigured } from '@/lib/reviews/db';
 import ActionForm from '../../ActionForm';
-import AdminNav from '../../AdminNav';
+import AdminShell from '../../AdminShell';
 import SignInForm from '../../reviews/SignInForm';
 import {
   createProjectAction,
@@ -35,7 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   return { title: `${client?.name ?? 'Cliente'} · Casa in Ordine` };
 }
 
-const seenFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', hour: '2-digit', minute: '2-digit' });
+const seenFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'short', year: 'numeric' });
 const visitFmt = new Intl.DateTimeFormat('it-IT', { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' });
 
 /** The same rooms the visitor picks from in the quote wizard. */
@@ -90,31 +90,21 @@ function host(url: string | null): string {
 
 function ClientCard({ client }: { client: AdminClient }) {
   return (
-    <div className="flex items-center gap-4 lg:flex-col lg:items-start">
-      <span
-        aria-hidden="true"
-        className="flex h-14 w-14 flex-none items-center justify-center rounded-full bg-primary/15 text-xl font-semibold text-[#3F4D3E]"
-      >
-        {client.name.trim().charAt(0).toUpperCase()}
-      </span>
-      <div className="min-w-0">
-        <h1 className="break-words text-2xl font-semibold leading-tight tracking-[-0.01em]">{client.name}</h1>
-        <p className="mt-1 break-all text-sm text-[#5C6A5B]">{client.email}</p>
-        <p className="mt-2 flex flex-wrap items-center gap-x-3 gap-y-1 text-sm text-[#5C6A5B]">
-          <span className="inline-flex items-center gap-1.5">
-            <span
-              aria-hidden="true"
-              className={`h-2 w-2 rounded-full ${client.active ? 'bg-primary' : 'bg-[#C9584A]'}`}
-            />
-            {client.active ? 'Può entrare' : 'Accesso sospeso'}
-          </span>
-          <span>{LANG_LABEL[client.lang]}</span>
-        </p>
-        <p className="mt-1 text-sm text-[#7A8578]">
-          {client.lastSeenAt ? `Ultima visita il ${seenFmt.format(client.lastSeenAt)}` : 'Non è ancora entrato'}
-        </p>
-      </div>
-    </div>
+    <section aria-label="Dati del cliente" className="rounded-xl border border-[#E2E5DE] bg-white p-4">
+      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+        <dt className="text-[#6B7769]">Email</dt>
+        <dd className="break-all">{client.email}</dd>
+        <dt className="text-[#6B7769]">Lingua</dt>
+        <dd>{LANG_LABEL[client.lang]}</dd>
+        <dt className="text-[#6B7769]">Accesso</dt>
+        <dd className="inline-flex items-center gap-1.5">
+          <span aria-hidden="true" className={`h-2 w-2 rounded-full ${client.active ? 'bg-primary' : 'bg-[#C9584A]'}`} />
+          {client.active ? 'Attivo' : 'Sospeso'}
+        </dd>
+        <dt className="text-[#6B7769]">Ultima visita</dt>
+        <dd>{client.lastSeenAt ? seenFmt.format(client.lastSeenAt) : 'Mai'}</dd>
+      </dl>
+    </section>
   );
 }
 
@@ -419,10 +409,9 @@ export default async function AdminClientPage({
 
   if (!isReviewsConfigured()) {
     return (
-      <main className="mx-auto max-w-2xl px-5 py-16">
-        <h1 className="mb-3 text-2xl font-semibold">Cliente</h1>
+      <AdminShell current="clients" admin={admin} title="Cliente">
         <p className="text-[#5C6A5B]">DATABASE_URL non è configurato.</p>
-      </main>
+      </AdminShell>
     );
   }
 
@@ -441,17 +430,13 @@ export default async function AdminClientPage({
   const project = selected === 'new' ? null : await getProject(client.id, selected);
 
   return (
-    <main className="mx-auto max-w-6xl px-4 pb-20 pt-8 sm:px-6">
-      <AdminNav current="clients" />
-
-      <Link
-        href="/admin/clients"
-        className={`mb-6 inline-flex items-center gap-1.5 rounded text-sm font-medium text-[#4A5649] hover:text-[#2F3A2E] ${focusRing}`}
-      >
-        <span aria-hidden="true">←</span> Tutti i clienti
-      </Link>
-
-      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[280px_minmax(0,1fr)] lg:gap-10">
+    <AdminShell
+      current="clients"
+      admin={admin}
+      title={client.name}
+      breadcrumb={[{ label: 'Clienti', href: '/admin/clients' }, { label: client.name }]}
+    >
+      <div className="grid grid-cols-[minmax(0,1fr)] gap-6 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-8">
         <aside className="flex min-w-0 flex-col gap-6 lg:sticky lg:top-8 lg:self-start">
           <ClientCard client={client} />
           <ProjectNav clientId={client.id} projects={projects} selected={selected} />
@@ -471,6 +456,6 @@ export default async function AdminClientPage({
           </div>
         </div>
       </div>
-    </main>
+    </AdminShell>
   );
 }

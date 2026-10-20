@@ -47,10 +47,10 @@ type Props = {
 };
 
 const TONES = {
-  primary: 'rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-light',
-  quiet: 'rounded-full border border-secondary px-4 py-1.5 text-sm font-semibold hover:bg-white',
-  danger: 'rounded-full border border-red-300 px-4 py-1.5 text-sm font-semibold text-red-800 hover:bg-red-50',
-  subtle: 'rounded-full px-2 py-1 text-xs font-semibold text-gray-600 hover:bg-red-50 hover:text-red-800',
+  primary: 'rounded-lg bg-[#3F4D3E] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#2F3A2E]',
+  quiet: 'rounded-lg border border-[#DCE0D8] bg-white px-4 py-2 text-sm font-semibold text-[#2F3A2E] hover:border-primary',
+  danger: 'rounded-lg border border-[#E7B9B2] bg-white px-4 py-2 text-sm font-semibold text-[#8A3B31] hover:bg-[#FBEDEA]',
+  subtle: 'rounded-md px-2 py-1 text-xs font-semibold text-[#6B7769] hover:bg-[#FBEDEA] hover:text-[#8A3B31]',
 } as const;
 
 /**

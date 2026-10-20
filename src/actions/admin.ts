@@ -43,7 +43,8 @@ export async function requestSignInLink(formData: FormData) {
 
 export async function signOut() {
   await endSession();
-  revalidatePath('/admin/reviews');
+  // Every admin page shows the sign-in screen once the session is gone.
+  revalidatePath('/admin', 'layout');
 }
 
 async function requireAdmin(): Promise<string> {
