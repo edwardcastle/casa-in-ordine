@@ -109,12 +109,19 @@ export async function confirmClientSignIn(formData: FormData): Promise<void> {
   const next = safeNextPath(store.get(SIGNIN_NEXT_COOKIE)?.value);
   store.delete({ name: SIGNIN_NEXT_COOKIE, path: '/' });
 
-  const clientId = await consumeToken('client_signin', token);
+  // A link from the sign-in form or from a "new material" email; the
+  // purposes differ only in how long the link lives.
+  const clientId =
+    (await consumeToken('client_signin', token)) ?? (await consumeToken('client_notice', token));
 
   // Checked after the token is spent: a link issued before a client was
   // deactivated must not still let them in.
   const client = clientId ? await findActiveClient(clientId) : null;
-  if (!client) redirect(`/${locale}/area/accedi?error=link`);
+  // An expired link keeps where it was going, so the fresh link they request
+  // next still opens that project.
+  if (!client) {
+    redirect(`/${locale}/area/accedi?error=link${next ? `&next=${encodeURIComponent(next)}` : ''}`);
+  }
 
   await startClientSession(client.id);
   redirect(next ?? `/${locale}/area`);

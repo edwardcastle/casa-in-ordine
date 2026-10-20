@@ -383,7 +383,12 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
     expect(mail.sendEmail).toHaveBeenCalledOnce();
     const sent = mail.sendEmail.mock.calls[0][0];
     expect(sent.to).toEqual([{ email: 'a@example.com' }]);
-    expect(sent.html).toContain(`/en/area/progetti/${project.id}`);
+    // The button signs the client in and opens the project in one go.
+    expect(sent.html).toContain('/en/area/accedi/conferma?token=');
+    expect(sent.html).toContain(`&next=${encodeURIComponent(`/en/area/progetti/${project.id}`)}`);
+    expect(
+      (await testDb()`SELECT purpose FROM auth_tokens WHERE subject = ${client.id}`).map((r) => r.purpose),
+    ).toEqual(['client_notice']);
   });
 
   it('notifyClient refuses a project of another client, and an inactive client', async () => {

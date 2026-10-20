@@ -62,21 +62,21 @@ const MATERIAL_COPY = {
     hello: (name: string) => `Ciao ${name},`,
     lead: (project: string) => `abbiamo aggiunto nuovo materiale al progetto «${project}».`,
     button: 'Apri il progetto',
-    note: 'Per entrare ti basta la tua email: ti mandiamo un link di accesso.',
+    note: 'Il pulsante ti fa entrare direttamente nella tua area ed è valido 7 giorni. Dopo, puoi chiederci un nuovo link con la tua email.',
   },
   en: {
     subject: 'New material in your area',
     hello: (name: string) => `Hello ${name},`,
     lead: (project: string) => `we have added new material to the project “${project}”.`,
     button: 'Open the project',
-    note: 'To sign in you only need your email: we send you an access link.',
+    note: 'The button signs you straight into your area and works for 7 days. After that, you can ask for a new link with your email.',
   },
   es: {
     subject: 'Material nuevo en tu área',
     hello: (name: string) => `Hola ${name},`,
     lead: (project: string) => `hemos añadido material nuevo al proyecto «${project}».`,
     button: 'Abrir el proyecto',
-    note: 'Para entrar solo necesitas tu email: te enviamos un enlace de acceso.',
+    note: 'El botón te hace entrar directamente en tu área y vale 7 días. Después, puedes pedirnos un enlace nuevo con tu email.',
   },
 } as const;
 
@@ -89,7 +89,13 @@ export async function sendMaterialNotice(
   client: Client,
   project: { id: string; title: string },
 ): Promise<boolean> {
-  const href = `${siteOrigin()}/${client.lang}/area/progetti/${project.id}`;
+  // The button signs the client in and opens the project, so the email they
+  // already have is enough: no second "send me a link" round trip.
+  const token = await issueToken('client_notice', client.id);
+  const next = `/${client.lang}/area/progetti/${project.id}`;
+  const href =
+    `${siteOrigin()}/${client.lang}/area/accedi/conferma?token=${token}` +
+    `&next=${encodeURIComponent(next)}`;
   const copy = MATERIAL_COPY[client.lang];
 
   return sendEmail({
