@@ -91,7 +91,6 @@ export default function RichTextEditor({
       link: e?.isActive('link') ?? false,
       canUndo: e?.can().undo() ?? false,
       canRedo: e?.can().redo() ?? false,
-      empty: e?.isEmpty ?? true,
     }),
   });
 
@@ -217,7 +216,10 @@ export default function RichTextEditor({
       )}
 
       <div className="relative">
-        {state?.empty && placeholder && (
+        {/* From the saved value, not the editor's flag: that flag is only
+            refreshed by an edit, so an editor opened with content in it would
+            still show the hint on top of the text. */}
+        {!json && placeholder && (
           <p aria-hidden="true" className="pointer-events-none absolute left-4 top-3 text-[15px] text-[#9AA197]">
             {placeholder}
           </p>
