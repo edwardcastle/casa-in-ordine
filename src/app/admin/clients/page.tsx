@@ -60,28 +60,21 @@ export default async function AdminClientsPage({
       {showForm && (
         <section
           aria-labelledby="new-client"
-          className="mb-8 rounded-xl border border-[#E2E5DE] bg-white p-6 shadow-[0_1px_2px_rgba(47,58,46,0.04)]"
+          className="mx-auto mb-8 max-w-xl rounded-xl border border-[#E2E5DE] bg-white p-6 shadow-[0_1px_2px_rgba(47,58,46,0.04)] sm:p-8"
         >
-          <div className="mb-5 flex items-start justify-between gap-4">
-            <div>
-              <h2 id="new-client" className="text-lg font-semibold">
-                Nuovo cliente
-              </h2>
-              <p className="mt-1 max-w-prose text-sm text-[#5C6A5B]">
-                Il cliente entra con un link mandato alla sua email. Non c&apos;è una password da dargli.
-              </p>
-            </div>
-            {all.length > 0 && (
-              <Link href="/admin/clients" className="rounded-md px-2 py-1 text-sm text-[#5C6A5B] hover:bg-[#F0F2EC]">
-                Annulla
-              </Link>
-            )}
+          <div className="mb-6 text-center">
+            <h2 id="new-client" className="text-lg font-semibold">
+              {all.length === 0 ? 'Il primo cliente' : 'Nuovo cliente'}
+            </h2>
+            <p className="mx-auto mt-1 max-w-sm text-sm text-[#5C6A5B]">
+              Entra con un link mandato alla sua email. Non c&apos;è una password da dargli.
+            </p>
           </div>
           <ActionForm
             action={createClientAction}
             submit="Crea il cliente"
-            className="grid gap-4 sm:grid-cols-[1fr_1.4fr_10rem] sm:items-end"
-            buttonClassName="justify-self-start sm:col-span-3"
+            className="flex flex-col gap-4"
+            buttonClassName="w-full justify-center"
           >
             <label className={labelClass}>
               Nome e cognome
@@ -100,6 +93,13 @@ export default async function AdminClientsPage({
               </select>
             </label>
           </ActionForm>
+          {all.length > 0 && (
+            <p className="mt-4 text-center">
+              <Link href="/admin/clients" className="rounded-md px-2 py-1 text-sm text-[#5C6A5B] hover:bg-[#F0F2EC] hover:text-[#2F3A2E]">
+                Annulla
+              </Link>
+            </p>
+          )}
         </section>
       )}
 
