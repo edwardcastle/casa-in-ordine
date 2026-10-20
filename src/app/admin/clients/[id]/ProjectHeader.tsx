@@ -41,7 +41,7 @@ export default function ProjectHeader({
     return (
       <header className="flex flex-col gap-4 border-b border-[#E2E5DE] px-6 py-6 sm:flex-row sm:items-start sm:justify-between sm:px-8">
         <div className="min-w-0">
-          <h2 id="project-title" className="break-words text-[26px] font-semibold leading-tight tracking-[-0.015em]">
+          <h2 id="project-title" className="min-w-0 [overflow-wrap:anywhere] text-[26px] font-semibold leading-tight tracking-[-0.015em]">
             {project.title}
           </h2>
           {(zoneLabel || visitLabel) && (

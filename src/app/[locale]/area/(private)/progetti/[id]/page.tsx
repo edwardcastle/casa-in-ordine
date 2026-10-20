@@ -86,7 +86,7 @@ export default async function AreaProjectPage({
             </span>
           )}
         </div>
-        <h1 className="break-words text-3xl font-bold text-foreground md:text-4xl">{project.title}</h1>
+        <h1 className="min-w-0 [overflow-wrap:anywhere] text-3xl font-bold text-foreground md:text-4xl">{project.title}</h1>
         {project.visitDate && (
           <p className="mt-2 text-gray-600">{t('visit', { date: formatVisitDate(project.visitDate, locale) })}</p>
         )}
@@ -106,7 +106,7 @@ export default async function AreaProjectPage({
           {documents.map((m) => (
             <section key={m.id} aria-labelledby={`doc-${m.id}`} className="py-10">
               <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                <h2 id={`doc-${m.id}`} className="break-words text-2xl font-bold text-foreground">
+                <h2 id={`doc-${m.id}`} className="min-w-0 [overflow-wrap:anywhere] text-2xl font-bold text-foreground">
                   {m.title}
                 </h2>
                 <p className="text-sm text-gray-500">
@@ -158,7 +158,7 @@ export default async function AreaProjectPage({
               <ul className="space-y-3">
                 {others.map((m) => (
                   <li key={m.id} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
-                    <span className="break-words font-medium text-foreground">{m.title}</span>
+                    <span className="min-w-0 [overflow-wrap:anywhere] font-medium text-foreground">{m.title}</span>
                     {m.kind === 'link' && m.body && isHttpUrl(m.body) ? (
                       <a
                         href={m.body.trim()}

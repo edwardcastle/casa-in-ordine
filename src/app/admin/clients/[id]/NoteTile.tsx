@@ -60,7 +60,7 @@ export default function NoteTile({ material }: { material: Material }) {
           <NoteIcon className="h-[18px] w-[18px]" />
         </span>
         <div className="min-w-0 flex-1">
-          <p className="break-words text-[15px] font-semibold leading-snug">{material.title}</p>
+          <p className="min-w-0 [overflow-wrap:anywhere] text-[15px] font-semibold leading-snug">{material.title}</p>
           <p className="mt-0.5 text-xs text-[#7A8578]">Nota</p>
         </div>
         <div className="flex flex-none items-start gap-1">

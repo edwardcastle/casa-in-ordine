@@ -16,7 +16,7 @@ export default function TipList({ tips, locale }: { tips: Tip[]; locale: string 
               <ZoneLabel zone={tip.zone} />
             </p>
           )}
-          <h3 className="mb-2 break-words text-lg font-semibold text-foreground">{tip.title}</h3>
+          <h3 className="mb-2 min-w-0 [overflow-wrap:anywhere] text-lg font-semibold text-foreground">{tip.title}</h3>
           <p className="whitespace-pre-line break-words text-sm leading-relaxed text-gray-600">{tip.body}</p>
           {tip.blogSlug && (
             <Link

@@ -233,7 +233,7 @@ function MaterialTile({ material }: { material: Material }) {
           <Icon className="h-[18px] w-[18px]" />
         </span>
         <div className="min-w-0 flex-1 pr-14">
-          <p className="break-words text-[15px] font-semibold leading-snug">{material.title}</p>
+          <p className="min-w-0 [overflow-wrap:anywhere] text-[15px] font-semibold leading-snug">{material.title}</p>
           <p className="mt-0.5 truncate text-xs text-[#7A8578]">{caption}</p>
         </div>
       </div>
