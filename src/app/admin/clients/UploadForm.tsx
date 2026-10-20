@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { validateUpload } from '@/lib/area/upload-rules';
 import { errorText } from '../ActionForm';
 import { attachUploadedFile, requestUploadUrl } from './actions';
@@ -35,7 +35,14 @@ function putFile(url: string, file: File, onProgress: (fraction: number) => void
  * for a signed URL, PUT the file straight to Blob, then ask the server to
  * confirm the object exists before it becomes a material.
  */
-export default function UploadForm({ projectId }: { projectId: string }) {
+export default function UploadForm({
+  projectId,
+  initialFile = null,
+}: {
+  projectId: string;
+  /** A file dropped before this form opened; it is placed in the input. */
+  initialFile?: File | null;
+}) {
   const router = useRouter();
   const fileRef = useRef<HTMLInputElement>(null);
   const [title, setTitle] = useState('');
@@ -44,6 +51,27 @@ export default function UploadForm({ projectId }: { projectId: string }) {
   const [error, setError] = useState<string | null>(null);
   const [done, setDone] = useState(false);
   const [fileName, setFileName] = useState<string | null>(null);
+
+  function chooseFile(file: File | null) {
+    setDone(false);
+    setError(null);
+    setFileName(file?.name ?? null);
+    if (file) setTitle(defaultTitle(file.name));
+  }
+
+  function placeFile(file: File) {
+    if (!fileRef.current) return;
+    const transfer = new DataTransfer();
+    transfer.items.add(file);
+    fileRef.current.files = transfer.files;
+    chooseFile(file);
+  }
+
+  useEffect(() => {
+    if (initialFile) placeFile(initialFile);
+    // Only the file the form was opened with; later choices go through the input.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [initialFile]);
 
   async function submit(event: React.FormEvent) {
     event.preventDefault();
@@ -87,37 +115,37 @@ export default function UploadForm({ projectId }: { projectId: string }) {
   return (
     <form onSubmit={submit} className="flex flex-col gap-3">
       <label
+        onDragOver={(event) => event.preventDefault()}
+        onDrop={(event) => {
+          event.preventDefault();
+          const file = event.dataTransfer.files[0];
+          if (file) placeFile(file);
+        }}
         className={`flex cursor-pointer flex-col items-center gap-1 rounded-lg border-2 border-dashed px-4 py-6 text-center transition-colors duration-150 focus-within:border-primary hover:border-primary ${
-          fileName ? 'border-primary/60 bg-white' : 'border-secondary-dark bg-white/60'
+          fileName ? 'border-primary/60 bg-white' : 'border-[#DCE0D8] bg-[#FAFBF8]'
         }`}
       >
         <UploadIcon className="h-6 w-6 text-primary-dark" />
         <span className="text-sm font-semibold text-foreground">
-          {fileName ?? 'Scegli un file dal computer'}
+          {fileName ?? 'Scegli un file o trascinalo qui'}
         </span>
         <span className="text-xs text-gray-600">PDF, JPG, PNG o WebP, fino a 15 MB</span>
         <input
           ref={fileRef}
           type="file"
           accept="application/pdf,image/jpeg,image/png,image/webp"
-          onChange={(event) => {
-            const file = event.target.files?.[0];
-            setDone(false);
-            setError(null);
-            setFileName(file?.name ?? null);
-            if (file) setTitle(defaultTitle(file.name));
-          }}
+          onChange={(event) => chooseFile(event.target.files?.[0] ?? null)}
           className="sr-only"
         />
       </label>
-      <label className="block text-xs font-semibold text-gray-700">
+      <label className="block text-sm font-medium text-[#4A5649]">
         Titolo che vedrà il cliente
         <input
           value={title}
           onChange={(event) => setTitle(event.target.value)}
           maxLength={200}
           placeholder="Es. Piano dell'armadio"
-          className="mt-1.5 w-full rounded-lg border border-secondary-dark bg-white px-3 py-2 text-sm font-normal text-foreground placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25"
+          className="mt-1.5 w-full rounded-lg border border-[#DCE0D8] bg-white px-3 py-2.5 text-[15px] font-normal text-[#2F3A2E] placeholder:text-[#9AA197] focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15"
         />
       </label>
       <div className="flex flex-wrap items-center gap-3">
@@ -126,7 +154,7 @@ export default function UploadForm({ projectId }: { projectId: string }) {
           disabled={busy}
           className="rounded-full bg-primary px-5 py-2 text-sm font-semibold text-white hover:bg-primary-dark focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60"
         >
-          {busy ? 'Caricamento…' : 'Carica file'}
+          {busy ? 'Caricamento…' : 'Carica il file'}
         </button>
         {busy && (
           <progress

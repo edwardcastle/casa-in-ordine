@@ -1,5 +1,6 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useActionState, useEffect, useRef, useTransition } from 'react';
 import type { ActionState } from './clients/state';
 
@@ -41,6 +42,8 @@ type Props = {
   tone?: 'primary' | 'quiet' | 'danger' | 'subtle';
   /** Extra classes for the submit button, e.g. to align it in a stacked form. */
   buttonClassName?: string;
+  /** Called once after each successful submit. */
+  onSuccess?: () => void;
 };
 
 const TONES = {
@@ -66,14 +69,21 @@ export default function ActionForm({
   resetOnSuccess = true,
   tone = 'primary',
   buttonClassName = '',
+  onSuccess,
 }: Props) {
   const [state, dispatch, pending] = useActionState(action, null);
   const [, startTransition] = useTransition();
   const ref = useRef<HTMLFormElement>(null);
 
+  const router = useRouter();
+
   useEffect(() => {
     if (resetOnSuccess && state && 'ok' in state) ref.current?.reset();
-  }, [state, resetOnSuccess]);
+    if (state && 'ok' in state && state.redirectTo) router.push(state.redirectTo, { scroll: false });
+    if (state && 'ok' in state) onSuccess?.();
+    // onSuccess is a fresh closure each render; only a new result should fire it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, resetOnSuccess, router]);
 
   return (
     <form

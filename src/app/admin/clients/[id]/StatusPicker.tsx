@@ -49,7 +49,7 @@ export default function StatusPicker({
               aria-checked={active}
               disabled={pending}
               onClick={() => choose(option.value)}
-              className={`rounded-full px-3 py-1.5 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
+              className={`whitespace-nowrap rounded-full px-3 py-1.5 transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
                 active
                   ? 'bg-white text-foreground shadow-[0_1px_3px_rgba(45,45,45,0.12)]'
                   : 'text-gray-600 hover:text-foreground'

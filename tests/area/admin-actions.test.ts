@@ -95,7 +95,7 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
     const { client } = await seed('a@example.com');
     const fields = { clientId: client.id, title: 'Senza zona', zone: '', summary: '', visitDate: '' };
 
-    expect(await createProjectAction(null, form(fields))).toEqual({ ok: true });
+    expect(await createProjectAction(null, form(fields))).toMatchObject({ ok: true });
     const [row] = await testDb()`
       SELECT zone, summary, visit_date FROM client_projects WHERE title = 'Senza zona'`;
     expect(row).toEqual({ zone: null, summary: null, visit_date: null });
@@ -103,7 +103,7 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
     expect(await createProjectAction(null, form({ ...fields, zone: 'attic' }))).toEqual({
       error: 'zone',
     });
-    expect(await createProjectAction(null, form({ ...fields, zone: 'bagno' }))).toEqual({
+    expect(await createProjectAction(null, form({ ...fields, zone: 'bagno' }))).toMatchObject({
       ok: true,
     });
   });

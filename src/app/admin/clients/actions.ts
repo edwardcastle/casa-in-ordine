@@ -148,7 +148,8 @@ export async function createProjectAction(
   if (!project) return { error: 'notfound' };
 
   refresh(clientId);
-  return { ok: true };
+  // Open the new project, so the next thing on screen is where its material goes.
+  return { ok: true, redirectTo: `/admin/clients/${clientId}?progetto=${project.id}` };
 }
 
 export async function updateProjectStatusAction(

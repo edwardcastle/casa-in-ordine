@@ -1,92 +1,70 @@
 'use client';
 
-import { useId, useState } from 'react';
+import { useState } from 'react';
 import ActionForm from '../../ActionForm';
 import { addTextMaterialAction } from '../actions';
-import UploadForm from '../UploadForm';
 import { FileIcon, LinkIcon, NoteIcon } from '../icons';
+import UploadForm from '../UploadForm';
 
-const KINDS = [
-  { key: 'file', label: 'File', hint: 'Piano, foto prima e dopo, PDF', Icon: FileIcon },
-  { key: 'note', label: 'Nota', hint: 'Un consiglio o un promemoria', Icon: NoteIcon },
-  { key: 'link', label: 'Link', hint: 'Un prodotto o una pagina utile', Icon: LinkIcon },
+type Kind = 'file' | 'note' | 'link';
+
+const CHOICES = [
+  { key: 'file', label: 'File', Icon: FileIcon },
+  { key: 'note', label: 'Nota', Icon: NoteIcon },
+  { key: 'link', label: 'Link', Icon: LinkIcon },
 ] as const;
 
-type Kind = (typeof KINDS)[number]['key'];
-
 export const fieldClass =
-  'mt-1.5 w-full rounded-lg border border-secondary-dark bg-white px-3 py-2 text-sm font-normal text-foreground placeholder:text-gray-400 focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/25';
-export const labelClass = 'block text-xs font-semibold text-gray-700';
+  'mt-1.5 w-full rounded-lg border border-[#DCE0D8] bg-white px-3 py-2.5 text-[15px] font-normal text-[#2F3A2E] placeholder:text-[#9AA197] focus:border-primary focus:outline-none focus:ring-4 focus:ring-primary/15';
+export const labelClass = 'block text-sm font-medium text-[#4A5649]';
 
 /**
- * One place to add material to a project. The organizer picks what kind of
- * thing it is first, and only that form is shown, instead of three forms at
- * once that all look equally important.
+ * Adding material starts closed: three plain choices. Picking one opens just
+ * that form; dropping a file anywhere on the choices opens the file form with
+ * the file already in it. Nothing else competes for attention.
  */
-export default function AddMaterial({ projectId }: { projectId: string }) {
-  const [kind, setKind] = useState<Kind>('file');
-  const base = useId();
+export default function AddMaterial({ projectId, clientName }: { projectId: string; clientName: string }) {
+  const [kind, setKind] = useState<Kind | null>(null);
+  const [dropped, setDropped] = useState<File | null>(null);
+  const [dragging, setDragging] = useState(false);
 
-  return (
-    <div className="rounded-xl bg-secondary-light p-4 sm:p-5">
-      <p className="mb-3 text-sm font-semibold text-foreground">Aggiungi per il cliente</p>
+  if (kind) {
+    return (
+      <div className="rounded-xl border border-[#DCE0D8] bg-white p-5">
+        <div className="mb-4 flex items-center justify-between gap-3">
+          <p className="text-[15px] font-semibold">
+            {kind === 'file' ? 'Nuovo file' : kind === 'note' ? 'Nuova nota' : 'Nuovo link'}
+          </p>
+          <button
+            type="button"
+            onClick={() => {
+              setKind(null);
+              setDropped(null);
+            }}
+            className="rounded-md px-2 py-1 text-sm text-[#5C6A5B] hover:bg-[#F0F2EC] focus-visible:outline-2 focus-visible:outline-primary"
+          >
+            Chiudi
+          </button>
+        </div>
 
-      <div role="tablist" aria-label="Tipo di materiale" className="mb-4 grid grid-cols-3 gap-2">
-        {KINDS.map(({ key, label, hint, Icon }) => {
-          const active = key === kind;
-          return (
-            <button
-              key={key}
-              type="button"
-              role="tab"
-              id={`${base}-tab-${key}`}
-              aria-selected={active}
-              aria-controls={`${base}-panel`}
-              onClick={() => setKind(key)}
-              className={`flex flex-col items-center gap-1 rounded-lg border px-2 py-3 text-center transition-colors duration-150 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary ${
-                active
-                  ? 'border-primary bg-white text-foreground shadow-[0_1px_3px_rgba(45,45,45,0.10)]'
-                  : 'border-transparent text-gray-600 hover:bg-white/70 hover:text-foreground'
-              }`}
-            >
-              <Icon className={`h-5 w-5 ${active ? 'text-primary-dark' : ''}`} />
-              <span className="text-sm font-semibold">{label}</span>
-              <span className="hidden text-xs font-normal text-gray-600 sm:block">{hint}</span>
-            </button>
-          );
-        })}
-      </div>
-
-      <div role="tabpanel" id={`${base}-panel`} aria-labelledby={`${base}-tab-${kind}`}>
-        {kind === 'file' && <UploadForm projectId={projectId} />}
+        {kind === 'file' && <UploadForm projectId={projectId} initialFile={dropped} />}
 
         {kind === 'note' && (
-          <ActionForm
-            action={addTextMaterialAction}
-            submit="Aggiungi nota"
-            className="flex flex-col gap-3"
-            buttonClassName="self-start"
-          >
+          <ActionForm action={addTextMaterialAction} submit="Aggiungi la nota" onSuccess={() => setKind(null)} className="flex flex-col gap-4" buttonClassName="self-start">
             <input type="hidden" name="projectId" value={projectId} />
             <input type="hidden" name="kind" value="note" />
             <label className={labelClass}>
               Titolo
-              <input
-                name="title"
-                required
-                maxLength={200}
-                placeholder="Es. Cosa comprare per l'armadio"
-                className={fieldClass}
-              />
+              <input name="title" required maxLength={200} placeholder="Cosa comprare per l'armadio" className={fieldClass} />
             </label>
             <label className={labelClass}>
               Testo
               <textarea
                 name="body"
                 required
-                rows={4}
+                rows={5}
                 maxLength={10000}
-                placeholder="Scrivi qui quello che il cliente deve sapere."
+                placeholder={`Quello che ${clientName} deve ricordare.`}
                 className={fieldClass}
               />
             </label>
@@ -94,23 +72,12 @@ export default function AddMaterial({ projectId }: { projectId: string }) {
         )}
 
         {kind === 'link' && (
-          <ActionForm
-            action={addTextMaterialAction}
-            submit="Aggiungi link"
-            className="flex flex-col gap-3"
-            buttonClassName="self-start"
-          >
+          <ActionForm action={addTextMaterialAction} submit="Aggiungi il link" onSuccess={() => setKind(null)} className="flex flex-col gap-4" buttonClassName="self-start">
             <input type="hidden" name="projectId" value={projectId} />
             <input type="hidden" name="kind" value="link" />
             <label className={labelClass}>
               Titolo
-              <input
-                name="title"
-                required
-                maxLength={200}
-                placeholder="Es. Scatole trasparenti consigliate"
-                className={fieldClass}
-              />
+              <input name="title" required maxLength={200} placeholder="Scatole trasparenti consigliate" className={fieldClass} />
             </label>
             <label className={labelClass}>
               Indirizzo web
@@ -118,6 +85,46 @@ export default function AddMaterial({ projectId }: { projectId: string }) {
             </label>
           </ActionForm>
         )}
+      </div>
+    );
+  }
+
+  return (
+    <div
+      onDragOver={(event) => {
+        if (event.dataTransfer.types.includes('Files')) {
+          event.preventDefault();
+          setDragging(true);
+        }
+      }}
+      onDragLeave={() => setDragging(false)}
+      onDrop={(event) => {
+        event.preventDefault();
+        setDragging(false);
+        const file = event.dataTransfer.files[0];
+        if (file) {
+          setDropped(file);
+          setKind('file');
+        }
+      }}
+      className={`rounded-xl border-2 border-dashed p-4 transition-colors duration-150 ${
+        dragging ? 'border-primary bg-primary/5' : 'border-[#DCE0D8]'
+      }`}
+    >
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="mr-1 text-sm text-[#5C6A5B]">Aggiungi</span>
+        {CHOICES.map(({ key, label, Icon }) => (
+          <button
+            key={key}
+            type="button"
+            onClick={() => setKind(key)}
+            className="inline-flex items-center gap-2 rounded-lg border border-[#DCE0D8] bg-white px-3.5 py-2 text-sm font-semibold text-[#2F3A2E] shadow-[0_1px_0_rgba(47,58,46,0.04)] hover:border-primary hover:text-[#3F4D3E] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary"
+          >
+            <Icon className="h-[18px] w-[18px] text-primary" />
+            {label}
+          </button>
+        ))}
+        <span className="hidden text-sm text-[#7A8578] sm:inline">oppure trascina qui un file</span>
       </div>
     </div>
   );
