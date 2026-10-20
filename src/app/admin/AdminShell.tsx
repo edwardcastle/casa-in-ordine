@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { signOut } from '@/actions/admin';
 
-export type AdminSection = 'reviews' | 'leads' | 'clients' | 'tips';
+export type AdminSection = 'quotes' | 'reviews' | 'leads' | 'clients' | 'tips';
 
 type Crumb = { label: string; href?: string };
 
@@ -23,6 +23,7 @@ function Icon({ d }: { d: string }) {
 }
 
 const SECTIONS: { key: AdminSection; href: string; label: string; icon: string }[] = [
+  { key: 'quotes', href: '/admin/quotes', label: 'Preventivi', icon: 'M7 3h7l5 5v13H7zM14 3v5h5M10 13h6M10 17h6' },
   { key: 'clients', href: '/admin/clients', label: 'Clienti', icon: 'M16 19v-1a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v1M9.5 10a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7M21 19v-1a4 4 0 0 0-3-3.87M15.5 3.13a3.5 3.5 0 0 1 0 6.75' },
   { key: 'tips', href: '/admin/tips', label: 'Consigli', icon: 'M9 18h6M10 21h4M12 3a6 6 0 0 0-3.5 10.9c.6.4 1 1.1 1 1.8V16h5v-.3c0-.7.4-1.4 1-1.8A6 6 0 0 0 12 3' },
   { key: 'reviews', href: '/admin/reviews', label: 'Recensioni', icon: 'm12 3 2.8 5.7 6.2.9-4.5 4.4 1 6.2L12 17.3 6.5 20.2l1-6.2L3 9.6l6.2-.9z' },
@@ -57,7 +58,7 @@ function NavLinks({ current }: { current: AdminSection }) {
 
 function Brand() {
   return (
-    <Link href="/admin/clients" className={`block rounded-md ${focusRing}`}>
+    <Link href="/admin/quotes" className={`block rounded-md ${focusRing}`}>
       <span className="block text-lg font-semibold tracking-[-0.01em] text-white">casainordine</span>
       <span className="block text-xs text-white/55">Pannello di amministrazione</span>
     </Link>
