@@ -68,7 +68,7 @@ export default async function AreaProjectPage({
   );
 
   return (
-    <article className="rounded-2xl bg-white px-5 py-8 shadow-[0_1px_2px_rgba(45,45,45,0.04),0_12px_32px_-20px_rgba(45,45,45,0.25)] sm:px-10 sm:py-12">
+    <article>
       <header className="border-b border-secondary-dark pb-8">
         <Link
           href={`/${locale}/area`}
