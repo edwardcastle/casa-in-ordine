@@ -77,6 +77,13 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href={`/${locale}/area`}
+                prefetch={false}
+                className="rounded-full border border-white/60 px-3 py-1 text-sm font-medium text-white transition-colors hover:bg-white/10"
+              >
+                {t('clientArea')}
+              </Link>
               <LanguageSwitcher />
             </nav>
 
@@ -116,6 +123,14 @@ export default function Header() {
                   {link.label}
                 </Link>
               ))}
+              <Link
+                href={`/${locale}/area`}
+                prefetch={false}
+                onClick={() => setIsMenuOpen(false)}
+                className="px-3 py-2 text-sm font-medium text-white/90 hover:bg-white/10 rounded-md transition-colors"
+              >
+                {t('clientArea')}
+              </Link>
               <div className="px-3 pt-2">
                 <LanguageSwitcher />
               </div>

@@ -20,6 +20,7 @@ export default function Footer() {
     // exactly while it is most needed.
     { href: `/${locale}/recensioni/nuova`, label: t('footer.leaveReview') },
     { href: `/${locale}/privacy-policy`, label: t('footer.privacy') },
+    { href: `/${locale}/area`, label: t('nav.clientArea') },
   ];
 
   return (

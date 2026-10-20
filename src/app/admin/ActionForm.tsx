@@ -1,0 +1,111 @@
+'use client';
+
+import { useRouter } from 'next/navigation';
+import { useActionState, useEffect, useRef, useTransition } from 'react';
+import type { ActionState } from './clients/state';
+
+const ERRORS: Record<string, string> = {
+  duplicate: 'Esiste già: un cliente con questa email, o questo file è già allegato.',
+  name: 'Inserisci il nome.',
+  email: 'Email non valida.',
+  lang: 'Scegli la lingua.',
+  title: 'Il titolo è obbligatorio e al massimo di 200 caratteri.',
+  zone: 'Zona non valida.',
+  date: 'Data non valida.',
+  body: 'Testo mancante o troppo lungo.',
+  url: 'Il link deve iniziare con http:// o https://.',
+  kind: 'Tipo di materiale non valido.',
+  status: 'Stato non valido.',
+  project: 'Il progetto non esiste più: ricarica la pagina.',
+  notfound: 'Elemento non trovato: ricarica la pagina.',
+  confirm: "Spunta «Confermo l'eliminazione» per procedere.",
+  notify: "Email non inviata: il cliente non è attivo, il progetto non è suo, oppure l'invio è fallito.",
+  required: 'Titolo e testo in italiano sono obbligatori.',
+  slug: 'Articolo del blog non valido.',
+  upload: 'Il file non risulta caricato o non è valido. Riprova.',
+  type: 'Formato non ammesso: usa PDF, JPG, PNG o WebP.',
+  size: 'Il file è vuoto o supera 15 MB.',
+};
+
+export function errorText(code: string): string {
+  return ERRORS[code] ?? 'Qualcosa non ha funzionato.';
+}
+
+type Props = {
+  action: (prev: ActionState, formData: FormData) => Promise<ActionState>;
+  submit: string;
+  children?: React.ReactNode;
+  className?: string;
+  /** Clear the fields after a successful submit. */
+  resetOnSuccess?: boolean;
+  /** Visual weight of the button. */
+  tone?: 'primary' | 'quiet' | 'danger' | 'subtle';
+  /** Extra classes for the submit button, e.g. to align it in a stacked form. */
+  buttonClassName?: string;
+  /** Called once after each successful submit. */
+  onSuccess?: () => void;
+};
+
+const TONES = {
+  primary: 'rounded-lg bg-[#3F4D3E] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#2F3A2E]',
+  quiet: 'rounded-lg border border-[#DCE0D8] bg-white px-4 py-2 text-sm font-semibold text-[#2F3A2E] hover:border-primary',
+  danger: 'rounded-lg border border-[#E7B9B2] bg-white px-4 py-2 text-sm font-semibold text-[#8A3B31] hover:bg-[#FBEDEA]',
+  subtle: 'rounded-md px-2 py-1 text-xs font-semibold text-[#6B7769] hover:bg-[#FBEDEA] hover:text-[#8A3B31]',
+} as const;
+
+/**
+ * A form that runs a server action and reports its result in place.
+ *
+ * It submits through `onSubmit` rather than the form's `action` prop on
+ * purpose: React resets an `action` form after every submit, errors included,
+ * and an organizer who mistypes one field should not lose a long tip body.
+ * The fields are cleared by hand, and only on success.
+ */
+export default function ActionForm({
+  action,
+  submit,
+  children,
+  className,
+  resetOnSuccess = true,
+  tone = 'primary',
+  buttonClassName = '',
+  onSuccess,
+}: Props) {
+  const [state, dispatch, pending] = useActionState(action, null);
+  const [, startTransition] = useTransition();
+  const ref = useRef<HTMLFormElement>(null);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (resetOnSuccess && state && 'ok' in state) ref.current?.reset();
+    if (state && 'ok' in state && state.redirectTo) router.push(state.redirectTo, { scroll: false });
+    if (state && 'ok' in state) onSuccess?.();
+    // onSuccess is a fresh closure each render; only a new result should fire it.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [state, resetOnSuccess, router]);
+
+  return (
+    <form
+      ref={ref}
+      className={className}
+      onSubmit={(event) => {
+        event.preventDefault();
+        const data = new FormData(event.currentTarget);
+        startTransition(() => dispatch(data));
+      }}
+    >
+      {children}
+      <button type="submit" disabled={pending} className={`${TONES[tone]} ${buttonClassName} focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:opacity-60`}>
+        {pending ? 'Un attimo…' : submit}
+      </button>
+      <span role="status" aria-live="polite" className="text-sm">
+        {state && 'error' in state ? (
+          <span className="text-red-800">{errorText(state.error)}</span>
+        ) : state?.message ? (
+          <span className="text-primary">{state.message}</span>
+        ) : null}
+      </span>
+    </form>
+  );
+}

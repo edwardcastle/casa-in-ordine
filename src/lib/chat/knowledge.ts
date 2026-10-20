@@ -20,6 +20,9 @@ const EXCLUDED_NAMESPACES = new Set([
   'footer',
   // Form labels and error strings. No business knowledge, 40 lines of noise.
   'reviewForm',
+  // The private client area: sign-in and dashboard chrome, for people who are
+  // already clients. Nothing here describes the service to a prospect.
+  'area',
   // Image descriptions and slider labels: what a photo shows, not what the
   // business does.
   'images',

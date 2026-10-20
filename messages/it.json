@@ -10,7 +10,8 @@
     "services": "Servizi",
     "blog": "Blog",
     "contact": "Contatti",
-    "preventivo": "Preventivo"
+    "preventivo": "Preventivo",
+    "clientArea": "Area clienti"
   },
   "hero": {
     "title": "Decluttering e Home Organizing a Roma",
@@ -1060,5 +1061,67 @@
     "error": "Ops, qualcosa è andato storto. Riprova o usa il modulo di contatto.",
     "poweredBy": "Assistente AI",
     "privacy": "Le conversazioni possono essere riviste per migliorare il servizio."
+  },
+  "area": {
+    "signin": {
+      "metaTitle": "Accedi alla tua area",
+      "title": "La tua area riservata",
+      "intro": "Inserisci l'indirizzo email che ci hai dato: ti mandiamo un link per entrare, senza password.",
+      "emailLabel": "Email",
+      "submit": "Inviami il link",
+      "sending": "Invio…",
+      "sentTitle": "Controlla la tua casella",
+      "sentBody": "Se questo indirizzo è registrato, ti abbiamo inviato un link per accedere. Vale una volta sola e scade fra 30 minuti. Non lo vedi? Guarda anche nella posta indesiderata.",
+      "errors": {
+        "link": "Questo link non è valido o è scaduto. Chiedine uno nuovo qui sotto.",
+        "invalid": "Non siamo riusciti a verificare la richiesta. Controlla l'indirizzo email e riprova.",
+        "limited": "Troppi tentativi. Riprova fra un quarto d'ora.",
+        "unavailable": "L'accesso all'area riservata non è disponibile al momento. Scrivici a info@casainordine.com e ti aiutiamo."
+      }
+    },
+    "confirm": {
+      "title": "Conferma l'accesso",
+      "body": "Premi il pulsante per entrare nella tua area riservata. Il link vale una volta sola.",
+      "submit": "Continua verso la tua area",
+      "metaTitle": "Conferma l'accesso"
+    },
+    "shell": {
+      "signOut": "Esci"
+    },
+    "status": {
+      "planned": "In programma",
+      "in_progress": "In corso",
+      "done": "Completato"
+    },
+    "dashboard": {
+      "metaTitle": "La tua area",
+      "greeting": "Ciao, {name}",
+      "intro": "Qui trovi i tuoi progetti e tutto il materiale che abbiamo preparato per te.",
+      "projectsTitle": "I tuoi progetti",
+      "noProjects": "Non ci sono ancora progetti nella tua area. Appena ne avviamo uno lo troverai qui; nel frattempo puoi scriverci dalla pagina dei contatti.",
+      "contactCta": "Scrivici",
+      "visit": "Sopralluogo: {date}",
+      "noVisit": "Sopralluogo da fissare",
+      "materials": "{count, plural, =0 {Nessun materiale} one {# materiale} other {# materiali}}",
+      "open": "Apri il progetto",
+      "tipsTitle": "Consigli per la tua casa",
+      "noTips": "Non ci sono ancora consigli. Nel frattempo leggi le guide del nostro blog.",
+      "blogCta": "Vai al blog"
+    },
+    "project": {
+      "metaTitle": "Il tuo progetto",
+      "back": "Torna ai progetti",
+      "summaryTitle": "Riepilogo",
+      "noSummary": "Il riepilogo di questo progetto non è ancora pronto.",
+      "visit": "Sopralluogo: {date}",
+      "materialsTitle": "Materiali",
+      "noMaterials": "Non ci sono ancora materiali per questo progetto. Appena ne carichiamo uno lo troverai qui.",
+      "openFile": "Apri il file",
+      "openLink": "Apri il link",
+      "added": "Aggiunto il {date}"
+    },
+    "tips": {
+      "readGuide": "Leggi la guida"
+    }
   }
 }

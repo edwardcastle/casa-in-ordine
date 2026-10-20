@@ -2,6 +2,8 @@
 
 import { guardSubmission } from '@/lib/security/guard';
 import { HONEYPOT_FIELD, RENDERED_AT_FIELD } from '@/lib/security/fields';
+import { isReviewsConfigured } from '@/lib/reviews/db';
+import { markQuoteEmailed, storeQuoteRequest } from '@/lib/quotes/queries';
 
 /** Escape values that end up inside the HTML email body. */
 function esc(value: string): string {
@@ -14,6 +16,8 @@ function esc(value: string): string {
 
 /** One room the visitor asked us to quote. A request can carry several. */
 interface QuoteZone {
+  /** The zone id (armadio, cucina...), so the admin can name it in Italian. */
+  id?: string;
   /** Translated label of the zone. */
   zone: string;
   accumulation: string;
@@ -26,6 +30,8 @@ interface QuoteRequestData {
   name: string;
   email: string;
   phone?: string;
+  /** The language the visitor filled the survey in. */
+  lang?: string;
   zones: QuoteZone[];
   subtotal: number;
   urgency: number;
@@ -63,6 +69,18 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
 
   if (!guard.ok) {
     return { success: false as const, reason: guard.reason };
+  }
+
+  // Saved before the email, so a Brevo outage still leaves the request in the
+  // admin. A database problem must not cost us the request either: the email
+  // below still goes out, and the failure is only logged.
+  let quoteId: string | null = null;
+  if (isReviewsConfigured()) {
+    try {
+      quoteId = await storeQuoteRequest(data);
+    } catch (error) {
+      console.error('Could not save the quote request:', error);
+    }
   }
 
   const zoneSections = zones
@@ -150,12 +168,17 @@ export async function submitQuoteRequest(data: QuoteRequestData) {
     if (!response.ok) {
       const error = await response.text();
       console.error('Brevo API error:', error);
-      return { success: false as const, reason: 'send-failed' as const };
+      // The request is safe in the admin even though nobody was emailed.
+      return quoteId
+        ? { success: true as const }
+        : { success: false as const, reason: 'send-failed' as const };
     }
 
+    if (quoteId) await markQuoteEmailed(quoteId).catch((error) => console.error(error));
     return { success: true as const };
   } catch (error) {
     console.error('Quote request error:', error);
+    if (quoteId) return { success: true as const };
     return { success: false as const, reason: 'send-failed' as const };
   }
 }

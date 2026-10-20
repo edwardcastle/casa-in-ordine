@@ -7,6 +7,7 @@
     "build": "node scripts/migrate.mjs && next build",
     "start": "next start",
     "lint": "eslint",
+    "test": "vitest run",
     "check:messages": "node scripts/check-messages.mjs",
     "build:catalog": "node scripts/build-catalog.mjs",
     "build:covers": "node scripts/build-covers.mjs",
@@ -17,6 +18,7 @@
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.100.1",
+    "@vercel/blob": "^2.8.2",
     "chart.js": "^4.5.1",
     "gray-matter": "^4.0.3",
     "next": "16.2.1",
@@ -37,7 +39,8 @@
     "node-pg-migrate": "^9.0.0",
     "sharp": "^0.35.4",
     "tailwindcss": "^4",
-    "typescript": "^5"
+    "typescript": "^5",
+    "vitest": "^3"
   },
   "packageManager": "pnpm@9.15.4+sha512.b2dc20e2fc72b3e18848459b37359a32064663e5627a51e4c74b2c29dd8e8e0491483c3abb40789cfd578bf362fb6ba8261b05f0387d76792ed6e23ea3b1b6a0"
 }

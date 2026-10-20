@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
+import { useLocale, useTranslations } from 'next-intl';
 import Image from 'next/image';
 import { submitQuoteRequest } from '@/actions/contact';
 import CategoryIcon from '@/components/CategoryIcon';
@@ -60,6 +60,7 @@ function zoneFromHash(hash: string): Zone | null {
 
 export default function QuoteWizard() {
   const t = useTranslations('quote');
+  const locale = useLocale();
 
   const [entries, setEntries] = useState<QuoteEntry[]>([]);
   const [nextId, setNextId] = useState(1);
@@ -297,7 +298,9 @@ export default function QuoteWizard() {
         name: contact.name,
         email: contact.email,
         phone: contact.phone || undefined,
+        lang: locale,
         zones: entries.map((entry) => ({
+          id: entry.zone,
           zone: zoneLabel(entry.zone),
           accumulation: t(`closing.accumulo.options.${entry.accumulation}`),
           subtotal: totals.zones.find((z) => z.id === entry.id)?.subtotal ?? 0,

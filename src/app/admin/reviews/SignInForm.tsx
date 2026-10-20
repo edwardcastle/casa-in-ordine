@@ -5,7 +5,14 @@ import { requestSignInLink } from '@/actions/admin';
 
 type State = { sent: boolean; reason?: string } | null;
 
-export default function SignInForm({ linkError }: { linkError: boolean }) {
+export default function SignInForm({
+  linkError,
+  title = 'Recensioni',
+}: {
+  linkError: boolean;
+  /** The admin section being signed in to; shown as the page heading. */
+  title?: string;
+}) {
   const [state, action, pending] = useActionState<State, FormData>(
     async (_prev, formData) => requestSignInLink(formData),
     null,
@@ -13,7 +20,7 @@ export default function SignInForm({ linkError }: { linkError: boolean }) {
 
   return (
     <div className="mx-auto flex min-h-screen max-w-md flex-col justify-center px-5">
-      <h1 className="mb-2 text-2xl font-semibold">Recensioni</h1>
+      <h1 className="mb-2 text-2xl font-semibold">{title}</h1>
       <p className="mb-6 text-sm text-gray-600">
         Ti mandiamo un link per accedere. Non serve una password.
       </p>
