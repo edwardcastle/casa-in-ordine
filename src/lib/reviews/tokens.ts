@@ -9,7 +9,7 @@ import { db } from './db';
  * forwarded approval email being replayed by whoever it was forwarded to.
  */
 
-export type TokenPurpose = 'signin' | 'decision' | 'client_signin';
+export type TokenPurpose = 'signin' | 'decision' | 'client_signin' | 'client_notice';
 
 const TTL_MS: Record<TokenPurpose, number> = {
   // Long enough that an approval email still works after a weekend.
@@ -18,6 +18,10 @@ const TTL_MS: Record<TokenPurpose, number> = {
   signin: 30 * 60 * 1_000,
   // Same reasoning for clients: the link opens their private area.
   client_signin: 30 * 60 * 1_000,
+  // The link inside a "new material" email. Longer, because that email is
+  // read when the client gets to it, not straight after asking for it.
+  // Still single-use, and still needs the confirm click.
+  client_notice: 7 * 24 * 60 * 60 * 1_000,
 };
 
 function hash(token: string): string {

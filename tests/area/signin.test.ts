@@ -8,7 +8,7 @@ import {
 } from '@/actions/area';
 import ConfirmSignInPage, { generateMetadata } from '@/app/[locale]/area/accedi/continua/page';
 import { GET as openLink } from '@/app/[locale]/area/accedi/conferma/route';
-import { consumeToken } from '@/lib/reviews/tokens';
+import { consumeToken, issueToken } from '@/lib/reviews/tokens';
 import { sendEmail } from '@/lib/mail';
 import { endClientSession, startClientSession } from '@/lib/area/session';
 import { verifyTurnstile } from '@/lib/security/turnstile';
@@ -403,10 +403,35 @@ describe.skipIf(!hasTestDb())('client sign-in by emailed link', () => {
       expect(to).toBe('/it/area');
     });
 
-    it('a failed confirm does not send the client to next', async () => {
+    it('a failed confirm stays on sign-in but keeps next for the new link', async () => {
       const to = await redirectedTo(confirmClientSignIn(confirmForm('nope', 'it', PROJECT)));
 
-      expect(to).toBe('/it/area/accedi?error=link');
+      expect(to).toBe(`/it/area/accedi?error=link&next=${encodeURIComponent(PROJECT)}`);
+    });
+
+    it('the link in a "new material" email signs the client in and opens the project', async () => {
+      const clientId = await insertClient({ lang: 'en' });
+      const token = await issueToken('client_notice', clientId);
+
+      const to = await redirectedTo(confirmClientSignIn(confirmForm(token, 'en', PROJECT)));
+
+      expect(to).toBe(PROJECT);
+      expect(startClientSession).toHaveBeenCalledWith(clientId);
+      // Single-use, like every other link.
+      expect(await consumeToken('client_notice', token)).toBeNull();
+    });
+
+    it('a "new material" link lasts days, a sign-in link minutes', async () => {
+      const clientId = await insertClient();
+      await issueToken('client_notice', clientId);
+      await issueToken('client_signin', clientId);
+      const rows = await testDb()<{ purpose: string; minutes: number }[]>`
+        SELECT purpose, round(extract(epoch FROM expires_at - now()) / 60) AS minutes
+          FROM auth_tokens WHERE subject = ${clientId} ORDER BY purpose`;
+      expect(rows.map((r) => [r.purpose, Number(r.minutes)])).toEqual([
+        ['client_notice', 7 * 24 * 60],
+        ['client_signin', 30],
+      ]);
     });
   });
 
