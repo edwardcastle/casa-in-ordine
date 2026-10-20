@@ -253,3 +253,46 @@ html {
   /* Ensure backgrounds print */
   * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
 }
+
+/*
+ * The invisible text over a PDF page drawn in the client area (see
+ * PdfDocument). It sits exactly over the printed words so they can be
+ * selected, copied and read by screen readers; the drawing underneath is what
+ * the eye sees. Trimmed from pdf.js's own viewer styles.
+ */
+.pdf-text-layer {
+  position: absolute;
+  inset: 0;
+  overflow: clip;
+  line-height: 1;
+  text-align: initial;
+  transform-origin: 0 0;
+  z-index: 1;
+  --min-font-size: 1;
+  --text-scale-factor: calc(var(--total-scale-factor) * var(--min-font-size));
+  --min-font-size-inv: calc(1 / var(--min-font-size));
+}
+.pdf-text-layer :is(span, br) {
+  color: transparent;
+  position: absolute;
+  white-space: pre;
+  cursor: text;
+  transform-origin: 0% 0%;
+}
+.pdf-text-layer > :not(.markedContent),
+.pdf-text-layer .markedContent span:not(.markedContent) {
+  --font-height: 0;
+  font-size: calc(var(--text-scale-factor) * var(--font-height));
+  --scale-x: 1;
+  --rotate: 0deg;
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
+}
+.pdf-text-layer .markedContent {
+  display: contents;
+}
+.pdf-text-layer ::selection {
+  background: rgb(123 143 122 / 0.35);
+}
+.pdf-text-layer br::selection {
+  background: transparent;
+}

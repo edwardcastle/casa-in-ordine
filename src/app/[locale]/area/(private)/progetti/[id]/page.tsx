@@ -1,9 +1,10 @@
-import RichText from '@/components/area/RichText';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { hasLocale, useTranslations } from 'next-intl';
+import { hasLocale } from 'next-intl';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { notFound, redirect } from 'next/navigation';
+import PdfDocument from '@/components/area/PdfDocument';
+import RichText from '@/components/area/RichText';
 import StatusBadge from '@/components/area/StatusBadge';
 import ZoneLabel from '@/components/area/ZoneLabel';
 import { formatAddedDate, formatFileSize, formatVisitDate, isHttpUrl } from '@/lib/area/format';
@@ -26,63 +27,12 @@ export async function generateMetadata({
   return { title: t('metaTitle') };
 }
 
-const ACTION =
-  'inline-block rounded-full bg-primary px-5 py-2 text-sm font-bold text-white transition-colors hover:bg-primary-light';
+const isPdf = (m: Material) => m.kind === 'file' && m.fileType === 'application/pdf';
+const isImage = (m: Material) => m.kind === 'file' && Boolean(m.fileType?.startsWith('image/'));
+/** Shown in full on the page: notes, PDFs and photos. Links go in a list at the end. */
+const isDocument = (m: Material) => m.kind === 'note' || isPdf(m) || isImage(m);
 
-function MaterialItem({ material, locale }: { material: Material; locale: string }) {
-  const t = useTranslations('area.project');
-  const meta = [
-    material.kind === 'file' && material.fileType ? material.fileType.split('/').pop()?.toUpperCase() : null,
-    material.kind === 'file' && material.fileSize != null ? formatFileSize(material.fileSize) : null,
-    t('added', { date: formatAddedDate(material.createdAt, locale) }),
-  ].filter(Boolean);
-
-  return (
-    <li className="rounded-xl border border-secondary-dark bg-white p-5">
-      <h3 className="mb-1 break-words text-base font-semibold text-foreground">{material.title}</h3>
-      <p className="mb-3 text-xs text-gray-500">{meta.join(' · ')}</p>
-
-      {material.kind === 'file' && (
-        <a
-          href={`/api/area/files/${material.id}`}
-          target="_blank"
-          rel="noopener noreferrer"
-          className={ACTION}
-        >
-          {t('openFile')}
-        </a>
-      )}
-
-      {/* Notes are never rendered as HTML: a formatted note is built element by
-          element from its cleaned document, an older note is plain text. */}
-      {material.kind === 'note' && material.doc ? (
-        <RichText doc={material.doc} />
-      ) : (
-        material.kind === 'note' &&
-        material.body && (
-          <p className="whitespace-pre-line break-words text-sm leading-relaxed text-gray-700">
-            {material.body}
-          </p>
-        )
-      )}
-
-      {material.kind === 'link' &&
-        material.body &&
-        (isHttpUrl(material.body) ? (
-          <a
-            href={material.body.trim()}
-            target="_blank"
-            rel="noopener noreferrer"
-            className={ACTION}
-          >
-            {t('openLink')}
-          </a>
-        ) : (
-          <p className="break-all text-sm text-gray-700">{material.body}</p>
-        ))}
-    </li>
-  );
-}
+const fileUrl = (m: Material) => `/api/area/files/${m.id}`;
 
 export default async function AreaProjectPage({
   params,
@@ -103,14 +53,27 @@ export default async function AreaProjectPage({
   if (!project) notFound();
 
   const t = await getTranslations({ locale, namespace: 'area.project' });
+  const documents = project.materials.filter(isDocument);
+  const others = project.materials.filter((m) => !isDocument(m));
+
+  const downloadLink = (m: Material) => (
+    <a
+      href={fileUrl(m)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="font-semibold text-primary-dark underline-offset-4 hover:underline"
+    >
+      {t('download')}
+    </a>
+  );
 
   return (
-    <div className="space-y-10">
-      <header>
+    <article className="rounded-2xl bg-white px-5 py-8 shadow-[0_1px_2px_rgba(45,45,45,0.04),0_12px_32px_-20px_rgba(45,45,45,0.25)] sm:px-10 sm:py-12">
+      <header className="border-b border-secondary-dark pb-8">
         <Link
           href={`/${locale}/area`}
           prefetch={false}
-          className="mb-4 inline-block text-sm font-semibold text-primary-dark underline-offset-4 hover:underline"
+          className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-primary transition-colors hover:text-primary-dark"
         >
           &larr; {t('back')}
         </Link>
@@ -123,43 +86,103 @@ export default async function AreaProjectPage({
             </span>
           )}
         </div>
-        <h1 className="mb-2 break-words text-3xl font-semibold text-foreground">{project.title}</h1>
+        <h1 className="break-words text-3xl font-bold text-foreground md:text-4xl">{project.title}</h1>
         {project.visitDate && (
-          <p className="text-gray-600">
-            {t('visit', { date: formatVisitDate(project.visitDate, locale) })}
-          </p>
+          <p className="mt-2 text-gray-600">{t('visit', { date: formatVisitDate(project.visitDate, locale) })}</p>
         )}
-      </header>
-
-      <section aria-labelledby="summary-title">
-        <h2 id="summary-title" className="mb-3 text-xl font-semibold text-foreground">
-          {t('summaryTitle')}
-        </h2>
         {project.summary ? (
-          <p className="whitespace-pre-line break-words leading-relaxed text-gray-700">
+          <p className="mt-6 max-w-prose whitespace-pre-line break-words text-lg leading-relaxed text-foreground/85">
             {project.summary}
           </p>
         ) : (
-          <p className="text-gray-600">{t('noSummary')}</p>
+          <p className="mt-6 text-gray-600">{t('noSummary')}</p>
         )}
-      </section>
+      </header>
 
-      <section aria-labelledby="materials-title">
-        <h2 id="materials-title" className="mb-4 text-xl font-semibold text-foreground">
-          {t('materialsTitle')}
-        </h2>
-        {project.materials.length === 0 ? (
-          <div className="rounded-xl border border-dashed border-secondary-dark bg-white p-6">
-            <p className="text-gray-600">{t('noMaterials')}</p>
-          </div>
-        ) : (
-          <ul className="grid gap-4">
-            {project.materials.map((material) => (
-              <MaterialItem key={material.id} material={material} locale={locale} />
-            ))}
-          </ul>
-        )}
-      </section>
-    </div>
+      {project.materials.length === 0 ? (
+        <p className="pt-8 text-gray-600">{t('noMaterials')}</p>
+      ) : (
+        <div className="divide-y divide-secondary-dark">
+          {documents.map((m) => (
+            <section key={m.id} aria-labelledby={`doc-${m.id}`} className="py-10">
+              <div className="mb-5 flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                <h2 id={`doc-${m.id}`} className="break-words text-2xl font-bold text-foreground">
+                  {m.title}
+                </h2>
+                <p className="text-sm text-gray-500">
+                  {t('added', { date: formatAddedDate(m.createdAt, locale) })}
+                  {m.kind === 'file' && (
+                    <>
+                      <span aria-hidden="true"> · </span>
+                      {downloadLink(m)}
+                    </>
+                  )}
+                </p>
+              </div>
+
+              {/* Notes are never rendered as HTML: a formatted note is built
+                  element by element from its cleaned document. */}
+              {m.kind === 'note' &&
+                (m.doc ? (
+                  <RichText doc={m.doc} className="!space-y-4 !text-base md:!text-[17px]" />
+                ) : (
+                  <p className="whitespace-pre-line break-words leading-relaxed text-foreground/90">{m.body}</p>
+                ))}
+
+              {isPdf(m) && (
+                <PdfDocument
+                  src={fileUrl(m)}
+                  labels={{ loading: t('loadingDocument'), error: t('documentError'), page: t('pageOf', { n: '{n}', total: '{total}' }) }}
+                />
+              )}
+
+              {isImage(m) && (
+                // A plain img: the source is a redirect to a short-lived signed
+                // address, which the image optimizer cannot follow or cache.
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={fileUrl(m)}
+                  alt={m.title}
+                  loading="lazy"
+                  className="w-full rounded-lg bg-secondary-light object-contain"
+                />
+              )}
+            </section>
+          ))}
+
+          {others.length > 0 && (
+            <section aria-labelledby="links-title" className="py-10">
+              <h2 id="links-title" className="mb-4 text-xl font-bold text-foreground">
+                {t('linksTitle')}
+              </h2>
+              <ul className="space-y-3">
+                {others.map((m) => (
+                  <li key={m.id} className="flex flex-wrap items-baseline justify-between gap-x-6 gap-y-1">
+                    <span className="break-words font-medium text-foreground">{m.title}</span>
+                    {m.kind === 'link' && m.body && isHttpUrl(m.body) ? (
+                      <a
+                        href={m.body.trim()}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm font-semibold text-primary-dark underline-offset-4 hover:underline"
+                      >
+                        {t('openLink')}
+                      </a>
+                    ) : m.kind === 'link' ? (
+                      <span className="break-all text-sm text-gray-600">{m.body}</span>
+                    ) : (
+                      <span className="text-sm text-gray-500">
+                        {m.fileSize != null && `${formatFileSize(m.fileSize)} · `}
+                        {downloadLink(m)}
+                      </span>
+                    )}
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )}
+        </div>
+      )}
+    </article>
   );
 }

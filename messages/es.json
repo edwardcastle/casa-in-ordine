@@ -1116,9 +1116,13 @@
       "visit": "Visita: {date}",
       "materialsTitle": "Materiales",
       "noMaterials": "Todavía no hay materiales para este proyecto. En cuanto subamos uno lo verás aquí.",
-      "openFile": "Abrir archivo",
       "openLink": "Abrir enlace",
-      "added": "Añadido el {date}"
+      "added": "Añadido el {date}",
+      "download": "Descargar",
+      "loadingDocument": "Cargando el documento…",
+      "documentError": "No podemos mostrar el documento en esta página. Puedes descargarlo y abrirlo en tu dispositivo.",
+      "pageOf": "Página {n} de {total}",
+      "linksTitle": "Enlaces y adjuntos"
     },
     "tips": {
       "readGuide": "Leer la guía"
