@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { notifyClient } from '@/lib/area/emails';
-import { confirmUpload, createUploadUrl, deleteFiles, validateUpload } from '@/lib/area/files';
+import { confirmUpload, createUploadUrl, deleteFiles, isProjectFileKey, validateUpload } from '@/lib/area/files';
 import {
   PROJECT_STATUSES,
   PROJECT_ZONES,
@@ -259,7 +259,16 @@ export async function attachUploadedFile(
   if (!uuid(projectId)) return { error: 'notfound' };
 
   const stored = await confirmUpload(projectId, String(key));
-  if (!stored) return { error: 'upload' };
+  if (!stored) {
+    // An upload that fails the check (missing, empty, too large) is never
+    // attached; remove it so it does not sit in storage unreferenced. Storage
+    // records the type from the key's extension rather than the bytes, so
+    // contents of another kind are always served as the signed type. Only a
+    // key of this project's exact shape is touched, and a missing file makes
+    // the delete a no-op.
+    if (isProjectFileKey(projectId, String(key))) await removeBlobs([String(key)]);
+    return { error: 'upload' };
+  }
 
   let added;
   try {

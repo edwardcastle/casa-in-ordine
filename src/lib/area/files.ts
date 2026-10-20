@@ -78,10 +78,15 @@ export async function createUploadUrl(
  * has the shape we issue. A key from another project is refused without
  * touching storage.
  */
-export async function confirmUpload(projectId: string, key: string): Promise<FileInfo | null> {
-  if (!UUID.test(projectId)) return null;
+/** Whether `key` has exactly the shape createUploadUrl gives this project's files. */
+export function isProjectFileKey(projectId: string, key: string): boolean {
+  if (!UUID.test(projectId)) return false;
   const prefix = `area/${projectId}/`;
-  if (!key.startsWith(prefix) || !KEY_FILE.test(key.slice(prefix.length))) return null;
+  return key.startsWith(prefix) && KEY_FILE.test(key.slice(prefix.length));
+}
+
+export async function confirmUpload(projectId: string, key: string): Promise<FileInfo | null> {
+  if (!isProjectFileKey(projectId, key)) return null;
 
   let stored;
   try {

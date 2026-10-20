@@ -218,6 +218,25 @@ describe.skipIf(!hasTestDb())('admin actions', () => {
     expect(await testDb()`SELECT id FROM project_materials`).toHaveLength(0);
   });
 
+  it('attachUploadedFile deletes a rejected upload of this project', async () => {
+    const { project } = await seed('a@example.com');
+    files.confirmUpload.mockResolvedValue(null);
+    const key = `area/${project.id}/0b7e8a52-4c1d-4f7e-9a3b-2f6d1e8c9a10.pdf`;
+
+    expect(await attachUploadedFile(project.id, key, 'Plan')).toEqual({ error: 'upload' });
+    expect(files.deleteFiles).toHaveBeenCalledWith([key]);
+  });
+
+  it('attachUploadedFile never deletes a key outside this project', async () => {
+    const { project } = await seed('a@example.com');
+    files.confirmUpload.mockResolvedValue(null);
+    const foreign = 'area/9d2f6c1e-3b4a-4e5f-8a7b-6c5d4e3f2a1b/0b7e8a52-4c1d-4f7e-9a3b-2f6d1e8c9a10.pdf';
+
+    expect(await attachUploadedFile(project.id, foreign, 'Plan')).toEqual({ error: 'upload' });
+    expect(await attachUploadedFile(project.id, `area/${project.id}/../x.pdf`, 'Plan')).toEqual({ error: 'upload' });
+    expect(files.deleteFiles).not.toHaveBeenCalled();
+  });
+
   it('attachUploadedFile records type and size from storage, not from the browser', async () => {
     const { project } = await seed('a@example.com');
     const key = `area/${project.id}/x.pdf`;
