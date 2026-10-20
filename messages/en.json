@@ -1086,13 +1086,7 @@
       "metaTitle": "Confirm your sign-in"
     },
     "shell": {
-      "label": "Your area",
       "signOut": "Sign out"
-    },
-    "nav": {
-      "overview": "Your projects",
-      "tips": "Tips",
-      "label": "Your area navigation"
     },
     "status": {
       "planned": "Planned",
@@ -1110,9 +1104,8 @@
       "noVisit": "Visit to be scheduled",
       "materials": "{count, plural, =0 {No materials} one {# item} other {# items}}",
       "open": "Open project",
-      "tipsTitle": "Latest tips",
+      "tipsTitle": "Tips for your home",
       "noTips": "There are no tips yet. In the meantime, read the guides on our blog.",
-      "allTips": "All tips",
       "blogCta": "Go to the blog"
     },
     "project": {
@@ -1128,11 +1121,6 @@
       "added": "Added on {date}"
     },
     "tips": {
-      "metaTitle": "Tips",
-      "title": "Tips for your home",
-      "intro": "Practical ideas from our work, picked for our clients.",
-      "empty": "There are no tips yet. In the meantime, read the guides on our blog.",
-      "blogCta": "Go to the blog",
       "readGuide": "Read the guide"
     }
   }

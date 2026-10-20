@@ -41,7 +41,7 @@ export default async function AreaDashboardPage({
   if (!client) redirect(signInPath(locale, `/${locale}/area`));
 
   const t = await getTranslations({ locale, namespace: 'area.dashboard' });
-  const [projects, tips] = await Promise.all([listProjects(client.id), listTips(locale as 'it' | 'en' | 'es', 3)]);
+  const [projects, tips] = await Promise.all([listProjects(client.id), listTips(locale as 'it' | 'en' | 'es', 100)]);
 
   return (
     <div className="space-y-12">
@@ -104,20 +104,9 @@ export default async function AreaDashboardPage({
       </section>
 
       <section aria-labelledby="tips-title">
-        <div className="mb-4 flex flex-wrap items-baseline justify-between gap-2">
-          <h2 id="tips-title" className="text-xl font-semibold text-foreground">
-            {t('tipsTitle')}
-          </h2>
-          {tips.length > 0 && (
-            <Link
-              href={`/${locale}/area/consigli`}
-              prefetch={false}
-              className="text-sm font-semibold text-primary-dark underline-offset-4 hover:underline"
-            >
-              {t('allTips')} &rarr;
-            </Link>
-          )}
-        </div>
+        <h2 id="tips-title" className="mb-4 text-xl font-semibold text-foreground">
+          {t('tipsTitle')}
+        </h2>
 
         {tips.length === 0 ? (
           <div className="rounded-xl border border-dashed border-secondary-dark bg-white p-6">

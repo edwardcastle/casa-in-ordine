@@ -1086,13 +1086,7 @@
       "metaTitle": "Confirma tu acceso"
     },
     "shell": {
-      "label": "Tu área",
       "signOut": "Salir"
-    },
-    "nav": {
-      "overview": "Tus proyectos",
-      "tips": "Consejos",
-      "label": "Navegación de tu área"
     },
     "status": {
       "planned": "Planificado",
@@ -1110,9 +1104,8 @@
       "noVisit": "Visita por fijar",
       "materials": "{count, plural, =0 {Sin materiales} one {# material} other {# materiales}}",
       "open": "Abrir proyecto",
-      "tipsTitle": "Últimos consejos",
+      "tipsTitle": "Consejos para tu casa",
       "noTips": "Todavía no hay consejos. Mientras tanto, lee las guías de nuestro blog.",
-      "allTips": "Todos los consejos",
       "blogCta": "Ir al blog"
     },
     "project": {
@@ -1128,11 +1121,6 @@
       "added": "Añadido el {date}"
     },
     "tips": {
-      "metaTitle": "Consejos",
-      "title": "Consejos para tu casa",
-      "intro": "Ideas prácticas de nuestro trabajo, elegidas para nuestros clientes.",
-      "empty": "Todavía no hay consejos. Mientras tanto, lee las guías de nuestro blog.",
-      "blogCta": "Ir al blog",
       "readGuide": "Leer la guía"
     }
   }
