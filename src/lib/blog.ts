@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import { routing } from '@/i18n/routing';
+import { getAreaForPost } from '@/lib/areas';
 
 export type Locale = (typeof routing.locales)[number];
 
@@ -80,10 +81,20 @@ export function getAllPosts(locale: string): PostMeta[] {
 }
 
 /**
- * Posts most related to `slug`: same category (weighted) + shared keywords,
- * newest as the final tiebreak. Replaces "newest 3" so each post links to its
- * topical neighbours, spreading internal links across the whole corpus instead
- * of always pointing at the 3 most recent posts.
+ * Posts most related to `slug`, for the "related" cards under a post.
+ *
+ * Scored, highest first:
+ *   +4  both are guides for the same area of the home (AREAS in lib/areas),
+ *       the closest thing to "same subject" the content has;
+ *   +2  same category;
+ *   +1  per shared keyword, ignoring keywords on more than a third of the
+ *       posts ("home organizing Roma" is on nearly all of them, so it said
+ *       nothing and made every post tie).
+ * Ties go to the posts that follow this one in the listing, wrapping round.
+ * With newest-first as the tiebreak instead, eleven "Organizzazione" posts
+ * share a date and all recommended the same three, while eight posts were
+ * recommended by none: the cards are the main post-to-post link, so the
+ * tiebreak decides which guides get crawled from the rest of the blog.
  */
 export function getRelatedPosts(
   slug: string,
@@ -91,22 +102,47 @@ export function getRelatedPosts(
   limit = 3,
 ): PostMeta[] {
   const all = getAllPosts(locale);
-  const current = all.find((p) => p.slug === slug);
-  const others = all.filter((p) => p.slug !== slug);
-  if (!current) return others.slice(0, limit);
+  const index = all.findIndex((p) => p.slug === slug);
+  if (index === -1) return all.slice(0, limit);
+  const current = all[index];
 
-  const currentKeywords = new Set(current.keywords ?? []);
-  return others
-    .map((p) => {
-      let score = p.category === current.category ? 3 : 0;
-      score += (p.keywords ?? []).filter((k) => currentKeywords.has(k)).length;
-      return { post: p, score };
+  const postsWith = new Map<string, number>();
+  for (const post of all) {
+    for (const keyword of new Set(post.keywords ?? [])) {
+      postsWith.set(keyword, (postsWith.get(keyword) ?? 0) + 1);
+    }
+  }
+  const keywords = new Set(
+    (current.keywords ?? []).filter((k) => (postsWith.get(k) ?? 0) <= all.length / 3),
+  );
+  const area = getAreaForPost(slug);
+
+  return all
+    .map((post, i) => {
+      let score = area?.guides.includes(post.slug) ? 4 : 0;
+      if (post.category === current.category) score += 2;
+      score += (post.keywords ?? []).filter((k) => keywords.has(k)).length;
+      return { post, score, distance: (i - index + all.length) % all.length };
     })
-    .sort((a, b) =>
-      b.score - a.score || (a.post.date < b.post.date ? 1 : -1),
-    )
+    .filter(({ post }) => post.slug !== slug)
+    .sort((a, b) => b.score - a.score || a.distance - b.distance)
     .slice(0, limit)
-    .map((x) => x.post);
+    .map(({ post }) => post);
+}
+
+// Covers cut by scripts/build-covers.mjs are all this size, so it can be stated
+// for them. A cover from anywhere else has its size left out rather than
+// guessed: a wrong og:image:width is worse than none.
+const GENERATED_COVERS = '/images/blog/';
+const COVER_SIZE = { width: 1600, height: 840 };
+
+/** A post's cover, as an Open Graph image. */
+export function coverOgImage(post: PostMeta) {
+  return {
+    url: post.coverImage,
+    alt: post.coverAlt ?? post.title,
+    ...(post.coverImage.startsWith(GENERATED_COVERS) ? COVER_SIZE : {}),
+  };
 }
 
 /** Locales for which a given post exists (drives hreflang alternates). */

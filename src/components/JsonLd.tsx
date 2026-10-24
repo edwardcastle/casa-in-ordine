@@ -116,6 +116,8 @@ export default function JsonLd({ locale = 'it' }: JsonLdProps) {
       },
       serviceType: ['Decluttering', 'Home Organizing', 'Professional Organizing'],
       openingHours: 'Mo-Fr 09:00-18:00',
+      // The Maps listing, which shows the service area without the address.
+      hasMap: GOOGLE_PROFILE_URL,
       sameAs: SAME_AS,
     });
   }
