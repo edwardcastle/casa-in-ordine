@@ -14,6 +14,9 @@ import { currentClient } from '@/lib/area/session';
 import { routing } from '@/i18n/routing';
 
 export const dynamic = 'force-dynamic';
+// Project ids are not known at build time; the locale layout's
+// `dynamicParams = false` must not turn them into 404s.
+export const dynamicParams = true;
 
 export async function generateMetadata({
   params,

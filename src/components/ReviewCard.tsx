@@ -12,6 +12,15 @@ function Stars({ rating }: { rating: number }) {
   );
 }
 
+/** A locale tag the runtime rejects ("foo.txt") falls back to Italian rather than throwing. */
+function safeLocale(locale: string): string {
+  try {
+    return Intl.DateTimeFormat.supportedLocalesOf(locale).length ? locale : 'it';
+  } catch {
+    return 'it';
+  }
+}
+
 export default function ReviewCard({
   review,
   locale,
@@ -23,7 +32,7 @@ export default function ReviewCard({
 
   // Month granularity only: a first name, a neighbourhood and a datable home
   // visit is realistically re-identifiable when you have a handful of clients.
-  const when = new Intl.DateTimeFormat(locale, {
+  const when = new Intl.DateTimeFormat(safeLocale(locale), {
     month: 'long',
     year: 'numeric',
     timeZone: 'UTC',

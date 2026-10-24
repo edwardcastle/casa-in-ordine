@@ -21,6 +21,14 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// Only it, en and es exist. Anything else in the first segment is a 404 at
+// the routing level, before any page runs. Checking inside the layout is not
+// enough: Next renders the layout and the page side by side, so the page
+// would still start with, say, "foo.txt" as its locale. On Vercel that crashed
+// the homepage (a date formatted in locale "foo.txt") and every unknown
+// address with a dot in it answered 500 instead of 404.
+export const dynamicParams = false;
+
 export async function generateMetadata({
   params,
 }: {
