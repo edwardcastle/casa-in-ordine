@@ -5,17 +5,17 @@ import Image from 'next/image';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { MDXRemote } from 'next-mdx-remote/rsc';
 import { routing } from '@/i18n/routing';
-import { getPost, getPostLocales, getPostSlugs, getRelatedPosts } from '@/lib/blog';
+import {
+  coverOgImage,
+  getPost,
+  getPostLocales,
+  getPostSlugs,
+  getRelatedPosts,
+} from '@/lib/blog';
 import { mdxComponents } from '@/components/MdxContent';
 import { getAreaForPost, quoteHref } from '@/lib/areas';
 
 const baseUrl = 'https://casainordine.com';
-
-// Covers cut by scripts/build-covers.mjs are all this size, so it can be stated
-// for them. A cover from anywhere else has its size left out rather than
-// guessed: a wrong og:image:width is worse than none.
-const GENERATED_COVERS = '/images/blog/';
-const COVER_SIZE = { width: 1600, height: 840 };
 
 // Extract numbered "## N. Heading" sections into HowTo steps (name + lead text)
 // in the post's own locale. Used to emit HowTo structured data only for genuine
@@ -99,13 +99,7 @@ export async function generateMetadata({
       publishedTime: post.date,
       modifiedTime: post.updated ?? post.date,
       authors: [post.author],
-      images: [
-        {
-          url: post.coverImage,
-          alt: post.coverAlt ?? post.title,
-          ...(post.coverImage.startsWith(GENERATED_COVERS) ? COVER_SIZE : {}),
-        },
-      ],
+      images: [coverOgImage(post)],
     },
     twitter: {
       card: 'summary_large_image',

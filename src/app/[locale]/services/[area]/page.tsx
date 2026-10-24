@@ -8,7 +8,7 @@ import OverlayImage from '@/components/OverlayImage';
 import { routing } from '@/i18n/routing';
 import { AREAS, getArea, quoteHref } from '@/lib/areas';
 import { breadcrumbLd } from '@/lib/breadcrumb';
-import { getPostMeta } from '@/lib/blog';
+import { coverOgImage, getPostMeta } from '@/lib/blog';
 import type { PostMeta } from '@/lib/blog';
 
 const baseUrl = 'https://casainordine.com';
@@ -30,6 +30,10 @@ export async function generateMetadata({
 
   const t = await getTranslations({ locale, namespace: `areas.${area.zone}` });
   const path = `/services/${area.slug}`;
+  // Shared links (WhatsApp, Facebook) show the cover of the area's main guide:
+  // a photo of the room in question, at a size made for the card, where the
+  // logo said nothing about the page.
+  const guide = getPostMeta(area.guides[0], locale);
 
   return {
     title: t('metaTitle'),
@@ -50,7 +54,11 @@ export async function generateMetadata({
       siteName: 'Casa in Ordine',
       locale: locale === 'it' ? 'it_IT' : locale === 'es' ? 'es_ES' : 'en_US',
       type: 'website',
-      images: [{ url: '/images/logo/logo_1200x630.png', width: 1200, height: 630, alt: 'Casa in Ordine' }],
+      images: [
+        guide
+          ? coverOgImage(guide)
+          : { url: '/images/logo/logo_1200x630.png', width: 1200, height: 630, alt: 'Casa in Ordine' },
+      ],
     },
   };
 }

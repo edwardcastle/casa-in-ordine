@@ -130,6 +130,21 @@ export function getRelatedPosts(
     .map(({ post }) => post);
 }
 
+// Covers cut by scripts/build-covers.mjs are all this size, so it can be stated
+// for them. A cover from anywhere else has its size left out rather than
+// guessed: a wrong og:image:width is worse than none.
+const GENERATED_COVERS = '/images/blog/';
+const COVER_SIZE = { width: 1600, height: 840 };
+
+/** A post's cover, as an Open Graph image. */
+export function coverOgImage(post: PostMeta) {
+  return {
+    url: post.coverImage,
+    alt: post.coverAlt ?? post.title,
+    ...(post.coverImage.startsWith(GENERATED_COVERS) ? COVER_SIZE : {}),
+  };
+}
+
 /** Locales for which a given post exists (drives hreflang alternates). */
 export function getPostLocales(slug: string): Locale[] {
   return routing.locales.filter((locale) =>
