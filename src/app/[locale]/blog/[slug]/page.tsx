@@ -149,7 +149,12 @@ export default async function BlogPostPage({
     datePublished: post.date,
     dateModified: post.updated ?? post.date,
     inLanguage: langTag,
-    author: { '@type': 'Organization', name: post.author },
+    // Every post is signed by the business, so the author is the brand node
+    // itself rather than a second, unlinked Organization with the same name.
+    author:
+      post.author === 'Casa in Ordine'
+        ? { '@type': 'Organization', '@id': `${baseUrl}/#organization`, name: post.author, url: baseUrl }
+        : { '@type': 'Person', name: post.author },
     publisher: {
       '@type': 'Organization',
       '@id': `${baseUrl}/#organization`,
