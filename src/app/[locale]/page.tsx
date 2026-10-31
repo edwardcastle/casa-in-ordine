@@ -249,7 +249,7 @@ export default function HomePage({
               <div className="relative">
                 <div className="absolute -top-5 -left-5 w-32 h-32 bg-accent/15 rounded-full blur-xl" />
                 <OverlayImage
-                  src="/images/backgrounds/why-choose-us.JPG"
+                  src="/images/backgrounds/folding-sweaters.webp"
                   alt={t('images.atWork')}
                 />
                 <blockquote className="mt-6 text-center italic text-gray-600">
