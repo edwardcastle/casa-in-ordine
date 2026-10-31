@@ -3,13 +3,24 @@
 // The wizard asks categorical questions per zone rather than numeric sizes, so
 // the price is assembled from the options the visitor picks:
 //
-//   projectBase = zone.basePrice + Σ(price of every selected option)
-//   projectCost = projectBase × accumulation multiplier
-//   urgency     = projectCost × timing surcharge
-//   total       = projectCost + urgency
+//   zone price = MINIMUM_SESSION + zone.extra + Σ(price of every selected option)
+//                + accumulation level
+//   total      = Σ zone prices + urgency
+//
+// Everything is added, nothing multiplied. The estimate is a lead number, not
+// an invoice — the team sends the real quote within 24 hours — so one room is
+// meant to read as a professional's half day to a full day: €120 to €200
+// whatever the visitor clicks. A multiplier on top of a €120 floor would have
+// burst that ceiling, or left the zone questions moving the price by a few
+// euro each. A move (trasloco) is the one zone allowed above the band, since
+// it is days of work rather than hours.
 //
 // Options with price 0 are diagnostic — they tell the team what to prepare but
-// do not move the estimate.
+// do not move the estimate. A priced option adds at least €10, so that every
+// click the visitor makes is visible in the number.
+
+/** What a professional organizer comes out for at all: half a day, any room. */
+export const MINIMUM_SESSION = 120;
 
 export type Zone = 'armadio' | 'cucina' | 'bagno' | 'living' | 'trasloco' | 'garage';
 
@@ -34,31 +45,33 @@ export interface QuoteQuestion {
 }
 
 export interface ZoneConfig {
-  /** Package starting price before any option is added. */
-  basePrice: number;
+  /** € added to MINIMUM_SESSION before any option: for zones that are more work even at their lightest. */
+  extra: number;
   questions: QuoteQuestion[];
 }
 
 export const zoneConfigs: Record<Zone, ZoneConfig> = {
   armadio: {
-    basePrice: 50,
+    extra: 0,
     questions: [
       {
         id: 'tipologia',
         type: 'single',
         options: [
           { id: 'standard', price: 0 },
-          { id: 'grande', price: 25 },
-          { id: 'cabina', price: 60 },
+          { id: 'grande', price: 15 },
+          { id: 'cabina', price: 30 },
         ],
       },
       {
+        // Diagnostic: a couple's or a child's wardrobe is a different job, not
+        // a bigger one — size is already asked above.
         id: 'destinatario',
         type: 'single',
         options: [
           { id: 'individuale', price: 0 },
-          { id: 'coppia', price: 18 },
-          { id: 'bambini', price: 10 },
+          { id: 'coppia', price: 0 },
+          { id: 'bambini', price: 0 },
         ],
       },
       {
@@ -75,7 +88,7 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
         id: 'cambioStagione',
         type: 'single',
         options: [
-          { id: 'si', price: 15 },
+          { id: 'si', price: 10 },
           { id: 'no', price: 0 },
         ],
       },
@@ -83,16 +96,16 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
   },
 
   cucina: {
-    basePrice: 65,
+    extra: 0,
     questions: [
       {
         id: 'aree',
         type: 'multi',
         options: [
-          { id: 'dispensa', price: 12 },
-          { id: 'mobili', price: 22 },
+          { id: 'dispensa', price: 10 },
+          { id: 'mobili', price: 15 },
           // Covers both of the above, so it cannot be combined with them.
-          { id: 'completa', price: 35, exclusive: true },
+          { id: 'completa', price: 25, exclusive: true },
         ],
       },
       {
@@ -108,7 +121,7 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
         id: 'acquisti',
         type: 'single',
         options: [
-          { id: 'si', price: 18 },
+          { id: 'si', price: 10 },
           { id: 'no', price: 0 },
         ],
       },
@@ -116,23 +129,24 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
   },
 
   bagno: {
-    basePrice: 38,
+    extra: 0,
     questions: [
       {
         id: 'quantita',
         type: 'single',
         options: [
           { id: 'uno', price: 0 },
-          { id: 'due', price: 28 },
+          { id: 'due', price: 20 },
         ],
       },
       {
+        // Diagnostic: which storage there is tells the team what to bring.
         id: 'contenimento',
         type: 'multi',
         options: [
-          { id: 'cassettoni', price: 8 },
-          { id: 'colonna', price: 8 },
-          { id: 'specchio', price: 6 },
+          { id: 'cassettoni', price: 0 },
+          { id: 'colonna', price: 0 },
+          { id: 'specchio', price: 0 },
         ],
       },
       {
@@ -147,7 +161,7 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
   },
 
   living: {
-    basePrice: 50,
+    extra: 0,
     questions: [
       {
         id: 'area',
@@ -155,7 +169,7 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
         options: [
           { id: 'soggiorno', price: 10 },
           { id: 'office', price: 0 },
-          { id: 'giochi', price: 8 },
+          { id: 'giochi', price: 10 },
         ],
       },
       {
@@ -171,16 +185,16 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
   },
 
   trasloco: {
-    basePrice: 100,
+    extra: 10,
     questions: [
       {
         id: 'fase',
         type: 'single',
         options: [
           { id: 'pre', price: 0 },
-          { id: 'imballaggio', price: 30 },
-          { id: 'unpacking', price: 35 },
-          { id: 'completo', price: 80 },
+          { id: 'imballaggio', price: 20 },
+          { id: 'unpacking', price: 25 },
+          { id: 'completo', price: 50 },
         ],
       },
       {
@@ -188,32 +202,33 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
         type: 'single',
         options: [
           { id: 'piccolo', price: 0 },
-          { id: 'medio', price: 40 },
-          { id: 'grande', price: 90 },
+          { id: 'medio', price: 30 },
+          { id: 'grande', price: 60 },
         ],
       },
     ],
   },
 
   garage: {
-    basePrice: 75,
+    extra: 10,
     questions: [
       {
         id: 'tipologia',
         type: 'single',
         options: [
           { id: 'ripostiglio', price: 0 },
-          { id: 'box', price: 20 },
-          { id: 'magazzino', price: 55 },
+          { id: 'box', price: 10 },
+          { id: 'magazzino', price: 15 },
         ],
       },
       {
+        // Diagnostic: what is stored decides the method, not the hours.
         id: 'contenuto',
         type: 'single',
         options: [
-          { id: 'attrezzi', price: 12 },
-          { id: 'scorte', price: 8 },
-          { id: 'misto', price: 18 },
+          { id: 'attrezzi', price: 0 },
+          { id: 'scorte', price: 0 },
+          { id: 'misto', price: 0 },
         ],
       },
       {
@@ -229,7 +244,7 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
         id: 'smaltimento',
         type: 'single',
         options: [
-          { id: 'si', price: 20 },
+          { id: 'si', price: 15 },
           { id: 'no', price: 0 },
         ],
       },
@@ -239,15 +254,15 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
 
 /** Closing questions, asked for every zone after the zone-specific ones. */
 export const accumulationLevels = [
-  { id: 'lieve', multiplier: 1.0, icon: '🌿' },
-  { id: 'medio', multiplier: 1.15, icon: '🌤️' },
-  { id: 'alto', multiplier: 1.3, icon: '🌪️' },
+  { id: 'lieve', price: 0, icon: '🌿' },
+  { id: 'medio', price: 15, icon: '🌤️' },
+  { id: 'alto', price: 30, icon: '🌪️' },
 ] as const;
 
-/** A rush job costs more; booking within the month does not. */
+/** A rush job costs a flat fee, once per quote; booking within the month does not. */
 export const timingOptions = [
-  { id: 'asap', surcharge: 0.05, icon: '⚡' },
-  { id: 'mese', surcharge: 0, icon: '🗓️' },
+  { id: 'asap', price: 10, icon: '⚡' },
+  { id: 'mese', price: 0, icon: '🗓️' },
 ] as const;
 
 export type AccumulationId = (typeof accumulationLevels)[number]['id'];
@@ -315,10 +330,10 @@ export function entrySubtotal(entry: QuoteEntry): number {
     );
   }, 0);
 
-  const multiplier =
-    accumulationLevels.find((l) => l.id === entry.accumulation)?.multiplier ?? 1;
+  const accumulation =
+    accumulationLevels.find((l) => l.id === entry.accumulation)?.price ?? 0;
 
-  return (config.basePrice + optionsTotal) * multiplier;
+  return MINIMUM_SESSION + config.extra + optionsTotal + accumulation;
 }
 
 export interface QuoteTotals {
@@ -331,23 +346,17 @@ export interface QuoteTotals {
 
 /**
  * Zones are priced independently and summed — no multi-zone discount. The
- * timing surcharge applies once, to the whole job.
+ * urgency fee is charged once, for the whole job.
  */
 export function calculateTotals(entries: QuoteEntry[], timing: TimingId | null): QuoteTotals {
   const zones = entries.map((entry) => ({
     id: entry.id,
     zone: entry.zone,
-    subtotal: Math.round(entrySubtotal(entry)),
+    subtotal: entrySubtotal(entry),
   }));
 
-  const exactSubtotal = entries.reduce((sum, entry) => sum + entrySubtotal(entry), 0);
-  const surcharge = timingOptions.find((t) => t.id === timing)?.surcharge ?? 0;
-  const urgencyAmount = exactSubtotal * surcharge;
+  const subtotal = zones.reduce((sum, zone) => sum + zone.subtotal, 0);
+  const urgency = timingOptions.find((t) => t.id === timing)?.price ?? 0;
 
-  return {
-    zones,
-    subtotal: Math.round(exactSubtotal),
-    urgency: Math.round(urgencyAmount),
-    total: Math.round(exactSubtotal + urgencyAmount),
-  };
+  return { zones, subtotal, urgency, total: subtotal + urgency };
 }

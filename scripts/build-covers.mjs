@@ -40,7 +40,7 @@ const COVER_HEIGHT = 840;
  */
 const COVERS = {
   'cambio-di-stagione-armadio': { from: 'backgrounds/hero3.webp', focus: 'north' },
-  'come-iniziare-il-decluttering': { from: 'backgrounds/why-choose-us.JPG', focus: 'north' },
+  'come-iniziare-il-decluttering': { from: 'gallery/pantry-1.jpg', focus: 'centre' },
   'come-risparmiare-spazio-in-casa': { from: 'backgrounds/cosa-offriamo.JPG', band: 500 },
   'cucina-organizzata-guida-pratica': { from: 'gallery/kitchen-1.jpg', focus: 'centre' },
   'decluttering-digitale': { from: 'backgrounds/hero1.webp', focus: 'centre' },
