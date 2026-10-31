@@ -46,7 +46,7 @@ const COVERS = {
   'decluttering-digitale': { from: 'backgrounds/hero1.webp', focus: 'centre' },
   'decluttering-prima-di-un-trasloco': { from: 'backgrounds/come-nasce.JPG', focus: 'centre' },
   'decluttering-sentimentale': { from: 'backgrounds/hero2.webp', focus: 'centre' },
-  'guida-completa-decluttering-e-home-organizing': { from: 'gallery/living-1.jpg', focus: 'centre' },
+  'guida-completa-decluttering-e-home-organizing': { from: 'gallery/consultation-1.jpg', focus: 'centre' },
   'home-organizing-cosa-e-roma': { from: 'backgrounds/our-story.JPG', band: 350 },
   'organizzare-armadio-perfetto': { from: 'gallery/closet-1.jpg', focus: 'centre' },
   'organizzare-camera-da-letto': { from: 'gallery/living-4.jpg', focus: 'centre' },
@@ -55,8 +55,8 @@ const COVERS = {
   'organizzare-documenti-di-casa': { from: 'backgrounds/bg-5.jpg', band: 1400 },
   'organizzare-home-office': { from: 'gallery/office-1.jpg', focus: 'centre' },
   'organizzare-il-bagno': { from: 'gallery/bathroom-1.jpg', focus: 'centre' },
-  'organizzare-ingresso-di-casa': { from: 'gallery/living-2.jpg', focus: 'centre' },
-  'organizzare-la-dispensa': { from: 'gallery/kitchen-2.jpg', focus: 'centre' },
+  'organizzare-ingresso-di-casa': { from: 'gallery/entryway-1.jpg', focus: 'centre' },
+  'organizzare-la-dispensa': { from: 'gallery/pantry-2.jpg', focus: 'centre' },
 };
 
 mkdirSync(OUT_DIR, { recursive: true });
