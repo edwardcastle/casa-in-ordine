@@ -53,11 +53,21 @@ describe('quote price band', () => {
     expect(price(zone, 'dearest', true)).toBeLessThanOrEqual(200);
   });
 
-  // A move is days of work, so it alone may run above the band.
-  it('trasloco starts above the others and may reach €280', () => {
-    expect(price('trasloco', 'cheapest', false)).toBeGreaterThan(120);
-    expect(price('trasloco', 'dearest', true)).toBeLessThanOrEqual(280);
-    expect(price('trasloco', 'dearest', true)).toBeGreaterThan(200);
+  // A move is days of work, so it alone runs above the band: a full day at
+  // the lightest, past €1,000 for a complete service on a large home.
+  it('trasloco starts at a full day and may reach €1,200', () => {
+    expect(price('trasloco', 'cheapest', false)).toBe(250);
+    expect(price('trasloco', 'dearest', true)).toBeGreaterThan(1000);
+    expect(price('trasloco', 'dearest', true)).toBeLessThanOrEqual(1200);
+  });
+
+  it('every trasloco step is worth at least a half day more', () => {
+    for (const q of zoneConfigs.trasloco.questions) {
+      const prices = q.options.map((o) => o.price).sort((a, b) => a - b);
+      for (let i = 1; i < prices.length; i++) {
+        expect(prices[i] - prices[i - 1], `${q.id} step ${i}`).toBeGreaterThanOrEqual(30);
+      }
+    }
   });
 
   it('uses the whole band: some room costs exactly €120, some exactly €200', () => {
