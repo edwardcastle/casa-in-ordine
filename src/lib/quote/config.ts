@@ -13,7 +13,8 @@
 // whatever the visitor clicks. A multiplier on top of a €120 floor would have
 // burst that ceiling, or left the zone questions moving the price by a few
 // euro each. A move (trasloco) is the one zone allowed above the band, since
-// it is days of work rather than hours.
+// it is days of work rather than hours: it starts at a full day (€250) and a
+// complete house-to-house service on a large home runs past €1,000.
 //
 // Options with price 0 are diagnostic — they tell the team what to prepare but
 // do not move the estimate. A priced option adds at least €10, so that every
@@ -185,25 +186,30 @@ export const zoneConfigs: Record<Zone, ZoneConfig> = {
   },
 
   trasloco: {
-    extra: 10,
+    // Even the lightest move (pre-move decluttering of a one-bedroom flat) is
+    // a full day, not a half: €250 before any option.
+    extra: 130,
     questions: [
       {
+        // Each phase is one or more extra days on site; the complete service
+        // is all three phases plus the move day itself.
         id: 'fase',
         type: 'single',
         options: [
           { id: 'pre', price: 0 },
-          { id: 'imballaggio', price: 20 },
-          { id: 'unpacking', price: 25 },
-          { id: 'completo', price: 50 },
+          { id: 'imballaggio', price: 120 },
+          { id: 'unpacking', price: 150 },
+          { id: 'completo', price: 400 },
         ],
       },
       {
+        // Rooms multiply the days of every phase, so this is the biggest step.
         id: 'vani',
         type: 'single',
         options: [
           { id: 'piccolo', price: 0 },
-          { id: 'medio', price: 30 },
-          { id: 'grande', price: 60 },
+          { id: 'medio', price: 200 },
+          { id: 'grande', price: 450 },
         ],
       },
     ],
